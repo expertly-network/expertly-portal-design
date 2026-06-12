@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+<style>
+  /* Custom styles for onboarding features */
+  .profile-photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .photo-preview-box {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    border: 1px dashed var(--line-2);
+    background: var(--bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: var(--ink-4);
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .photo-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .upload-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .btn-upload input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    font-size: 100px;
+    cursor: pointer;
+  }
+  .composite-phone {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+  }
+  .char-counter {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+  .char-counter.limit-near {
+    color: #D97706; /* amber */
+    font-weight: 500;
+  }
+  .repeating-card {
+    border: 1px solid var(--line);
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+  .repeating-card:hover {
+    border-color: var(--line-2);
+  }
+  .card-remove-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: var(--ink-3);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.15s;
+  }
+  .card-remove-btn:hover {
+    color: #DC2626; /* red */
+  }
+  .add-item-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: color 0.15s;
+  }
+  .add-item-link:hover {
+    color: var(--accent-2);
+  }
+  .category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .pill-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+    background: var(--bg-card);
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pill-btn:hover {
+    border-color: var(--line-2);
+    color: var(--ink);
+  }
+  .pill-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .import-header-btn {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .import-header-btn:hover {
+    color: var(--accent-2);
+  }
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--line-2);
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    padding: 32px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--ink-3);
+  }
+  .linkedin-gate-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+  .linkedin-gate-card {
+    text-align: center;
+    max-width: 440px;
+    width: 100%;
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.05);
+  }
+  .error-text {
+    color: #DC2626;
+    font-size: 11px;
+    margin-top: 4px;
+    display: block;
+  }
+  .field-error input, .field-error select, .field-error textarea {
+    border-color: #DC2626 !important;
+  }
+  .apply-review-section {
+    margin-bottom: 24px;
+  }
+  .review-section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 3000;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React & Babel CDN dependencies -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Project files -->
+<script src="assets/members.js"></script>
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// Setup mock lists
+const PHONE_CODES = [
+  { code: '+1', name: 'US/Canada' },
+  { code: '+44', name: 'United Kingdom' },
+  { code: '+91', name: 'India' },
+  { code: '+65', name: 'Singapore' },
+  { code: '+971', name: 'UAE' },
+  { code: '+49', name: 'Germany' },
+  { code: '+33', name: 'France' },
+  { code: '+81', name: 'Japan' },
+  { code: '+234', name: 'Nigeria' },
+  { code: '+233', name: 'Ghana' },
+  { code: '+20', name: 'Egypt' }
+];
+
+const REGIONS = [
+  { id: 'asia_pacific', name: 'Asia Pacific' },
+  { id: 'europe', name: 'Europe' },
+  { id: 'latin_america', name: 'Latin America' },
+  { id: 'middle_east', name: 'Middle East' },
+  { id: 'north_america', name: 'North America' },
+  { id: 'south_asia', name: 'South Asia' },
+  { id: 'africa', name: 'Africa' }
+];
+
+const COUNTRIES_BY_REGION = {
+  asia_pacific: ['Australia', 'New Zealand', 'Singapore', 'Japan', 'South Korea', 'China', 'Malaysia', 'Thailand', 'Vietnam', 'Indonesia', 'Philippines'],
+  europe: ['United Kingdom', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands', 'Switzerland', 'Belgium', 'Sweden', 'Poland', 'Austria', 'Ireland'],
+  latin_america: ['Brazil', 'Mexico', 'Argentina', 'Colombia', 'Chile', 'Peru', 'Costa Rica', 'Uruguay'],
+  middle_east: ['United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Israel', 'Egypt', 'Turkey', 'Kuwait', 'Oman', 'Bahrain'],
+  north_america: ['United States', 'Canada'],
+  south_asia: ['India', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Nepal'],
+  africa: ['Nigeria', 'South Africa', 'Kenya', 'Ghana', 'Egypt', 'Morocco', 'Ethiopia', 'Uganda']
+};
+
+const COUNTRY_NAMES = Object.values(COUNTRIES_BY_REGION).flat();
+
+// Hierarchical State/City database
+const GEOGRAPHY_DATABASE = {
+  'United States': {
+    'California': ['San Francisco', 'Los Angeles', 'San Diego', 'San Jose'],
+    'New York': ['New York City', 'Buffalo', 'Rochester'],
+    'Texas': ['Austin', 'Houston', 'Dallas'],
+    'Washington': ['Seattle', 'Bellevue', 'Tacoma'],
+    'Illinois': ['Chicago', 'Springfield']
+  },
+  'India': {
+    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai'],
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur'],
+    'Delhi': ['New Delhi', 'Noida', 'Gurgaon'],
+    'Karnataka': ['Bangalore', 'Mysore'],
+    'Telangana': ['Hyderabad', 'Warangal']
+  },
+  'United Kingdom': {
+    'England': ['London', 'Manchester', 'Birmingham', 'Leeds'],
+    'Scotland': ['Edinburgh', 'Glasgow']
+  },
+  'Singapore': {
+    'Central Region': ['Singapore Central', 'Bukit Merah'],
+    'East Region': ['Tampines', 'Bedok']
+  }
+};
+
+const SERVICE_TAXONOMY = [
+  { category: 'Taxation', name: 'M&A Tax', id: 'ma_tax' },
+  { category: 'Taxation', name: 'Transfer Pricing', id: 'tp' },
+  { category: 'Taxation', name: 'Indirect Tax', id: 'indirect_tax' },
+  { category: 'Legal', name: 'Corporate Law', id: 'corp_law' },
+  { category: 'Legal', name: 'IP & Technology', id: 'ip_tech' },
+  { category: 'Legal', name: 'Banking & Finance', id: 'banking_finance' },
+  { category: 'Legal', name: 'Dispute Resolution', id: 'dispute_res' },
+  { category: 'Finance & Advisory', name: 'Capital Markets', id: 'capital_markets' },
+  { category: 'Finance & Advisory', name: 'Private Equity', id: 'pe' },
+  { category: 'Finance & Advisory', name: 'Restructuring', id: 'restructuring' },
+  { category: 'Finance & Advisory', name: 'Compliance', id: 'compliance' },
+  { category: 'Finance & Advisory', name: 'Antitrust', id: 'antitrust' }
+];
+
+const INITIAL_STATE = {
+  profilePhoto: '',
+  firstName: '',
+  lastName: '',
+  phoneExtension: '+1',
+  phone: '',
+  contactEmail: 'you@example.com',
+  region: '',
+  country: '',
+  state: '',
+  city: '',
+  linkedinUrl: '',
+  bio: '',
+  yearsOfExperience: '',
+  workExperience: [
+    { jobTitle: '', company: '', companyWebsite: '', city: '', firmSize: '', startMonth: 'Jan', startYear: '2020', endMonth: 'Dec', endYear: '2024', isCurrent: false }
+  ],
+  education: [
+    { institution: '', degree: '', fieldOfStudy: '', startYear: '2010', endYear: '2014' }
+  ],
+  firstPref: '',
+  secondPref: '',
+  thirdPref: '',
+  minFee: '',
+  maxFee: '',
+  consentTerms: false,
+  consentPrivacy: false,
+  consentVerify: false
+};
+
+function OnboardingApp() {
+  const [linkedinConnected, setLinkedinConnected] = useState(() => {
+    return sessionStorage.getItem('expertly_linkedin_connected') === 'true';
+  });
+  const [step, setStep] = useState(() => {
+    const s = sessionStorage.getItem('expertly_onboarding_step');
+    return s ? parseInt(s, 10) : 1;
+  });
+  const [form, setForm] = useState(() => {
+    const saved = sessionStorage.getItem('expertly_onboarding_form');
+    return saved ? JSON.parse(saved) : INITIAL_STATE;
+  });
+  const [errors, setErrors] = useState({});
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importUrl, setImportUrl] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  // Sync state to session storage
+  useEffect(() => {
+    sessionStorage.setItem('expertly_onboarding_form', JSON.stringify(form));
+  }, [form]);
+
+  useEffect(() => {
+    sessionStorage.setItem('expertly_onboarding_step', step.toString());
+  }, [step]);
+
+  useEffect(() => {
+    sessionStorage.setItem('expertly_linkedin_connected', linkedinConnected.toString());
+  }, [linkedinConnected]);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
+
+  const handleConnectLinkedIn = () => {
+    setLinkedinConnected(true);
+    showToast('LinkedIn identity connected successfully.');
+  };
+
+  const updateField = (field, value) => {
+    setForm(prev => {
+      const updated = { ...prev, [field]: value };
+      
+      // Hierarchy modifications
+      if (field === 'region') {
+        updated.country = '';
+        updated.state = '';
+        updated.city = '';
+      } else if (field === 'country') {
+        // Find region if not set
+        if (!prev.region) {
+          const regionEntry = Object.entries(COUNTRIES_BY_REGION).find(([r, list]) => list.includes(value));
+          if (regionEntry) updated.region = regionEntry[0];
+        }
+        updated.state = '';
+        updated.city = '';
+      } else if (field === 'state') {
+        updated.city = '';
+      }
+      return updated;
+    });
+    // Clear validation error for this field
+    if (errors[field]) {
+      setErrors(prev => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      setErrors(prev => ({ ...prev, profilePhoto: 'File size exceeds maximum limit of 5 MB' }));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      updateField('profilePhoto', event.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleImportFromLinkedIn = () => {
+    if (!importUrl || !importUrl.match(/^https?:\/\/(www\.)?linkedin\.com\/in\/.+/)) {
+      alert('Please enter a valid LinkedIn URL first.');
+      return;
+    }
+    // Mock imports only empty fields
+    setForm(prev => ({
+      ...prev,
+      firstName: prev.firstName || 'Jane',
+      lastName: prev.lastName || 'Smith',
+      linkedinUrl: prev.linkedinUrl || importUrl,
+      bio: prev.bio || 'Experienced finance expert specializing in international tax advisory and corporate structuring. Previously managed global accounts at leading firms.',
+      yearsOfExperience: prev.yearsOfExperience || '12',
+      region: prev.region || 'asia_pacific',
+      country: prev.country || 'Singapore',
+      state: prev.state || 'Central Region',
+      city: prev.city || 'Singapore Central',
+    }));
+    setShowImportModal(false);
+    setImportUrl('');
+    showToast('LinkedIn profile data imported successfully.');
+  };
+
+  const validateStep = (currentStep) => {
+    const newErrors = {};
+    if (currentStep === 1) {
+      if (!form.profilePhoto) newErrors.profilePhoto = 'Profile photo is required';
+      if (!form.firstName) newErrors.firstName = 'First name is required';
+      if (!form.lastName) newErrors.lastName = 'Last name is required';
+      if (!form.contactEmail) {
+        newErrors.contactEmail = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail)) {
+        newErrors.contactEmail = 'Enter a valid email address';
+      }
+      if (!form.region) newErrors.region = 'Region is required';
+      if (!form.country) newErrors.country = 'Country is required';
+      if (!form.linkedinUrl) {
+        newErrors.linkedinUrl = 'LinkedIn URL is required';
+      } else if (!/^https?:\/\/(www\.)?linkedin\.com\/in\/.+/.test(form.linkedinUrl)) {
+        newErrors.linkedinUrl = 'Enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/yourname)';
+      }
+      if (!form.bio) newErrors.bio = 'Bio is required';
+    } else if (currentStep === 2) {
+      if (!form.yearsOfExperience) {
+        newErrors.yearsOfExperience = 'Overall years of experience is required';
+      } else {
+        const val = parseInt(form.yearsOfExperience, 10);
+        if (isNaN(val) || val < 0 || val > 60) {
+          newErrors.yearsOfExperience = 'Years of experience must be between 0 and 60';
+        }
+      }
+      // Work experience validation
+      if (!form.workExperience || form.workExperience.length === 0) {
+        newErrors.workExperience = 'At least one work experience entry is required';
+      } else {
+        form.workExperience.forEach((we, index) => {
+          if (!we.jobTitle || !we.company) {
+            newErrors[`workExperience_${index}`] = 'Job title and Company are required';
+          }
+        });
+      }
+      // Education validation
+      if (!form.education || form.education.length === 0) {
+        newErrors.education = 'At least one education entry is required';
+      } else {
+        form.education.forEach((edu, index) => {
+          if (!edu.institution || !edu.degree) {
+            newErrors[`education_${index}`] = 'Institution and Degree are required';
+          }
+        });
+      }
+    } else if (currentStep === 3) {
+      if (!form.firstPref) newErrors.firstPref = 'Please select your 1st preference service';
+      if (!form.minFee) {
+        newErrors.minFee = 'Minimum rate is required';
+      } else if (parseInt(form.minFee, 10) < 0) {
+        newErrors.minFee = 'Minimum rate must be non-negative';
+      }
+      if (!form.maxFee) {
+        newErrors.maxFee = 'Maximum rate is required';
+      } else if (parseInt(form.maxFee, 10) <= parseInt(form.minFee, 10)) {
+        newErrors.maxFee = 'Maximum must be greater than minimum';
+      }
+    } else if (currentStep === 4) {
+      if (!form.consentTerms) newErrors.consentTerms = 'You must agree to the Terms of Service';
+      if (!form.consentPrivacy) newErrors.consentPrivacy = 'You must agree to the Privacy Policy';
+      if (!form.consentVerify) newErrors.consentVerify = 'You must consent to credential verification';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(prev => Math.min(4, prev + 1));
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleBack = () => {
+    setStep(prev => Math.max(1, prev - 1));
+    window.scrollTo(0, 0);
+  };
+
+  const handleStepClick = (s) => {
+    if (s < step) {
+      setStep(s);
+    } else if (s > step) {
+      // Validate intermediate steps
+      let valid = true;
+      for (let i = step; i < s; i++) {
+        if (!validateStep(i)) {
+          valid = false;
+          break;
+        }
+      }
+      if (valid) setStep(s);
+    }
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (validateStep(4)) {
+      setSubmitted(true);
+      sessionStorage.removeItem('expertly_onboarding_form');
+      sessionStorage.removeItem('expertly_onboarding_step');
+      sessionStorage.removeItem('expertly_linkedin_connected');
+    }
+  };
+
+  // Service taxonomies filter
+  const [activeCategory, setActiveCategory] = useState('All');
+  const filteredServices = SERVICE_TAXONOMY.filter(s => activeCategory === 'All' || s.category === activeCategory);
+
+  const getDeduplicatedOptions = (currentSelection, otherSelections) => {
+    return filteredServices.filter(s => !otherSelections.includes(s.name) || s.name === currentSelection);
+  };
+
+  // Repeatable components state updating functions
+  const addWorkExperience = () => {
+    if (form.workExperience.length >= 5) return;
+    setForm(prev => ({
+      ...prev,
+      workExperience: [...prev.workExperience, { jobTitle: '', company: '', companyWebsite: '', city: '', firmSize: '', startMonth: 'Jan', startYear: '2020', endMonth: 'Dec', endYear: '2024', isCurrent: false }]
+    }));
+  };
+
+  const removeWorkExperience = (index) => {
+    if (form.workExperience.length <= 1) return;
+    setForm(prev => ({
+      ...prev,
+      workExperience: prev.workExperience.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateWorkExperience = (index, key, val) => {
+    setForm(prev => {
+      const nextExp = [...prev.workExperience];
+      nextExp[index] = { ...nextExp[index], [key]: val };
+      return { ...prev, workExperience: nextExp };
+    });
+  };
+
+  const addEducation = () => {
+    if (form.education.length >= 3) return;
+    setForm(prev => ({
+      ...prev,
+      education: [...prev.education, { institution: '', degree: '', fieldOfStudy: '', startYear: '2010', endYear: '2014' }]
+    }));
+  };
+
+  const removeEducation = (index) => {
+    if (form.education.length <= 1) return;
+    setForm(prev => ({
+      ...prev,
+      education: prev.education.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateEducation = (index, key, val) => {
+    setForm(prev => {
+      const nextEdu = [...prev.education];
+      nextEdu[index] = { ...nextEdu[index], [key]: val };
+      return { ...prev, education: nextEdu };
+    });
+  };
+
+  // State & City dynamic selectors
+  const statesForCountry = form.country ? Object.keys(GEOGRAPHY_DATABASE[form.country] || {}) : [];
+  const citiesForState = (form.country && form.state) ? (GEOGRAPHY_DATABASE[form.country][form.state] || []) : [];
+
+  const progressPct = (step / 4) * 100;
+
+  if (!linkedinConnected) {
+    return (
+      <div className="linkedin-gate-overlay">
+        <div className="linkedin-gate-card">
+          <div style={{width: 56, height: 56, background: '#0077B5', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px'}}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.8v8.37h2.8v-4.67c0-.25.02-.5.1-.68a1.14 1.14 0 0 1 1-.77c.76 0 1 .58 1 1.42v4.7h2.8M6.5 8.37a1.37 1.37 0 1 0 0-2.75 1.37 1.37 0 0 0 0 2.75M8 18.5V10.1H5.2v8.4H8z"/></svg>
+          </div>
+          <h1 className="headline" style={{marginBottom: 12}}>Connect your LinkedIn</h1>
+          <p className="lede" style={{fontSize: 15, marginBottom: 32}}>
+            To apply as an Expertly member, you must first connect and verify your professional LinkedIn identity.
+          </p>
+          <button className="btn btn-primary btn-lg" style={{width: '100%', justifyContent: 'center', background: '#0077B5'}} onClick={handleConnectLinkedIn}>
+            Continue with LinkedIn <span className="arr">→</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (submitted) {
+    return (
+      <>
+        <Nav />
+        <main className="apply-main" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 20px'}}>
+          <div style={{textAlign: 'center', maxWidth: 540, background: 'var(--bg-card)', padding: '56px 48px', borderRadius: 16, border: '1px solid var(--line)', boxShadow: '0 16px 48px rgba(0,0,0,0.05)'}}>
+            <div style={{width: 56, height: 56, background: 'var(--bg-alt)', border: '1px solid var(--line)', color: 'var(--ok)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px'}}>
+              <CheckIcon />
+            </div>
+            <h1 className="headline" style={{marginBottom: 16}}>Application Submitted.</h1>
+            <p className="lede" style={{fontSize: 15, marginBottom: 32}}>
+              Thank you for applying to Expertly. Our credentials committee is reviewing your details manually. You will receive an email update within 5 business days.
+            </p>
+            <a href="index.html" className="btn btn-primary btn-lg">Return to homepage</a>
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Nav />
+      {toastMessage && <div className="toast"><CheckIcon /> {toastMessage}</div>}
+      
+      <main className="apply-main">
+        <div className="apply-grid">
+          <aside className="apply-aside">
+            <span className="eyebrow" style={{marginTop: 12}}>Membership Onboarding</span>
+            <h1 className="headline" style={{marginTop: 16, fontSize: 'clamp(28px, 2.5vw, 36px)', lineHeight: 1.1}}>
+              Let's build your profile.
+            </h1>
+            <p style={{fontSize: 14, color: 'var(--ink-3)', marginTop: 16, lineHeight: 1.5}}>
+              Complete the questions below. Once approved, this information will display on your public directory listing.
+            </p>
+
+            <div className="apply-steps" style={{marginTop: 36}}>
+              {[
+                { n: 1, t: 'Your Identity' },
+                { n: 2, t: 'Experience' },
+                { n: 3, t: 'Services & Rates' },
+                { n: 4, t: 'Review & Submit' }
+              ].map(s => (
+                <div key={s.n} className={`apply-step ${step === s.n ? 'active' : ''} ${step > s.n ? 'done' : ''}`} style={{cursor: 'pointer'}} onClick={() => handleStepClick(s.n)}>
+                  <div className="apply-step-num mono">{step > s.n ? '✓' : s.n}</div>
+                  <div>{s.t}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="apply-aside-foot">
+              <div className="verified"><CheckIcon /> Secure connection</div>
+              <p style={{fontSize: 12, color: 'var(--ink-4)', marginTop: 8, lineHeight: 1.4}}>
+                Your responses are stored securely. Manually entered data will not be overwritten by import tools.
+              </p>
+            </div>
+          </aside>
+
+          <section className="apply-form-wrap">
+            <div className="apply-progress">
+              <div className="apply-progress-bar" style={{width: `${progressPct}%`}} />
+              <div className="apply-progress-label mono" style={{display: 'flex', justifyContent: 'space-between'}}>
+                <span>STEP {step} OF 4</span>
+                {step === 1 && (
+                  <span className="import-header-btn" onClick={() => setShowImportModal(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.8v8.37h2.8v-4.67c0-.25.02-.5.1-.68a1.14 1.14 0 0 1 1-.77c.76 0 1 .58 1 1.42v4.7h2.8M6.5 8.37a1.37 1.37 0 1 0 0-2.75 1.37 1.37 0 0 0 0 2.75M8 18.5V10.1H5.2v8.4H8z"/></svg>
+                    Import from LinkedIn
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <form onSubmit={handleFormSubmit}>
+              {/* STEP 1: IDENTITY */}
+              {step === 1 && (
+                <div className="apply-form">
+                  <h2>Your Identity</h2>
+                  <p className="apply-form-sub">Provide your profile image and core contact information.</p>
+
+                  <div className={`apply-field ${errors.profilePhoto ? 'field-error' : ''}`}>
+                    <label>Profile photo <span className="apply-hint-inline">(JPEG/PNG, displayed square, max 5MB)</span></label>
+                    <div className="profile-photo-upload">
+                      <div className="photo-preview-box">
+                        {form.profilePhoto ? (
+                          <img src={form.profilePhoto} alt="Avatar preview" />
+                        ) : (
+                          <span>👤</span>
+                        )}
+                      </div>
+                      <div className="upload-btn-wrapper">
+                        <button className="btn btn-outline btn-upload" type="button">
+                          Upload image
+                          <input type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} />
+                        </button>
+                        {form.profilePhoto && (
+                          <button className="btn btn-ghost" type="button" style={{color: '#DC2626', padding: '4px 8px'}} onClick={() => updateField('profilePhoto', '')}>
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {errors.profilePhoto && <span className="error-text">{errors.profilePhoto}</span>}
+                  </div>
+
+                  <div className="apply-field-row">
+                    <div className={`apply-field ${errors.firstName ? 'field-error' : ''}`}>
+                      <label>First name</label>
+                      <input type="text" value={form.firstName} onChange={e => updateField('firstName', e.target.value)} placeholder="Jane" />
+                      {errors.firstName && <span className="error-text">{errors.firstName}</span>}
+                    </div>
+                    <div className={`apply-field ${errors.lastName ? 'field-error' : ''}`}>
+                      <label>Last name</label>
+                      <input type="text" value={form.lastName} onChange={e => updateField('lastName', e.target.value)} placeholder="Smith" />
+                      {errors.lastName && <span className="error-text">{errors.lastName}</span>}
+                    </div>
+                  </div>
+
+                  <div className="apply-field-row">
+                    <div className="apply-field">
+                      <label>WhatsApp / Phone <span className="apply-hint-inline">(Optional)</span></label>
+                      <div className="composite-phone">
+                        <select value={form.phoneExtension} onChange={e => updateField('phoneExtension', e.target.value)}>
+                          {PHONE_CODES.map(p => (
+                            <option key={p.code} value={p.code}>{p.code} ({p.name})</option>
+                          ))}
+                        </select>
+                        <input type="tel" value={form.phone} onChange={e => updateField('phone', e.target.value)} placeholder="7700 900 000" />
+                      </div>
+                    </div>
+                    <div className={`apply-field ${errors.contactEmail ? 'field-error' : ''}`}>
+                      <label>Contact email</label>
+                      <input type="email" value={form.contactEmail} onChange={e => updateField('contactEmail', e.target.value)} placeholder="you@example.com" />
+                      {errors.contactEmail && <span className="error-text">{errors.contactEmail}</span>}
+                    </div>
+                  </div>
+
+                  <div className="apply-field-row">
+                    <div className={`apply-field ${errors.region ? 'field-error' : ''}`}>
+                      <label>Region</label>
+                      <select value={form.region} onChange={e => updateField('region', e.target.value)}>
+                        <option value="">Select region...</option>
+                        {REGIONS.map(r => (
+                          <option key={r.id} value={r.id}>{r.name}</option>
+                        ))}
+                      </select>
+                      {errors.region && <span className="error-text">{errors.region}</span>}
+                    </div>
+
+                    <div className={`apply-field ${errors.country ? 'field-error' : ''}`}>
+                      <label>Country</label>
+                      <select value={form.country} onChange={e => updateField('country', e.target.value)}>
+                        <option value="">Select country...</option>
+                        {(form.region ? COUNTRIES_BY_REGION[form.region] : COUNTRY_NAMES).map(c => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                      {errors.country && <span className="error-text">{errors.country}</span>}
+                    </div>
+                  </div>
+
+                  <div className="apply-field-row">
+                    <div className="apply-field">
+                      <label>State / Province <span className="apply-hint-inline">(Optional)</span></label>
+                      {statesForCountry.length > 0 ? (
+                        <select value={form.state} onChange={e => updateField('state', e.target.value)}>
+                          <option value="">Select state...</option>
+                          {statesForCountry.map(s => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input type="text" value={form.state} onChange={e => updateField('state', e.target.value)} placeholder="e.g. California" />
+                      )}
+                    </div>
+
+                    <div className="apply-field">
+                      <label>City <span className="apply-hint-inline">(Optional)</span></label>
+                      {citiesForState.length > 0 ? (
+                        <select value={form.city} onChange={e => updateField('city', e.target.value)}>
+                          <option value="">Select city...</option>
+                          {citiesForState.map(c => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input type="text" value={form.city} onChange={e => updateField('city', e.target.value)} placeholder="e.g. London" />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className={`apply-field ${errors.linkedinUrl ? 'field-error' : ''}`}>
+                    <label>LinkedIn URL</label>
+                    <input type="url" value={form.linkedinUrl} onChange={e => updateField('linkedinUrl', e.target.value)} placeholder="https://linkedin.com/in/yourprofile" />
+                    {errors.linkedinUrl && <span className="error-text">{errors.linkedinUrl}</span>}
+                  </div>
+
+                  <div className={`apply-field ${errors.bio ? 'field-error' : ''}`}>
+                    <label>Professional Bio</label>
+                    <textarea value={form.bio} onChange={e => updateField('bio', e.target.value.slice(0, 500))} rows={4} placeholder="Describe your professional background, expertise, and what makes you uniquely qualified..." />
+                    <div className={`char-counter ${form.bio.length >= 460 ? 'limit-near' : ''}`}>
+                      {errors.bio ? <span className="error-text">{errors.bio}</span> : <div />}
+                      <span>{form.bio.length} / 500 characters</span>
+                    </div>
+                  </div>
+
+                  <div className="apply-actions" style={{marginTop: 36}}>
+                    <div />
+                    <button className="btn btn-primary btn-lg" type="button" onClick={handleNext}>
+                      Next: Experience <span className="arr">→</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2: EXPERIENCE */}
+              {step === 2 && (
+                <div className="apply-form">
+                  <h2>Professional Background</h2>
+                  <p className="apply-form-sub">Details of your professional milestones and credentials.</p>
+
+                  <div className={`apply-field ${errors.yearsOfExperience ? 'field-error' : ''}`} style={{maxWidth: 360}}>
+                    <label>Overall years of experience</label>
+                    <input type="number" value={form.yearsOfExperience} onChange={e => updateField('yearsOfExperience', e.target.value)} placeholder="e.g. 12" min="0" max="60" />
+                    {errors.yearsOfExperience && <span className="error-text">{errors.yearsOfExperience}</span>}
+                  </div>
+
+                  <h3 style={{fontSize: 18, fontWeight: 500, marginTop: 32, marginBottom: 16}}>Work Experience</h3>
+                  {errors.workExperience && <span className="error-text" style={{marginBottom: 12}}>{errors.workExperience}</span>}
+                  
+                  {form.workExperience.map((we, idx) => (
+                    <div key={idx} className="repeating-card">
+                      {form.workExperience.length > 1 && (
+                        <span className="card-remove-btn" onClick={() => removeWorkExperience(idx)}>✕ Remove</span>
+                      )}
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Job title</label>
+                          <input type="text" value={we.jobTitle} onChange={e => updateWorkExperience(idx, 'jobTitle', e.target.value)} placeholder="Partner" />
+                        </div>
+                        <div className="apply-field">
+                          <label>Company</label>
+                          <input type="text" value={we.company} onChange={e => updateWorkExperience(idx, 'company', e.target.value)} placeholder="Firm name" />
+                        </div>
+                      </div>
+
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Company website <span className="apply-hint-inline">(Optional)</span></label>
+                          <input type="url" value={we.companyWebsite} onChange={e => updateWorkExperience(idx, 'companyWebsite', e.target.value)} placeholder="https://example.com" />
+                        </div>
+                        <div className="apply-field">
+                          <label>City <span className="apply-hint-inline">(Optional)</span></label>
+                          <input type="text" value={we.city} onChange={e => updateWorkExperience(idx, 'city', e.target.value)} placeholder="e.g. London" />
+                        </div>
+                      </div>
+
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Firm size <span className="apply-hint-inline">(Optional)</span></label>
+                          <select value={we.firmSize} onChange={e => updateWorkExperience(idx, 'firmSize', e.target.value)}>
+                            <option value="">Select size...</option>
+                            <option value="Solo">Solo</option>
+                            <option value="2–10">2–10</option>
+                            <option value="11–50">11–50</option>
+                            <option value="51–200">51–200</option>
+                            <option value="200+">200+</option>
+                          </select>
+                        </div>
+                        <div className="apply-field">
+                          <label style={{display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', marginTop: 32}}>
+                            <input type="checkbox" checked={we.isCurrent} onChange={e => updateWorkExperience(idx, 'isCurrent', e.target.checked)} />
+                            <span>I currently work here</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Start date</label>
+                          <div style={{display: 'flex', gap: 8}}>
+                            <select value={we.startMonth} onChange={e => updateWorkExperience(idx, 'startMonth', e.target.value)}>
+                              {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map(m => (
+                                <option key={m} value={m}>{m}</option>
+                              ))}
+                            </select>
+                            <input type="number" value={we.startYear} onChange={e => updateWorkExperience(idx, 'startYear', e.target.value)} placeholder="YYYY" min="1960" max="2026" />
+                          </div>
+                        </div>
+                        <div className="apply-field">
+                          <label>End date</label>
+                          <div style={{display: 'flex', gap: 8}}>
+                            <select value={we.endMonth} onChange={e => updateWorkExperience(idx, 'endMonth', e.target.value)} disabled={we.isCurrent}>
+                              {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map(m => (
+                                <option key={m} value={m}>{m}</option>
+                              ))}
+                            </select>
+                            <input type="number" value={we.endYear} onChange={e => updateWorkExperience(idx, 'endYear', e.target.value)} placeholder="YYYY" min="1960" max="2026" disabled={we.isCurrent} />
+                          </div>
+                        </div>
+                      </div>
+                      {errors[`workExperience_${idx}`] && <span className="error-text">{errors[`workExperience_${idx}`]}</span>}
+                    </div>
+                  ))}
+
+                  {form.workExperience.length < 5 && (
+                    <div className="add-item-link" onClick={addWorkExperience}>
+                      <span>+ Add another work experience</span>
+                    </div>
+                  )}
+
+                  <h3 style={{fontSize: 18, fontWeight: 500, marginTop: 16, marginBottom: 16}}>Education</h3>
+                  {errors.education && <span className="error-text" style={{marginBottom: 12}}>{errors.education}</span>}
+
+                  {form.education.map((edu, idx) => (
+                    <div key={idx} className="repeating-card">
+                      {form.education.length > 1 && (
+                        <span className="card-remove-btn" onClick={() => removeEducation(idx)}>✕ Remove</span>
+                      )}
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Institution</label>
+                          <input type="text" value={edu.institution} onChange={e => updateEducation(idx, 'institution', e.target.value)} placeholder="University name" />
+                        </div>
+                        <div className="apply-field">
+                          <label>Degree</label>
+                          <input type="text" value={edu.degree} onChange={e => updateEducation(idx, 'degree', e.target.value)} placeholder="LLB, MBA..." />
+                        </div>
+                      </div>
+
+                      <div className="apply-field-row">
+                        <div className="apply-field">
+                          <label>Field of study</label>
+                          <input type="text" value={edu.fieldOfStudy} onChange={e => updateEducation(idx, 'fieldOfStudy', e.target.value)} placeholder="e.g. Corporate Law" />
+                        </div>
+                        <div className="apply-field">
+                          <label>Enrollment years</label>
+                          <div style={{display: 'flex', gap: 8}}>
+                            <input type="number" value={edu.startYear} onChange={e => updateEducation(idx, 'startYear', e.target.value)} placeholder="Start YYYY" min="1960" max="2026" />
+                            <input type="number" value={edu.endYear} onChange={e => updateEducation(idx, 'endYear', e.target.value)} placeholder="End YYYY" min="1960" max="2035" />
+                          </div>
+                        </div>
+                      </div>
+                      {errors[`education_${idx}`] && <span className="error-text">{errors[`education_${idx}`]}</span>}
+                    </div>
+                  ))}
+
+                  {form.education.length < 3 && (
+                    <div className="add-item-link" onClick={addEducation}>
+                      <span>+ Add another education</span>
+                    </div>
+                  )}
+
+                  <div className="apply-actions" style={{marginTop: 36}}>
+                    <button className="btn btn-outline btn-lg" type="button" onClick={handleBack}>← Back</button>
+                    <button className="btn btn-primary btn-lg" type="button" onClick={handleNext}>
+                      Next: Services <span className="arr">→</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 3: SERVICES & RATES */}
+              {step === 3 && (
+                <div className="apply-form">
+                  <h2>Services</h2>
+                  <p className="apply-form-sub">Select your primary practice specialities and typical hourly rates.</p>
+
+                  <div className="apply-field">
+                    <label>Filter by category</label>
+                    <div className="category-pills">
+                      {['All', 'Taxation', 'Legal', 'Finance & Advisory'].map(cat => (
+                        <button key={cat} type="button" className={`pill-btn ${activeCategory === cat ? 'active' : ''}`} onClick={() => setActiveCategory(cat)}>
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={`apply-field ${errors.firstPref ? 'field-error' : ''}`}>
+                    <label>1st Preference Service</label>
+                    <select value={form.firstPref} onChange={e => updateField('firstPref', e.target.value)}>
+                      <option value="">Select service...</option>
+                      {getDeduplicatedOptions(form.firstPref, [form.secondPref, form.thirdPref]).map(s => (
+                        <option key={s.id} value={s.name}>{s.name}</option>
+                      ))}
+                    </select>
+                    {errors.firstPref && <span className="error-text">{errors.firstPref}</span>}
+                  </div>
+
+                  <div className="apply-field">
+                    <label>2nd Preference Service <span className="apply-hint-inline">(Optional)</span></label>
+                    <select value={form.secondPref} onChange={e => updateField('secondPref', e.target.value)}>
+                      <option value="">Select service...</option>
+                      {getDeduplicatedOptions(form.secondPref, [form.firstPref, form.thirdPref]).map(s => (
+                        <option key={s.id} value={s.name}>{s.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="apply-field">
+                    <label>3rd Preference Service <span className="apply-hint-inline">(Optional)</span></label>
+                    <select value={form.thirdPref} onChange={e => updateField('thirdPref', e.target.value)}>
+                      <option value="">Select service...</option>
+                      {getDeduplicatedOptions(form.thirdPref, [form.firstPref, form.secondPref]).map(s => (
+                        <option key={s.id} value={s.name}>{s.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <h3 style={{fontSize: 18, fontWeight: 500, marginTop: 32, marginBottom: 8}}>Consultation Rates</h3>
+                  <p style={{fontSize: 13, color: 'var(--ink-3)', marginBottom: 20}}>Typical rate range per hour consultation (in USD).</p>
+
+                  <div className="apply-field-row" style={{maxWidth: 400}}>
+                    <div className={`apply-field ${errors.minFee ? 'field-error' : ''}`}>
+                      <label>Min (USD)</label>
+                      <input type="number" value={form.minFee} onChange={e => updateField('minFee', e.target.value)} placeholder="e.g. 500" min="0" />
+                      {errors.minFee && <span className="error-text">{errors.minFee}</span>}
+                    </div>
+                    <div className={`apply-field ${errors.maxFee ? 'field-error' : ''}`}>
+                      <label>Max (USD)</label>
+                      <input type="number" value={form.maxFee} onChange={e => updateField('maxFee', e.target.value)} placeholder="e.g. 2000" min="0" />
+                      {errors.maxFee && <span className="error-text">{errors.maxFee}</span>}
+                    </div>
+                  </div>
+
+                  <div className="apply-actions" style={{marginTop: 36}}>
+                    <button className="btn btn-outline btn-lg" type="button" onClick={handleBack}>← Back</button>
+                    <button className="btn btn-primary btn-lg" type="button" onClick={handleNext}>
+                      Next: Review <span className="arr">→</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4: REVIEW & DECLARATION */}
+              {step === 4 && (
+                <div className="apply-form">
+                  <h2>Review your application.</h2>
+                  <p className="apply-form-sub">Review details from previous steps and verify the declarations below.</p>
+
+                  <div className="apply-review" style={{padding: '24px'}}>
+                    
+                    <div className="apply-review-section">
+                      <div className="review-section-title">IDENTITY</div>
+                      <div className="apply-review-row" style={{display: 'flex', gap: 16, borderBottom: 'none', padding: '0 0 16px 0'}}>
+                        <div className="avatar" style={{width: 56, height: 56}}>
+                          <img src={form.profilePhoto || ''} alt="" className="loaded" />
+                        </div>
+                        <div>
+                          <b style={{fontSize: 16}}>{form.firstName} {form.lastName}</b>
+                          <div style={{fontSize: 13, color: 'var(--ink-3)', marginTop: 4}}>{form.contactEmail}</div>
+                        </div>
+                      </div>
+                      <div className="apply-review-row">
+                        <span className="mono">LOCATION</span>
+                        <b>{[form.city, form.state, form.country].filter(Boolean).join(', ')}</b>
+                      </div>
+                      <div className="apply-review-row">
+                        <span className="mono">PHONE</span>
+                        <b>{form.phone ? `${form.phoneExtension} ${form.phone}` : '—'}</b>
+                      </div>
+                      <div className="apply-review-row" style={{alignItems: 'flex-start'}}>
+                        <span className="mono">BIO</span>
+                        <b style={{fontWeight: 400, fontSize: 13, lineHeight: 1.5}}>{form.bio}</b>
+                      </div>
+                      <div className="apply-review-row">
+                        <span className="mono">LINKEDIN</span>
+                        <b><a href={form.linkedinUrl} target="_blank" rel="noreferrer" style={{color: 'var(--accent)', textDecoration: 'underline'}}>{form.linkedinUrl}</a></b>
+                      </div>
+                    </div>
+
+                    <div className="apply-review-section">
+                      <div className="review-section-title">PRACTICE & EDUCATION</div>
+                      <div className="apply-review-row">
+                        <span className="mono">EXPERIENCE</span>
+                        <b>{form.yearsOfExperience} Years</b>
+                      </div>
+                      
+                      {form.workExperience.map((we, i) => (
+                        <div key={i} className="apply-review-row" style={{gridTemplateColumns: '140px 1fr'}}>
+                          <span className="mono">{i === 0 ? 'WORK HISTORY' : ''}</span>
+                          <div>
+                            <b>{we.jobTitle} at {we.company}</b>
+                            <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 2}}>
+                              {we.city ? `${we.city} · ` : ''} {we.firmSize ? `Firm: ${we.firmSize} · ` : ''} {we.startMonth} {we.startYear} – {we.isCurrent ? 'Present' : `${we.endMonth} ${we.endYear}`}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {form.education.map((edu, i) => (
+                        <div key={i} className="apply-review-row" style={{gridTemplateColumns: '140px 1fr'}}>
+                          <span className="mono">{i === 0 ? 'EDUCATION' : ''}</span>
+                          <div>
+                            <b>{edu.degree} in {edu.fieldOfStudy}</b>
+                            <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 2}}>
+                              {edu.institution} ({edu.startYear} – {edu.endYear})
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="apply-review-section" style={{marginBottom: 0}}>
+                      <div className="review-section-title">SERVICES & RATES</div>
+                      <div className="apply-review-row">
+                        <span className="mono">SERVICES</span>
+                        <b>{[form.firstPref, form.secondPref, form.thirdPref].filter(Boolean).join(' · ')}</b>
+                      </div>
+                      <div className="apply-review-row">
+                        <span className="mono">HOURLY RATE</span>
+                        <b>${form.minFee} – ${form.maxFee} USD / Hour</b>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div className={`apply-check ${errors.consentTerms ? 'field-error' : ''}`} style={{marginBottom: 12}}>
+                    <input type="checkbox" checked={form.consentTerms} onChange={e => updateField('consentTerms', e.target.checked)} id="consentTerms" />
+                    <label htmlFor="consentTerms" style={{cursor: 'pointer'}}>
+                      I agree to the <a href="/terms" target="_blank" style={{color: 'var(--accent)', textDecoration: 'underline'}}>Terms of Service (v1.0)</a>.
+                      {errors.consentTerms && <span className="error-text" style={{marginTop: 6}}>{errors.consentTerms}</span>}
+                    </label>
+                  </div>
+
+                  <div className={`apply-check ${errors.consentPrivacy ? 'field-error' : ''}`} style={{marginBottom: 12}}>
+                    <input type="checkbox" checked={form.consentPrivacy} onChange={e => updateField('consentPrivacy', e.target.checked)} id="consentPrivacy" />
+                    <label htmlFor="consentPrivacy" style={{cursor: 'pointer'}}>
+                      I agree to the <a href="/privacy" target="_blank" style={{color: 'var(--accent)', textDecoration: 'underline'}}>Privacy Policy (v1.0)</a>.
+                      {errors.consentPrivacy && <span className="error-text" style={{marginTop: 6}}>{errors.consentPrivacy}</span>}
+                    </label>
+                  </div>
+
+                  <div className={`apply-check ${errors.consentVerify ? 'field-error' : ''}`} style={{marginBottom: 24}}>
+                    <input type="checkbox" checked={form.consentVerify} onChange={e => updateField('consentVerify', e.target.checked)} id="consentVerify" />
+                    <label htmlFor="consentVerify" style={{cursor: 'pointer'}}>
+                      I consent to Expertly verifying my professional credentials and background as part of the membership review process.
+                      {errors.consentVerify && <span className="error-text" style={{marginTop: 6}}>{errors.consentVerify}</span>}
+                    </label>
+                  </div>
+
+                  <div className="apply-actions">
+                    <button className="btn btn-outline btn-lg" type="button" onClick={handleBack}>← Back</button>
+                    <button className="btn btn-primary btn-lg" type="submit">
+                      Submit application <span className="arr">→</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </form>
+          </section>
+        </div>
+      </main>
+
+      {/* LINKEDIN IMPORT MODAL */}
+      {showImportModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span className="modal-close" onClick={() => setShowImportModal(false)}>×</span>
+            <h3 style={{fontSize: 20, fontWeight: 500, marginBottom: 12}}>Import from LinkedIn</h3>
+            <p style={{fontSize: 14, color: 'var(--ink-3)', marginBottom: 24}}>
+              Paste your public LinkedIn profile URL below. The system will retrieve your public details and fill any empty fields.
+            </p>
+            <div className="apply-field" style={{marginBottom: 24}}>
+              <label>LinkedIn profile URL</label>
+              <input type="url" value={importUrl} onChange={e => setImportUrl(e.target.value)} placeholder="https://linkedin.com/in/username" style={{width: '100%'}} />
+            </div>
+            <div style={{display: 'flex', justifyContent: 'flex-end', gap: 12}}>
+              <button className="btn btn-outline" onClick={() => setShowImportModal(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleImportFromLinkedIn}>Import details</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <TweaksPanel />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<OnboardingApp />);
+</script>
+</body>
+</html>
