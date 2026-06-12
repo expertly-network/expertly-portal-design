@@ -45,13 +45,13 @@ function EventsPage() {
               <div className="ev-month-group" key={month}>
                 <div className="ev-month-header">
                   <h2>{ {APR:'April', MAY:'May', JUN:'June'}[month] || month } 2026</h2>
-                  <span className="mono">{items.length} EVENT{items.length>1?'S':''}</span>
+                  <span className="mono">{items.length} Event{items.length>1?'s':''}</span>
                 </div>
                 <div className="ev-list">
                   {items.map(e => (
                     <a href="#" key={e.id} className="ev-row" id={e.id}>
                       <div className="ev-row-date">
-                        <div className="mono">STARTS</div>
+                        <div className="mono">Starts</div>
                         <b>{e.start}{e.end ? ` → ${e.end}` : ''}</b>
                       </div>
                       <div className="ev-row-title">
@@ -63,7 +63,7 @@ function EventsPage() {
                         <p>{e.desc}</p>
                       </div>
                       <div className="ev-row-loc">
-                        <span className="mono">LOCATION</span>
+                        <span className="mono">Location</span>
                         <span>{e.city}<br/>{e.country}</span>
                       </div>
                       <div className="ev-row-actions">

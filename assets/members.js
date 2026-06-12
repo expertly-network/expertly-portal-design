@@ -42,16 +42,16 @@ window.EXPERTLY_EVENTS = [
 ];
 
 window.EXPERTLY_PRACTICE_AREAS = [
-  { name: 'M&A Tax', count: 47, icon: 'M' },
-  { name: 'Transfer Pricing', count: 38, icon: 'T' },
-  { name: 'Corporate Law', count: 62, icon: 'C' },
-  { name: 'Capital Markets', count: 29, icon: 'K' },
-  { name: 'IP & Technology', count: 34, icon: 'I' },
-  { name: 'Banking & Finance', count: 41, icon: 'B' },
-  { name: 'Dispute Resolution', count: 33, icon: 'D' },
-  { name: 'Private Equity', count: 26, icon: 'P' },
-  { name: 'Antitrust', count: 18, icon: 'A' },
-  { name: 'Restructuring', count: 22, icon: 'R' },
-  { name: 'Indirect Tax', count: 31, icon: 'X' },
-  { name: 'Compliance', count: 44, icon: 'G' },
+  { name: 'M&A Tax', count: 47, icon: 'M', h: 158, img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Transfer Pricing', count: 38, icon: 'T', h: 200, img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Corporate Law', count: 62, icon: 'C', h: 28, img: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Capital Markets', count: 29, icon: 'K', h: 262, img: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=200&q=70' },
+  { name: 'IP & Technology', count: 34, icon: 'I', h: 178, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Banking & Finance', count: 41, icon: 'B', h: 224, img: 'https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Dispute Resolution', count: 33, icon: 'D', h: 12, img: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Private Equity', count: 26, icon: 'P', h: 242, img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Antitrust', count: 18, icon: 'A', h: 340, img: 'https://images.unsplash.com/photo-1593115057322-e94b77572f20?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Restructuring', count: 22, icon: 'R', h: 188, img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Indirect Tax', count: 31, icon: 'X', h: 142, img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=200&q=70' },
+  { name: 'Compliance', count: 44, icon: 'G', h: 210, img: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=200&q=70' },
 ];

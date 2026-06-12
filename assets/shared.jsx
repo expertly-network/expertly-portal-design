@@ -2,21 +2,28 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
 // Logo
-function Logo({ size = 18 }) {
+function Logo({ size = 23 }) {
   return (
     <span className="nav-logo" style={{ fontSize: size }}>
-      <span className="dot" />
-      Expertly
-    </span>
-  );
+      Expertly<span className="dot" />
+    </span>);
+
 }
 
 function Nav({ active }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const p = Math.min(1, Math.max(0, window.scrollY / 80));
+      document.documentElement.style.setProperty('--nav-p', p.toFixed(3));
+      setScrolled(window.scrollY > 8);
+    };
+    const onScroll = () => {if (!raf) raf = requestAnimationFrame(update);};
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {window.removeEventListener('scroll', onScroll);if (raf) cancelAnimationFrame(raf);};
   }, []);
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
@@ -34,8 +41,8 @@ function Nav({ active }) {
           <a href="apply.html" className="btn btn-primary">Apply <span className="arr">→</span></a>
         </div>
       </div>
-    </nav>
-  );
+    </nav>);
+
 }
 
 function Footer() {
@@ -44,11 +51,8 @@ function Footer() {
       <div className="container-wide">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="wordmark"><span style={{width:8,height:8,background:'var(--accent)',borderRadius:2,display:'inline-block'}}></span> Expertly</div>
+            <div className="wordmark">Expertly<span style={{ width: 9, height: 9, background: 'var(--accent)', borderRadius: '50%', display: 'inline-block', marginLeft: 2 }}></span></div>
             <p>The curated professional network for verified finance & legal experts worldwide.</p>
-            <div style={{marginTop:24,display:'flex',gap:8}}>
-              <span className="chip chip-dot" style={{color:'var(--ok)'}}>System operational</span>
-            </div>
           </div>
           <div>
             <h4>Platform</h4>
@@ -79,12 +83,12 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 EXPERTLY · ALL RIGHTS RESERVED</span>
-          <span>VERIFIED · GLOBAL · INDEPENDENT</span>
+          <span>© 2026 Expertly · All Rights Reserved</span>
+          <span>Verified · Global · Independent</span>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 }
 
 // Checkmark
@@ -92,8 +96,8 @@ function CheckIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
       <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+    </svg>);
+
 }
 
 // Avatar
@@ -101,9 +105,9 @@ function Avatar({ member, size = 40 }) {
   return (
     <div className="avatar" style={{ width: size, height: size, fontSize: size * 0.35 }} data-initials={member.initials}>
       <span className="avatar-initials" aria-hidden="true">{member.initials}</span>
-      {member.img ? <img src={member.img} alt="" loading="lazy" onLoad={e => e.target.classList.add('loaded')} /> : null}
-    </div>
-  );
+      {member.img ? <img src={member.img} alt="" loading="lazy" onLoad={(e) => e.target.classList.add('loaded')} /> : null}
+    </div>);
+
 }
 
 // Reveal on scroll — handled by plain-JS assets/reveal.js (resilient to React's late render).
@@ -124,8 +128,8 @@ function Counter({ value, suffix = '', duration = 1600 }) {
         const p = Math.min(1, (t - start) / duration);
         const eased = 1 - Math.pow(1 - p, 3);
         setN(Math.floor(value * eased));
-        if (p < 1) requestAnimationFrame(tick);
-        else setN(value);
+        if (p < 1) requestAnimationFrame(tick);else
+        setN(value);
       };
       requestAnimationFrame(tick);
     };
@@ -139,11 +143,11 @@ function Counter({ value, suffix = '', duration = 1600 }) {
       }
     };
     let ticking = false;
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; check(); }); } };
+    const onScroll = () => {if (!ticking) {ticking = true;requestAnimationFrame(() => {ticking = false;check();});}};
     check();
     const t = setTimeout(check, 300);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => { clearTimeout(t); window.removeEventListener('scroll', onScroll); };
+    return () => {clearTimeout(t);window.removeEventListener('scroll', onScroll);};
   }, [value, duration]);
   return <span ref={ref}>{n}{suffix}</span>;
 }
@@ -153,7 +157,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "editorial",
   "heroStyle": "split",
   "showGrid": true
-}/*EDITMODE-END*/;
+} /*EDITMODE-END*/;
 
 function TweaksPanel() {
   const [available, setAvailable] = useState(false);
@@ -174,7 +178,7 @@ function TweaksPanel() {
     const onMsg = (e) => {
       if (!e.data || typeof e.data !== 'object') return;
       if (e.data.type === '__activate_edit_mode') setAvailable(true);
-      if (e.data.type === '__deactivate_edit_mode') { setAvailable(false); setOpen(false); }
+      if (e.data.type === '__deactivate_edit_mode') {setAvailable(false);setOpen(false);}
     };
     window.addEventListener('message', onMsg);
     window.parent.postMessage({ type: '__edit_mode_available' }, '*');
@@ -191,50 +195,50 @@ function TweaksPanel() {
 
   return (
     <>
-      {!open && (
-        <button className="tweaks-fab" style={{display:'flex'}} onClick={() => setOpen(true)}>Tweaks</button>
-      )}
+      {!open &&
+      <button className="tweaks-fab" style={{ display: 'flex' }} onClick={() => setOpen(true)}>Tweaks</button>
+      }
       <div className={`tweaks-panel ${open ? 'open' : ''}`}>
         <h3>Tweaks <button onClick={() => setOpen(false)}>×</button></h3>
         <div className="tweak-group">
           <label>Aesthetic</label>
           <div className="radio-row">
             {[
-              {k:'editorial', name:'Neon Mint', c:'#00C99E'},
-              {k:'navy', name:'Neon Lilac', c:'#8A6BFF'},
-              {k:'sage', name:'Neon Sky', c:'#34A8FF'},
-            ].map(o => (
-              <button key={o.k} className={state.theme===o.k?'active':''} onClick={()=>update({theme:o.k})}>
-                <span className="swatch" style={{background:o.c}}/>{o.name}
+            { k: 'editorial', name: 'Neon Mint', c: '#00C99E' },
+            { k: 'navy', name: 'Neon Lilac', c: '#8A6BFF' },
+            { k: 'sage', name: 'Neon Sky', c: '#34A8FF' }].
+            map((o) =>
+            <button key={o.k} className={state.theme === o.k ? 'active' : ''} onClick={() => update({ theme: o.k })}>
+                <span className="swatch" style={{ background: o.c }} />{o.name}
               </button>
-            ))}
+            )}
           </div>
         </div>
         <div className="tweak-group">
           <label>Hero style</label>
           <div className="radio-row">
             {[
-              {k:'split', name:'Split · members preview'},
-              {k:'mosaic', name:'Mosaic · full-bleed grid'},
-              {k:'editorial', name:'Editorial · masthead'},
-            ].map(o => (
-              <button key={o.k} className={state.heroStyle===o.k?'active':''} onClick={()=>update({heroStyle:o.k})}>
+            { k: 'split', name: 'Split · members preview' },
+            { k: 'mosaic', name: 'Mosaic · full-bleed grid' },
+            { k: 'editorial', name: 'Editorial · masthead' }].
+            map((o) =>
+            <button key={o.k} className={state.heroStyle === o.k ? 'active' : ''} onClick={() => update({ heroStyle: o.k })}>
                 {o.name}
               </button>
-            ))}
+            )}
           </div>
         </div>
         <div className="tweak-group">
           <label>Background grid</label>
           <div className="radio-row">
-            <button className={state.showGrid?'active':''} onClick={()=>update({showGrid:!state.showGrid})}>
+            <button className={state.showGrid ? 'active' : ''} onClick={() => update({ showGrid: !state.showGrid })}>
               {state.showGrid ? '◉ On' : '○ Off'}
             </button>
           </div>
         </div>
       </div>
-    </>
-  );
+    </>);
+
 }
 
 Object.assign(window, { Logo, Nav, Footer, Avatar, CheckIcon, useReveal, Counter, TweaksPanel });

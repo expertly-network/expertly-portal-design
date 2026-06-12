@@ -12,8 +12,7 @@ function LoginPage() {
         <div className="auth-grid">
           <div className="auth-left">
             <a href="index.html" className="auth-logo">
-              <span style={{width:10,height:10,background:'var(--accent)',borderRadius:2,display:'inline-block'}}></span>
-              Expertly
+              Expertly<span style={{width:9,height:9,background:'var(--accent)',borderRadius:'50%',display:'inline-block'}}></span>
             </a>
 
             <div className="auth-tabs">
@@ -33,7 +32,7 @@ function LoginPage() {
 
               {mode==='signup' && (
                 <div className="auth-role">
-                  <label className="mono">I AM A</label>
+                  <label className="mono">I Am A</label>
                   <div className="auth-role-grid">
                     <button className={role==='client'?'active':''} onClick={()=>setRole('client')}>
                       <span className="mono">01</span>
@@ -94,7 +93,7 @@ function LoginPage() {
 
               {mode==='signup' && role==='member' && (
                 <div className="auth-note">
-                  <span className="mono">NOTE</span>
+                  <span className="mono">Note</span>
                   A free account lets you browse and hire. To list your profile as a verified expert, you must also <a href="apply.html">apply for membership →</a>
                 </div>
               )}
@@ -105,7 +104,7 @@ function LoginPage() {
             <div className="auth-right-inner">
               <span className="eyebrow" style={{color:'rgba(255,255,255,0.6)'}}>Trusted by professionals in</span>
               <div className="auth-logos">
-                {['LONDON','NEW YORK','SINGAPORE','DUBAI','CHENNAI','FRANKFURT','TOKYO','PARIS','LAGOS','MADRID','MILAN','MUMBAI'].map(c=>(
+                {['London','New York','Singapore','Dubai','Chennai','Frankfurt','Tokyo','Paris','Lagos','Madrid','Milan','Mumbai'].map(c=>(
                   <div key={c} className="mono">{c}</div>
                 ))}
               </div>
@@ -115,7 +114,7 @@ function LoginPage() {
                   <Avatar member={window.EXPERTLY_MEMBERS.find(m=>m.id==='marcus-chen')} size={40}/>
                   <div>
                     <div style={{fontWeight:500, color:'#fff'}}>Marcus Chen</div>
-                    <div className="mono" style={{fontSize:10, color:'rgba(255,255,255,0.55)'}}>SENIOR TAX ADVISOR · SINGAPORE</div>
+                    <div className="mono" style={{fontSize:10, color:'rgba(255,255,255,0.55)'}}>Senior Tax Advisor · Singapore</div>
                   </div>
                 </figcaption>
               </div>
@@ -206,7 +205,7 @@ function PricingPage() {
             <div className="pricing-grid">
               {plans.map(p => (
                 <div key={p.name} className={`pricing-card ${p.featured?'featured':''}`}>
-                  {p.featured && <div className="pricing-ribbon mono">MOST POPULAR</div>}
+                  {p.featured && <div className="pricing-ribbon mono">Most Popular</div>}
                   <div className="pricing-tag mono">{p.tag}</div>
                   <h3>{p.name}</h3>
                   <div className="pricing-amount">
@@ -247,11 +246,11 @@ function PricingPage() {
                 <div></div>
                 <div>
                   <b>Budding</b>
-                  <span className="mono">5–12 YRS · ${billing==='annual'?499:49}{plans[0].unit}</span>
+                  <span className="mono">5–12 Yrs · ${billing==='annual'?499:49}{plans[0].unit}</span>
                 </div>
                 <div className="featured">
                   <b>Seasoned</b>
-                  <span className="mono">12+ YRS · ${billing==='annual'?699:69}{plans[1].unit}</span>
+                  <span className="mono">12+ Yrs · ${billing==='annual'?699:69}{plans[1].unit}</span>
                 </div>
               </div>
               {compare.map((row, i) => (
@@ -301,28 +300,28 @@ function HowItWorksPage() {
   const steps = [
     {
       n: '01',
-      label: 'APPLY',
+      label: 'Apply',
       title: 'Submit your application.',
       desc: "Tell us about your practice, credentials, and specialisations. We review every single application — no bots, no auto-filters. Takes about 10 minutes.",
       bullets: ['Basic credentials & qualifications','Practice areas & jurisdictions','Two peer references (existing members or trusted counsel)'],
     },
     {
       n: '02',
-      label: 'VERIFY',
+      label: 'Verify',
       title: 'Get verified.',
       desc: "Our team manually reviews every credential: bar admissions, professional registrations, firm history, and published work. Peer references are contacted personally.",
       bullets: ['Credentials cross-checked with issuing bodies','Peer references contacted directly','Review of public work & track record','Typical turnaround: 5 business days'],
     },
     {
       n: '03',
-      label: 'ONBOARD',
+      label: 'Onboard',
       title: 'Build your presence.',
       desc: "Once approved, you'll get access to publish your profile, set rates, list availability, and start publishing articles. Our onboarding team is on call.",
       bullets: ['Custom profile page on expertly.network','Set rates, minimums & availability','Publish articles to establish authority','Access to member events & Slack community'],
     },
     {
       n: '04',
-      label: 'MATCH',
+      label: 'Match',
       title: 'Get discovered.',
       desc: "Clients find you via AI-powered search, direct browsing, or article discovery. Every enquiry routes directly to you — we never sit in the middle.",
       bullets: ['AI search surfaces your expertise','Direct consultation requests in your inbox','You set terms, you control the conversation','Zero commission on any engagement'],
@@ -378,7 +377,7 @@ function HowItWorksPage() {
             </div>
             <div className="compare-vs">
               <div className="compare-col compare-col-bad">
-                <div className="mono">TRADITIONAL LEGAL MARKETPLACE</div>
+                <div className="mono">Traditional Legal Marketplace</div>
                 <ul>
                   <li>✕ Race-to-the-bottom pricing wars</li>
                   <li>✕ 15–30% commission on every engagement</li>
@@ -389,10 +388,10 @@ function HowItWorksPage() {
                 </ul>
               </div>
               <div className="compare-vs-divider">
-                <span className="mono">VS</span>
+                <span className="mono">vs</span>
               </div>
               <div className="compare-col compare-col-good">
-                <div className="mono">EXPERTLY MEMBERSHIP</div>
+                <div className="mono">Expertly Membership</div>
                 <ul>
                   <li><CheckIcon /> Transparent, self-set rates</li>
                   <li><CheckIcon /> Zero commission — ever</li>
@@ -453,8 +452,7 @@ function ApplyPage() {
         <div className="apply-grid">
           <aside className="apply-aside">
             <a href="index.html" className="auth-logo">
-              <span style={{width:10,height:10,background:'var(--accent)',borderRadius:2,display:'inline-block'}}></span>
-              Expertly
+              Expertly<span style={{width:9,height:9,background:'var(--accent)',borderRadius:'50%',display:'inline-block'}}></span>
             </a>
             <span className="eyebrow" style={{marginTop:48}}>Membership application</span>
             <h1 className="headline" style={{marginTop:16, fontSize:'clamp(32px,3vw,44px)'}}>
@@ -479,7 +477,7 @@ function ApplyPage() {
             </div>
 
             <div className="apply-aside-foot">
-              <div className="verified" style={{color:'var(--ok)'}}><CheckIcon/> YOUR DATA IS PRIVATE</div>
+              <div className="verified" style={{color:'var(--ok)'}}><CheckIcon/> Your Data Is Private</div>
               <p style={{fontSize:13,color:'var(--ink-3)',marginTop:12,lineHeight:1.5}}>
                 We never share your application with third parties. References are contacted personally only after you submit.
               </p>
@@ -489,7 +487,7 @@ function ApplyPage() {
           <section className="apply-form-wrap">
             <div className="apply-progress">
               <div className="apply-progress-bar" style={{width:`${pct}%`}}/>
-              <div className="apply-progress-label mono">STEP {step} OF 4</div>
+              <div className="apply-progress-label mono">Step {step} of 4</div>
             </div>
 
             {step===1 && (
@@ -602,7 +600,7 @@ function ApplyPage() {
                 <p className="apply-form-sub">Existing members or well-known professionals who can vouch for your work. We'll contact them personally — never publicly.</p>
 
                 <div className="apply-ref">
-                  <div className="apply-ref-label mono">REFERENCE 01</div>
+                  <div className="apply-ref-label mono">Reference 01</div>
                   <div className="apply-field-row">
                     <div className="apply-field">
                       <label>Full name</label>
@@ -615,7 +613,7 @@ function ApplyPage() {
                   </div>
                 </div>
                 <div className="apply-ref">
-                  <div className="apply-ref-label mono">REFERENCE 02</div>
+                  <div className="apply-ref-label mono">Reference 02</div>
                   <div className="apply-field-row">
                     <div className="apply-field">
                       <label>Full name</label>
@@ -629,7 +627,7 @@ function ApplyPage() {
                 </div>
 
                 <div className="apply-note">
-                  <span className="mono">WHY REFERENCES?</span>
+                  <span className="mono">Why References?</span>
                   <p>We verify every member with two independent referrals before granting membership. This is how we keep the network's signal-to-noise high — and why every member on Expertly is actually worth hiring.</p>
                 </div>
 
@@ -647,35 +645,35 @@ function ApplyPage() {
 
                 <div className="apply-review">
                   <div className="apply-review-row">
-                    <span className="mono">NAME</span>
+                    <span className="mono">Name</span>
                     <b>{form.firstName || '—'} {form.lastName || ''}</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">EMAIL</span>
+                    <span className="mono">Email</span>
                     <b>{form.email || '—'}</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">COUNTRY</span>
+                    <span className="mono">Country</span>
                     <b>{form.country || '—'}</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">TIER</span>
+                    <span className="mono">Tier</span>
                     <b>{form.tier==='budding' ? 'Budding Professional · $499/yr' : 'Seasoned Professional · $699/yr'}</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">PRACTICE</span>
+                    <span className="mono">Practice</span>
                     <b>{form.practice || '—'} · {form.years || '—'} yrs</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">FIRM</span>
+                    <span className="mono">Firm</span>
                     <b>{form.firm || '—'}</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">RATE</span>
+                    <span className="mono">Rate</span>
                     <b>${form.rate || '—'}/hr</b>
                   </div>
                   <div className="apply-review-row">
-                    <span className="mono">REFERENCES</span>
+                    <span className="mono">References</span>
                     <b>{[form.ref1Name, form.ref2Name].filter(Boolean).join(' · ') || '—'}</b>
                   </div>
                 </div>

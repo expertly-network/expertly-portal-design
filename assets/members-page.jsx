@@ -66,19 +66,19 @@ function MembersPage() {
             <div className="dir-toolbar">
               <div className="dir-filters">
                 <div className="dir-filter-group">
-                  <label className="mono">PRACTICE</label>
+                  <label className="mono">Practice</label>
                   <select value={practice} onChange={e=>setPractice(e.target.value)}>
                     {practices.map(p => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </div>
                 <div className="dir-filter-group">
-                  <label className="mono">REGION</label>
+                  <label className="mono">Region</label>
                   <select value={region} onChange={e=>setRegion(e.target.value)}>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
                 <div className="dir-filter-group">
-                  <label className="mono">SORT BY</label>
+                  <label className="mono">Sort by</label>
                   <select value={sort} onChange={e=>setSort(e.target.value)}>
                     <option value="featured">Featured</option>
                     <option value="tenure">Most experienced</option>
@@ -96,7 +96,7 @@ function MembersPage() {
           <div className="container-wide">
             {filtered.length === 0 ? (
               <div className="dir-empty">
-                <div className="mono">NO RESULTS</div>
+                <div className="mono">No Results</div>
                 <h3>No members match those filters.</h3>
                 <button className="btn btn-outline" onClick={()=>{setQuery('');setPractice('All');setRegion('All');}}>Reset filters</button>
               </div>
@@ -108,7 +108,7 @@ function MembersPage() {
                       <Avatar member={m} size={72} />
                       <div className="dir-card-head-meta">
                         <div className="dir-card-rate mono">{m.rate}</div>
-                        {m.verified && <span className="verified"><CheckIcon /> VERIFIED</span>}
+                        {m.verified && <span className="verified"><CheckIcon /> Verified</span>}
                       </div>
                     </div>
                     <h3 className="dir-card-name">{m.name}</h3>
@@ -117,8 +117,8 @@ function MembersPage() {
                       <span className="chip">{m.practice}</span>
                     </div>
                     <div className="dir-card-grid">
-                      <div><span className="mono">LOCATION</span>{m.location}</div>
-                      <div><span className="mono">TENURE</span>{m.tenure}</div>
+                      <div><span className="mono">Location</span>{m.location}</div>
+                      <div><span className="mono">Tenure</span>{m.tenure}</div>
                     </div>
                     <div className="dir-card-actions">
                       <button className="btn btn-primary" style={{flex:1}}>Request consultation</button>

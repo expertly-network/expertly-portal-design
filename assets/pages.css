@@ -19,7 +19,7 @@
   flex: 1; background: transparent; border: none; outline: none;
   font-size: 15px; font-family: inherit; color: var(--ink); padding: 0 4px;
 }
-.dir-toolbar-wrap { position: sticky; top: 64px; z-index: 40; background: color-mix(in oklab, var(--bg) 82%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); margin-top: 32px; }
+.dir-toolbar-wrap { position: sticky; top: 84px; z-index: 40; background: color-mix(in oklab, var(--bg) 82%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); margin-top: 32px; }
 .dir-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 24px; flex-wrap: wrap; }
 .dir-filters { display: flex; gap: 24px; }
 .dir-filter-group { display: flex; flex-direction: column; gap: 4px; }
@@ -113,7 +113,7 @@
 .ev-hero { padding: 56px 0 48px; }
 .ev-hero-stats { display: flex; gap: 48px; margin-top: 40px; padding: 28px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .ev-hero-stats > div b { display: block; font-size: 32px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
-.ev-hero-stats > div span { font-size: 11px; color: var(--ink-3); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+.ev-hero-stats > div span { font-size: 11px; color: var(--ink-3); font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.1em; text-transform: capitalize; }
 .ev-filter-tabs { display: flex; gap: 4px; margin: 48px 0 24px; flex-wrap: wrap; }
 .ev-filter-tabs button {
   padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500;

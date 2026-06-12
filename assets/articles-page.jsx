@@ -42,14 +42,14 @@ function ArticlesPage() {
                     <span className="chip chip-ink" style={{position:'absolute',top:20,left:20}}>{featured.category}</span>
                     <img className="article-photo" src={featured.image} alt={featured.title} loading="lazy" />
                   </div>
-                  <div className="mono" style={{fontSize:11,color:'var(--ink-3)',letterSpacing:'0.1em',marginTop:20}}>FEATURED · {featured.date} · {featured.readTime} READ</div>
+                  <div className="mono" style={{fontSize:11,color:'var(--ink-3)',letterSpacing:'0.1em',marginTop:20}}>Featured · {featured.date} · {featured.readTime} Read</div>
                   <h2>{featured.title}</h2>
                   <p>{featured.excerpt}</p>
                   <div className="article-author">
                     <Avatar member={authorOf(featured.author)} size={40}/>
                     <div>
                       <div style={{fontSize:14, fontWeight:500}}>{authorOf(featured.author)?.name}</div>
-                      <div className="mono" style={{fontSize:10,color:'var(--ink-3)'}}>{authorOf(featured.author)?.title.toUpperCase()}</div>
+                      <div className="mono" style={{fontSize:10,color:'var(--ink-3)'}}>{authorOf(featured.author)?.title}</div>
                     </div>
                   </div>
                 </a>
