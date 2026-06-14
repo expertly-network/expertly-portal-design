@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+<style>
+  /* Premium layout overrides to reduce whitespace & enhance color contrast */
+  .apply-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    min-height: calc(100vh - 64px);
+    background: var(--bg-alt);
+  }
+  .apply-aside {
+    background: #FFFFFF;
+    border-right: 1px solid var(--line-2);
+    padding: 56px 40px;
+    display: flex;
+    flex-direction: column;
+  }
+  .apply-form-wrap {
+    padding: 56px 60px;
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--bg-alt);
+  }
+  .apply-form {
+    background: #FFFFFF;
+    border: 1px solid var(--line-2);
+    border-radius: 16px;
+    padding: 48px;
+    box-shadow: 0 8px 36px rgba(11, 11, 12, 0.02);
+    margin-bottom: 40px;
+  }
+  .apply-form h2 {
+    font-family: 'Geist', sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 2.8vw, 36px);
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .apply-form-sub {
+    font-size: 15px;
+    font-weight: 450;
+    color: var(--ink-3);
+    margin: 6px 0 32px 0;
+  }
+  .apply-field label {
+    display: block;
+    font-family: 'Geist', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin-bottom: 8px;
+  }
+  .apply-field input,
+  .apply-field select,
+  .apply-field textarea {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    background: #FAFBFB;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 100%;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .apply-field input:hover,
+  .apply-field select:hover,
+  .apply-field textarea:hover {
+    border-color: var(--ink-4);
+  }
+  .apply-field input:focus,
+  .apply-field select:focus,
+  .apply-field textarea:focus {
+    background: #FFFFFF;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 15%, transparent);
+    outline: none;
+  }
+  .apply-steps .apply-step {
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    transition: all 0.15s ease;
+  }
+  .apply-steps .apply-step.active {
+    background: var(--bg-alt);
+    border-left-color: var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .profile-photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .photo-preview-box {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    border: 1px dashed var(--line-2);
+    background: #FAFBFB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: var(--ink-4);
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .photo-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .upload-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .btn-upload input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    font-size: 100px;
+    cursor: pointer;
+  }
+  .composite-phone {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px;
+  }
+  .char-counter {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+  .char-counter.limit-near {
+    color: #D97706;
+    font-weight: 600;
+  }
+  .repeating-card {
+    border: 1px solid var(--line-2);
+    background: #FAFBFB;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .repeating-card:hover {
+    border-color: var(--line-2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);
+  }
+  .card-remove-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.15s;
+  }
+  .card-remove-btn:hover {
+    color: #DC2626;
+  }
+  .add-item-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    margin-bottom: 32px;
+    transition: color 0.15s;
+  }
+  .add-item-link:hover {
+    color: var(--accent-2);
+  }
+  .category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .pill-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 100px;
+    border: 1px solid var(--line-2);
+    background: #FFFFFF;
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pill-btn:hover {
+    border-color: var(--ink-4);
+    color: var(--ink);
+  }
+  .pill-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 100px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 3000;
+  }
+  .apply-review-row b {
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+
+<!-- Dynamic Navigation -->
+<nav class="nav" id="onboarding-nav">
+  <div class="nav-inner">
+    <a href="index.html">
+      <span class="nav-logo" style="font-size: 23px;">Expertly<span class="dot"></span></span>
+    </a>
+    <div class="nav-links">
+      <a href="members.html" class="">Members</a>
+      <a href="articles.html" class="">Articles</a>
+      <a href="events.html" class="">Events</a>
+      <a href="how-it-works.html" class="">How it works</a>
+      <a href="pricing.html" class="">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- Toast alert container -->
+<div class="toast" id="onboarding-toast" style="display: none;">
+  <!-- Text populated by JS -->
+</div>
+
+<!-- 1. LINKEDIN GATE LAYOUT -->
+<div class="linkedin-gate-overlay" id="linkedin-gate-overlay">
+  <div class="linkedin-gate-card">
+    <div style="width: 56px; height: 56px; background: #0077B5; border-radius: 12px; display: flex; alignItems: center; justifyContent: center; margin: 0 auto 24px; display:flex; align-items:center; justify-content:center;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.8v8.37h2.8v-4.67c0-.25.02-.5.1-.68a1.14 1.14 0 0 1 1-.77c.76 0 1 .58 1 1.42v4.7h2.8M6.5 8.37a1.37 1.37 0 1 0 0-2.75 1.37 1.37 0 0 0 0 2.75M8 18.5V10.1H5.2v8.4H8z" /></svg>
+    </div>
+    <h1 class="headline" style="margin-bottom: 12px;">Connect your LinkedIn</h1>
+    <p class="lede" style="font-size: 15px; margin-bottom: 32px;">
+      To apply as an Expertly member, you must first connect and verify your professional LinkedIn identity.
+    </p>
+    <button class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; background: #0077B5;" id="linkedin-connect-btn">
+      Continue with LinkedIn <span class="arr">→</span>
+    </button>
+  </div>
+</div>
+
+<!-- 2. SUBMITTED SUCCESS VIEW (Initially Hidden) -->
+<main class="apply-main" id="onboarding-success-view" style="display: none; align-items: center; justify-content: center; padding: 120px 20px;">
+  <div style="text-align: center; maxWidth: 540px; background: var(--bg-card); padding: 56px 48px; borderRadius: 16px; border: 1px solid var(--line); box-shadow: 0 16px 48px rgba(0,0,0,0.05); margin: 0 auto;">
+    <div style="width: 56px; height: 56px; background: var(--bg-alt); border: 1px solid var(--line); color: var(--ok); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1.5em; height:1.5em;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </div>
+    <h1 class="headline" style="margin-bottom: 16px;">Application Submitted.</h1>
+    <p class="lede" style="font-size: 15px; margin-bottom: 32px;">
+      Thank you for applying to Expertly. Our credentials committee is reviewing your details manually. You will receive an email update within 5 business days.
+    </p>
+    <a href="index.html" class="btn btn-primary btn-lg">Return to homepage</a>
+  </div>
+</main>
+
+<!-- 3. MAIN WIZARD WORKSPACE (Initially Hidden) -->
+<main class="apply-main" id="onboarding-main-wizard" style="display: none;">
+  <div class="apply-grid">
+    <aside class="apply-aside">
+      <span class="eyebrow" style="margin-top: 12px;">Membership Onboarding</span>
+      <h1 class="headline" style="margin-top: 16px; font-size: clamp(28px, 2.5vw, 36px); line-height: 1.1;">
+        Let's build your profile.
+      </h1>
+      <p style="font-size: 14px; color: var(--ink-3); marginTop: 16px; line-height: 1.5;">
+        Complete the questions below. Once approved, this information will display on your public directory listing.
+      </p>
+
+      <div class="apply-steps" id="onboarding-steps-list" style="margin-top: 36px;">
+        <div class="apply-step active" data-step="1">
+          <div class="apply-step-num mono">1</div>
+          <div>Your Identity</div>
+        </div>
+        <div class="apply-step" data-step="2">
+          <div class="apply-step-num mono">2</div>
+          <div>Experience</div>
+        </div>
+        <div class="apply-step" data-step="3">
+          <div class="apply-step-num mono">3</div>
+          <div>Services & Rates</div>
+        </div>
+        <div class="apply-step" data-step="4">
+          <div class="apply-step-num mono">4</div>
+          <div>Review & Submit</div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="apply-form-wrap">
+      <div class="apply-progress">
+        <div class="apply-progress-bar" id="onboarding-progress-bar" style="width: 25%;"></div>
+        <div class="apply-progress-label mono" id="onboarding-step-label">STEP 1 OF 4</div>
+      </div>
+
+      <form id="onboarding-form" onsubmit="event.preventDefault();">
+        
+        <!-- STEP 1: IDENTITY -->
+        <div class="apply-form" id="onboarding-sec-1">
+          <h2>Your Identity</h2>
+          <p class="apply-form-sub">Provide your profile image and core contact information.</p>
+
+          <div class="linkedin-import-banner">
+            <div class="import-banner-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: #0077B5; flex-shrink: 0;"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.8v8.37h2.8v-4.67c0-.25.02-.5.1-.68a1.14 1.14 0 0 1 1-.77c.76 0 1 .58 1 1.42v4.7h2.8M6.5 8.37a1.37 1.37 0 1 0 0-2.75 1.37 1.37 0 0 0 0 2.75M8 18.5V10.1H5.2v8.4H8z" /></svg>
+              <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                <strong style="font-size: 13px; font-weight: 600; color: var(--ink);">Save time with LinkedIn import</strong>
+                <span style="font-size: 12px; color: var(--ink-3);">Automatically populate your photo, experience, bio, and location.</span>
+              </div>
+            </div>
+            <button class="import-link-btn" type="button" id="linkedin-import-trigger">
+              Import from LinkedIn <span class="arr">→</span>
+            </button>
+          </div>
+
+          <div class="apply-field" id="field-photo-container">
+            <label>Profile photo <span class="apply-hint-inline">(JPEG/PNG, displayed square, max 5MB)</span></label>
+            <div class="profile-photo-upload">
+              <div class="photo-preview-box" id="photo-preview-box">
+                <span id="photo-placeholder">👤</span>
+              </div>
+              <div class="upload-btn-wrapper">
+                <button class="btn btn-outline btn-upload" type="button">
+                  Upload image
+                  <input type="file" id="onboarding-photo-input" accept="image/jpeg,image/png" />
+                </button>
+                <button class="btn btn-ghost" type="button" id="onboarding-photo-remove" style="color: #DC2626; padding: 4px 8px; display: none;">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>First name</label>
+              <input type="text" id="onboarding-first-name" placeholder="Jane" required />
+            </div>
+            <div class="apply-field">
+              <label>Last name</label>
+              <input type="text" id="onboarding-last-name" placeholder="Smith" required />
+            </div>
+          </div>
+
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>WhatsApp / Phone <span class="apply-hint-inline">(Optional)</span></label>
+              <div class="composite-phone">
+                <select id="onboarding-phone-extension">
+                  <!-- Option items loaded by JS -->
+                </select>
+                <input type="tel" id="onboarding-phone" placeholder="7700 900 000" />
+              </div>
+            </div>
+            <div class="apply-field">
+              <label>Contact email</label>
+              <input type="email" id="onboarding-email" placeholder="you@example.com" required />
+            </div>
+          </div>
+
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>Region</label>
+              <select id="onboarding-region" required>
+                <option value="">Select region...</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="apply-field">
+              <label>Country</label>
+              <select id="onboarding-country" required>
+                <option value="">Select country...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="apply-field-row">
+            <!-- Cascading Geography cascading layout -->
+            <div class="apply-field">
+              <label>State / Province <span class="apply-hint-inline">(Optional)</span></label>
+              <div id="state-input-wrapper">
+                <select id="onboarding-state-select">
+                  <option value="">Select state...</option>
+                </select>
+                <input type="text" id="onboarding-state-text" placeholder="e.g. California" style="display: none;" />
+              </div>
+            </div>
+            <div class="apply-field">
+              <label>City <span class="apply-hint-inline">(Optional)</span></label>
+              <div id="city-input-wrapper">
+                <select id="onboarding-city-select">
+                  <option value="">Select city...</option>
+                </select>
+                <input type="text" id="onboarding-city-text" placeholder="e.g. London" style="display: none;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="apply-field">
+            <label>LinkedIn URL</label>
+            <input type="url" id="onboarding-linkedin-url" placeholder="https://linkedin.com/in/yourprofile" required />
+          </div>
+
+          <div class="apply-field">
+            <label>Professional Bio</label>
+            <textarea id="onboarding-bio" rows="4" placeholder="Describe your professional background, expertise, and what makes you uniquely qualified..." required></textarea>
+            <div class="char-counter" id="onboarding-bio-counter-wrapper">
+              <div id="bio-error-anchor"></div>
+              <span id="onboarding-bio-counter">0 / 500 characters</span>
+            </div>
+          </div>
+
+          <div class="apply-actions" style="margin-top: 36px;">
+            <div></div>
+            <button class="btn btn-primary btn-lg" type="button" id="onboarding-next-1">
+              Next: Experience <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: EXPERIENCE -->
+        <div class="apply-form" id="onboarding-sec-2" style="display: none;">
+          <h2>Professional Background</h2>
+          <p class="apply-form-sub">Details of your professional milestones and credentials.</p>
+
+          <div class="apply-field" style="max-width: 360px;">
+            <label>Overall years of experience</label>
+            <input type="number" id="onboarding-years" placeholder="e.g. 12" min="0" max="60" required />
+          </div>
+
+          <h3 style="font-size: 18px; font-weight: 500; margin-top: 32px; margin-bottom: 16px;">Work Experience</h3>
+          <div id="onboarding-work-list">
+            <!-- Repeating work experiences will be appended here -->
+          </div>
+          <div class="add-item-link" id="onboarding-add-work-btn">
+            <span>+ Add another work experience</span>
+          </div>
+
+          <h3 style="font-size: 18px; font-weight: 500; margin-top: 16px; margin-bottom: 16px;">Education</h3>
+          <div id="onboarding-edu-list">
+            <!-- Repeating education records will be appended here -->
+          </div>
+          <div class="add-item-link" id="onboarding-add-edu-btn">
+            <span>+ Add another education</span>
+          </div>
+
+          <div class="apply-actions" style="margin-top: 36px;">
+            <button class="btn btn-outline btn-lg" type="button" id="onboarding-back-2">← Back</button>
+            <button class="btn btn-primary btn-lg" type="button" id="onboarding-next-2">
+              Next: Services <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: SERVICES & RATES -->
+        <div class="apply-form" id="onboarding-sec-3" style="display: none;">
+          <h2>Services</h2>
+          <p class="apply-form-sub">Select your primary practice specialities and typical hourly rates.</p>
+
+          <div class="apply-field">
+            <label>Filter by category</label>
+            <div class="category-pills" id="onboarding-service-cats">
+              <button type="button" class="pill-btn active" data-cat="All">All</button>
+              <button type="button" class="pill-btn" data-cat="Taxation">Taxation</button>
+              <button type="button" class="pill-btn" data-cat="Legal">Legal</button>
+              <button type="button" class="pill-btn" data-cat="Finance & Advisory">Finance & Advisory</button>
+            </div>
+          </div>
+
+          <div class="apply-field">
+            <label>1st Preference Service</label>
+            <select id="onboarding-pref-1" required>
+              <option value="">Select service...</option>
+            </select>
+          </div>
+
+          <div class="apply-field">
+            <label>2nd Preference Service <span class="apply-hint-inline">(Optional)</span></label>
+            <select id="onboarding-pref-2">
+              <option value="">Select service...</option>
+            </select>
+          </div>
+
+          <div class="apply-field">
+            <label>3rd Preference Service <span class="apply-hint-inline">(Optional)</span></label>
+            <select id="onboarding-pref-3">
+              <option value="">Select service...</option>
+            </select>
+          </div>
+
+          <h3 style="font-size: 18px; font-weight: 500; margin-top: 32px; margin-bottom: 8px;">Consultation Rates</h3>
+          <p style="font-size: 13px; color: var(--ink-3); margin-bottom: 20px;">Typical rate range per hour consultation (in USD).</p>
+
+          <div class="apply-field-row" style="max-width: 400px;">
+            <div class="apply-field">
+              <label>Min (USD)</label>
+              <input type="number" id="onboarding-rate-min" placeholder="e.g. 500" min="0" required />
+            </div>
+            <div class="apply-field">
+              <label>Max (USD)</label>
+              <input type="number" id="onboarding-rate-max" placeholder="e.g. 2000" min="0" required />
+            </div>
+          </div>
+
+          <div class="apply-actions" style="margin-top: 36px;">
+            <button class="btn btn-outline btn-lg" type="button" id="onboarding-back-3">← Back</button>
+            <button class="btn btn-primary btn-lg" type="button" id="onboarding-next-3">
+              Next: Review <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: REVIEW & DECLARATION -->
+        <div class="apply-form" id="onboarding-sec-4" style="display: none;">
+          <h2>Review your application.</h2>
+          <p class="apply-form-sub">Review details from previous steps and verify the declarations below.</p>
+
+          <div class="apply-review" style="padding: 24px;">
+            
+            <!-- Details compiled dynamically -->
+            <div class="apply-review-section">
+              <div class="review-section-title">IDENTITY</div>
+              <div class="apply-review-row" style="display: flex; gap: 16px; border-bottom: none; padding: 0 0 16px 0;">
+                <div class="avatar" style="width: 56px; height: 56px;" id="review-avatar-container">
+                  <!-- Image appended by JS -->
+                </div>
+                <div>
+                  <b style="font-size: 16px;" id="onboarding-review-name">—</b>
+                  <div style="font-size: 13px; color: var(--ink-3); margin-top: 4px;" id="onboarding-review-email">—</div>
+                </div>
+              </div>
+              <div class="apply-review-row">
+                <span class="mono">LOCATION</span>
+                <b id="onboarding-review-location">—</b>
+              </div>
+              <div class="apply-review-row">
+                <span class="mono">PHONE</span>
+                <b id="onboarding-review-phone">—</b>
+              </div>
+              <div class="apply-review-row" style="align-items: flex-start;">
+                <span class="mono">BIO</span>
+                <b style="font-weight: 400; font-size: 13px; line-height: 1.5;" id="onboarding-review-bio">—</b>
+              </div>
+              <div class="apply-review-row">
+                <span class="mono">LINKEDIN</span>
+                <b><a href="#" target="_blank" style="color: var(--accent); text-decoration: underline;" id="onboarding-review-linkedin">—</a></b>
+              </div>
+            </div>
+
+            <div class="apply-review-section">
+              <div class="review-section-title">PRACTICE & EDUCATION</div>
+              <div class="apply-review-row">
+                <span class="mono">EXPERIENCE</span>
+                <b id="onboarding-review-years">—</b>
+              </div>
+              <!-- Work experience items populated by JS -->
+              <div id="onboarding-review-work-section"></div>
+              <!-- Education items populated by JS -->
+              <div id="onboarding-review-edu-section"></div>
+            </div>
+
+            <div class="apply-review-section" style="margin-bottom: 0;">
+              <div class="review-section-title">SERVICES & RATES</div>
+              <div class="apply-review-row">
+                <span class="mono">SERVICES</span>
+                <b id="onboarding-review-services">—</b>
+              </div>
+              <div class="apply-review-row">
+                <span class="mono">HOURLY RATE</span>
+                <b id="onboarding-review-rates">—</b>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="apply-check" style="margin-bottom: 12px;">
+            <input type="checkbox" id="onboarding-check-terms" />
+            <label htmlFor="onboarding-check-terms" style="cursor: pointer;">
+              I agree to the <a href="#" onclick="event.preventDefault(); alert('Terms of Service v1.0 standard content')" style="color: var(--accent); text-decoration: underline;">Terms of Service (v1.0)</a>.
+            </label>
+          </div>
+
+          <div class="apply-check" style="margin-bottom: 12px;">
+            <input type="checkbox" id="onboarding-check-privacy" />
+            <label htmlFor="onboarding-check-privacy" style="cursor: pointer;">
+              I agree to the <a href="#" onclick="event.preventDefault(); alert('Privacy Policy v1.0 standard content')" style="color: var(--accent); text-decoration: underline;">Privacy Policy (v1.0)</a>.
+            </label>
+          </div>
+
+          <div class="apply-check" style="margin-bottom: 24px;">
+            <input type="checkbox" id="onboarding-check-consent" />
+            <label htmlFor="onboarding-check-consent" style="cursor: pointer;">
+              I consent to Expertly verifying my professional credentials and background as part of the membership review process.
+            </label>
+          </div>
+
+          <div class="apply-actions">
+            <button class="btn btn-outline btn-lg" type="button" id="onboarding-back-4">← Back</button>
+            <button class="btn btn-primary btn-lg" type="submit" id="onboarding-submit-btn">
+              Submit application <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+  </div>
+</main>
+
+<!-- 4. LINKEDIN IMPORT MODAL -->
+<div class="modal-overlay" id="linkedin-import-modal" style="display: none;">
+  <div class="modal-content">
+    <span class="modal-close" id="linkedin-modal-close">×</span>
+    <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">Import from LinkedIn</h3>
+    <p style="font-size: 14px; color: var(--ink-3); margin-bottom: 24px;">
+      Paste your public LinkedIn profile URL below. The system will retrieve your public details and fill any empty fields.
+    </p>
+    <div class="apply-field" style="margin-bottom: 24px;">
+      <label>LinkedIn profile URL</label>
+      <input type="url" id="linkedin-import-url" placeholder="https://linkedin.com/in/username" style="width: 100%;" />
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 12px;">
+      <button class="btn btn-outline" id="linkedin-modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="linkedin-modal-import-btn">Import details</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/onboarding-form.js"></script>
+</body>
+</html>

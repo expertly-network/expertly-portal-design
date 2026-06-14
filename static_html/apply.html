@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Become a member — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+</head>
+<body>
+
+<!-- Dynamic Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html">
+      <span class="nav-logo" style="font-size: 23px;">Expertly<span class="dot"></span></span>
+    </a>
+    <div class="nav-links">
+      <a href="members.html" class="">Members</a>
+      <a href="articles.html" class="">Articles</a>
+      <a href="events.html" class="">Events</a>
+      <a href="how-it-works.html" class="">How it works</a>
+      <a href="pricing.html" class="">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<main class="apply-main">
+  <div class="apply-grid">
+    <aside class="apply-aside">
+      <a href="index.html" class="auth-logo">
+        Expertly<span style="width:9px;height:9px;background:'var(--accent)';border-radius:'50%';display:'inline-block'"></span>
+      </a>
+      <span class="eyebrow" style="margin-top: 48px;">Membership application</span>
+      <h1 class="headline" style="margin-top: 16px; font-size: clamp(32px,3vw,44px);">
+        Join a network of <em class="accent-text italic">20+</em> verified experts.
+      </h1>
+      <p class="lede" style="margin-top: 20px; font-size: 16px;">
+        Applications are reviewed manually — typically within 5 business days. No bots, no filters.
+      </p>
+
+      <div class="apply-steps" id="apply-steps-list">
+        <!-- Step indicators -->
+        <div class="apply-step active" data-step="1">
+          <div class="apply-step-num mono">1</div>
+          <div>Your details</div>
+        </div>
+        <div class="apply-step" data-step="2">
+          <div class="apply-step-num mono">2</div>
+          <div>Your practice</div>
+        </div>
+        <div class="apply-step" data-step="3">
+          <div class="apply-step-num mono">3</div>
+          <div>References</div>
+        </div>
+        <div class="apply-step" data-step="4">
+          <div class="apply-step-num mono">4</div>
+          <div>Review & submit</div>
+        </div>
+      </div>
+
+      <div class="apply-aside-foot">
+        <div class="verified" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Your Data Is Private</div>
+        <p style="font-size: 13px; color:var(--ink-3); margin-top: 12px; line-height: 1.5;">
+          We never share your application with third parties. References are contacted personally only after you submit.
+        </p>
+      </div>
+    </aside>
+
+    <section class="apply-form-wrap">
+      <div class="apply-progress">
+        <div class="apply-progress-bar" id="apply-progress-bar" style="width: 25%;"></div>
+        <div class="apply-progress-label mono" id="apply-step-indicator">Step 1 of 4</div>
+      </div>
+
+      <form id="apply-form-wizard" onsubmit="event.preventDefault();">
+        
+        <!-- STEP 1: Your Details -->
+        <div class="apply-form-section" id="apply-sec-1">
+          <h2>Let's start with the basics.</h2>
+          <p class="apply-form-sub">Tell us who you are and where you practice.</p>
+
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>First name</label>
+              <input type="text" id="apply-first-name" placeholder="Priya" required />
+            </div>
+            <div class="apply-field">
+              <label>Last name</label>
+              <input type="text" id="apply-last-name" placeholder="Venkatesh" required />
+            </div>
+          </div>
+          <div class="apply-field">
+            <label>Work email</label>
+            <input type="email" id="apply-email" placeholder="you@firm.com" required />
+            <span class="apply-hint">We'll verify this address before approval.</span>
+          </div>
+          <div class="apply-field">
+            <label>Country of practice</label>
+            <select id="apply-country" required>
+              <option value="">Select…</option>
+              <option value="India">India</option>
+              <option value="Singapore">Singapore</option>
+              <option value="UK">UK</option>
+              <option value="USA">USA</option>
+              <option value="UAE">UAE</option>
+              <option value="Germany">Germany</option>
+              <option value="France">France</option>
+              <option value="Italy">Italy</option>
+              <option value="Spain">Spain</option>
+              <option value="Japan">Japan</option>
+              <option value="Ghana">Ghana</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Egypt">Egypt</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="apply-tier">
+            <label class="apply-tier-label">Membership tier</label>
+            <div class="apply-tier-grid">
+              <button type="button" class="" id="apply-tier-budding">
+                <span class="mono">01</span>
+                <b>Budding Professional</b>
+                <em>5–12 years of experience</em>
+                <div class="apply-tier-price">$499/yr</div>
+              </button>
+              <button type="button" class="active" id="apply-tier-seasoned">
+                <span class="mono">02</span>
+                <b>Seasoned Professional</b>
+                <em>12+ years of experience</em>
+                <div class="apply-tier-price">$699/yr</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="apply-actions">
+            <div></div>
+            <button type="button" class="btn btn-primary btn-lg" id="apply-btn-next-1">Continue <span class="arr">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Your Practice -->
+        <div class="apply-form-section" id="apply-sec-2" style="display: none;">
+          <h2>Your practice.</h2>
+          <p class="apply-form-sub">Help us understand where you specialise and what you charge.</p>
+
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>Primary practice area</label>
+              <select id="apply-practice" required>
+                <option value="">Select…</option>
+                <!-- Populated dynamically by JS from window.EXPERTLY_PRACTICE_AREAS -->
+              </select>
+            </div>
+            <div class="apply-field">
+              <label>Years of experience</label>
+              <input type="number" id="apply-years" placeholder="e.g. 14" min="0" max="60" required />
+            </div>
+          </div>
+          <div class="apply-field">
+            <label>Current firm or practice</label>
+            <input type="text" id="apply-firm" placeholder="M2K Advisors, or 'Independent'" required />
+          </div>
+          <div class="apply-field-row">
+            <div class="apply-field">
+              <label>LinkedIn URL</label>
+              <input type="url" id="apply-linkedin" placeholder="https://linkedin.com/in/…" required />
+            </div>
+            <div class="apply-field">
+              <label>Firm website (optional)</label>
+              <input type="url" id="apply-website" placeholder="https://…" />
+            </div>
+          </div>
+          <div class="apply-field">
+            <label>Typical consultation rate (USD / hour)</label>
+            <input type="number" id="apply-rate" placeholder="e.g. 350" min="0" required />
+            <span class="apply-hint">You can change this anytime. Members typically charge $200–$650/hr.</span>
+          </div>
+          <div class="apply-field">
+            <label>Short bio <span class="apply-hint-inline">(150 words max — what makes you distinctive)</span></label>
+            <textarea id="apply-bio" rows="5" placeholder="I focus on cross-border M&A tax for Indian and Southeast Asian corporates…" required></textarea>
+          </div>
+
+          <div class="apply-actions">
+            <button type="button" class="btn btn-outline btn-lg" id="apply-btn-back-2">← Back</button>
+            <button type="button" class="btn btn-primary btn-lg" id="apply-btn-next-2">Continue <span class="arr">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 3: References -->
+        <div class="apply-form-section" id="apply-sec-3" style="display: none;">
+          <h2>Two peer references.</h2>
+          <p class="apply-form-sub">Existing members or well-known professionals who can vouch for your work. We'll contact them personally — never publicly.</p>
+
+          <div class="apply-ref">
+            <div class="apply-ref-label mono">Reference 01</div>
+            <div class="apply-field-row">
+              <div class="apply-field">
+                <label>Full name</label>
+                <input type="text" id="apply-ref1-name" required />
+              </div>
+              <div class="apply-field">
+                <label>Email</label>
+                <input type="email" id="apply-ref1-email" required />
+              </div>
+            </div>
+          </div>
+          
+          <div class="apply-ref">
+            <div class="apply-ref-label mono">Reference 02</div>
+            <div class="apply-field-row">
+              <div class="apply-field">
+                <label>Full name</label>
+                <input type="text" id="apply-ref2-name" required />
+              </div>
+              <div class="apply-field">
+                <label>Email</label>
+                <input type="email" id="apply-ref2-email" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="apply-note">
+            <span class="mono">Why References?</span>
+            <p>We verify every member with two independent referrals before granting membership. This is how we keep the network's signal-to-noise high — and why every member on Expertly is actually worth hiring.</p>
+          </div>
+
+          <div class="apply-actions">
+            <button type="button" class="btn btn-outline btn-lg" id="apply-btn-back-3">← Back</button>
+            <button type="button" class="btn btn-primary btn-lg" id="apply-btn-next-3">Continue <span class="arr">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Review and Submit -->
+        <div class="apply-form-section" id="apply-sec-4" style="display: none;">
+          <h2>Ready to submit.</h2>
+          <p class="apply-form-sub">Double-check your details. You'll hear back within 5 business days.</p>
+
+          <div class="apply-review">
+            <div class="apply-review-row">
+              <span class="mono">Name</span>
+              <b id="review-name">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Email</span>
+              <b id="review-email">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Country</span>
+              <b id="review-country">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Tier</span>
+              <b id="review-tier">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Practice</span>
+              <b id="review-practice">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Firm</span>
+              <b id="review-firm">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">Rate</span>
+              <b id="review-rate">—</b>
+            </div>
+            <div class="apply-review-row">
+              <span class="mono">References</span>
+              <b id="review-references">—</b>
+            </div>
+          </div>
+
+          <label class="apply-check">
+            <input type="checkbox" id="apply-agree-checkbox" />
+            <span>I confirm the information above is accurate and authorise Expertly to verify my credentials and contact my references.</span>
+          </label>
+
+          <div class="apply-actions">
+            <button type="button" class="btn btn-outline btn-lg" id="apply-btn-back-4">← Back</button>
+            <button type="button" class="btn btn-primary btn-lg" id="apply-btn-submit" disabled>
+              Submit application <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+  </div>
+</main>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/auth-pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+</head>
+<body>
+
+<!-- Dynamic Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html">
+      <span class="nav-logo" style="font-size: 23px;">Expertly<span class="dot"></span></span>
+    </a>
+    <div class="nav-links">
+      <a href="members.html" class="">Members</a>
+      <a href="articles.html" class="">Articles</a>
+      <a href="events.html" class="">Events</a>
+      <a href="how-it-works.html" class="">How it works</a>
+      <a href="pricing.html" class="">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="pricing-hero">
+    <div class="container-wide">
+      <span class="eyebrow">Pricing · No commission. No middlemen.</span>
+      <h1 class="display" style="margin-top: 20px; max-width: 900px;">
+        Membership that <em class="accent-text italic">pays for itself</em> in a single consultation.
+      </h1>
+      <p class="lede" style="margin-top: 24px; max-width: 620px;">
+        A flat annual fee. We never take a cut of your fees. Your clients and relationships are yours — forever.
+      </p>
+
+      <div class="billing-toggle">
+        <button id="billing-monthly-btn" class="">Monthly</button>
+        <button id="billing-annual-btn" class="active">
+          Annual <span class="save">Save 17%</span>
+        </button>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Budding Professional Card -->
+        <div class="pricing-card">
+          <div class="pricing-tag mono">5–12 years experience</div>
+          <h3>Budding Professional</h3>
+          <div class="pricing-amount">
+            <span class="currency">$</span>
+            <span class="num" id="price-budding">499</span>
+            <span class="unit" id="unit-budding">/year</span>
+          </div>
+          <div class="pricing-note" id="note-budding">Billed annually · Best value</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Listed in verified member directory</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Publish unlimited articles</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Receive consultation requests</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Access member-only events</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Set your own rates & availability</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Keep 100% of client fees</li>
+          </ul>
+          <a href="apply.html" class="btn btn-outline btn-lg" style="width: 100%; justify-content: center;">
+            Apply to join <span class="arr">→</span>
+          </a>
+        </div>
+
+        <!-- Seasoned Professional Card (Featured) -->
+        <div class="pricing-card featured">
+          <div class="pricing-ribbon mono">Most Popular</div>
+          <div class="pricing-tag mono">12+ years experience</div>
+          <h3>Seasoned Professional</h3>
+          <div class="pricing-amount">
+            <span class="currency">$</span>
+            <span class="num" id="price-seasoned">699</span>
+            <span class="unit" id="unit-seasoned">/year</span>
+          </div>
+          <div class="pricing-note" id="note-seasoned">Billed annually · Best value</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Everything in Budding, plus:</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Priority placement in AI search</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Featured member spotlight rotation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Private cohort: "Senior Counsel Circle"</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Dedicated account manager</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Co-branded publishing opportunities</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Early access to new clients</li>
+          </ul>
+          <a href="apply.html" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
+            Apply to join <span class="arr">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pricing-trust mono">
+        <span>✓ NO COMMISSION ON FEES</span>
+        <span>✓ 100% OF CLIENT PAYMENTS</span>
+        <span>✓ CANCEL ANYTIME</span>
+        <span>✓ OWN YOUR RELATIONSHIPS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="section compare">
+    <div class="container-wide">
+      <div class="section-head">
+        <span class="eyebrow">Compare plans</span>
+        <h2 class="section-title" style="margin-top: 16px;">What's included.</h2>
+      </div>
+      <div class="compare-table">
+        <div class="compare-head">
+          <div></div>
+          <div>
+            <b>Budding</b>
+            <span class="mono" id="comp-price-budding">5–12 Yrs · $499/year</span>
+          </div>
+          <div class="featured">
+            <b>Seasoned</b>
+            <span class="mono" id="comp-price-seasoned">12+ Yrs · $699/year</span>
+          </div>
+        </div>
+        
+        <!-- Comparison Rows -->
+        <div class="compare-row">
+          <div>Verified profile in directory</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Unlimited article publishing</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Consultation requests</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Member-only events access</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Keep 100% of consultation fees</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>AI-search priority ranking</div>
+          <div><span class="mono">—</span></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Featured spotlight rotation</div>
+          <div><span class="mono">—</span></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Senior Counsel Circle (private)</div>
+          <div><span class="mono">—</span></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Dedicated account manager</div>
+          <div><span class="mono">—</span></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+        <div class="compare-row">
+          <div>Co-branded publishing</div>
+          <div><span class="mono">—</span></div>
+          <div class="featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing FAQ -->
+  <section class="section pricing-faq">
+    <div class="container-wide">
+      <div class="faq-grid">
+        <div class="faq-left">
+          <span class="eyebrow">Pricing FAQ</span>
+          <h2 class="section-title" style="margin-top: 16px;">Straight answers.</h2>
+        </div>
+        <div class="faq-right">
+          <details class="faq-item" open>
+            <summary class="faq-q">Does Expertly take a cut of my consultation fees?<span class="faq-toggle">+</span></summary>
+            <div class="faq-a"><p>No. Ever. We're a membership platform, not a marketplace. You pay a flat annual fee; every dollar a client pays you, you keep. We don't mark up rates or take commission.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Can I try it before committing to a year?<span class="faq-toggle">+</span></summary>
+            <div class="faq-a"><p>Yes. Monthly billing is available ($49/mo Budding, $69/mo Seasoned) and you can cancel anytime. Annual billing saves 17%.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">What if I upgrade from Budding to Seasoned mid-year?<span class="faq-toggle">+</span></summary>
+            <div class="faq-a"><p>We pro-rate the difference. If you cross 12 years of experience mid-membership or want the premium features, you only pay for the time remaining — no double-charging.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Are there any hidden fees?<span class="faq-toggle">+</span></summary>
+            <div class="faq-a"><p>None. No listing fees, no featured-placement upsells, no per-consultation charges. The annual or monthly fee is it.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">What's the refund policy?<span class="faq-toggle">+</span></summary>
+            <div class="faq-a"><p>Full refund within 14 days of purchase, no questions asked. After that, we refund on a pro-rated basis at our discretion.</p></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container-wide">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Expertly<span style="width: 9px; height: 9px; background: var(--accent); border-radius: 50%; display: inline-block; margin-left: 2px;"></span></div>
+        <p>The curated professional network for verified finance & legal experts worldwide.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="members.html">Member Directory</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="apply.html">Apply for Membership</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Our Mission</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="#">Verified Experts</a></li>
+          <li><a href="#">Membership Benefits</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Expertly · All Rights Reserved</span>
+      <span>Verified · Global · Independent</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/auth-pages.js"></script>
+</body>
+</html>
