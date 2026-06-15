@@ -109,6 +109,19 @@
   .art-grid { grid-template-columns: 1fr; }
 }
 
+/* ============ PAGE-LEVEL TABS (How it works / Pricing) ============ */
+.page-tabs-wrap { border-bottom: 1px solid var(--line); background: var(--bg); }
+.page-tabs { display: flex; gap: 0; }
+.page-tab {
+  padding: 18px 28px; font-size: 14px; font-weight: 500; color: var(--ink-3);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color 0.18s, border-color 0.18s; letter-spacing: -0.005em;
+}
+.page-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+.page-tab:hover:not(.active) { color: var(--ink-2); }
+.page-panel { display: none; }
+.page-panel.active { display: block; }
+
 /* ============ EVENTS PAGE ============ */
 .ev-hero { padding: 56px 0 48px; }
 .ev-hero-stats { display: flex; gap: 48px; margin-top: 40px; padding: 28px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
