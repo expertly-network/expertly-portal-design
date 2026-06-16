@@ -192,6 +192,73 @@
 .apply-actions { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
 .apply-actions .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* LinkedIn Import Banner & Modal Styles */
+.linkedin-import-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-alt);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+.import-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.import-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.import-link-btn:hover {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--line-2);
+  border-radius: 16px;
+  padding: 32px;
+  width: 480px;
+  max-width: 90%;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--ink-3);
+  transition: color 0.15s;
+}
+.modal-close:hover {
+  color: var(--ink);
+}
+
 @media (max-width: 1000px) {
   .auth-grid { grid-template-columns: 1fr; }
   .auth-right { display: none; }

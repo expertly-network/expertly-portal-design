@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initExperienceRepeatingCards();
   initServicesDropdowns();
   initNavigationStepper();
-  initLinkedInImportModal();
+  initLinkedInImportStep1();
 
   // Evaluate gate view
   updateGateVisibility();
@@ -149,23 +149,14 @@ const saveSession = () => {
 };
 
 function updateGateVisibility() {
-  const gate = document.getElementById('linkedin-gate-overlay');
   const wizard = document.getElementById('onboarding-main-wizard');
   const nav = document.getElementById('onboarding-nav');
   const successView = document.getElementById('onboarding-success-view');
 
-  if (!linkedinConnected) {
-    gate.style.display = 'flex';
-    wizard.style.display = 'none';
-    if (nav) nav.style.display = 'none';
-    successView.style.display = 'none';
-  } else {
-    gate.style.display = 'none';
-    wizard.style.display = 'grid';
-    if (nav) nav.style.display = 'block';
-    successView.style.display = 'none';
-    navigateToStep(currentStep);
-  }
+  if (wizard) wizard.style.display = 'grid';
+  if (nav) nav.style.display = 'block';
+  if (successView) successView.style.display = 'none';
+  navigateToStep(currentStep);
 }
 
 // Show toast alert
@@ -728,21 +719,32 @@ function initNavigationStepper() {
     1: document.getElementById('onboarding-sec-1'),
     2: document.getElementById('onboarding-sec-2'),
     3: document.getElementById('onboarding-sec-3'),
-    4: document.getElementById('onboarding-sec-4')
+    4: document.getElementById('onboarding-sec-4'),
+    5: document.getElementById('onboarding-sec-5')
   };
 
   window.navigateToStep = (targetStep) => {
+    // If navigating back to step 1, restore content visibility and hide the loading state
+    if (targetStep === 1) {
+      const contentEl = document.getElementById('onboarding-sec-1-content');
+      const loadingEl = document.getElementById('onboarding-sec-1-loading');
+      if (contentEl) contentEl.style.display = 'block';
+      if (loadingEl) loadingEl.style.display = 'none';
+    }
+
     // Hide current sections, show target
-    Object.values(sections).forEach(sec => sec.style.display = 'none');
-    sections[targetStep].style.display = 'block';
+    Object.values(sections).forEach(sec => {
+      if (sec) sec.style.display = 'none';
+    });
+    if (sections[targetStep]) sections[targetStep].style.display = 'block';
 
     currentStep = targetStep;
     saveSession();
 
     // Update progress elements
-    const progressPct = (currentStep / 4) * 100;
+    const progressPct = (currentStep / 5) * 100;
     progressBar.style.width = `${progressPct}%`;
-    stepLabel.textContent = `STEP ${currentStep} OF 4`;
+    stepLabel.textContent = `STEP ${currentStep} OF 5`;
 
     // Sidebar indicators
     stepsList.querySelectorAll('.apply-step').forEach((el, index) => {
@@ -761,7 +763,7 @@ function initNavigationStepper() {
       }
     });
 
-    if (currentStep === 4) {
+    if (currentStep === 5) {
       compileReviewData();
     }
 
@@ -769,140 +771,13 @@ function initNavigationStepper() {
   };
 
   const validateStep = (step) => {
-    let isValid = true;
-    const clearErrors = (sec) => {
-      sec.querySelectorAll('.apply-field').forEach(field => {
-        field.classList.remove('field-error');
-        const err = field.querySelector('.error-text');
-        if (err) err.remove();
-      });
-    };
-
-    const addError = (inputEl, message) => {
-      isValid = false;
-      const field = inputEl.closest('.apply-field');
-      if (field) {
-        field.classList.add('field-error');
-        if (!field.querySelector('.error-text')) {
-          const errSpan = document.createElement('span');
-          errSpan.className = 'error-text';
-          errSpan.textContent = message;
-          field.appendChild(errSpan);
-        }
-      }
-    };
-
     if (step === 1) {
-      const sec = sections[1];
-      clearErrors(sec);
-
-      const fName = document.getElementById('onboarding-first-name');
-      const lName = document.getElementById('onboarding-last-name');
-      const email = document.getElementById('onboarding-email');
-      const region = document.getElementById('onboarding-region');
-      const country = document.getElementById('onboarding-country');
-      const linkedin = document.getElementById('onboarding-linkedin-url');
-      const bio = document.getElementById('onboarding-bio');
-
-      if (!formData.profilePhoto) {
-        isValid = false;
-        const photoContainer = document.getElementById('field-photo-container');
-        photoContainer.classList.add('field-error');
-        if (!photoContainer.querySelector('.error-text')) {
-          const err = document.createElement('span');
-          err.className = 'error-text';
-          err.textContent = 'Profile photo is required';
-          photoContainer.appendChild(err);
-        }
-      }
-
-      if (!fName.value.trim()) addError(fName, 'First name is required');
-      if (!lName.value.trim()) addError(lName, 'Last name is required');
-      
-      const emailVal = email.value.trim();
-      if (!emailVal) {
-        addError(email, 'Email is required');
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-        addError(email, 'Enter a valid email address');
-      }
-
-      if (!region.value) addError(region, 'Region is required');
-      if (!country.value) addError(country, 'Country is required');
-
-      const linkedinVal = linkedin.value.trim();
-      if (!linkedinVal) {
-        addError(linkedin, 'LinkedIn profile URL is required');
-      } else if (!/^https?:\/\/(www\.)?linkedin\.com\/in\/.+/.test(linkedinVal)) {
-        addError(linkedin, 'Enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/username)');
-      }
-
-      if (!bio.value.trim()) {
-        isValid = false;
-        const anchor = document.getElementById('bio-error-anchor');
-        anchor.innerHTML = `<span class="error-text" style="display:block;margin-top:6px;">Bio is required</span>`;
-        bio.closest('.apply-field').classList.add('field-error');
-      } else {
-        document.getElementById('bio-error-anchor').innerHTML = '';
-      }
-
-    } else if (step === 2) {
-      const sec = sections[2];
-      clearErrors(sec);
-
-      const years = document.getElementById('onboarding-years');
-      const yearsVal = parseInt(years.value, 10);
-      if (isNaN(yearsVal) || yearsVal < 0 || yearsVal > 60) {
-        addError(years, 'Years of experience must be between 0 and 60');
-      }
-
-      // Vouch work cards
-      formData.workExperience.forEach((we, index) => {
-        const rowErrors = [];
-        if (!we.jobTitle || !we.company) {
-          isValid = false;
-          rowErrors.push('Job title and Company are required');
-        }
-        const errContainer = sec.querySelectorAll('.repeating-card')[index].querySelector('.work-error-box');
-        if (errContainer) {
-          errContainer.innerHTML = rowErrors.map(m => `<span class="error-text">${m}</span>`).join('');
-        }
-      });
-
-      // Vouch edu cards
-      formData.education.forEach((edu, index) => {
-        const rowErrors = [];
-        if (!edu.institution || !edu.degree) {
-          isValid = false;
-          rowErrors.push('Institution and Degree are required');
-        }
-        const errContainer = sec.querySelectorAll('.repeating-card')[formData.workExperience.length + index].querySelector('.edu-error-box');
-        if (errContainer) {
-          errContainer.innerHTML = rowErrors.map(m => `<span class="error-text">${m}</span>`).join('');
-        }
-      });
-
-    } else if (step === 3) {
-      const sec = sections[3];
-      clearErrors(sec);
-
-      const pref1 = document.getElementById('onboarding-pref-1');
-      const minFee = document.getElementById('onboarding-rate-min');
-      const maxFee = document.getElementById('onboarding-rate-max');
-
-      if (!pref1.value) addError(pref1, 'Please select your 1st preference service');
-      
-      const minVal = parseInt(minFee.value, 10);
-      if (isNaN(minVal) || minVal < 0) {
-        addError(minFee, 'Minimum rate is required');
-      }
-
-      const maxVal = parseInt(maxFee.value, 10);
-      if (isNaN(maxVal) || maxVal <= minVal) {
-        addError(maxFee, 'Maximum rate must be greater than minimum rate');
+      if (!linkedinConnected) {
+        alert('Please import your LinkedIn details first to proceed.');
+        return false;
       }
     }
-
-    return isValid;
+    return true; // Logic-wise, remove all other mandatory validation blocks
   };
 
   const compileReviewData = () => {
@@ -951,7 +826,7 @@ function initNavigationStepper() {
         <div>
           <b>${edu.degree} in ${edu.fieldOfStudy}</b>
           <div style="font-size: 12px; color: var(--ink-3); margin-top: 2px;">
-            ${edu.institution} (${edu.startYear} – {edu.endYear})
+            ${edu.institution} (${edu.startYear} – ${edu.endYear})
           </div>
         </div>
       </div>
@@ -964,19 +839,20 @@ function initNavigationStepper() {
   };
 
   // Nav buttons clicks
-  document.getElementById('onboarding-next-1').addEventListener('click', () => {
-    if (validateStep(1)) navigateToStep(2);
-  });
   document.getElementById('onboarding-next-2').addEventListener('click', () => {
     if (validateStep(2)) navigateToStep(3);
   });
   document.getElementById('onboarding-next-3').addEventListener('click', () => {
     if (validateStep(3)) navigateToStep(4);
   });
+  document.getElementById('onboarding-next-4').addEventListener('click', () => {
+    if (validateStep(4)) navigateToStep(5);
+  });
 
   document.getElementById('onboarding-back-2').addEventListener('click', () => navigateToStep(1));
   document.getElementById('onboarding-back-3').addEventListener('click', () => navigateToStep(2));
   document.getElementById('onboarding-back-4').addEventListener('click', () => navigateToStep(3));
+  document.getElementById('onboarding-back-5').addEventListener('click', () => navigateToStep(4));
 
   // Stepper sidebar click verification
   stepsList.querySelectorAll('.apply-step').forEach((el, index) => {
@@ -1003,43 +879,7 @@ function initNavigationStepper() {
   wizardForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Vouch declaration boxes
-    let isValidDecl = true;
-    const termsCheck = document.getElementById('onboarding-check-terms');
-    const privacyCheck = document.getElementById('onboarding-check-privacy');
-    const consentCheck = document.getElementById('onboarding-check-consent');
-
-    const markBoxError = (chk, msg) => {
-      isValidDecl = false;
-      const field = chk.closest('.apply-check');
-      field.classList.add('field-error');
-      if (!field.querySelector('.error-text')) {
-        const err = document.createElement('span');
-        err.className = 'error-text';
-        err.style.display = 'block';
-        err.style.marginTop = '6px';
-        err.textContent = msg;
-        field.appendChild(err);
-      }
-    };
-
-    const clearBoxErrors = () => {
-      document.querySelectorAll('.apply-check').forEach(field => {
-        field.classList.remove('field-error');
-        const err = field.querySelector('.error-text');
-        if (err) err.remove();
-      });
-    };
-
-    clearBoxErrors();
-
-    if (!termsCheck.checked) markBoxError(termsCheck, 'You must agree to the Terms of Service');
-    if (!privacyCheck.checked) markBoxError(privacyCheck, 'You must agree to the Privacy Policy');
-    if (!consentCheck.checked) markBoxError(consentCheck, 'You must consent to credential verification');
-
-    if (!isValidDecl) return;
-
-    // Submitted success!
+    // Vouch declaration boxes - bypass validation blocks to allow submitting
     sessionStorage.removeItem('expertly_onboarding_form');
     sessionStorage.removeItem('expertly_onboarding_step');
     sessionStorage.removeItem('expertly_linkedin_connected');
@@ -1048,100 +888,108 @@ function initNavigationStepper() {
     document.getElementById('onboarding-nav').style.display = 'block';
     document.getElementById('onboarding-success-view').style.display = 'flex';
   });
-
-  // LinkedIn connect trigger
-  document.getElementById('linkedin-connect-btn').addEventListener('click', () => {
-    linkedinConnected = true;
-    saveSession();
-    updateGateVisibility();
-    showToast('LinkedIn identity connected successfully.');
-  });
 }
 
 /* ==========================================================================
-   LINKEDIN IMPORT MODAL & DATA PRE-POPULATION
+   LINKEDIN IMPORT STEP 1 & DATA PRE-POPULATION
    ========================================================================== */
-function initLinkedInImportModal() {
-  const trigger = document.getElementById('linkedin-import-trigger');
-  const modal = document.getElementById('linkedin-import-modal');
-  const closeBtn = document.getElementById('linkedin-modal-close');
-  const cancelBtn = document.getElementById('linkedin-modal-cancel');
-  const importBtn = document.getElementById('linkedin-modal-import-btn');
-  const importInput = document.getElementById('linkedin-import-url');
+function initLinkedInImportStep1() {
+  const urlInput = document.getElementById('onboarding-linkedin-import-url');
+  const consentCheck = document.getElementById('onboarding-import-consent');
+  const importGoBtn = document.getElementById('onboarding-btn-import-go');
 
-  if (!trigger || !modal) return;
-
-  trigger.addEventListener('click', () => {
-    importInput.value = '';
-    modal.style.display = 'flex';
-  });
-
-  const closeModal = () => {
-    modal.style.display = 'none';
+  const checkStep1Status = () => {
+    if (urlInput && consentCheck && importGoBtn) {
+      const urlValue = urlInput.value.trim();
+      const isConsentChecked = consentCheck.checked;
+      const isValidUrl = urlValue.toLowerCase().includes('linkedin');
+      importGoBtn.disabled = !(isValidUrl && isConsentChecked);
+    }
   };
 
-  closeBtn.addEventListener('click', closeModal);
-  cancelBtn.addEventListener('click', closeModal);
+  if (urlInput && consentCheck) {
+    urlInput.addEventListener('input', checkStep1Status);
+    consentCheck.addEventListener('change', checkStep1Status);
+  }
 
-  importBtn.addEventListener('click', () => {
-    const val = importInput.value.trim();
-    if (!val || !val.match(/^https?:\/\/(www\.)?linkedin\.com\/in\/.+/)) {
-      alert('Please enter a valid LinkedIn URL first (e.g. https://linkedin.com/in/username).');
-      return;
-    }
+  if (importGoBtn) {
+    importGoBtn.addEventListener('click', () => {
+      const val = urlInput.value.trim();
+      if (!val || !val.toLowerCase().includes('linkedin')) {
+        alert('Please enter a valid LinkedIn URL (e.g. https://linkedin.com/in/username).');
+        return;
+      }
 
-    // Mock LinkedIn profile data pre-population
-    formData.firstName = formData.firstName || 'Jane';
-    formData.lastName = formData.lastName || 'Smith';
-    formData.linkedinUrl = formData.linkedinUrl || val;
-    formData.bio = formData.bio || 'Experienced finance expert specializing in international tax advisory and corporate structuring. Previously managed global accounts at leading firms.';
-    formData.yearsOfExperience = formData.yearsOfExperience || '12';
-    
-    formData.region = formData.region || 'asia_pacific';
-    formData.country = formData.country || 'Singapore';
-    formData.state = formData.state || 'Central Region';
-    formData.city = formData.city || 'Singapore Central';
+      // Hide Step 1 Content, Show Loading
+      const contentEl = document.getElementById('onboarding-sec-1-content');
+      const loadingEl = document.getElementById('onboarding-sec-1-loading');
+      if (contentEl) contentEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = 'block';
 
-    // Populate work experience list if empty or default
-    if (formData.workExperience.length === 1 && !formData.workExperience[0].jobTitle) {
-      formData.workExperience = [
-        { jobTitle: 'Senior Tax Advisor', company: 'Chen Advisory', companyWebsite: 'https://chenadvisory.com', city: 'Singapore', firmSize: '11–50', startMonth: 'Jan', startYear: '2020', endMonth: 'Dec', endYear: '2024', isCurrent: true }
-      ];
-    }
+      // 10-second transition duration
+      setTimeout(() => {
+        // Mock LinkedIn profile data pre-population
+        formData.firstName = formData.firstName || 'Jane';
+        formData.lastName = formData.lastName || 'Smith';
+        formData.linkedinUrl = formData.linkedinUrl || val;
+        formData.bio = formData.bio || 'Experienced finance expert specializing in international tax advisory and corporate structuring. Previously managed global accounts at leading firms.';
+        formData.yearsOfExperience = formData.yearsOfExperience || '12';
+        
+        formData.region = formData.region || 'asia_pacific';
+        formData.country = formData.country || 'Singapore';
+        formData.state = formData.state || 'Central Region';
+        formData.city = formData.city || 'Singapore Central';
 
-    // Reload Step 1 Input Elements
-    document.getElementById('onboarding-first-name').value = formData.firstName;
-    document.getElementById('onboarding-last-name').value = formData.lastName;
-    document.getElementById('onboarding-linkedin-url').value = formData.linkedinUrl;
-    document.getElementById('onboarding-bio').value = formData.bio;
+        // Populate work experience list if empty or default
+        if (formData.workExperience.length === 1 && !formData.workExperience[0].jobTitle) {
+          formData.workExperience = [
+            { jobTitle: 'Senior Tax Advisor', company: 'Chen Advisory', companyWebsite: 'https://chenadvisory.com', city: 'Singapore', firmSize: '11–50', startMonth: 'Jan', startYear: '2020', endMonth: 'Dec', endYear: '2024', isCurrent: true }
+          ];
+        }
 
-    // Trigger state Cascades
-    const regSelect = document.getElementById('onboarding-region');
-    const countrySelect = document.getElementById('onboarding-country');
+        // Reload Step 2 Input Elements (formerly Step 1)
+        const firstNameEl = document.getElementById('onboarding-first-name');
+        const lastNameEl = document.getElementById('onboarding-last-name');
+        const linkedinUrlEl = document.getElementById('onboarding-linkedin-url');
+        const bioEl = document.getElementById('onboarding-bio');
 
-    regSelect.value = formData.region;
-    
-    // Trigger region change list refresh
-    const countries = COUNTRIES_BY_REGION[formData.region];
-    countrySelect.innerHTML = '<option value="">Select country...</option>' + 
-      countries.map(c => `<option value="${c}">${c}</option>`).join('');
-    countrySelect.value = formData.country;
+        if (firstNameEl) firstNameEl.value = formData.firstName;
+        if (lastNameEl) lastNameEl.value = formData.lastName;
+        if (linkedinUrlEl) linkedinUrlEl.value = formData.linkedinUrl;
+        if (bioEl) bioEl.value = formData.bio;
 
-    updateGeographyCascade();
-    
-    // Set WhatsApp extension defaults
-    formData.phoneExtension = '+65';
-    document.getElementById('onboarding-phone-extension').value = '+65';
+        // Trigger state Cascades
+        const regSelect = document.getElementById('onboarding-region');
+        const countrySelect = document.getElementById('onboarding-country');
 
-    // Refresh experience repeating items in background
-    initExperienceRepeatingCards();
+        if (regSelect) regSelect.value = formData.region;
+        
+        // Trigger region change list refresh
+        if (countrySelect && formData.region) {
+          const countries = COUNTRIES_BY_REGION[formData.region];
+          countrySelect.innerHTML = '<option value="">Select country...</option>' + 
+            countries.map(c => `<option value="${c}">${c}</option>`).join('');
+          countrySelect.value = formData.country;
+        }
 
-    closeModal();
-    saveSession();
-    
-    // Refresh Step 1 values visually
-    initIdentityFormElements();
+        updateGeographyCascade();
+        
+        // Set WhatsApp extension defaults
+        formData.phoneExtension = '+65';
+        const phoneExtEl = document.getElementById('onboarding-phone-extension');
+        if (phoneExtEl) phoneExtEl.value = '+65';
 
-    showToast('LinkedIn profile data imported successfully.');
-  });
+        // Refresh experience repeating items in background
+        initExperienceRepeatingCards();
+
+        // Refresh values visually
+        initIdentityFormElements();
+
+        linkedinConnected = true;
+        saveSession();
+        showToast('LinkedIn profile data imported successfully.');
+        navigateToStep(2);
+      }, 10000);
+    });
+  }
 }
