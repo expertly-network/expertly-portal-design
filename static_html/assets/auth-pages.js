@@ -70,97 +70,77 @@ function initPricingToggle() {
    2. LOGIN & SIGNUP
    ========================================================================== */
 function initLoginTabs() {
-  const loginTab = document.getElementById('auth-tab-login');
-  const signupTab = document.getElementById('auth-tab-signup');
-  const toggleLink = document.getElementById('auth-toggle-mode-link');
+  const userTab = document.getElementById('auth-tab-user');
+  const memberTab = document.getElementById('auth-tab-member');
 
-  if (!loginTab || !signupTab) return;
+  if (!userTab || !memberTab) return;
 
   const cardTitle = document.getElementById('auth-card-title');
   const cardSub = document.getElementById('auth-card-sub');
   
-  const roleSelectArea = document.getElementById('auth-role-select');
-  const nameField = document.getElementById('auth-field-name');
-  const keepSignedField = document.getElementById('auth-keep-signed');
+  const googleBtn = document.getElementById('sso-google');
+  const linkedinBtn = document.getElementById('sso-linkedin');
+  const divider = document.getElementById('auth-divider');
+  const authForm = document.getElementById('auth-form-submit');
   const submitBtn = document.getElementById('auth-submit-btn');
   const footText = document.getElementById('auth-foot-text');
-  const memberNote = document.getElementById('auth-member-note');
-
-  // Role buttons
-  const clientRoleBtn = document.getElementById('role-btn-client');
-  const memberRoleBtn = document.getElementById('role-btn-member');
-  let currentRole = 'member';
+  const memberInfo = document.getElementById('auth-member-info');
 
   const setAuthMode = (mode) => {
-    if (mode === 'signup') {
-      loginTab.classList.remove('active');
-      signupTab.classList.add('active');
+    if (mode === 'member') {
+      memberTab.classList.add('active');
+      userTab.classList.remove('active');
       
-      cardTitle.textContent = 'Create your Expertly account.';
-      cardSub.textContent = 'Free. Takes 30 seconds. No credit card required.';
+      cardTitle.textContent = 'Welcome, Member.';
+      cardSub.textContent = 'Sign in or connect your LinkedIn account to access the verified network.';
       
-      roleSelectArea.style.display = 'block';
-      nameField.style.display = 'block';
-      nameField.querySelector('input').setAttribute('required', 'true');
-      keepSignedField.style.display = 'none';
+      if (googleBtn) googleBtn.style.display = 'none';
+      if (linkedinBtn) linkedinBtn.style.display = 'flex';
+      if (divider) divider.style.display = 'none';
+      if (authForm) authForm.style.display = 'none';
+      if (memberInfo) memberInfo.style.display = 'block';
       
-      submitBtn.innerHTML = `Create account <span class="arr">→</span>`;
-      footText.textContent = 'Already registered? ';
-      toggleLink.textContent = 'Sign in';
-
-      if (currentRole === 'member') {
-        memberNote.style.display = 'block';
-      }
+      if (footText) footText.textContent = "LinkedIn authentication is required to access member-only profile editing.";
     } else {
-      loginTab.classList.add('active');
-      signupTab.classList.remove('active');
+      userTab.classList.add('active');
+      memberTab.classList.remove('active');
       
-      cardTitle.textContent = 'Welcome back.';
-      cardSub.textContent = 'Sign in to access the directory, send consultation requests, and manage your profile.';
+      cardTitle.textContent = 'Get started with Expertly.';
+      cardSub.textContent = 'Sign in or create a client account to search experts and book consultations.';
       
-      roleSelectArea.style.display = 'none';
-      nameField.style.display = 'none';
-      nameField.querySelector('input').removeAttribute('required');
-      keepSignedField.style.display = 'block';
+      if (googleBtn) googleBtn.style.display = 'none'; // Google option removed in User
+      if (linkedinBtn) linkedinBtn.style.display = 'flex';
+      if (divider) divider.style.display = 'flex';
+      if (authForm) authForm.style.display = 'flex';
+      if (memberInfo) memberInfo.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.innerHTML = `Continue <span class="arr">→</span>`;
+      }
       
-      submitBtn.innerHTML = `Sign in <span class="arr">→</span>`;
-      footText.textContent = "Don't have an account? ";
-      toggleLink.textContent = 'Create one';
-      memberNote.style.display = 'none';
+      if (footText) footText.textContent = "By continuing, you agree to Expertly's Terms of Service.";
     }
   };
 
-  loginTab.addEventListener('click', () => setAuthMode('login'));
-  signupTab.addEventListener('click', () => setAuthMode('signup'));
-  toggleLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    const isLogin = loginTab.classList.contains('active');
-    setAuthMode(isLogin ? 'signup' : 'login');
-  });
+  userTab.addEventListener('click', () => setAuthMode('user'));
+  memberTab.addEventListener('click', () => setAuthMode('member'));
 
-  // Role selections
-  if (clientRoleBtn && memberRoleBtn) {
-    clientRoleBtn.addEventListener('click', () => {
-      clientRoleBtn.classList.add('active');
-      memberRoleBtn.classList.remove('active');
-      currentRole = 'client';
-      memberNote.style.display = 'none';
-    });
-
-    memberRoleBtn.addEventListener('click', () => {
-      memberRoleBtn.classList.add('active');
-      clientRoleBtn.classList.remove('active');
-      currentRole = 'member';
-      memberNote.style.display = 'block';
-    });
-  }
+  // Initialize with 'user' view by default
+  setAuthMode('user');
 
   // Submit form trigger
-  const authForm = document.getElementById('auth-form-submit');
   if (authForm) {
     authForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert(loginTab.classList.contains('active') ? 'Logged in successfully!' : 'Account created successfully!');
+      alert('Logged in successfully!');
+      window.location.href = 'index.html';
+    });
+  }
+
+  // LinkedIn button action
+  if (linkedinBtn) {
+    linkedinBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Connecting with LinkedIn...');
       window.location.href = 'index.html';
     });
   }

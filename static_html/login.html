@@ -28,8 +28,7 @@
       
     </div>
     <div class="nav-actions">
-      <a href="login.html" class="btn btn-ghost">Log in</a>
-      <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+      <a href="login.html" class="btn btn-primary">Log in</a>
     </div>
   </div>
 </nav>
@@ -42,8 +41,8 @@
       </a>
 
       <div class="auth-tabs" id="auth-mode-tabs">
-        <button id="auth-tab-login" class="active">Log in</button>
-        <button id="auth-tab-signup" class="">Create account</button>
+        <button id="auth-tab-user" class="active">User</button>
+        <button id="auth-tab-member" class="">Member</button>
       </div>
 
       <div class="auth-card">
@@ -52,41 +51,19 @@
           Sign in to access the directory, send consultation requests, and manage your profile.
         </p>
 
-        <!-- Role Select Grid (Initially Hidden) -->
-        <div class="auth-role" id="auth-role-select" style="display: none;">
-          <label class="mono">I Am A</label>
-          <div class="auth-role-grid">
-            <button id="role-btn-client" class="">
-              <span class="mono">01</span>
-              <b>Client / Business</b>
-              <em>Looking to hire an expert</em>
-            </button>
-            <button id="role-btn-member" class="active">
-              <span class="mono">02</span>
-              <b>Finance / Legal Pro</b>
-              <em>Joining the network</em>
-            </button>
-          </div>
-        </div>
-
         <!-- SSO buttons -->
-        <button class="auth-sso">
+        <button class="auth-sso" id="sso-google">
           <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.17-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.35 0-4.33-1.58-5.04-3.7H.92v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.28-1.72V4.95H.92A9 9 0 000 9c0 1.45.35 2.82.92 4.05l3.04-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58A9 9 0 009 0 9 9 0 00.92 4.95L3.96 7.28C4.67 5.16 6.65 3.58 9 3.58z"/></svg>
           Continue with Google
         </button>
-        <button class="auth-sso">
+        <button class="auth-sso" id="sso-linkedin">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#0077B5"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.2V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
           Continue with LinkedIn
         </button>
 
-        <div class="auth-divider"><span>or</span></div>
+        <div class="auth-divider" id="auth-divider"><span>or</span></div>
 
         <form class="auth-form" id="auth-form-submit" onsubmit="event.preventDefault();">
-          <!-- Name Field (Initially Hidden) -->
-          <div class="auth-field" id="auth-field-name" style="display: none;">
-            <label>Full name</label>
-            <input type="text" placeholder="Your name"/>
-          </div>
           <div class="auth-field">
             <label>Work email</label>
             <input type="email" placeholder="you@firm.com" required/>
@@ -96,7 +73,6 @@
             <input type="password" placeholder="••••••••" required/>
           </div>
           
-          <!-- Keep signed in (Initially Visible in Login Mode) -->
           <label class="auth-check" id="auth-keep-signed">
             <input type="checkbox" checked /> <span>Keep me signed in for 30 days</span>
           </label>
@@ -106,16 +82,44 @@
           </button>
         </form>
 
-        <p class="auth-foot">
-          <span id="auth-foot-text">Don't have an account? </span>
-          <a href="#" id="auth-toggle-mode-link">Create one</a>
-        </p>
-
-        <!-- Member Application Note (Initially Hidden) -->
-        <div class="auth-note" id="auth-member-note" style="display: none;">
-          <span class="mono">Note</span>
-          A free account lets you browse and hire. To list your profile as a verified expert, you must also <a href="apply.html">apply for membership →</a>
+        <div class="auth-member-info" id="auth-member-info" style="display: none;">
+          <div class="member-info-header">
+            <span class="info-badge">Verified Expert Network</span>
+          </div>
+          <ul class="member-benefits">
+            <li>
+              <div class="benefit-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Verified Credentials</strong>
+                <span>LinkedIn login confirms your professional history to maintain network integrity.</span>
+              </div>
+            </li>
+            <li>
+              <div class="benefit-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Seamless Data Sync</strong>
+                <span>Automatically pre-fill and update your profile details directly from your LinkedIn profile.</span>
+              </div>
+            </li>
+            <li>
+              <div class="benefit-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Privacy First</strong>
+                <span>Expertly never stores your password. Your data is used solely for verification.</span>
+              </div>
+            </li>
+          </ul>
         </div>
+
+        <p class="auth-foot" id="auth-foot">
+          <span id="auth-foot-text">By continuing, you agree to Expertly's Terms of Service.</span>
+        </p>
       </div>
     </div>
 

@@ -259,6 +259,70 @@
   color: var(--ink);
 }
 
+/* Member Info Block on Login Page */
+.auth-member-info {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.member-info-header {
+  margin-bottom: 20px;
+}
+.info-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  color: var(--accent);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.member-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.member-benefits li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.benefit-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--line-2);
+}
+.benefit-icon svg {
+  display: block;
+}
+.benefit-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.benefit-text strong {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.benefit-text span {
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+
+
 @media (max-width: 1000px) {
   .auth-grid { grid-template-columns: 1fr; }
   .auth-right { display: none; }
