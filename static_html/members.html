@@ -1,803 +1,1128 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="" data-hero="split" data-grid="1">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Members — Expertly</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/theme.css">
-<link rel="stylesheet" href="assets/home.css">
-<link rel="stylesheet" href="assets/pages.css">
-<style>
-/* ──────────────────────────────────────────────
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Members — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <style>
+    /* ──────────────────────────────────────────────
    V4 · Toptal-inspired Expert List
    Two-column page · photo-left card layout ·
    Expertly design system throughout
    ────────────────────────────────────────────── */
 
-/* ── Hero ──────────────────────────────────── */
-.mv4-hero {
-  background: #fff;
-  padding: 56px 0 40px;
-  border-bottom: 1px solid var(--line);
-}
-.mv4-hero-heading {
-  font-size: clamp(30px, 3.8vw, 50px);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
-  color: var(--ink);
-  margin-top: 18px;
-}
-.mv4-hero-heading em {
-  font-style: italic;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-weight: 400;
-  color: var(--accent);
-}
-.mv4-hero-sub {
-  font-size: 16px; color: var(--ink-3);
-  margin-top: 14px; max-width: 580px; line-height: 1.55;
-}
-.mv4-hero-meta {
-  display: flex; gap: 28px; margin-top: 28px;
-  padding-top: 24px; border-top: 1px solid var(--line);
-  flex-wrap: wrap;
-}
-.mv4-hero-meta-item { display: flex; flex-direction: column; gap: 3px; }
-.mv4-hero-meta-num {
-  font-size: 24px; font-weight: 600;
-  letter-spacing: -0.03em; color: var(--ink); line-height: 1;
-}
-.mv4-hero-meta-label {
-  font-family: 'Archivo', sans-serif; font-size: 10px;
-  letter-spacing: 0.1em; color: var(--ink-4); text-transform: uppercase;
-}
+    /* ── Hero ──────────────────────────────────── */
+    .mv4-hero {
+      background: #fff;
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--line);
+    }
 
-/* ── Page grid: main + sidebar ─────────────── */
-.mv4-page {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 28px;
-  align-items: start;
-  padding: 32px 0 120px;
-}
+    .mv4-hero-heading {
+      font-size: clamp(30px, 3.8vw, 50px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.04;
+      color: var(--ink);
+      margin-top: 18px;
+    }
 
-/* ── Filter bar (above list) ───────────────── */
-.mv4-filter-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 0 18px;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0;
-  flex-wrap: wrap;
-}
-.mv4-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mv4-hero-heading em {
+      font-style: italic;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      color: var(--accent);
+    }
 
-.mv4-select-wrap { position: relative; display: inline-flex; align-items: center; }
-.mv4-select-wrap::after {
-  content: '▾'; position: absolute; right: 11px;
-  font-size: 9px; color: var(--ink-3); pointer-events: none;
-}
-.mv4-select {
-  appearance: none; -webkit-appearance: none;
-  background: var(--bg-card);
-  border: 1px solid var(--line-2);
-  border-radius: 100px;
-  padding: 7px 28px 7px 13px;
-  font-family: inherit; font-size: 12.5px; font-weight: 500;
-  color: var(--ink); outline: none; cursor: pointer;
-  transition: border-color 0.15s;
-}
-.mv4-select:hover, .mv4-select:focus { border-color: var(--ink-3); }
+    .mv4-hero-sub {
+      font-size: 16px;
+      color: var(--ink-3);
+      margin-top: 14px;
+      max-width: 580px;
+      line-height: 1.55;
+    }
 
-.mv4-search-box {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--bg-alt);
-  border: 1px solid var(--line-2);
-  border-radius: 100px;
-  padding: 7px 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.mv4-search-box:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 12%, transparent);
-}
-.mv4-search-icon { color: var(--ink-4); font-size: 15px; line-height: 1; }
-.mv4-search-box input {
-  background: transparent; border: none; outline: none;
-  font-family: inherit; font-size: 13px; color: var(--ink); width: 180px;
-}
-.mv4-search-box input::placeholder { color: var(--ink-4); }
+    .mv4-hero-meta {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
 
-.mv4-count {
-  font-family: 'Archivo', sans-serif;
-  font-size: 11px; letter-spacing: 0.1em; color: var(--ink-4);
-}
+    .mv4-hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
 
-/* ── Member list ───────────────────────────── */
-.mv4-list { display: flex; flex-direction: column; }
+    .mv4-hero-meta-num {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1;
+    }
 
-/* ── Member card ───────────────────────────── */
-.mv4-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: 156px 1fr;
-  gap: 28px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  text-decoration: none; color: inherit;
-}
-.mv4-card:hover {
-  border-color: var(--line-2);
-  box-shadow: 0 4px 24px -8px rgba(0,0,0,0.1);
-}
-.mv4-card:target {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
-}
+    .mv4-hero-meta-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--ink-4);
+      text-transform: uppercase;
+    }
 
-/* Left column: photo only */
-.mv4-photo-col {
-  display: flex; flex-direction: column; align-items: center;
-}
-.mv4-photo-frame {
-  width: 156px; height: 196px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--bg-alt);
-  position: relative;
-  flex-shrink: 0;
-}
-.mv4-photo {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center top;
-  display: block;
-  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
-}
-.mv4-card:hover .mv4-photo { transform: scale(1.04); }
-.mv4-photo-init {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 52px; font-weight: 600; color: var(--ink-4);
-  background: linear-gradient(145deg, var(--bg-alt), #e4e6ea);
-}
+    /* ── Page grid: main + sidebar ─────────────── */
+    .mv4-page {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 28px;
+      align-items: start;
+      padding: 32px 0 120px;
+    }
 
-/* View profile button under photo */
-.mv4-view-btn {
-  width: 100%;
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 0;
-  background: var(--ink); color: #fff;
-  border-radius: 10px;
-  font-size: 13px; font-weight: 500;
-  border: none; cursor: pointer;
-  transition: background 0.18s, transform 0.18s;
-  text-decoration: none;
-}
-.mv4-view-btn:hover { background: var(--accent); transform: translateY(-1px); }
-.mv4-view-btn-arr { transition: transform 0.2s; }
-.mv4-view-btn:hover .mv4-view-btn-arr { transform: translateX(3px); }
+    /* ── Filter bar (above list) ───────────────── */
+    .mv4-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      flex-wrap: wrap;
+    }
 
-/* Right column: all member details */
-.mv4-content { display: flex; flex-direction: column; min-width: 0; }
+    .mv4-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
-/* Name + verified inline row */
-.mv4-name-row {
-  display: flex; align-items: center; gap: 10px;
-  flex-wrap: wrap; margin-bottom: 4px;
-}
-.mv4-name {
-  font-size: 20px; font-weight: 600;
-  letter-spacing: -0.02em; color: var(--ink);
-  line-height: 1.2;
-}
+    .mv4-select-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
 
-/* Compact inline verified pill — circle icon + bold label */
-.mv4-verified-inline {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: color-mix(in oklab, var(--ok) 9%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ok) 24%, transparent);
-  border-radius: 100px;
-  padding: 3px 10px 3px 3px;
-  font-size: 11px; font-weight: 700; color: var(--ok);
-  white-space: nowrap; flex-shrink: 0;
-  letter-spacing: 0.01em;
-}
-.mv4-verified-circle {
-  width: 18px; height: 18px;
-  background: var(--ok); border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  color: #fff; flex-shrink: 0;
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ok) 25%, transparent);
-}
-.mv4-verified-circle svg { width: 10px; height: 10px; stroke-width: 3; }
+    .mv4-select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 11px;
+      font-size: 9px;
+      color: var(--ink-3);
+      pointer-events: none;
+    }
 
-/* Tier badges — Seasoned vs Budding */
-.mv4-tier-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  border-radius: 100px;
-  padding: 3px 10px;
-  font-size: 11px; font-weight: 600;
-  white-space: nowrap; flex-shrink: 0;
-  letter-spacing: 0.02em;
-}
-.mv4-tier-seasoned {
-  background: #FFFBEB;
-  color: #92400E;
-  border: 1px solid #FCD34D;
-}
-.mv4-tier-budding {
-  background: #EFF6FF;
-  color: #1D4ED8;
-  border: 1px solid #93C5FD;
-}
+    .mv4-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--bg-card);
+      border: 1px solid var(--line-2);
+      border-radius: 100px;
+      padding: 7px 28px 7px 13px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ink);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
 
-/* Bottom category chips */
-.mv4-chips {
-  display: flex; gap: 6px; flex-wrap: wrap;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  margin-top: auto;
-}
-.mv4-chips .chip { font-weight: 700; }
+    .mv4-select:hover,
+    .mv4-select:focus {
+      border-color: var(--ink-3);
+    }
 
-.mv4-role {
-  font-size: 14px; color: var(--ink-3);
-  margin-bottom: 12px; line-height: 1.4;
-}
+    .mv4-search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-alt);
+      border: 1px solid var(--line-2);
+      border-radius: 100px;
+      padding: 7px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
 
-/* Verified badge row */
-.mv4-verified-row {
-  display: inline-flex; align-items: center; gap: 7px;
-  margin-bottom: 14px;
-  padding: 5px 12px;
-  background: color-mix(in oklab, var(--ok) 9%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ok) 22%, transparent);
-  border-radius: 100px;
-  width: fit-content;
-}
-.mv4-verified-icon {
-  width: 16px; height: 16px;
-  background: var(--ok); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; flex-shrink: 0;
-}
-.mv4-verified-icon svg { width: 9px; height: 9px; stroke-width: 3; }
-.mv4-verified-text {
-  font-size: 12px; font-weight: 600; color: var(--ok);
-  white-space: nowrap;
-}
-.mv4-verified-practice {
-  font-size: 12px; color: color-mix(in oklab, var(--ok) 75%, var(--ink));
-  font-weight: 400;
-}
+    .mv4-search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 12%, transparent);
+    }
 
-/* Meta row: rate · location · tenure */
-.mv4-meta {
-  display: flex; align-items: center;
-  gap: 0; margin-bottom: 16px; flex-wrap: wrap;
-}
-.mv4-meta-item {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 13px; color: var(--ink-2);
-  padding-right: 14px; margin-right: 14px;
-  border-right: 1px solid var(--line-2);
-  white-space: nowrap;
-}
-.mv4-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
-.mv4-meta-icon { font-size: 12px; color: var(--ink-4); }
-.mv4-meta-rate { font-weight: 600; color: var(--ink); }
+    .mv4-search-icon {
+      color: var(--ink-4);
+      font-size: 15px;
+      line-height: 1;
+    }
 
-/* Bio paragraph */
-.mv4-bio {
-  font-size: 14px; color: var(--ink-3);
-  line-height: 1.65; margin-bottom: 18px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    .mv4-search-box input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--ink);
+      width: 180px;
+    }
 
-/* Chips row */
-.mv4-chips {
-  display: flex; gap: 6px; flex-wrap: wrap;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-  margin-top: auto;
-}
+    .mv4-search-box input::placeholder {
+      color: var(--ink-4);
+    }
 
-/* Empty state */
-.mv4-empty { padding: 80px 0; text-align: center; }
-.mv4-empty .mono { color: var(--ink-4); font-size: 11px; letter-spacing: 0.12em; margin-bottom: 16px; }
-.mv4-empty h3 { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .mv4-count {
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--ink-4);
+    }
 
-/* ── Right sidebar ─────────────────────────── */
-.mv4-sidebar {
-  position: sticky;
-  top: calc(84px + 24px);
-  display: flex; flex-direction: column; gap: 16px;
-}
+    /* ── Member list ───────────────────────────── */
+    .mv4-list {
+      display: flex;
+      flex-direction: column;
+    }
 
-/* Advantage card */
-.mv4-sidebar-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 28px;
-}
-.mv4-sidebar-eyebrow {
-  font-family: 'Archivo', sans-serif;
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-4); font-weight: 600; margin-bottom: 14px;
-}
-.mv4-sidebar-headline {
-  font-size: 20px; font-weight: 500;
-  letter-spacing: -0.02em; line-height: 1.2;
-  color: var(--ink); margin-bottom: 12px;
-}
-.mv4-sidebar-body {
-  font-size: 14px; color: var(--ink-3); line-height: 1.6;
-  margin-bottom: 20px;
-}
+    /* ── Member card ───────────────────────────── */
+    .mv4-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 156px 1fr;
+      gap: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* Stat callouts inside sidebar */
-.mv4-sidebar-stat {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 0; border-top: 1px solid var(--line);
-}
-.mv4-sidebar-stat-num {
-  font-size: 26px; font-weight: 600; letter-spacing: -0.03em;
-  color: var(--accent); line-height: 1; flex-shrink: 0; width: 56px;
-}
-.mv4-sidebar-stat-text { font-size: 13px; color: var(--ink-3); line-height: 1.45; }
-.mv4-sidebar-stat-text b { color: var(--ink); font-weight: 500; }
+    .mv4-card:hover {
+      border-color: var(--line-2);
+      box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.1);
+    }
 
-/* Dark CTA card */
-.mv4-sidebar-cta {
-  background: var(--ink);
-  border-radius: 16px;
-  padding: 28px;
-  position: relative;
-  overflow: hidden;
-}
-.mv4-sidebar-cta::before {
-  content: '';
-  position: absolute; top: -40px; right: -40px;
-  width: 160px; height: 160px; border-radius: 50%;
-  background: color-mix(in oklab, var(--accent) 18%, transparent);
-  pointer-events: none;
-}
-.mv4-sidebar-cta-eyebrow {
-  font-family: 'Archivo', sans-serif; font-size: 10px;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(255,255,255,0.4); margin-bottom: 12px;
-}
-.mv4-sidebar-cta-headline {
-  font-size: 20px; font-weight: 500;
-  letter-spacing: -0.02em; line-height: 1.2;
-  color: #fff; margin-bottom: 10px;
-  position: relative;
-}
-.mv4-sidebar-cta-body {
-  font-size: 13px; color: rgba(255,255,255,0.55);
-  line-height: 1.55; margin-bottom: 22px;
-  position: relative;
-}
-.mv4-sidebar-cta .btn {
-  width: 100%; justify-content: center;
-  background: #fff; color: var(--ink);
-  position: relative;
-}
-.mv4-sidebar-cta .btn:hover { background: var(--accent-2); color: var(--ink); }
+    .mv4-card:target {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
 
-/* ── Responsive ────────────────────────────── */
-@media (max-width: 1100px) {
-  .mv4-page { grid-template-columns: 1fr 280px; gap: 20px; }
-}
-@media (max-width: 860px) {
-  .mv4-page { grid-template-columns: 1fr; }
-  .mv4-sidebar { position: static; }
-  .mv4-sidebar-cta { display: none; }
-}
-@media (max-width: 580px) {
-  .mv4-card { grid-template-columns: 1fr; }
-  .mv4-photo-col { flex-direction: row; align-items: flex-start; }
-  .mv4-photo-frame { width: 100px; height: 120px; flex-shrink: 0; }
-}
+    /* Left column: photo only */
+    .mv4-photo-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-@keyframes cardSlideIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-</style>
+    .mv4-photo-frame {
+      width: 156px;
+      height: 196px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--bg-alt);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .mv4-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .mv4-card:hover .mv4-photo {
+      transform: scale(1.04);
+    }
+
+    .mv4-photo-init {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      font-weight: 600;
+      color: var(--ink-4);
+      background: linear-gradient(145deg, var(--bg-alt), #e4e6ea);
+    }
+
+    /* View profile button under photo */
+    .mv4-view-btn {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 0;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      text-decoration: none;
+    }
+
+    .mv4-view-btn:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .mv4-view-btn-arr {
+      transition: transform 0.2s;
+    }
+
+    .mv4-view-btn:hover .mv4-view-btn-arr {
+      transform: translateX(3px);
+    }
+
+    /* Right column: all member details */
+    .mv4-content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Name + verified inline row */
+    .mv4-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .mv4-name {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    /* Compact inline verified pill — circle icon + bold label */
+    .mv4-verified-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: color-mix(in oklab, var(--ok) 9%, transparent);
+      border: 1px solid color-mix(in oklab, var(--ok) 24%, transparent);
+      border-radius: 100px;
+      padding: 3px 10px 3px 3px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ok);
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.01em;
+    }
+
+    .mv4-verified-circle {
+      width: 18px;
+      height: 18px;
+      background: var(--ok);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px color-mix(in oklab, var(--ok) 25%, transparent);
+    }
+
+    .mv4-verified-circle svg {
+      width: 10px;
+      height: 10px;
+      stroke-width: 3;
+    }
+
+    /* Tier badges — Seasoned vs Budding */
+    .mv4-tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .mv4-tier-budding {
+      background: #F0FDF4;
+      color: #166534;
+      border: 1px solid #86EFAC;
+    }
+
+    /* Bottom category chips */
+    .mv4-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      margin-top: auto;
+    }
+
+    .mv4-chips .chip {
+      font-weight: 700;
+    }
+
+    .mv4-role {
+      font-size: 14px;
+      color: var(--ink-3);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    /* Verified badge row */
+    .mv4-verified-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 14px;
+      padding: 5px 12px;
+      background: color-mix(in oklab, var(--ok) 9%, transparent);
+      border: 1px solid color-mix(in oklab, var(--ok) 22%, transparent);
+      border-radius: 100px;
+      width: fit-content;
+    }
+
+    .mv4-verified-icon {
+      width: 16px;
+      height: 16px;
+      background: var(--ok);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .mv4-verified-icon svg {
+      width: 9px;
+      height: 9px;
+      stroke-width: 3;
+    }
+
+    .mv4-verified-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ok);
+      white-space: nowrap;
+    }
+
+    .mv4-verified-practice {
+      font-size: 12px;
+      color: color-mix(in oklab, var(--ok) 75%, var(--ink));
+      font-weight: 400;
+    }
+
+    /* Meta row: rate · location · tenure */
+    .mv4-meta {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .mv4-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--ink-2);
+      padding-right: 14px;
+      margin-right: 14px;
+      border-right: 1px solid var(--line-2);
+      white-space: nowrap;
+    }
+
+    .mv4-meta-item:last-child {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+    }
+
+    .mv4-meta-icon {
+      font-size: 12px;
+      color: var(--ink-4);
+    }
+
+    .mv4-meta-rate {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Bio paragraph */
+    .mv4-bio {
+      font-size: 14px;
+      color: var(--ink-3);
+      line-height: 1.65;
+      margin-bottom: 18px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Chips row */
+    .mv4-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      margin-top: auto;
+    }
+
+    /* Empty state */
+    .mv4-empty {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .mv4-empty .mono {
+      color: var(--ink-4);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+
+    .mv4-empty h3 {
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    /* ── Right sidebar ─────────────────────────── */
+    .mv4-sidebar {
+      position: sticky;
+      top: calc(84px + 24px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Advantage card */
+    .mv4-sidebar-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .mv4-sidebar-eyebrow {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .mv4-sidebar-headline {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .mv4-sidebar-body {
+      font-size: 14px;
+      color: var(--ink-3);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Stat callouts inside sidebar */
+    .mv4-sidebar-stat {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .mv4-sidebar-stat-num {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 56px;
+    }
+
+    .mv4-sidebar-stat-text {
+      font-size: 13px;
+      color: var(--ink-3);
+      line-height: 1.45;
+    }
+
+    .mv4-sidebar-stat-text b {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Dark CTA card */
+    .mv4-sidebar-cta {
+      background: var(--ink);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mv4-sidebar-cta::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: color-mix(in oklab, var(--accent) 18%, transparent);
+      pointer-events: none;
+    }
+
+    .mv4-sidebar-cta-eyebrow {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 12px;
+    }
+
+    .mv4-sidebar-cta-headline {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .mv4-sidebar-cta-body {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.55;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .mv4-sidebar-cta .btn {
+      width: 100%;
+      justify-content: center;
+      background: #fff;
+      color: var(--ink);
+      position: relative;
+    }
+
+    .mv4-sidebar-cta .btn:hover {
+      background: var(--accent-2);
+      color: var(--ink);
+    }
+
+    /* ── Responsive ────────────────────────────── */
+    @media (max-width: 1100px) {
+      .mv4-page {
+        grid-template-columns: 1fr 280px;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .mv4-page {
+        grid-template-columns: 1fr;
+      }
+
+      .mv4-sidebar {
+        position: static;
+      }
+
+      .mv4-sidebar-cta {
+        display: none;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .mv4-card {
+        grid-template-columns: 1fr;
+      }
+
+      .mv4-photo-col {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      .mv4-photo-frame {
+        width: 100px;
+        height: 120px;
+        flex-shrink: 0;
+      }
+    }
+
+    @keyframes cardSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- Navigation -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html">
-      <span class="nav-logo" style="font-size:23px;">Expertly<span class="dot"></span></span>
-    </a>
-    <div class="nav-links">
-      <a href="members.html" class="active">Members</a>
-      <a href="articles.html">Articles</a>
-      <a href="events.html">Events</a>
-      <a href="how-it-works.html">How it works</a>
-      
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html">
+        <span class="nav-logo" style="font-size:23px;">Expertly<span class="dot"></span></span>
+      </a>
+      <div class="nav-links">
+        <a href="members.html" class="active">Members</a>
+        <a href="articles.html">Articles</a>
+        <a href="events.html">Events</a>
+        <a href="how-it-works.html">How it works</a>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost">Log in</a>
+        <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+      </div>
     </div>
-    <div class="nav-actions">
-      <a href="login.html" class="btn btn-ghost">Log in</a>
-      <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
-    </div>
-  </div>
-</nav>
+  </nav>
 
-<main>
+  <main>
 
-  <!-- Hero -->
-  <section class="mv4-hero">
+    <!-- Hero -->
+    <section class="mv4-hero">
+      <div class="container-wide">
+        <span class="eyebrow" style="display:inline-flex;align-items:center;gap:9px;">
+          <span style="width:22px;height:2px;background:var(--accent);border-radius:2px;display:inline-block;"></span>
+          Member directory
+        </span>
+        <h1 class="mv4-hero-heading">
+          Hire verified <em>finance & legal</em> counsel.
+        </h1>
+        <p class="mv4-hero-sub">
+          Every practitioner below has been individually credential-verified and peer-reviewed. No agencies, no
+          intermediaries — direct access only.
+        </p>
+        <!-- AI Search — same component as home page -->
+        <div class="hero-search" style="margin-top:36px; max-width:680px;">
+          <div class="hero-search-input">
+            <div class="hero-search-prefix">
+              <span class="ai-pulse small"></span>
+            </div>
+            <div class="hero-typebox" role="textbox" aria-label="Search Expertly">
+              <span class="hero-phrase">M&amp;A tax advisor in Singapore under $500/hr</span>
+            </div>
+            <button class="btn btn-primary hero-find-btn">
+              <span class="hero-find-label">Find</span>
+              <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main page grid -->
     <div class="container-wide">
-      <span class="eyebrow" style="display:inline-flex;align-items:center;gap:9px;">
-        <span style="width:22px;height:2px;background:var(--accent);border-radius:2px;display:inline-block;"></span>
-        Member directory
-      </span>
-      <h1 class="mv4-hero-heading">
-        Hire verified <em>finance & legal</em> counsel.
-      </h1>
-      <p class="mv4-hero-sub">
-        Every practitioner below has been individually credential-verified and peer-reviewed. No agencies, no intermediaries — direct access only.
-      </p>
-      <!-- AI Search — same component as home page -->
-      <div class="hero-search" style="margin-top:36px; max-width:680px;">
-        <div class="hero-search-input">
-          <div class="hero-search-prefix">
-            <span class="ai-pulse small"></span>
-          </div>
-          <div class="hero-typebox" role="textbox" aria-label="Search Expertly">
-            <span class="hero-phrase">M&amp;A tax advisor in Singapore under $500/hr</span>
-          </div>
-          <button class="btn btn-primary hero-find-btn">
-            <span class="hero-find-label">Find</span>
-            <span class="arr">→</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="mv4-page">
 
-  <!-- Main page grid -->
-  <div class="container-wide">
-    <div class="mv4-page">
+        <!-- ── Left: list ── -->
+        <div class="mv4-main">
 
-      <!-- ── Left: list ── -->
-      <div class="mv4-main">
-
-        <!-- Filter bar -->
-        <div class="mv4-filter-bar">
-          <div class="mv4-filters">
-            <div class="mv4-select-wrap">
-              <select class="mv4-select" id="filter-practice"><option value="All">All practices</option></select>
-            </div>
-            <div class="mv4-select-wrap">
-              <select class="mv4-select" id="filter-region">
-                <option value="All">All regions</option>
-                <option value="Americas">Americas</option>
-                <option value="EMEA">EMEA</option>
-                <option value="APAC">APAC</option>
-              </select>
-            </div>
-            <div class="mv4-select-wrap">
-              <select class="mv4-select" id="filter-sort">
-                <option value="featured">Featured</option>
-                <option value="tenure">Most experienced</option>
-                <option value="rate-asc">Rate: low → high</option>
-                <option value="rate-desc">Rate: high → low</option>
-              </select>
+          <!-- Filter bar -->
+          <div class="mv4-filter-bar">
+            <div class="mv4-filters">
+              <div class="mv4-select-wrap">
+                <select class="mv4-select" id="filter-practice">
+                  <option value="All">All practices</option>
+                </select>
+              </div>
+              <div class="mv4-select-wrap">
+                <select class="mv4-select" id="filter-region">
+                  <option value="All">All regions</option>
+                  <option value="Americas">Americas</option>
+                  <option value="EMEA">EMEA</option>
+                  <option value="APAC">APAC</option>
+                </select>
+              </div>
+              <div class="mv4-select-wrap">
+                <select class="mv4-select" id="filter-sort">
+                  <option value="featured">Featured</option>
+                  <option value="tenure">Most experienced</option>
+                  <option value="rate-asc">Rate: low → high</option>
+                  <option value="rate-desc">Rate: high → low</option>
+                </select>
+              </div>
             </div>
           </div>
-          <span class="mv4-count mono" id="dir-results-count">20 / 20</span>
+
+          <!-- Member list -->
+          <div class="mv4-empty" id="dir-empty-state" style="display:none;">
+            <div class="mono">No results</div>
+            <h3>No members match those filters.</h3>
+            <button class="btn btn-outline" id="dir-reset-filters-btn">Reset filters</button>
+          </div>
+          <div class="mv4-list" id="dir-members-grid"></div>
+          <div id="mv4-scroll-sentinel" style="height:1px;"></div>
+
         </div>
 
-        <!-- Member list -->
-        <div class="mv4-empty" id="dir-empty-state" style="display:none;">
-          <div class="mono">No results</div>
-          <h3>No members match those filters.</h3>
-          <button class="btn btn-outline" id="dir-reset-filters-btn">Reset filters</button>
-        </div>
-        <div class="mv4-list" id="dir-members-grid"></div>
+        <!-- ── Right: sidebar ── -->
+        <aside class="mv4-sidebar">
+          <!-- Advantage card -->
+          <div class="mv4-sidebar-card">
+            <div class="mv4-sidebar-headline">Every member is individually vetted.</div>
+            <div class="mv4-sidebar-body">
+              Our screening covers credentials, years in practice, jurisdiction expertise, and a peer review by existing
+              members. No self-serve listings.
+            </div>
+            <div class="mv4-sidebar-stat">
+              <div class="mv4-sidebar-stat-num">100%</div>
+              <div class="mv4-sidebar-stat-text"><b>Manual review</b> — every profile is personally verified by our team
+                before going live.</div>
+            </div>
+            <div class="mv4-sidebar-stat">
+              <div class="mv4-sidebar-stat-num">0</div>
+              <div class="mv4-sidebar-stat-text"><b>Junior associates</b> — every member is a partner-level, senior, or
+                founder practitioner.</div>
+            </div>
+            <div class="mv4-sidebar-stat">
+              <div class="mv4-sidebar-stat-num">20+</div>
+              <div class="mv4-sidebar-stat-text"><b>Jurisdictions</b> covered — from Chennai and Singapore to London,
+                Dubai, and New York.</div>
+            </div>
+          </div>
+
+          <!-- CTA card -->
+          <div class="mv4-sidebar-cta">
+            <div class="mv4-sidebar-cta-eyebrow">For practitioners</div>
+            <div class="mv4-sidebar-cta-headline">Join the network.</div>
+            <div class="mv4-sidebar-cta-body">
+              Apply for membership and get discovered by clients globally. Keep 100% of your fees.
+            </div>
+            <a href="apply.html" class="btn btn-lg">Apply for membership <span class="arr">→</span></a>
+          </div>
+
+        </aside>
 
       </div>
-
-      <!-- ── Right: sidebar ── -->
-      <aside class="mv4-sidebar">
-
-        <!-- Advantage card -->
-        <div class="mv4-sidebar-card">
-          <div class="mv4-sidebar-eyebrow">The Expertly Advantage</div>
-          <div class="mv4-sidebar-headline">Every member is individually vetted.</div>
-          <div class="mv4-sidebar-body">
-            Our screening covers credentials, years in practice, jurisdiction expertise, and a peer review by existing members. No self-serve listings.
-          </div>
-          <div class="mv4-sidebar-stat">
-            <div class="mv4-sidebar-stat-num">100%</div>
-            <div class="mv4-sidebar-stat-text"><b>Manual review</b> — every profile is personally verified by our team before going live.</div>
-          </div>
-          <div class="mv4-sidebar-stat">
-            <div class="mv4-sidebar-stat-num">0</div>
-            <div class="mv4-sidebar-stat-text"><b>Junior associates</b> — every member is a partner-level, senior, or founder practitioner.</div>
-          </div>
-          <div class="mv4-sidebar-stat">
-            <div class="mv4-sidebar-stat-num">20+</div>
-            <div class="mv4-sidebar-stat-text"><b>Jurisdictions</b> covered — from Chennai and Singapore to London, Dubai, and New York.</div>
-          </div>
-        </div>
-
-        <!-- CTA card -->
-        <div class="mv4-sidebar-cta">
-          <div class="mv4-sidebar-cta-eyebrow">For practitioners</div>
-          <div class="mv4-sidebar-cta-headline">Join the network.</div>
-          <div class="mv4-sidebar-cta-body">
-            Apply for membership and get discovered by clients globally. Keep 100% of your fees.
-          </div>
-          <a href="apply.html" class="btn btn-lg">Apply for membership <span class="arr">→</span></a>
-        </div>
-
-      </aside>
-
     </div>
-  </div>
 
-</main>
+  </main>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container-wide">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="wordmark">Expertly<span style="width:9px;height:9px;background:var(--accent);border-radius:50%;display:inline-block;margin-left:2px;"></span></div>
-        <p>The curated professional network for verified finance & legal experts worldwide.</p>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="wordmark">Expertly<span
+              style="width:9px;height:9px;background:var(--accent);border-radius:50%;display:inline-block;margin-left:2px;"></span>
+          </div>
+          <p>The curated professional network for verified finance & legal experts worldwide.</p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="members.html">Member Directory</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="apply.html">Apply for Membership</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">Our Mission</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="#">Verified Experts</a></li>
+            <li><a href="#">Membership Benefits</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
       </div>
-      <div><h4>Platform</h4><ul><li><a href="members.html">Member Directory</a></li><li><a href="articles.html">Articles</a></li><li><a href="events.html">Events</a></li><li><a href="apply.html">Apply for Membership</a></li></ul></div>
-      <div><h4>About</h4><ul><li><a href="#">Our Mission</a></li><li><a href="how-it-works.html">How It Works</a></li><li><a href="#">Verified Experts</a></li><li><a href="#">Membership Benefits</a></li></ul></div>
-      <div><h4>Contact</h4><ul><li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul></div>
+      <div class="footer-bottom">
+        <span>© 2026 Expertly · All Rights Reserved</span>
+        <span>Verified · Global · Independent</span>
+      </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Expertly · All Rights Reserved</span>
-      <span>Verified · Global · Independent</span>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<script src="assets/members.js"></script>
-<script src="assets/shared.js"></script>
+  <script src="assets/members.js"></script>
+  <script src="assets/shared.js?v=10"></script>
 
-<!-- AI Search component — same behaviour as home page -->
-<script>
-(function () {
-  const searchPhrases = [
-    { q: 'M&A tax advisor in Singapore under $500/hr',  label: 'Find' },
-    { q: 'Articles on UAE corporate tax for 2026',       label: 'Find' },
-    { q: 'Transfer pricing conferences in London',       label: 'Find' },
-    { q: 'IP counsel for SaaS, EU + US coverage',        label: 'Find' }
-  ];
-  let phraseIdx = 0;
+  <!-- AI Search component — same behaviour as home page -->
+  <script>
+    (function () {
+      const searchPhrases = [
+        { q: 'M&A tax advisor in Singapore under $500/hr', label: 'Find' },
+        { q: 'Articles on UAE corporate tax for 2026', label: 'Find' },
+        { q: 'Transfer pricing conferences in London', label: 'Find' },
+        { q: 'IP counsel for SaaS, EU + US coverage', label: 'Find' }
+      ];
+      let phraseIdx = 0;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const heroSearch  = document.querySelector('.hero-search');
-    const typebox     = document.querySelector('.hero-typebox');
-    const findBtnLbl  = document.querySelector('.hero-find-label');
+      document.addEventListener('DOMContentLoaded', () => {
+        const heroSearch = document.querySelector('.hero-search');
+        const typebox = document.querySelector('.hero-typebox');
+        const findBtnLbl = document.querySelector('.hero-find-label');
 
-    // Rotate phrases every 3.2 s
-    if (typebox && findBtnLbl) {
-      setInterval(() => {
-        phraseIdx = (phraseIdx + 1) % searchPhrases.length;
-        const { q, label } = searchPhrases[phraseIdx];
-        typebox.innerHTML    = `<span class="hero-phrase" style="animation:heroPhraseIn 0.45s cubic-bezier(0.22,1,0.36,1);">${q}</span>`;
-        findBtnLbl.innerHTML = `<span style="animation:heroLabelIn 0.45s cubic-bezier(0.22,1,0.36,1);">${label}</span>`;
-      }, 3200);
-    }
+        // Rotate phrases every 3.2 s
+        if (typebox && findBtnLbl) {
+          setInterval(() => {
+            phraseIdx = (phraseIdx + 1) % searchPhrases.length;
+            const { q, label } = searchPhrases[phraseIdx];
+            typebox.innerHTML = `<span class="hero-phrase" style="animation:heroPhraseIn 0.45s cubic-bezier(0.22,1,0.36,1);">${q}</span>`;
+            findBtnLbl.innerHTML = `<span style="animation:heroLabelIn 0.45s cubic-bezier(0.22,1,0.36,1);">${label}</span>`;
+          }, 3200);
+        }
 
-    // Click anywhere on the search box → open AI search palette
-    if (heroSearch) {
-      heroSearch.addEventListener('click', () => {
-        const phraseEl = heroSearch.querySelector('.hero-phrase');
-        const q = phraseEl ? phraseEl.textContent : '';
-        window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q } }));
+        // Click anywhere on the search box → open AI search palette
+        if (heroSearch) {
+          heroSearch.addEventListener('click', () => {
+            const phraseEl = heroSearch.querySelector('.hero-phrase');
+            const q = phraseEl ? phraseEl.textContent : '';
+            window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q } }));
+          });
+
+          // Hint chips also open the palette pre-filled
+          heroSearch.querySelectorAll('.hero-search-hints button').forEach(btn => {
+            btn.addEventListener('click', e => {
+              e.stopPropagation();
+              window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: btn.textContent.trim() } }));
+            });
+          });
+        }
       });
+    })();
+  </script>
 
-      // Hint chips also open the palette pre-filled
-      heroSearch.querySelectorAll('.hero-search-hints button').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: btn.textContent.trim() } }));
-        });
-      });
-    }
-  });
-})();
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const members = window.EXPERTLY_MEMBERS || [];
+      const searchInput = document.getElementById('dir-search-input');
+      const practiceSelect = document.getElementById('filter-practice');
+      const regionSelect = document.getElementById('filter-region');
+      const sortSelect = document.getElementById('filter-sort');
+      const listEl = document.getElementById('dir-members-grid');
+      const emptyEl = document.getElementById('dir-empty-state');
+      const resetBtn = document.getElementById('dir-reset-filters-btn');
+      const sentinel = document.getElementById('mv4-scroll-sentinel');
+      const totalCountEl = document.getElementById('mv4-total-count');
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const members        = window.EXPERTLY_MEMBERS || [];
-  const searchInput    = document.getElementById('dir-search-input');
-  const practiceSelect = document.getElementById('filter-practice');
-  const regionSelect   = document.getElementById('filter-region');
-  const sortSelect     = document.getElementById('filter-sort');
-  const countLabel     = document.getElementById('dir-results-count');
-  const listEl         = document.getElementById('dir-members-grid');
-  const emptyEl        = document.getElementById('dir-empty-state');
-  const resetBtn       = document.getElementById('dir-reset-filters-btn');
-  const totalCountEl   = document.getElementById('mv4-total-count');
+      if (totalCountEl) totalCountEl.textContent = members.length;
 
-  if (totalCountEl) totalCountEl.textContent = members.length;
+      const PAGE_SIZE = 8;
+      let allFiltered = [];
+      let currentPage = 0;
 
-  const regionMap = {
-    Americas: ['US','BR','MX','CA'],
-    EMEA:     ['GB','FR','DE','ES','IT','AE','EG','LB','GH','NG'],
-    APAC:     ['IN','SG','JP','CN','AU','HK']
-  };
+      const regionMap = {
+        Americas: ['US', 'BR', 'MX', 'CA'],
+        EMEA: ['GB', 'FR', 'DE', 'ES', 'IT', 'AE', 'EG', 'LB', 'GH', 'NG'],
+        APAC: ['IN', 'SG', 'JP', 'CN', 'AU', 'HK']
+      };
 
-  const practices = [...new Set(members.map(m => m.practice))];
-  practiceSelect.innerHTML =
-    `<option value="All">All practices</option>` +
-    practices.map(p => `<option value="${p}">${p}</option>`).join('');
+      const practices = [...new Set(members.map(m => m.practice))];
+      practiceSelect.innerHTML =
+        `<option value="All">All practices</option>` +
+        practices.map(p => `<option value="${p}">${p}</option>`).join('');
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const ip = urlParams.get('practice');
-  if (ip && practices.includes(ip)) practiceSelect.value = ip;
+      const urlParams = new URLSearchParams(window.location.search);
+      const ip = urlParams.get('practice');
+      if (ip && practices.includes(ip)) practiceSelect.value = ip;
 
-  const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const pinSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+      const clockSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`;
+      const sproutIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 22V13" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/><path d="M12 13C12 13 8 11 7 8C6 5 8 2 10 2C11.2 2 12 3 12 3C12 3 12.8 2 14 2C16 2 18 5 17 8C16 11 12 13 12 13Z" fill="#22C55E" stroke="#16A34A" stroke-width="1"/><path d="M12 17C12 17 9 16 8 14" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
-  /* Practice-to-service tags mapping */
-  const serviceMap = {
-    'M&A Tax':           ['M&A Tax', 'Corporate Tax', 'Transaction Advisory'],
-    'Transfer Pricing':  ['Transfer Pricing', 'BEPS 2.0', 'International Tax'],
-    'Corporate Law':     ['Corporate Law', 'Governance', 'Secretarial'],
-    'Cross-Border Tax':  ['Cross-Border Tax', 'Treaty Planning', 'International Tax'],
-    'Indirect Tax':      ['Indirect Tax', 'GST / VAT', 'Customs'],
-    'Compliance':        ['Compliance', 'Regulatory', 'AML / KYC'],
-    'M&A':               ['M&A', 'Due Diligence', 'Deal Structuring'],
-    'IP & Tech':         ['IP Law', 'Technology Law', 'AI & Data'],
-    'Banking & Finance': ['Banking & Finance', 'Lending', 'Structured Finance'],
-    'Dispute Resolution':['Arbitration', 'Litigation', 'Mediation'],
-    'Capital Markets':   ['Capital Markets', 'Securities', 'IPO Advisory'],
-    'Private Equity':    ['Private Equity', 'Venture Capital', 'Fund Structuring'],
-    'Antitrust':         ['Antitrust', 'Competition Law', 'Merger Control'],
-    'Restructuring':     ['Restructuring', 'Insolvency', 'Debt Advisory'],
-    'Valuation':         ['Valuation', 'Financial Modelling', 'Business Advisory'],
-    'Securities':        ['Securities', 'Capital Markets', 'Regulatory'],
-  };
-  /* Returns exactly [category, service] — two chips only */
-  const serviceChips = (m) => {
-    const tags = serviceMap[m.practice] || [m.practice, m.practice];
-    return [tags[0], tags[1]];
-  };
+      const serviceMap = {
+        'M&A Tax': ['M&A Tax', 'Corporate Tax', 'Transaction Advisory'],
+        'Transfer Pricing': ['Transfer Pricing', 'BEPS 2.0', 'International Tax'],
+        'Corporate Law': ['Corporate Law', 'Governance', 'Secretarial'],
+        'Cross-Border Tax': ['Cross-Border Tax', 'Treaty Planning', 'International Tax'],
+        'Indirect Tax': ['Indirect Tax', 'GST / VAT', 'Customs'],
+        'Compliance': ['Compliance', 'Regulatory', 'AML / KYC'],
+        'M&A': ['M&A', 'Due Diligence', 'Deal Structuring'],
+        'IP & Tech': ['IP Law', 'Technology Law', 'AI & Data'],
+        'Banking & Finance': ['Banking & Finance', 'Lending', 'Structured Finance'],
+        'Dispute Resolution': ['Arbitration', 'Litigation', 'Mediation'],
+        'Capital Markets': ['Capital Markets', 'Securities', 'IPO Advisory'],
+        'Private Equity': ['Private Equity', 'Venture Capital', 'Fund Structuring'],
+        'Antitrust': ['Antitrust', 'Competition Law', 'Merger Control'],
+        'Restructuring': ['Restructuring', 'Insolvency', 'Debt Advisory'],
+        'Valuation': ['Valuation', 'Financial Modelling', 'Business Advisory'],
+        'Securities': ['Securities', 'Capital Markets', 'Regulatory'],
+      };
 
-  /* Generate a short bio from structured data */
-  const bio = (m) => {
-    const firmPart = m.firm && m.firm !== 'Independent'
-      ? `at ${m.firm}` : 'as an independent practitioner';
-    const locationShort = m.location.split(',')[0];
-    return `${m.name} is a ${m.title.toLowerCase()} with ${m.tenure} of experience specialising in ${m.practice} ${firmPart}, based in ${locationShort}. Available for cross-border mandates and international engagements.`;
-  };
+      const serviceChips = (m) => {
+        const tags = serviceMap[m.practice] || [m.practice, m.practice];
+        return [tags[0], tags[1]];
+      };
 
-  const render = () => {
-    const q  = searchInput ? searchInput.value.trim().toLowerCase() : '';
-    const pr = practiceSelect.value;
-    const rg = regionSelect.value;
-    const so = sortSelect.value;
+      const bio = (m) => {
+        const firmPart = m.firm && m.firm !== 'Independent'
+          ? `at ${m.firm}` : 'as an independent practitioner';
+        const locationShort = m.location.split(',')[0];
+        return `${m.name} is a ${m.title.toLowerCase()} with ${m.tenure} of experience specialising in ${m.practice} ${firmPart}, based in ${locationShort}. Available for cross-border mandates and international engagements.`;
+      };
 
-    let filtered = [...members];
-    if (q) filtered = filtered.filter(m =>
-      [m.name, m.practice, m.location, m.firm, m.title].some(v => v.toLowerCase().includes(q))
-    );
-    if (pr !== 'All') filtered = filtered.filter(m => m.practice === pr);
-    if (rg !== 'All') filtered = filtered.filter(m => (regionMap[rg]||[]).includes(m.country));
-    if (so === 'rate-asc')  filtered.sort((a,b) => parseInt(a.rate) - parseInt(b.rate));
-    if (so === 'rate-desc') filtered.sort((a,b) => parseInt(b.rate) - parseInt(a.rate));
-    if (so === 'tenure')    filtered.sort((a,b) => parseInt(b.tenure) - parseInt(a.tenure));
+      const renderCard = (m, animIdx) => {
+        const firm = m.firm && m.firm !== 'Independent' ? m.firm : null;
+        const roleText = firm ? `${m.title} at ${firm}` : m.title;
+        const expText = `${m.tenure} exp.`;
+        const delay = Math.min(animIdx * 50, 400);
 
-    countLabel.textContent = `${filtered.length} / ${members.length}`;
+        const photoEl = m.img
+          ? `<img class="mv4-photo" src="${m.img}" alt="${m.name}" loading="${animIdx < 5 ? 'eager' : 'lazy'}" />`
+          : `<div class="mv4-photo-init">${m.initials}</div>`;
 
-    if (!filtered.length) {
-      listEl.innerHTML = '';
-      emptyEl.style.display = 'block';
-      return;
-    }
-    emptyEl.style.display = 'none';
+        const verifiedInline = m.verified
+          ? `<span class="mv4-verified-circle">${checkSvg}</span>`
+          : '';
 
-    listEl.innerHTML = filtered.map((m, i) => {
-      const firm = m.firm && m.firm !== 'Independent' ? m.firm : null;
-      const roleText = firm ? `${m.title} at ${firm}` : m.title;
-      const expText = `${m.tenure} experience`;
-      const delay = Math.min(i * 50, 400);
+        const isBudding = parseInt(m.tenure) < 12;
+        const tierBadge = isBudding
+          ? `<span class="mv4-tier-badge mv4-tier-budding">${sproutIcon} Budding</span>`
+          : '';
 
-      const photoEl = m.img
-        ? `<img class="mv4-photo" src="${m.img}" alt="${m.name}" loading="${i < 5 ? 'eager' : 'lazy'}" />`
-        : `<div class="mv4-photo-init">${m.initials}</div>`;
-
-      const verifiedInline = m.verified
-        ? `<span class="mv4-verified-circle">${checkSvg}</span>`
-        : '';
-
-      // Tier: Seasoned = 12+ yrs, Budding = under 12 yrs
-      const tenureYears = parseInt(m.tenure);
-      const isSeasoned = tenureYears >= 12;
-      const tierBadge = `
-        <span class="mv4-tier-badge ${isSeasoned ? 'mv4-tier-seasoned' : 'mv4-tier-budding'}">
-          ${isSeasoned ? '★ Seasoned' : '◆ Budding'}
-        </span>`;
-
-      return `
-        <div class="mv4-card" id="${m.id}"
-             style="animation: cardSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
-
-          <!-- Photo col -->
-          <div class="mv4-photo-col">
-            <div class="mv4-photo-frame">${photoEl}</div>
-          </div>
-
-          <!-- Content col -->
-          <div class="mv4-content">
-            <div class="mv4-name-row">
-              <span class="mv4-name">${m.name}</span>
-              ${verifiedInline}
-              ${tierBadge}
-            </div>
-            <div class="mv4-role">${roleText}</div>
-
-            <div class="mv4-meta">
-              <div class="mv4-meta-item">
-                <span class="mv4-meta-icon">📍</span>
-                <span>${m.location}</span>
-              </div>
-              <div class="mv4-meta-item">
-                <span class="mv4-meta-icon">🗓</span>
-                <span>${expText}</span>
-              </div>
-              <div class="mv4-meta-item">
-                <span class="mv4-meta-icon">💰</span>
-                <span class="mv4-meta-rate">${m.rate}</span>
-              </div>
-            </div>
-
-            <p class="mv4-bio">${bio(m)}</p>
-
-            <div class="mv4-chips">
-              <span class="chip">${serviceChips(m)[0]}</span>
-              <span class="chip">${serviceChips(m)[1]}</span>
-            </div>
-          </div>
-
+        return `
+      <div class="mv4-card" id="${m.id}"
+           style="animation: cardSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
+        <div class="mv4-photo-col">
+          <div class="mv4-photo-frame">${photoEl}</div>
         </div>
-      `;
-    }).join('');
-  };
+        <div class="mv4-content">
+          <div class="mv4-name-row">
+            <span class="mv4-name">${m.name}</span>
+            ${verifiedInline}
+            ${tierBadge}
+          </div>
+          <div class="mv4-role">${roleText}</div>
+          <div class="mv4-meta">
+            <div class="mv4-meta-item">
+              <span class="mv4-meta-icon">${pinSvg}</span>
+              <span>${m.location}</span>
+            </div>
+            <div class="mv4-meta-item">
+              <span class="mv4-meta-icon">${clockSvg}</span>
+              <span>${expText}</span>
+            </div>
+            <div class="mv4-meta-item">
+              <span class="mv4-meta-rate">${m.rate}</span>
+            </div>
+          </div>
+          <p class="mv4-bio">${bio(m)}</p>
+          <div class="mv4-chips">
+            <span class="chip">${serviceChips(m)[0]}</span>
+            <span class="chip">${serviceChips(m)[1]}</span>
+          </div>
+        </div>
+      </div>
+    `;
+      };
 
-  if (searchInput) searchInput.addEventListener('input', render);
-  practiceSelect.addEventListener('change', render);
-  regionSelect.addEventListener('change', render);
-  sortSelect.addEventListener('change', render);
-  resetBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    practiceSelect.value = 'All';
-    regionSelect.value = 'All';
-    sortSelect.value = 'featured';
-    render();
-  });
-  render();
-});
-</script>
+      const loadMore = () => {
+        const start = currentPage * PAGE_SIZE;
+        const batch = allFiltered.slice(start, start + PAGE_SIZE);
+        if (!batch.length) return;
+        listEl.insertAdjacentHTML('beforeend', batch.map((m, i) => renderCard(m, i)).join(''));
+        currentPage++;
+      };
+
+      const render = () => {
+        const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        const pr = practiceSelect.value;
+        const rg = regionSelect.value;
+        const so = sortSelect.value;
+
+        let filtered = [...members];
+        if (q) filtered = filtered.filter(m =>
+          [m.name, m.practice, m.location, m.firm, m.title].some(v => v.toLowerCase().includes(q))
+        );
+        if (pr !== 'All') filtered = filtered.filter(m => m.practice === pr);
+        if (rg !== 'All') filtered = filtered.filter(m => (regionMap[rg] || []).includes(m.country));
+        if (so === 'rate-asc') filtered.sort((a, b) => parseInt(a.rate) - parseInt(b.rate));
+        if (so === 'rate-desc') filtered.sort((a, b) => parseInt(b.rate) - parseInt(a.rate));
+        if (so === 'tenure') filtered.sort((a, b) => parseInt(b.tenure) - parseInt(a.tenure));
+
+        allFiltered = filtered;
+        currentPage = 0;
+        listEl.innerHTML = '';
+
+        if (!allFiltered.length) {
+          emptyEl.style.display = 'block';
+          return;
+        }
+        emptyEl.style.display = 'none';
+        loadMore();
+      };
+
+      /* Silently load more when sentinel enters viewport */
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      }, { rootMargin: '300px' });
+      if (sentinel) observer.observe(sentinel);
+
+      if (searchInput) searchInput.addEventListener('input', render);
+      practiceSelect.addEventListener('change', render);
+      regionSelect.addEventListener('change', render);
+      sortSelect.addEventListener('change', render);
+      resetBtn.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        practiceSelect.value = 'All';
+        regionSelect.value = 'All';
+        sortSelect.value = 'featured';
+        render();
+      });
+      render();
+    });
+  </script>
 </body>
+
 </html>
