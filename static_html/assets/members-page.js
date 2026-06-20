@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div><span class="mono">Tenure</span>${m.tenure}</div>
           </div>
           <div class="dir-card-actions">
-            <button class="btn btn-primary" style="flex:1" onclick="alert('Consultation request sent to ${m.name}!')">Request consultation</button>
+            <button class="btn btn-primary" style="flex:1">Request consultation</button>
             <button class="btn btn-outline" onclick="window.location.hash = '${m.id}'">View profile</button>
           </div>
         </article>

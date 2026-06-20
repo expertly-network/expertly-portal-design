@@ -196,7 +196,7 @@ function initIdentityFormElements() {
       if (!file) return;
 
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size exceeds maximum limit of 5 MB');
+        showToast('File size exceeds 5 MB limit.');
         return;
       }
 
@@ -755,11 +755,14 @@ function initNavigationStepper() {
       if (stepNum === currentStep) {
         el.classList.add('active');
         numContainer.textContent = stepNum;
+        el.style.cursor = 'default';
       } else if (stepNum < currentStep) {
         el.classList.add('done');
         numContainer.textContent = '✓';
+        el.style.cursor = 'pointer';
       } else {
         numContainer.textContent = stepNum;
+        el.style.cursor = 'default';
       }
     });
 
@@ -770,10 +773,23 @@ function initNavigationStepper() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Sidebar steps click listeners to navigate back
+  if (stepsList) {
+    const stepEls = stepsList.querySelectorAll('.apply-step');
+    stepEls.forEach(el => {
+      el.addEventListener('click', () => {
+        const targetStep = parseInt(el.getAttribute('data-step'));
+        if (targetStep < currentStep) {
+          window.navigateToStep(targetStep);
+        }
+      });
+    });
+  }
+
   const validateStep = (step) => {
     if (step === 1) {
       if (!linkedinConnected) {
-        alert('Please import your LinkedIn details first to proceed.');
+        showToast('Please import your LinkedIn details first to proceed.');
         return false;
       }
     }
@@ -916,7 +932,9 @@ function initLinkedInImportStep1() {
     importGoBtn.addEventListener('click', () => {
       const val = urlInput.value.trim();
       if (!val || !val.toLowerCase().includes('linkedin')) {
-        alert('Please enter a valid LinkedIn URL (e.g. https://linkedin.com/in/username).');
+        showToast('Please enter a valid LinkedIn URL (e.g. https://linkedin.com/in/username).');
+        urlInput.style.borderColor = '#e53935';
+        setTimeout(() => { urlInput.style.borderColor = ''; }, 1500);
         return;
       }
 

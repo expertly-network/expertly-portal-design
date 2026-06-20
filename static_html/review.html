@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Application Submitted — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/auth.css">
+  <style>
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .review-page-main {
+      padding: 64px 24px 120px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .status-banner {
+      background: var(--bg-alt);
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .status-badge {
+      background: #033c2f;
+      color: #fff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      display: block;
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%   { transform: scale(0.8); opacity: 0.5; }
+      50%  { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.5; }
+    }
+
+    .celebrate-card {
+      text-align: center;
+      padding: 56px 40px 48px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .celebrate-emoji {
+      font-size: 56px;
+      display: block;
+      margin-bottom: 24px;
+      animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes pop {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .next-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .next-step-card {
+      padding: 24px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      text-align: left;
+    }
+
+    .next-step-num {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .next-step-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .next-step-card p {
+      font-size: 13px;
+      color: var(--ink-3);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      .status-banner { padding: 20px; gap: 14px; }
+      .celebrate-card { padding: 40px 24px 36px; }
+      .next-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Dynamic Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html">
+        <span class="nav-logo" style="font-size: 23px;">Expertly<span class="dot"></span></span>
+      </a>
+      <div class="nav-links">
+        <a href="members.html" class="">Members</a>
+        <a href="articles.html" class="">Articles</a>
+        <a href="events.html" class="">Events</a>
+        <a href="how-it-works.html" class="">How it works</a>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-primary">Log in</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="review-page-main">
+
+    <!-- Status Banner -->
+    <div class="status-banner">
+      <div id="status-icon-container" style="flex-shrink:0;width:52px;height:52px;border-radius:50%;background:#033c2f;display:flex;align-items:center;justify-content:center;color:#fff;">
+        <svg id="status-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+          <h1 id="status-title" style="font-size:clamp(18px,2.5vw,22px);font-weight:500;letter-spacing:-0.02em;color:var(--ink);margin:0;">Application under review</h1>
+          <span id="status-badge" class="status-badge">In Review</span>
+        </div>
+        <p id="status-desc" style="font-size:14px;color:var(--ink-3);margin:0;line-height:1.5;">
+          We are reviewing your profile and credentials. You will receive an email update once completed.
+        </p>
+      </div>
+    </div>
+
+    <!-- Celebration Card -->
+    <div class="celebrate-card">
+      <span class="celebrate-emoji">🎉</span>
+      <h2 style="font-size:clamp(26px,4vw,38px);font-weight:500;letter-spacing:-0.03em;color:var(--ink);margin:0 0 12px;line-height:1.1;">
+        You're in the queue,<br>
+        <em style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;color:var(--accent);" id="celebrate-name">applicant.</em>
+      </h2>
+      <p style="font-size:15px;color:var(--ink-3);line-height:1.6;max-width:480px;margin:0 auto 0;">
+        Your application has been submitted successfully. Our credentials committee will personally review your profile.
+      </p>
+    </div>
+
+    <!-- What happens next -->
+    <p class="mono" style="font-size:10px;letter-spacing:0.12em;color:var(--ink-3);margin:0 0 14px;">WHAT HAPPENS NEXT</p>
+    <div class="next-steps">
+      <div class="next-step-card">
+        <span class="next-step-num">01 · REVIEW</span>
+        <h3>Credentials check</h3>
+        <p>Our committee verifies your qualifications and peer references.</p>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">02 · DECISION</span>
+        <h3>Email notification</h3>
+        <p>You'll receive an email once the review is complete with next steps.</p>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">03 · ONBOARD</span>
+        <h3>Profile goes live</h3>
+        <p>If accepted, your verified profile is published in the expert directory.</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline btn-lg">Back to Home</a>
+      <a id="review-explore-btn" href="members.html" class="btn btn-primary btn-lg">Explore Expert Network <span class="arr">→</span></a>
+    </div>
+
+  </main>
+
+  <script src="assets/members.js"></script>
+  <script src="assets/shared.js"></script>
+  <script>
+    /* ── Confetti ── */
+    (function () {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      const colors = ['#033c2f', '#00A582', '#8BFCD8', '#ffffff', '#00C99E', '#065f46'];
+      let particles = [];
+      let running = true;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function createParticle() {
+        return {
+          x: Math.random() * canvas.width,
+          y: -10,
+          w: Math.random() * 8 + 4,
+          h: Math.random() * 4 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          angle: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.2,
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 3 + 2,
+          opacity: 1
+        };
+      }
+
+      let spawnCount = 0;
+      const maxSpawn = 180;
+
+      function loop() {
+        if (!running) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (spawnCount < maxSpawn) {
+          for (let i = 0; i < 4; i++) particles.push(createParticle());
+          spawnCount += 4;
+        }
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.angle += p.spin;
+          p.vy += 0.05;
+          if (p.y > canvas.height * 0.7) p.opacity -= 0.02;
+
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+
+        particles = particles.filter(p => p.opacity > 0 && p.y < canvas.height + 20);
+
+        if (spawnCount >= maxSpawn && particles.length === 0) {
+          running = false;
+          return;
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+
+    /* ── Page personalisation ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const sessionStr = localStorage.getItem('expertly_session');
+      let session = null;
+      try { session = JSON.parse(sessionStr); } catch (e) {}
+      const isMember = session && session.role === 'member';
+
+      const dataStr = localStorage.getItem('expertly_application_data');
+      let data = null;
+      try { data = JSON.parse(dataStr); } catch (e) {}
+
+      // Personalise the celebration name
+      const celebrateName = document.getElementById('celebrate-name');
+      if (celebrateName) {
+        const firstName = data && data.firstName ? data.firstName : (session && session.email ? session.email.split('@')[0].split('.')[0] : null);
+        if (firstName) {
+          const name = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+          celebrateName.textContent = `${name}.`;
+        }
+      }
+
+      // Member state overrides
+      if (isMember) {
+        const statusTitle = document.getElementById('status-title');
+        const statusBadge = document.getElementById('status-badge');
+        const statusDesc = document.getElementById('status-desc');
+        const statusIconContainer = document.getElementById('status-icon-container');
+        const exploreBtn = document.getElementById('review-explore-btn');
+
+        if (statusTitle) statusTitle.textContent = 'Active Member Profile';
+        if (statusBadge) { statusBadge.textContent = 'Active Member'; statusBadge.style.background = 'var(--accent-2)'; }
+        if (statusDesc) statusDesc.textContent = 'Your membership is active and your verified profile is live in the expert directory.';
+        if (statusIconContainer) {
+          statusIconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`;
+          statusIconContainer.style.background = 'color-mix(in oklab, var(--accent-2) 15%, var(--bg-alt))';
+          statusIconContainer.style.color = 'var(--accent-2)';
+          statusIconContainer.style.border = '1px solid var(--accent-2)';
+        }
+
+        let memberId = 'marcus-chen';
+        if (session && session.email) {
+          const username = session.email.split('@')[0].replace(/[\._]/g, '-').toLowerCase();
+          const matched = (window.EXPERTLY_MEMBERS || []).find(m => m.id === username || m.id.replace(/-/g,'') === username.replace(/-/g,''));
+          if (matched) memberId = matched.id;
+        }
+        if (exploreBtn) {
+          exploreBtn.href = `members.html#${memberId}`;
+          exploreBtn.innerHTML = `View in Directory <span class="arr">→</span>`;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

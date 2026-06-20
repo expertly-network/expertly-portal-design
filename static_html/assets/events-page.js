@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         return `
-          <a href="#" class="ev-row" id="${e.id}" onclick="event.preventDefault(); alert('Registration details for ${e.title} will be sent to your account email.')">
+          <a href="#" class="ev-row" id="${e.id}" onclick="event.preventDefault()">
             <div class="ev-row-date">
               <div class="mono">Date</div>
               <b>${dateText}</b>
