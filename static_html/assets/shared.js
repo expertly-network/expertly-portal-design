@@ -85,7 +85,7 @@ function clearCustomColor() {
   root.style.removeProperty('--neon');
   root.style.removeProperty('--nav-green');
   localStorage.removeItem('expertly-custom-color');
-  
+
   document.querySelectorAll('.theme-cust-preset').forEach(btn => {
     if (btn.getAttribute('data-color') === '#00C99E') {
       btn.classList.add('active');
@@ -102,7 +102,7 @@ function clearCustomColor() {
 }
 
 // Self-invoking function to load saved theme immediately
-(function() {
+(function () {
   const savedColor = localStorage.getItem('expertly-custom-color');
   if (savedColor) {
     const hsl = hexToHsl(savedColor);
@@ -184,6 +184,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderNav() {
   const nav = document.querySelector('.nav');
   if (!nav) return;
+
+  let session = null;
+  try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) { }
+
+  let actionsHtml;
+  if (session && session.email) {
+    const initial = session.email.charAt(0).toUpperCase();
+    const avatar = `
+      <div class="nav-avatar" id="nav-avatar-btn" title="${session.email}">
+        ${initial}
+        <div class="nav-avatar-menu" id="nav-avatar-menu">
+          <span class="nav-avatar-email">${session.email}</span>
+          <button id="nav-logout-btn">Log out</button>
+        </div>
+      </div>`;
+    actionsHtml = session.role === 'member'
+      ? avatar
+      : `<a href="apply.html" class="btn btn-primary">Apply</a>${avatar}`;
+  } else {
+    actionsHtml = `<a href="login.html" class="btn btn-primary">Log in</a>`;
+  }
+
   nav.innerHTML = `
     <div class="nav-inner">
       <a href="index.html">
@@ -195,11 +217,27 @@ function renderNav() {
         <a href="events.html">Events</a>
         <a href="how-it-works.html">How it works</a>
       </div>
-      <div class="nav-actions">
-        <a href="login.html" class="btn btn-ghost">Log in</a>
-        <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
-      </div>
+      <div class="nav-actions">${actionsHtml}</div>
     </div>`;
+
+  const avatarBtn = document.getElementById('nav-avatar-btn');
+  const avatarMenu = document.getElementById('nav-avatar-menu');
+  const logoutBtn = document.getElementById('nav-logout-btn');
+
+  if (avatarBtn && avatarMenu) {
+    avatarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      avatarMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', () => avatarMenu.classList.remove('open'), { once: false });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('expertly_session');
+      window.location.href = 'index.html';
+    });
+  }
 }
 
 /* ==========================================================================
@@ -520,7 +558,7 @@ function initGlobalSearch() {
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    
+
     if (initialQuery) {
       input.value = initialQuery;
       clearBtn.style.display = 'block';
@@ -528,7 +566,7 @@ function initGlobalSearch() {
       input.value = '';
       clearBtn.style.display = 'none';
     }
-    
+
     setTimeout(() => input.focus(), 60);
     performSearch();
   };
@@ -620,22 +658,22 @@ function initGlobalSearch() {
     }
 
     suggestDiv.style.display = 'none';
-    
+
     const term = q.toLowerCase();
     const words = term.split(/\s+/).filter(Boolean);
-    
+
     // Attempt strict AND match
     const strictMatch = (text) => {
       return words.every(w => text.toLowerCase().includes(w));
     };
 
-    let matchedMembers = (window.EXPERTLY_MEMBERS || []).filter(m => 
+    let matchedMembers = (window.EXPERTLY_MEMBERS || []).filter(m =>
       strictMatch(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`)
     );
-    let matchedArticles = (window.EXPERTLY_ARTICLES || []).filter(a => 
+    let matchedArticles = (window.EXPERTLY_ARTICLES || []).filter(a =>
       strictMatch(`${a.title} ${a.category} ${a.excerpt}`)
     );
-    let matchedEvents = (window.EXPERTLY_EVENTS || []).filter(e => 
+    let matchedEvents = (window.EXPERTLY_EVENTS || []).filter(e =>
       strictMatch(`${e.title} ${e.category} ${e.city} ${e.country} ${e.desc}`)
     );
 
@@ -643,7 +681,7 @@ function initGlobalSearch() {
     if (matchedMembers.length === 0 && matchedArticles.length === 0 && matchedEvents.length === 0) {
       const stopWords = new Set(['in', 'under', 'for', 'advisor', 'advisors', 'expert', 'experts', 'with', 'the', 'a', 'an', 'of', 'to', 'at', 'on', 'by', 'is', 'and', 'or', 'about', 'who', 'what', 'where']);
       const queryKeywords = words.filter(w => !stopWords.has(w));
-      
+
       if (queryKeywords.length > 0) {
         const getMatchScore = (text) => {
           let score = 0;
@@ -654,7 +692,7 @@ function initGlobalSearch() {
           });
           return score;
         };
-        
+
         matchedMembers = (window.EXPERTLY_MEMBERS || [])
           .map(m => ({ m, score: getMatchScore(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`) }))
           .filter(x => x.score > 0)
@@ -866,15 +904,15 @@ function initTweaksPanel() {
     btn.addEventListener('click', () => {
       // Clear custom color first so default theme values apply
       clearCustomColor();
-      
+
       themeBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const themeVal = btn.getAttribute('data-theme');
       currentTweakState.theme = themeVal;
-      
+
       const themeMap = { editorial: '', navy: 'navy', sage: 'sage' };
       document.documentElement.setAttribute('data-theme', themeMap[themeVal] || '');
-      
+
       // sync modifications back to parent frame
       window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: themeVal } }, '*');
     });
@@ -888,12 +926,12 @@ function initTweaksPanel() {
       btn.classList.add('active');
       const heroVal = btn.getAttribute('data-hero');
       currentTweakState.heroStyle = heroVal;
-      
+
       document.documentElement.setAttribute('data-hero', heroVal);
-      
+
       // Dispatch event to allow homepage to swap layout if needed
       window.dispatchEvent(new CustomEvent('expertly:hero-change', { detail: { style: heroVal } }));
-      
+
       window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { heroStyle: heroVal } }, '*');
     });
   });
@@ -946,7 +984,7 @@ function animateCounter(el) {
   const suffix = el.getAttribute('data-counter-suffix') || '';
   const duration = parseInt(el.getAttribute('data-counter-duration'), 10) || 1600;
   const start = performance.now();
-  
+
   const tick = (t) => {
     const p = Math.min(1, (t - start) / duration);
     const eased = 1 - Math.pow(1 - p, 3); // cubic ease-out

@@ -86,7 +86,10 @@ function initLoginTabs() {
   const footText = document.getElementById('auth-foot-text');
   const memberInfo = document.getElementById('auth-member-info');
 
+  let currentAuthMode = 'user';
+
   const setAuthMode = (mode) => {
+    currentAuthMode = mode;
     if (mode === 'member') {
       memberTab.classList.add('active');
       userTab.classList.remove('active');
@@ -131,6 +134,9 @@ function initLoginTabs() {
   if (authForm) {
     authForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      const emailInput = authForm.querySelector('input[type="email"]');
+      const email = emailInput ? emailInput.value.trim() : 'user@expertly.com';
+      localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
       window.location.href = 'index.html';
     });
   }
@@ -139,6 +145,8 @@ function initLoginTabs() {
   if (linkedinBtn) {
     linkedinBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      const email = currentAuthMode === 'member' ? 'member@linkedin.com' : 'user@linkedin.com';
+      localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
       window.location.href = 'index.html';
     });
   }
