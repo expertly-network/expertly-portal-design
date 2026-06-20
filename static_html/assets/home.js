@@ -559,10 +559,10 @@ function initLatestArticles() {
         <div class="mono" style="font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em;">${featured.date} · ${featured.readTime} Read</div>
         <h3>${featured.title}</h3>
         <div class="article-author">
-          ${window.getAvatarHtml(featuredAuthor, 36)}
+          ${window.getAvatarHtml(featuredAuthor, 60)}
           <div>
-            <div style="font-size: 13px; font-weight: 500;">${featuredAuthor.name}</div>
-            <div class="mono" style="font-size: 10px; color: var(--ink-3);">${featuredAuthor.title}</div>
+            <div style="font-size: 14px; font-weight: 500;">${featuredAuthor.name}</div>
+            <div class="mono" style="font-size: 11px; color: var(--ink-3);">${featuredAuthor.title}${featuredAuthor.firm ? `, ${featuredAuthor.firm}` : ''}</div>
           </div>
         </div>
       </div>
@@ -580,8 +580,11 @@ function initLatestArticles() {
               </div>
               <h4>${a.title}</h4>
               <div class="article-row-author">
-                ${window.getAvatarHtml(author, 24)}
-                <span>${author.name}</span>
+                ${window.getAvatarHtml(author, 36)}
+                <div>
+                  <div style="font-size:13px;font-weight:500;color:var(--ink-2);line-height:1.3;">${author.name}</div>
+                  <div class="mono" style="font-size:10px;color:var(--ink-3);">${author.title || ''}${author.firm ? `, ${author.firm}` : ''}</div>
+                </div>
               </div>
             </div>
           </a>

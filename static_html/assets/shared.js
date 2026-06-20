@@ -153,6 +153,9 @@ function getCheckIconHtml() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Render shared navbar
+  renderNav();
+
   // 1. Navigation Scroll State and active link logic
   initNavigation();
 
@@ -174,6 +177,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Initialize Animated Counters
   initCounters();
 });
+
+/* ==========================================================================
+   0. NAVBAR RENDER — single source of truth for all pages
+   ========================================================================== */
+function renderNav() {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  nav.innerHTML = `
+    <div class="nav-inner">
+      <a href="index.html">
+        <span class="nav-logo" style="font-size:23px;">Expertly<span class="dot"></span></span>
+      </a>
+      <div class="nav-links">
+        <a href="members.html">Members</a>
+        <a href="articles.html">Articles</a>
+        <a href="events.html">Events</a>
+        <a href="how-it-works.html">How it works</a>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost">Log in</a>
+        <a href="apply.html" class="btn btn-primary">Apply <span class="arr">→</span></a>
+      </div>
+    </div>`;
+}
 
 /* ==========================================================================
    1. NAVIGATION

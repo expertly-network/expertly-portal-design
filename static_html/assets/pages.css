@@ -72,12 +72,13 @@
 .art-hero { padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
 .art-feat-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; margin-top: 48px; }
 .art-feat-main { display: block; }
-.art-feat-main .article-img { aspect-ratio: 16/9; }
+.art-feat-main .article-img { height: 280px; aspect-ratio: unset; }
 .art-feat-main h2 { font-size: clamp(28px,3vw,40px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; margin: 24px 0 16px; }
 .art-feat-main p { color: var(--ink-3); font-size: 16px; line-height: 1.55; margin-bottom: 20px; }
-.art-feat-side { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--ink); }
+.art-feat-side { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
 .art-feat-side .article-row { padding: 20px 0; border-top: none; border-bottom: 1px solid var(--line); }
 .art-feat-side .article-row:first-child { border-top: none; }
+.art-feat-side .article-row:last-child { border-bottom: none; }
 .art-cats-bar { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; display: flex; gap: 8px; overflow-x: auto; flex-wrap: wrap; }
 .art-cat {
   padding: 6px 14px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
