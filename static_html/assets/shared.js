@@ -215,7 +215,7 @@ function renderNav() {
         <a href="members.html">Members</a>
         <a href="articles.html">Articles</a>
         <a href="events.html">Events</a>
-        <a href="why-join.html">Membership</a>
+        <a href="membership-combined.html">Membership</a>
       </div>
       <div class="nav-actions">${actionsHtml}</div>
     </div>`;
