@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Why Become a Member — Expertly</title>
+<title>Membership — Expertly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -119,6 +119,63 @@
   font-weight: 400;
   color: var(--accent);
 }
+
+/* ── Benefits overview grid ── */
+.wjm-benefits {
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+}
+.wjm-benefits-intro {
+  max-width: 560px;
+  margin-bottom: 52px;
+}
+.wjm-benefits-intro p {
+  font-size: 16px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+.wjm-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.wjm-benefit-item {
+  padding: 32px 30px;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 0.18s;
+}
+.wjm-benefit-item:hover { background: var(--bg-alt); }
+.wjm-benefit-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--accent) 12%, var(--bg));
+  border: 1px solid color-mix(in oklab, var(--accent) 20%, var(--line));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.wjm-benefit-icon svg { width: 20px; height: 20px; }
+.wjm-benefit-item h3 {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.wjm-benefit-item p {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+@media (max-width: 900px) { .wjm-benefits-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .wjm-benefits-grid { grid-template-columns: 1fr; } }
 
 /* ── Benefit split sections use existing .split-section / .split-feature ── */
 /* Just adding the section label treatment above each one               */
@@ -751,6 +808,70 @@
           <div class="wjm-stat-num">∞</div>
           <div class="wjm-stat-label">Articles you can publish under your name</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       BENEFITS OVERVIEW
+  ════════════════════════════════════ -->
+  <section class="wjm-benefits">
+    <div class="container-wide">
+      <div class="wjm-benefits-intro">
+        <span class="wjm-label">What you get</span>
+        <h2 class="wjm-section-title">One flat fee. <em>Everything included.</em></h2>
+        <p>No commissions, no upsells, no tiers that lock away the good stuff. Every member gets the full platform from day one.</p>
+      </div>
+      <div class="wjm-benefits-grid">
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <h3>Client Discovery</h3>
+          <p>Your verified profile surfaces in AI-powered client search. Enquiries land directly in your inbox — no middlemen.</p>
+        </div>
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>Unlimited Publishing</h3>
+          <p>Write and publish as many articles as you like under your name. Each piece builds your reputation and drives inbound work.</p>
+        </div>
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Verified Peer Network</h3>
+          <p>Every member is manually verified. Book 1:1 calls, exchange referrals, and collaborate with practitioners at your level.</p>
+        </div>
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <h3>Zero Commission</h3>
+          <p>Every penny your clients pay goes to you. We charge a flat annual fee — that's it. No percentage cuts, ever.</p>
+        </div>
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <h3>Member Perks &amp; Deals</h3>
+          <p>Discounts on 50+ tools — legal research, AI platforms, accounting software, and practice management — at exclusive member rates.</p>
+        </div>
+
+        <div class="wjm-benefit-item">
+          <div class="wjm-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          </div>
+          <h3>CPD &amp; Events Access</h3>
+          <p>CPD-accredited masterclasses, specialist workshops, and member-only roundtables at global financial centres throughout the year.</p>
+        </div>
+
       </div>
     </div>
   </section>

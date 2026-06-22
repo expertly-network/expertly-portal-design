@@ -1436,7 +1436,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 .newsletter-form .btn-primary:hover { background: #fff; }
 
 /* ============ HOME CALENDAR (v4 — full month, dynamic, past/live split) ============ */
-.events-section { background: var(--bg-alt); }
+.events-section { background: var(--bg); }
 
 .hcal-head {
   display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
@@ -1462,31 +1462,29 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   50%       { opacity: 0.2; transform: scale(0.45); }
 }
 
-/* Outer shell */
+/* Outer shell — borderless */
 .hcal-wrap {
-  border: 1px solid var(--line-2); border-radius: 20px; overflow: hidden;
-  background: var(--bg-card); box-shadow: var(--shadow-card); position: relative;
+  overflow: hidden; position: relative;
 }
 .hcal-dow, .hcal-week { position: relative; z-index: 1; }
 
 /* Day-of-week header row */
 .hcal-dow {
   display: grid; grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid var(--line-2); background: var(--bg-alt);
+  border-bottom: 2px solid var(--ink-2); background: transparent;
 }
 .hcal-dh {
-  padding: 13px 0; text-align: center;
+  padding: 10px 0 14px; text-align: center;
   font-family: 'Archivo', sans-serif; font-size: 10px;
   letter-spacing: 0.14em; font-weight: 700; color: var(--ink-2);
-  text-transform: uppercase; border-right: 1px solid var(--line-2);
+  text-transform: uppercase;
 }
-.hcal-dh:last-child { border-right: none; }
 
 /* ── Week row: FIXED height, two absolute layers ── */
 .hcal-week {
   position: relative;
   height: 100px;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line);
 }
 .hcal-week:last-child { border-bottom: none; }
 
@@ -1497,9 +1495,8 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   pointer-events: none; z-index: 0;
 }
 .hcal-cell {
-  border-right: 1px solid var(--line-2); padding: 8px 10px; height: 100%;
+  padding: 8px 10px; height: 100%;
 }
-.hcal-cell:last-child { border-right: none; }
 .hcal-cell.past        { opacity: 0.3; }
 .hcal-cell.past .hcal-dn { color: var(--ink-4); font-weight: 500; }
 .hcal-cell.weekend     { background: transparent; }
@@ -1544,7 +1541,11 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 
 /* ── Past event: fade in at low opacity, no pulse ── */
 .hcal-ev--past {
-  background: var(--bg-alt);
+  background: color-mix(in oklab, var(--ink-4) 10%, var(--bg));
+  border-left-color: var(--ink-4) !important;
+  border-top-color: var(--line) !important;
+  border-right-color: var(--line) !important;
+  border-bottom-color: var(--line) !important;
 }
 .hcal-animated .hcal-ev--past {
   animation: hcalFadeInPast 0.5s ease-out both 0.15s;
@@ -1616,6 +1617,19 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 }
 .hcal-ev--past .hcal-ev-cat { color: var(--ink-3); }
 
+.hcal-ev-country {
+  font-size: 12px; font-weight: 600; flex-shrink: 0;
+  color: var(--ink-2); letter-spacing: -0.01em;
+}
+.hcal-ev--past .hcal-ev-country { color: var(--ink-4); }
+
+.hcal-ev-country + .hcal-ev-title::before {
+  content: '|';
+  margin: 0 5px;
+  color: var(--line-2);
+  font-weight: 300;
+}
+
 .hcal-ev-title {
   font-size: 12px; font-weight: 600; color: var(--ink);
   letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; flex: 1;
@@ -1626,7 +1640,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   display: grid;
   grid-template-columns: 1fr 296px;
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 .hcal-main { min-width: 0; }
 
@@ -1636,10 +1650,47 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   border: 1px solid var(--line-2);
   border-radius: 16px;
   overflow: hidden;
-  position: sticky;
-  top: 24px;
   box-shadow: 0 4px 24px -8px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
 }
+/* ── Dark promo sidebar ── */
+.hcal-sidebar--promo {
+  background: var(--ink) !important;
+  border-color: var(--ink-2) !important;
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.28) !important;
+}
+.hcal-promo {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 32px 28px; gap: 18px; flex: 1;
+}
+.hcal-promo-eyebrow {
+  font-family: 'Archivo', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+}
+.hcal-promo-title {
+  font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2;
+  color: #fff;
+}
+.hcal-promo-body {
+  font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.50);
+}
+.hcal-promo-cta {
+  display: inline-flex; align-items: center; align-self: flex-start;
+  background: var(--accent); color: #fff;
+  font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.02em; padding: 11px 18px; border-radius: 9px;
+  text-decoration: none; margin-top: 6px;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.hcal-promo-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+.hcal-promo-link {
+  font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.35); text-decoration: none; align-self: flex-start;
+  transition: color 0.15s ease;
+}
+.hcal-promo-link:hover { color: rgba(255,255,255,0.65); }
+
 .hcal-upcm-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 18px;
@@ -1682,6 +1733,9 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   letter-spacing: 0.1em; text-transform: uppercase;
   color: color-mix(in oklab, var(--ev-color, var(--accent)) 60%, var(--ink-3));
 }
+.hcal-upcm-date--range .hcal-upcm-day {
+  font-size: 13px; letter-spacing: -0.02em;
+}
 .hcal-upcm-info { flex: 1; min-width: 0; }
 .hcal-upcm-title {
   font-size: 13px; font-weight: 600; color: var(--ink);
@@ -1702,6 +1756,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--accent); text-align: center;
   transition: background 0.15s ease, color 0.15s ease;
+  margin-top: auto;
 }
 .hcal-upcm-footer:hover {
   background: color-mix(in oklab, var(--accent) 8%, var(--bg-alt));

@@ -286,7 +286,7 @@
     </div>
   </section>
 
-  <!-- ====================== EVENTS ====================== -->
+  <!-- ====================== EVENTS CALENDAR ====================== -->
   <section class="section events-section">
     <div class="container-wide">
       <div class="section-head-row">
@@ -296,10 +296,217 @@
         </div>
         <a href="events.html" class="btn btn-outline">All events <span class="arr">→</span></a>
       </div>
-      <div class="events-grid" id="upcoming-events-container">
-        <!-- Populated dynamically by home.js -->
+
+      <div class="home-calendar">
+        <div class="hcal-head">
+          <span class="hcal-month-label" id="hcal-month-label"></span>
+        </div>
+
+        <div class="hcal-layout">
+
+          <!-- Left: Calendar -->
+          <div class="hcal-main">
+            <div class="hcal-wrap">
+              <div class="hcal-dow">
+                <div class="hcal-dh">Mon</div><div class="hcal-dh">Tue</div><div class="hcal-dh">Wed</div>
+                <div class="hcal-dh">Thu</div><div class="hcal-dh">Fri</div><div class="hcal-dh">Sat</div>
+                <div class="hcal-dh">Sun</div>
+              </div>
+              <div id="hcal-body"></div>
+            </div>
+          </div>
+
+          <!-- Right: Promo sidebar -->
+          <aside class="hcal-sidebar hcal-sidebar--promo">
+            <div class="hcal-promo">
+              <span class="hcal-promo-eyebrow">Stay informed</span>
+              <h3 class="hcal-promo-title">Know which events the right people are attending.</h3>
+              <p class="hcal-promo-body">These events are hosted across the industry. Join Expertly to get curated updates, see who's attending, and connect with the right practitioners.</p>
+              <a href="login.html" class="hcal-promo-cta">Join for free →</a>
+              <a href="events.html" class="hcal-promo-link">Browse all events</a>
+            </div>
+          </aside>
+
+        </div>
+
+        <!-- Mobile: upcoming list -->
+        <div class="hcal-mobile" id="hcal-mobile"></div>
       </div>
     </div>
+
+    <script>
+    (function () {
+      'use strict';
+
+      /* ── Event data ── */
+      var EVENTS = [
+        { title: 'Transfer Pricing Webinar',    country: 'SG', s: [2026,5,3],  e: [2026,5,3]  },
+        { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026,5,10], e: [2026,5,11] },
+        { title: 'UAE Corporate Tax Briefing',  country: 'AE', s: [2026,5,12], e: [2026,5,12] },
+        { title: 'TP Minds Intl: BEPS 2.0',     country: 'US', s: [2026,5,17], e: [2026,5,19] },
+        { title: 'Global M&A Roundtable',       country: 'UK', s: [2026,5,23], e: [2026,5,23] },
+        { title: 'Expertly Members Social',     country: 'SG', s: [2026,5,23], e: [2026,5,23] },
+        { title: 'Compliance Leaders Forum',    country: 'US', s: [2026,5,25], e: [2026,5,26] },
+        { title: 'Capital Markets Outlook H2',  country: 'HK', s: [2026,5,30], e: [2026,5,30] }
+      ];
+
+      /* ── Date helpers ── */
+      var today = new Date(); today.setHours(0,0,0,0);
+      var yr = today.getFullYear();
+      var mo = today.getMonth();
+
+      var MONTH_NAMES = ['January','February','March','April','May','June',
+                         'July','August','September','October','November','December'];
+
+      var labelEl = document.getElementById('hcal-month-label');
+      if (labelEl) labelEl.textContent = MONTH_NAMES[mo] + ' ' + yr;
+
+      var firstDOW    = new Date(yr, mo, 1).getDay();
+      var startOffset = firstDOW === 0 ? 6 : firstDOW - 1;
+      var daysInMonth = new Date(yr, mo + 1, 0).getDate();
+      var totalWeeks  = Math.ceil((startOffset + daysInMonth) / 7);
+
+      var events = EVENTS.map(function(ev) {
+        var sd = new Date(ev.s[0], ev.s[1], ev.s[2]);
+        var ed = new Date(ev.e[0], ev.e[1], ev.e[2]);
+        return { title: ev.title, country: ev.country || '', sd: sd, ed: ed, isPast: ed < today };
+      });
+
+      /* ── Build calendar grid ── */
+      var body = document.getElementById('hcal-body');
+      if (!body) return;
+      var liveDelay = 0.2;
+
+      for (var w = 0; w < totalWeeks; w++) {
+        var weekStart = w * 7 - startOffset + 1;
+        var weekEl = document.createElement('div');
+        weekEl.className = 'hcal-week';
+
+        var bgEl = document.createElement('div');
+        bgEl.className = 'hcal-bg';
+
+        for (var d = 0; d < 7; d++) {
+          var dn  = weekStart + d;
+          var cel = document.createElement('div');
+          if (dn < 1 || dn > daysInMonth) {
+            cel.className = 'hcal-cell hcal-cell--empty';
+          } else {
+            var cDate     = new Date(yr, mo, dn);
+            var isToday   = cDate.getTime() === today.getTime();
+            var isPastDay = cDate < today;
+            var cls = 'hcal-cell';
+            if (isToday)        cls += ' today';
+            else if (isPastDay) cls += ' past';
+            if (d >= 5) cls += ' weekend';
+            cel.className = cls;
+            var dnEl = document.createElement('span');
+            dnEl.className = 'hcal-dn';
+            dnEl.textContent = dn;
+            cel.appendChild(dnEl);
+          }
+          bgEl.appendChild(cel);
+        }
+        weekEl.appendChild(bgEl);
+
+        var weekEvs = [];
+        events.forEach(function(ev) {
+          if (ev.sd.getFullYear() !== yr || ev.sd.getMonth() !== mo) {
+            if (ev.ed.getFullYear() !== yr || ev.ed.getMonth() !== mo) return;
+          }
+          var esd = ev.sd.getDate(), eed = ev.ed.getDate();
+          var wEnd = weekStart + 6;
+          if (esd > Math.min(daysInMonth, wEnd)) return;
+          if (eed < Math.max(1, weekStart))       return;
+          var ds = Math.max(esd, Math.max(1, weekStart));
+          var de = Math.min(eed, Math.min(daysInMonth, wEnd));
+          weekEvs.push({ ev: ev, col: ds - weekStart + 1, span: de - ds + 1 });
+        });
+
+        if (weekEvs.length) {
+          var layerEl = document.createElement('div');
+          layerEl.className = 'hcal-ev-layer';
+          weekEvs.forEach(function(item) {
+            var ev  = item.ev;
+            var aEl = document.createElement('a');
+            aEl.href = 'events.html';
+            aEl.className = 'hcal-ev ' + (ev.isPast ? 'hcal-ev--past' : 'hcal-ev--live');
+            var delay = ev.isPast ? '0.1' : (liveDelay += 0.18, (liveDelay - 0.18).toFixed(2));
+            aEl.style.cssText = 'grid-column:' + item.col + '/span ' + item.span +
+                                 (ev.isPast ? ';--ev-color:#C0C0C5' : '') +
+                                 ';--ev-delay:' + delay + 's';
+            var html = '';
+            if (ev.country) html += '<span class="hcal-ev-country">' + ev.country + '</span>';
+            html += '<span class="hcal-ev-title">' + ev.title + '</span>';
+            aEl.innerHTML = html;
+            layerEl.appendChild(aEl);
+          });
+          weekEl.appendChild(layerEl);
+        }
+        body.appendChild(weekEl);
+      }
+
+      /* ── Mobile: upcoming list ── */
+      var mobileEl = document.getElementById('hcal-mobile');
+      if (mobileEl) {
+        var upcomingMob = events.filter(function(ev) { return !ev.isPast; });
+        var mon3m = MONTH_NAMES[mo].slice(0, 3).toUpperCase();
+        mobileEl.innerHTML = upcomingMob.map(function(ev) {
+          var sDay = ev.sd.getDate(), eDay = ev.ed.getDate();
+          var dateHtml = sDay === eDay
+            ? '<div class="event-date-day">' + sDay + '</div>'
+            : '<div class="event-date-range">' + sDay + '–' + eDay + '</div>';
+          return '<a href="events.html" class="event-card">' +
+            '<div class="event-date"><div class="event-date-month">' + mon3m + '</div>' + dateHtml + '</div>' +
+            '<div class="event-body">' +
+              '<h3>' + ev.title + '</h3>' +
+              '<div class="event-foot"><span class="event-register">Find out more →</span></div>' +
+            '</div></a>';
+        }).join('');
+      }
+
+      /* ── Entrance animations + spotlight cycle ── */
+      var cal = document.querySelector('.home-calendar');
+
+      function startSpotlight() {
+        var evEls = Array.from(document.querySelectorAll('.hcal-ev--live'));
+        if (evEls.length < 2) return;
+        evEls.forEach(function(el) { el.classList.add('hcal-ev--done'); });
+        evEls.forEach(function(el) { el.classList.add('hcal-ev--spotlit'); });
+
+        var idx = 0;
+        var bulkPhase = true;
+        function cycle() {
+          if (bulkPhase) {
+            bulkPhase = false;
+            evEls.forEach(function(el) { el.classList.remove('hcal-ev--spotlit'); });
+            evEls[idx].classList.add('hcal-ev--spotlit');
+            idx = (idx + 1) % evEls.length;
+          } else if (idx === 0) {
+            bulkPhase = true;
+            evEls.forEach(function(el) { el.classList.add('hcal-ev--spotlit'); });
+          } else {
+            evEls.forEach(function(el) { el.classList.remove('hcal-ev--spotlit'); });
+            evEls[idx].classList.add('hcal-ev--spotlit');
+            idx = (idx + 1) % evEls.length;
+          }
+        }
+        setInterval(cycle, 2200);
+      }
+
+      function activate() {
+        if (!cal) return;
+        cal.classList.add('hcal-animated');
+        var waitMs = Math.round((liveDelay + 0.55 + 0.25) * 1000);
+        setTimeout(startSpotlight, waitMs);
+      }
+
+      if (!window.IntersectionObserver) { setTimeout(activate, 100); return; }
+      var t = setTimeout(activate, 400);
+      new IntersectionObserver(function(e) {
+        if (e[0].isIntersecting) { clearTimeout(t); activate(); }
+      }, { threshold: 0.05 }).observe(cal);
+    })();
+    </script>
   </section>
 
   <!-- ====================== TESTIMONIALS ====================== -->

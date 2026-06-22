@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membership — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+<style>
+/* ═══════════════════════════════════════════════════════
+   Membership — Variant C: Feature Matrix
+   Product spec-sheet aesthetic for the analytical mind.
+   Reuses wjm-* classes for shared components (tiers,
+   deals, cta). New classes prefixed mc-*.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Variant label chip (fixed top-right) ── */
+.mc-variant-label {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  z-index: 900;
+  font-size: 10px;
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--ink);
+  border-radius: 100px;
+  padding: 5px 14px;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0.72;
+}
+
+/* ── Shared section label (mirrors wjm-label) ── */
+.mc-label {
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.mc-label::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════════════════
+   1. HERO — split left/right
+   ══════════════════════════════════════════ */
+.mc-hero {
+  padding: 56px 0 52px;
+  border-bottom: 1px solid var(--line);
+}
+.mc-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 64px;
+  align-items: center;
+}
+.mc-hero-eyebrow {
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.mc-hero-heading {
+  font-size: clamp(28px, 3.5vw, 50px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.mc-hero-sub {
+  font-size: 16px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  max-width: 500px;
+  margin-bottom: 32px;
+}
+.mc-hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* At-a-glance card */
+.mc-glance-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.1);
+}
+.mc-glance-card-head {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.mc-glance-card-title {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.mc-glance-card-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.mc-glance-list {
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+}
+.mc-glance-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--ink);
+}
+.mc-glance-item:last-child { border-bottom: none; }
+.mc-glance-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--ok, #22c55e) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ok, #22c55e) 30%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--ok, #22c55e);
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.mc-glance-card-foot {
+  background: var(--ink);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mc-glance-price {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--bg);
+}
+.mc-glance-price-sub {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ══════════════════════════════════════════
+   2. FEATURE COMPARISON TABLE
+   ══════════════════════════════════════════ */
+.mc-table-section {
+  padding: 80px 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+}
+.mc-table-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.mc-table-section-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+.mc-table-section-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.mc-table-note {
+  font-size: 12px;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.mc-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+.mc-table thead th {
+  padding: 14px 24px;
+  text-align: left;
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+.mc-table thead th:not(:first-child) {
+  text-align: center;
+  width: 180px;
+}
+.mc-table thead .mc-th-member {
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 6%, var(--bg-alt));
+}
+.mc-table tbody tr {
+  border-bottom: 1px solid var(--line);
+  transition: background 0.14s;
+}
+.mc-table tbody tr:last-child { border-bottom: none; }
+.mc-table tbody tr:nth-child(odd) { background: var(--bg-card); }
+.mc-table tbody tr:nth-child(even) { background: color-mix(in oklab, var(--bg-alt) 60%, var(--bg-card)); }
+.mc-table tbody tr:hover { background: color-mix(in oklab, var(--accent) 4%, var(--bg-card)); }
+.mc-table td {
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--ink);
+  vertical-align: middle;
+}
+.mc-table td:not(:first-child) {
+  text-align: center;
+}
+.mc-table .mc-td-feature {
+  font-weight: 500;
+}
+.mc-table .mc-td-feature span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+.mc-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--ok, #22c55e) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ok, #22c55e) 28%, transparent);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ok, #22c55e);
+}
+.mc-cross {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--ink-3) 8%, transparent);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.mc-limited {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   3. ROI — dark two-column
+   ══════════════════════════════════════════ */
+.mc-roi {
+  padding: 80px 0;
+  background: var(--ink);
+  border-top: 1px solid var(--line);
+}
+.mc-roi-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.mc-roi-label {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.mc-roi-label::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+}
+.mc-roi-heading {
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  color: var(--bg);
+  margin-bottom: 32px;
+}
+.mc-roi-heading em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--accent) 100%, white 30%);
+}
+
+/* Calculation breakdown */
+.mc-calc {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.mc-calc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.mc-calc-row:last-child { border-bottom: none; }
+.mc-calc-row.mc-calc-result {
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  border-top: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+}
+.mc-calc-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.01em;
+}
+.mc-calc-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bg);
+  letter-spacing: -0.01em;
+}
+.mc-calc-row.mc-calc-result .mc-calc-label {
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+  font-weight: 600;
+}
+.mc-calc-row.mc-calc-result .mc-calc-value {
+  color: color-mix(in oklab, var(--accent) 100%, white 30%);
+  font-size: 15px;
+}
+.mc-roi-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.mc-roi-trust span {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mc-roi-trust span::before {
+  content: '✓';
+  color: color-mix(in oklab, var(--accent) 100%, white 30%);
+  font-weight: 700;
+}
+
+/* Tier stack — reuses wjm-tier but in this dark context */
+.wjm-tier-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wjm-tier {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 28px 32px;
+  background: rgba(255,255,255,0.05);
+}
+.wjm-tier.popular {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.08);
+  position: relative;
+}
+.wjm-tier-badge {
+  position: absolute;
+  top: -10px;
+  left: 32px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.wjm-tier-name {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 10px;
+}
+.wjm-tier-price {
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--bg);
+  line-height: 1;
+}
+.wjm-tier-price sub {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.wjm-tier-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 4px;
+  font-family: 'Archivo', sans-serif;
+}
+
+/* ══════════════════════════════════════════
+   4. PROCESS STEPPER — horizontal 4-step
+   ══════════════════════════════════════════ */
+.mc-stepper-section {
+  padding: 80px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+.mc-stepper-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+  margin-bottom: 56px;
+}
+.mc-stepper-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.mc-stepper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+/* Connecting line between steps */
+.mc-stepper::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: calc(12.5% + 14px);
+  right: calc(12.5% + 14px);
+  height: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.mc-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.mc-step-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.2s, background 0.2s;
+}
+.mc-step:hover .mc-step-circle {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 8%, var(--bg-card));
+}
+.mc-step-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.mc-step-desc {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+.mc-step-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+  border-radius: 100px;
+  padding: 4px 12px;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   5. BENEFITS BREAKDOWN — 2×3 grid
+   ══════════════════════════════════════════ */
+.mc-benefits-section {
+  padding: 80px 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+}
+.mc-benefits-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+  margin-bottom: 40px;
+}
+.mc-benefits-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.mc-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.mc-benefit {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.mc-benefit:hover {
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--line));
+  box-shadow: 0 4px 20px -4px rgba(0,0,0,0.08);
+}
+.mc-benefit-num {
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.mc-benefit h4 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+.mc-benefit p {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 18px;
+}
+.mc-benefit-more {
+  font-size: 12px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.mc-benefit-more::after {
+  content: '→';
+  font-size: 13px;
+  color: var(--accent);
+}
+.mc-benefit:hover .mc-benefit-more { color: var(--ink); }
+
+/* ══════════════════════════════════════════
+   6. DEALS — reuses wjm-deals classes
+   ══════════════════════════════════════════ */
+.wjm-deals {
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--bg);
+}
+.wjm-deals-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-bottom: 56px;
+}
+.wjm-deals-big {
+  font-size: clamp(64px, 8vw, 108px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--bg);
+}
+.wjm-deals-big em {
+  font-style: normal;
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+}
+.wjm-deals-big-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.wjm-deals-right {
+  padding-top: 8px;
+}
+.wjm-deals-right h2 {
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--bg);
+  margin-bottom: 14px;
+}
+.wjm-deals-right h2 em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+}
+.wjm-deals-right p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  max-width: 460px;
+}
+.wjm-deals-coming {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  padding: 6px 14px;
+}
+.wjm-deals-coming::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent) 100%, white 20%);
+  flex-shrink: 0;
+}
+.wjm-deals-cats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 48px;
+}
+.wjm-deal-cat {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 24px;
+  background: rgba(255,255,255,0.04);
+  transition: background 0.18s, border-color 0.18s;
+}
+.wjm-deal-cat:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.18);
+}
+.wjm-deal-cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.wjm-deal-cat-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: -0.005em;
+}
+.wjm-deal-count {
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: color-mix(in oklab, var(--accent) 100%, white 20%);
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  border-radius: 100px;
+  padding: 3px 9px;
+}
+.wjm-deal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wjm-deal-chip {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'Archivo', sans-serif;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   7. FAQ STRIP — 2-column grid
+   ══════════════════════════════════════════ */
+.mc-faq-section {
+  padding: 80px 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+}
+.mc-faq-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+  margin-bottom: 40px;
+}
+.mc-faq-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.mc-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.mc-faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+}
+.mc-faq-q {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.mc-faq-q::before {
+  content: 'Q';
+  font-size: 9px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.mc-faq-a {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  padding-left: 34px;
+}
+
+/* ══════════════════════════════════════════
+   8. CTA — reuses wjm-cta classes
+   ══════════════════════════════════════════ */
+.wjm-cta { padding: 80px 0; border-top: 1px solid var(--line); }
+.wjm-cta-card {
+  background: var(--ink);
+  border-radius: 20px;
+  padding: 72px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+.wjm-cta-heading {
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  color: var(--bg);
+  margin-top: 14px;
+}
+.wjm-cta-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 12px;
+  max-width: 460px;
+  line-height: 1.6;
+}
+.wjm-cta-btns { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .mc-roi-inner { grid-template-columns: 1fr; gap: 48px; }
+  .mc-stepper { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .mc-stepper::before { display: none; }
+}
+@media (max-width: 960px) {
+  .mc-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .mc-benefits-grid { grid-template-columns: 1fr 1fr; }
+  .wjm-deals-top { grid-template-columns: 1fr; gap: 32px; }
+  .wjm-deals-cats { grid-template-columns: 1fr 1fr; }
+  .wjm-cta-card { grid-template-columns: 1fr; padding: 48px 36px; }
+  .wjm-cta-btns { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 720px) {
+  .mc-table { font-size: 13px; }
+  .mc-table td, .mc-table thead th { padding: 12px 16px; }
+  .mc-table thead th:not(:first-child) { width: 110px; }
+  .mc-stepper { grid-template-columns: 1fr; }
+  .mc-benefits-grid { grid-template-columns: 1fr; }
+  .wjm-deals-cats { grid-template-columns: 1fr; }
+  .mc-faq-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .mc-table thead th:nth-child(2),
+  .mc-table td:nth-child(2) { display: none; }
+  .wjm-cta-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Variant label chip -->
+<div class="mc-variant-label">Style C — Feature Matrix</div>
+
+<nav class="nav"></nav>
+
+<main>
+
+  <!-- ════════════════════════════════════
+       1. HERO — split layout
+  ════════════════════════════════════ -->
+  <section class="mc-hero">
+    <div class="container-wide">
+      <div class="mc-hero-inner">
+
+        <!-- Left: copy + CTAs -->
+        <div>
+          <div class="mc-hero-eyebrow">Expertly Membership</div>
+          <h1 class="mc-hero-heading">
+            Everything your practice needs.<br>One annual fee.
+          </h1>
+          <p class="mc-hero-sub">
+            A single, flat membership fee unlocks client discovery, unlimited publishing, peer access, member events, and 50+ partner deals — with zero commission taken on any work you win.
+          </p>
+          <div class="mc-hero-actions">
+            <a href="apply.html" class="btn btn-primary btn-lg">Apply for membership <span class="arr">→</span></a>
+            <a href="how-it-works.html" class="btn btn-outline btn-lg">Download overview</a>
+          </div>
+        </div>
+
+        <!-- Right: at-a-glance checklist card -->
+        <div>
+          <div class="mc-glance-card">
+            <div class="mc-glance-card-head">
+              <div class="mc-glance-card-title">Included in every plan</div>
+              <div class="mc-glance-card-sub">Full access from day one</div>
+            </div>
+            <ul class="mc-glance-list">
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                Verified profile &amp; discovery listing
+              </li>
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                Client enquiries direct to inbox
+              </li>
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                Unlimited article publishing
+              </li>
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                Peer 1:1 network &amp; referrals
+              </li>
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                Member-only events access
+              </li>
+              <li class="mc-glance-item">
+                <span class="mc-glance-check">✓</span>
+                50+ partner deals &amp; discounts
+              </li>
+            </ul>
+            <div class="mc-glance-card-foot">
+              <div>
+                <div class="mc-glance-price">From $499/year</div>
+                <div class="mc-glance-price-sub">or $49/month · no commission ever</div>
+              </div>
+              <a href="apply.html" class="btn btn-primary" style="white-space:nowrap;">Apply →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       2. FEATURE COMPARISON TABLE
+  ════════════════════════════════════ -->
+  <section class="mc-table-section">
+    <div class="container-wide">
+
+      <div class="mc-table-header">
+        <div>
+          <span class="mc-label">Feature Comparison</span>
+          <h2 class="mc-table-section-title">What membership <em>actually unlocks.</em></h2>
+        </div>
+        <span class="mc-table-note">All plans · Full access</span>
+      </div>
+
+      <table class="mc-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Non-member</th>
+            <th class="mc-th-member">Member</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mc-td-feature">
+              Profile listing
+              <span>Searchable by clients via AI-powered directory</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Client enquiries
+              <span>Direct inbound enquiries routed straight to you</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Article publishing
+              <span>Unlimited articles under your name, indexed for search</span>
+            </td>
+            <td><span class="mc-limited">Limited</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Peer 1:1 calls
+              <span>Book calls with verified peers — referrals, collaboration</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Event access
+              <span>Roundtables, webinars &amp; in-person events at global hubs</span>
+            </td>
+            <td><span class="mc-limited">Limited</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Partner deals
+              <span>50+ exclusive discounts on AI, legal &amp; finance tools</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Verification badge
+              <span>Credential-checked, manually verified by our team</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+          <tr>
+            <td class="mc-td-feature">
+              Priority support
+              <span>Dedicated contact for profile, platform &amp; optimisation</span>
+            </td>
+            <td><span class="mc-cross">✗</span></td>
+            <td><span class="mc-check">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       3. ROI — dark two-column
+  ════════════════════════════════════ -->
+  <section class="mc-roi">
+    <div class="container-wide">
+      <div class="mc-roi-inner">
+
+        <!-- Left: calculation breakdown -->
+        <div>
+          <span class="mc-roi-label">Return on Investment</span>
+          <h2 class="mc-roi-heading">The math<br>is simple.</h2>
+
+          <div class="mc-calc">
+            <div class="mc-calc-row">
+              <span class="mc-calc-label">Annual membership fee</span>
+              <span class="mc-calc-value">$499 – $699</span>
+            </div>
+            <div class="mc-calc-row">
+              <span class="mc-calc-label">Average billing rate (finance / legal)</span>
+              <span class="mc-calc-value">$400 – $800 / hr</span>
+            </div>
+            <div class="mc-calc-row">
+              <span class="mc-calc-label">Hours to break even</span>
+              <span class="mc-calc-value">1 – 2 hours</span>
+            </div>
+            <div class="mc-calc-row">
+              <span class="mc-calc-label">Commission taken on your fees</span>
+              <span class="mc-calc-value">$0</span>
+            </div>
+            <div class="mc-calc-row mc-calc-result">
+              <span class="mc-calc-label">Net result from client #1</span>
+              <span class="mc-calc-value">Net positive ↑</span>
+            </div>
+          </div>
+
+          <div class="mc-roi-trust">
+            <span>No commission on fees</span>
+            <span>100% of payments kept</span>
+            <span>Cancel anytime</span>
+          </div>
+        </div>
+
+        <!-- Right: tier cards -->
+        <div class="wjm-tier-stack">
+          <div class="wjm-tier">
+            <div class="wjm-tier-name">BUDDING PROFESSIONAL · 5–12 YRS</div>
+            <div class="wjm-tier-price">$499<sub>/year</sub></div>
+            <div class="wjm-tier-note">or $49 / month</div>
+          </div>
+          <div class="wjm-tier popular">
+            <div class="wjm-tier-badge">MOST POPULAR</div>
+            <div class="wjm-tier-name">SEASONED PROFESSIONAL · 12+ YRS</div>
+            <div class="wjm-tier-price">$699<sub>/year</sub></div>
+            <div class="wjm-tier-note">or $69 / month</div>
+          </div>
+          <a href="apply.html" class="btn btn-primary btn-lg" style="text-align:center; justify-content:center;">Apply for membership <span class="arr">→</span></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       4. PROCESS STEPPER — horizontal 4-step
+  ════════════════════════════════════ -->
+  <section class="mc-stepper-section">
+    <div class="container-wide">
+
+      <span class="mc-label">How to join</span>
+      <h2 class="mc-stepper-title">Four steps. <em>Roughly two weeks.</em></h2>
+
+      <div class="mc-stepper">
+
+        <div class="mc-step">
+          <div class="mc-step-circle">01</div>
+          <div class="mc-step-title">Apply</div>
+          <p class="mc-step-desc">Submit your credentials, practice details, and two peer references. Takes about 10 minutes.</p>
+          <span class="mc-step-badge">10 min</span>
+        </div>
+
+        <div class="mc-step">
+          <div class="mc-step-circle">02</div>
+          <div class="mc-step-title">Verify</div>
+          <p class="mc-step-desc">Our team manually cross-checks every credential with issuing bodies and contacts your references.</p>
+          <span class="mc-step-badge">5 business days</span>
+        </div>
+
+        <div class="mc-step">
+          <div class="mc-step-circle">03</div>
+          <div class="mc-step-title">Onboard</div>
+          <p class="mc-step-desc">Build your profile, set rates and availability, and publish your first article — with team support throughout.</p>
+          <span class="mc-step-badge">Live in ~2 weeks</span>
+        </div>
+
+        <div class="mc-step">
+          <div class="mc-step-circle">04</div>
+          <div class="mc-step-title">Grow</div>
+          <p class="mc-step-desc">Clients discover you via AI search, direct browsing, or your articles. Every enquiry lands in your inbox.</p>
+          <span class="mc-step-badge">From day one</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       5. BENEFITS BREAKDOWN — 2×3 grid
+  ════════════════════════════════════ -->
+  <section class="mc-benefits-section">
+    <div class="container-wide">
+
+      <span class="mc-label">Member Benefits</span>
+      <h2 class="mc-benefits-title">A professional ecosystem, <em>not just a directory.</em></h2>
+
+      <div class="mc-benefits-grid">
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">01</div>
+          <h4>New Business</h4>
+          <p>Your verified profile surfaces directly when clients search for your specialty. No bidding, no middlemen — every enquiry routes straight to your inbox, and every fee goes entirely to you.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">02</div>
+          <h4>Thought Leadership</h4>
+          <p>Publish unlimited articles indexed by Expertly's search engine. A sharp piece on regulatory change becomes the reason a client calls you instead of someone else — working for you 24/7.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">03</div>
+          <h4>Peer Network</h4>
+          <p>Every Expertly member is manually credential-checked. Book 1:1 calls with peers at your level — exchange referrals on matters outside your scope or collaborate on complex cross-border work.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">04</div>
+          <h4>Member Events</h4>
+          <p>Roundtables, webinars, and in-person events at global financial centres — London, Singapore, New York, Dubai. Open to members only, never to the general public.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">05</div>
+          <h4>Partner Deals</h4>
+          <p>50+ exclusive partner discounts on the AI, legal research, finance, productivity, and practice management tools that serious practitioners actually rely on. Negotiated so you don't have to.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+        <div class="mc-benefit">
+          <div class="mc-benefit-num">06</div>
+          <h4>Priority Support</h4>
+          <p>A dedicated account contact for profile questions, platform issues, and optimisation guidance. No support queues — because your time is too valuable for that.</p>
+          <span class="mc-benefit-more">Learn more</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       6. DEALS CATALOG
+  ════════════════════════════════════ -->
+  <section class="wjm-deals">
+    <div class="container-wide">
+
+      <div class="wjm-deals-top">
+        <div>
+          <span style="font-family:'Archivo',sans-serif; font-size:11px; letter-spacing:0.14em; color:rgba(255,255,255,0.4); font-weight:500; display:inline-flex; align-items:center; gap:9px; margin-bottom:20px; text-transform:uppercase;">
+            <span style="width:22px; height:2px; background:rgba(255,255,255,0.25); border-radius:2px; display:inline-block;"></span>
+            Exclusive Member Deals
+          </span>
+          <div class="wjm-deals-big"><em>50+</em></div>
+          <div class="wjm-deals-big-sub">Partner deals &amp; discounts</div>
+        </div>
+        <div class="wjm-deals-right">
+          <h2>The tools your practice runs on — <em>at member rates.</em></h2>
+          <p>Your membership unlocks an ever-growing catalog of partner discounts, exclusive coupons, and preferential rates on the AI, legal, finance, and productivity tools that serious practitioners actually use. From ChatGPT to LexisNexis — we've negotiated the deals so you don't have to.</p>
+          <span class="wjm-deals-coming">Full deals catalog launching soon for members</span>
+        </div>
+      </div>
+
+      <div class="wjm-deals-cats">
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">AI Tools</span>
+            <span class="wjm-deal-count">12 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">ChatGPT</span>
+            <span class="wjm-deal-chip">Claude</span>
+            <span class="wjm-deal-chip">Perplexity</span>
+            <span class="wjm-deal-chip">GitHub Copilot</span>
+            <span class="wjm-deal-chip">Harvey AI</span>
+            <span class="wjm-deal-chip">Notion AI</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Legal &amp; Compliance</span>
+            <span class="wjm-deal-count">9 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">LexisNexis</span>
+            <span class="wjm-deal-chip">Westlaw</span>
+            <span class="wjm-deal-chip">Clio</span>
+            <span class="wjm-deal-chip">Ironclad</span>
+            <span class="wjm-deal-chip">PracticePanther</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Finance &amp; Tax</span>
+            <span class="wjm-deal-count">8 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">QuickBooks</span>
+            <span class="wjm-deal-chip">Xero</span>
+            <span class="wjm-deal-chip">Koinly</span>
+            <span class="wjm-deal-chip">Dext</span>
+            <span class="wjm-deal-chip">Bloomberg</span>
+            <span class="wjm-deal-chip">TaxJar</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Document &amp; Contract</span>
+            <span class="wjm-deal-count">7 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">DocuSign</span>
+            <span class="wjm-deal-chip">PandaDoc</span>
+            <span class="wjm-deal-chip">Adobe Acrobat</span>
+            <span class="wjm-deal-chip">Ironclad</span>
+            <span class="wjm-deal-chip">Juro</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Productivity</span>
+            <span class="wjm-deal-count">10 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">Notion</span>
+            <span class="wjm-deal-chip">Zoom</span>
+            <span class="wjm-deal-chip">Calendly</span>
+            <span class="wjm-deal-chip">Loom</span>
+            <span class="wjm-deal-chip">1Password</span>
+            <span class="wjm-deal-chip">Slack</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Business &amp; Practice</span>
+            <span class="wjm-deal-count">6 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">Stripe</span>
+            <span class="wjm-deal-chip">Wise</span>
+            <span class="wjm-deal-chip">Deel</span>
+            <span class="wjm-deal-chip">Brex</span>
+            <span class="wjm-deal-chip">Filevine</span>
+            <span class="wjm-deal-chip">Lawmatics</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       7. FAQ STRIP — 2-column grid
+  ════════════════════════════════════ -->
+  <section class="mc-faq-section">
+    <div class="container-wide">
+
+      <span class="mc-label">Common Questions</span>
+      <h2 class="mc-faq-title">Quick answers. <em>No ambiguity.</em></h2>
+
+      <div class="mc-faq-grid">
+
+        <div class="mc-faq-item">
+          <div class="mc-faq-q">Who can join?</div>
+          <div class="mc-faq-a">Finance and legal professionals with 5+ years of post-qualification experience, practising anywhere in the world. Both independent practitioners and employed professionals are welcome.</div>
+        </div>
+
+        <div class="mc-faq-item">
+          <div class="mc-faq-q">How long does approval take?</div>
+          <div class="mc-faq-a">Every application is reviewed by a real person. You'll receive a decision within 5 business days. If accepted, your profile goes live within two weeks.</div>
+        </div>
+
+        <div class="mc-faq-item">
+          <div class="mc-faq-q">Do you take a commission?</div>
+          <div class="mc-faq-a">Never. 100% of every client fee goes directly to you. Expertly charges a flat annual membership fee and nothing else — no cuts, no transaction fees, no hidden charges.</div>
+        </div>
+
+        <div class="mc-faq-item">
+          <div class="mc-faq-q">Can I cancel?</div>
+          <div class="mc-faq-a">Yes, anytime. There's no minimum term or lock-in. If you cancel, your membership runs to the end of the billing period. No questions asked.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       8. CTA
+  ════════════════════════════════════ -->
+  <section class="wjm-cta">
+    <div class="container-wide">
+      <div class="wjm-cta-card">
+        <div>
+          <span style="display:inline-flex; align-items:center; gap:9px; font-size:11px; font-family:'Archivo',sans-serif; letter-spacing:0.14em; color:rgba(255,255,255,0.35); font-weight:500;">
+            <span style="width:22px; height:2px; background:rgba(255,255,255,0.2); border-radius:2px; display:inline-block;"></span>
+            Ready to join?
+          </span>
+          <h2 class="wjm-cta-heading">Applications reviewed in five business days.</h2>
+          <p class="wjm-cta-sub">Every application is personally reviewed. If accepted, your profile goes live within two weeks and clients can find you from day one.</p>
+        </div>
+        <div class="wjm-cta-btns">
+          <a href="apply.html" class="btn btn-lg" style="background:var(--bg); color:var(--ink); white-space:nowrap;">Apply for membership <span class="arr">→</span></a>
+          <a href="how-it-works.html#pricing" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.55); white-space:nowrap; text-align:center;">See pricing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container-wide">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Expertly<span style="width:9px; height:9px; background:var(--accent); border-radius:50%; display:inline-block; margin-left:2px;"></span></div>
+        <p>The curated professional network for verified finance &amp; legal experts worldwide.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="members.html">Member Directory</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="apply.html">Apply for Membership</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Our Mission</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="why-join.html">Why Become a Member</a></li>
+          <li><a href="#">Verified Experts</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Expertly · All Rights Reserved</span>
+      <span>Verified · Global · Independent</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="center" data-grid="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membership — Expertly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/pages.css">
+<link rel="stylesheet" href="assets/auth.css">
+<style>
+/* ═══════════════════════════════════════════
+   Membership A — Pricing Forward
+   ═══════════════════════════════════════════ */
+
+/* ── Variant label chip (review only) ── */
+.variant-label {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  z-index: 9999;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  border-radius: 100px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ── Shared section label ── */
+.ma-label {
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.ma-label::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.ma-label-light {
+  color: rgba(255,255,255,0.4);
+}
+.ma-label-light::before {
+  background: rgba(255,255,255,0.25);
+}
+
+/* ── HERO — compact, centered ── */
+.ma-hero {
+  padding: 80px 0 72px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.ma-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.ma-hero-heading {
+  font-size: clamp(32px, 4.2vw, 58px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-top: 16px;
+}
+.ma-hero-heading em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.ma-hero-sub {
+  font-size: 16px;
+  color: var(--ink-3);
+  margin-top: 16px;
+  line-height: 1.62;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ma-hero-cta {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Stats row */
+.wjm-stats {
+  display: flex;
+  margin-top: 52px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 0;
+  text-align: left;
+}
+.wjm-stat {
+  flex: 1;
+  min-width: 150px;
+  padding-right: 40px;
+  margin-right: 40px;
+  border-right: 1px solid var(--line);
+}
+.wjm-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.wjm-stat-num {
+  font-size: clamp(32px, 3.5vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.wjm-stat-num em { font-style: normal; color: var(--accent); }
+.wjm-stat-label {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+  max-width: 150px;
+}
+
+/* ── TIER CARDS — dark bg, side by side ── */
+.ma-tiers {
+  background: var(--ink);
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+}
+.ma-tiers-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.ma-tiers-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--bg);
+  line-height: 1.1;
+  margin-top: 10px;
+}
+.ma-tiers-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+}
+.ma-tiers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.ma-tier-card {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 36px 32px 32px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.ma-tier-card.popular {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.08);
+}
+.ma-tier-badge {
+  position: absolute;
+  top: -11px;
+  left: 32px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 3px 11px;
+  border-radius: 100px;
+}
+.ma-tier-name {
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.ma-tier-price {
+  font-size: 46px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--bg);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.ma-tier-price sub {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+.ma-tier-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  font-family: 'Archivo', sans-serif;
+  margin-bottom: 28px;
+}
+.ma-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 22px;
+}
+.ma-check-list {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ma-check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.4;
+}
+.ma-check-list li::before {
+  content: '✓';
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 0;
+  line-height: 1.4;
+}
+.ma-tier-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Geist', sans-serif;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+}
+.ma-tier-card.popular .ma-tier-cta {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.ma-tier-cta:hover { opacity: 0.82; }
+
+/* ── BENEFITS GRID ── */
+.ma-benefits {
+  padding: 80px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+.ma-benefits-header {
+  margin-bottom: 40px;
+}
+.ma-section-title {
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 8px;
+}
+.ma-section-title em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.ma-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.ma-benefit-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+}
+.ma-benefit-tag {
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.ma-benefit-tag::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.ma-benefit-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.ma-benefit-card p {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+
+/* ── PROCESS TIMELINE — horizontal 4-step ── */
+.ma-timeline {
+  padding: 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.ma-timeline-inner {
+  padding: 72px 0;
+}
+.ma-timeline-header {
+  margin-bottom: 48px;
+}
+.ma-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+/* connector line between steps */
+.ma-timeline-grid::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: calc(12.5% + 8px);
+  right: calc(12.5% + 8px);
+  height: 1px;
+  background: var(--line);
+  z-index: 0;
+}
+.ma-timeline-step {
+  padding: 0 24px 0 0;
+  position: relative;
+  z-index: 1;
+}
+.ma-timeline-step:last-child { padding-right: 0; }
+.ma-step-num-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+.ma-step-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink);
+  flex-shrink: 0;
+  letter-spacing: 0;
+  position: relative;
+}
+.ma-timeline-step.active .ma-step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.ma-step-title {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+.ma-step-desc {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+.ma-step-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+/* ── DEALS SECTION ── */
+.ma-deals {
+  padding: 80px 0;
+  background: var(--ink);
+  border-top: 1px solid var(--line);
+  color: var(--bg);
+}
+.ma-deals-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 52px;
+}
+.ma-deals-big-num {
+  font-size: clamp(64px, 8vw, 108px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: var(--bg);
+}
+.ma-deals-big-num em {
+  font-style: normal;
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+}
+.ma-deals-big-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.ma-deals-desc {
+  max-width: 480px;
+}
+.ma-deals-desc h2 {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--bg);
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+.ma-deals-desc h2 em {
+  font-style: italic;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--accent) 100%, white 25%);
+}
+.ma-deals-desc p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+}
+.ma-deals-cats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 48px;
+}
+
+/* reuse wjm-deal-cat styles from why-join */
+.wjm-deal-cat {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 24px;
+  background: rgba(255,255,255,0.04);
+  transition: background 0.18s, border-color 0.18s;
+}
+.wjm-deal-cat:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.18);
+}
+.wjm-deal-cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.wjm-deal-cat-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: -0.005em;
+}
+.wjm-deal-count {
+  font-size: 10px;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  color: color-mix(in oklab, var(--accent) 100%, white 20%);
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  border-radius: 100px;
+  padding: 3px 9px;
+}
+.wjm-deal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wjm-deal-chip {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'Archivo', sans-serif;
+  white-space: nowrap;
+}
+
+/* ── CTA BANNER ── */
+.ma-cta-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+}
+.wjm-cta-card {
+  background: var(--ink);
+  border-radius: 20px;
+  padding: 72px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+.wjm-cta-heading {
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  color: var(--bg);
+  margin-top: 14px;
+}
+.wjm-cta-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 12px;
+  max-width: 460px;
+  line-height: 1.6;
+}
+.wjm-cta-btns { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ma-tiers-grid { grid-template-columns: 1fr; max-width: 480px; }
+  .ma-benefits-grid { grid-template-columns: 1fr 1fr; }
+  .ma-timeline-grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  .ma-timeline-grid::before { display: none; }
+  .ma-deals-header { grid-template-columns: 1fr; gap: 24px; }
+  .ma-deals-cats { grid-template-columns: 1fr 1fr; }
+  .wjm-cta-card { grid-template-columns: 1fr; padding: 48px 36px; }
+  .wjm-cta-btns { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 640px) {
+  .wjm-stats { flex-direction: column; }
+  .wjm-stat { border-right: none; padding-right: 0; margin-right: 0; padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .wjm-stat:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+  .ma-benefits-grid { grid-template-columns: 1fr; }
+  .ma-timeline-grid { grid-template-columns: 1fr; }
+  .ma-deals-cats { grid-template-columns: 1fr; }
+  .wjm-cta-card { padding: 36px 24px; }
+  .wjm-cta-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Variant identification chip (review only) -->
+<div class="variant-label">Style A — Pricing Forward</div>
+
+<nav class="nav"></nav>
+
+<main>
+
+  <!-- ════════════════════════════════════
+       1. HERO — compact, centered
+  ════════════════════════════════════ -->
+  <section class="ma-hero">
+    <div class="container-wide">
+      <div class="ma-hero-inner">
+        <span class="ma-label">Membership</span>
+        <h1 class="ma-hero-heading">
+          One membership.<br>
+          Real clients. <em>Your reputation, built.</em>
+        </h1>
+        <p class="ma-hero-sub">
+          Expertly is the professional network for verified finance and legal practitioners. Built to grow your practice — not take a cut of it.
+        </p>
+        <div class="ma-hero-cta">
+          <a href="apply.html" class="btn btn-primary btn-lg">Apply for membership <span class="arr">→</span></a>
+        </div>
+      </div>
+
+      <!-- 4 stats in a horizontal row with dividers -->
+      <div class="wjm-stats">
+        <div class="wjm-stat">
+          <div class="wjm-stat-num"><em>$0</em></div>
+          <div class="wjm-stat-label">Commission on your fees — ever</div>
+        </div>
+        <div class="wjm-stat">
+          <div class="wjm-stat-num">1</div>
+          <div class="wjm-stat-label">Client typically covers the full annual fee</div>
+        </div>
+        <div class="wjm-stat">
+          <div class="wjm-stat-num">100<em style="font-size:0.52em; vertical-align:middle;">%</em></div>
+          <div class="wjm-stat-label">Of every client payment goes directly to you</div>
+        </div>
+        <div class="wjm-stat">
+          <div class="wjm-stat-num">∞</div>
+          <div class="wjm-stat-label">Articles you can publish under your name</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       2. TIER CARDS — side by side, dark bg
+  ════════════════════════════════════ -->
+  <section class="ma-tiers">
+    <div class="container-wide">
+
+      <div class="ma-tiers-header">
+        <span class="ma-label ma-label-light">Choose your tier</span>
+        <h2 class="ma-tiers-title">Flat annual fee. <em>No commissions. Ever.</em></h2>
+      </div>
+
+      <div class="ma-tiers-grid">
+
+        <!-- Budding Professional -->
+        <div class="ma-tier-card">
+          <div class="ma-tier-name">BUDDING PROFESSIONAL · 5–12 YRS</div>
+          <div class="ma-tier-price">$499<sub>/year</sub></div>
+          <div class="ma-tier-note">or $49 / month</div>
+          <hr class="ma-divider">
+          <ul class="ma-check-list">
+            <li>Verified profile surfaced in client search</li>
+            <li>100% of client fees — zero commission</li>
+            <li>Unlimited article publishing under your name</li>
+            <li>Access to the verified peer network</li>
+            <li>Member-only events and roundtables</li>
+            <li>50+ partner deals &amp; discounts</li>
+            <li>Standard account support</li>
+          </ul>
+          <a href="apply.html" class="ma-tier-cta">Apply <span class="arr">→</span></a>
+        </div>
+
+        <!-- Seasoned Professional -->
+        <div class="ma-tier-card popular">
+          <div class="ma-tier-badge">MOST POPULAR</div>
+          <div class="ma-tier-name">SEASONED PROFESSIONAL · 12+ YRS</div>
+          <div class="ma-tier-price">$699<sub>/year</sub></div>
+          <div class="ma-tier-note">or $69 / month</div>
+          <hr class="ma-divider">
+          <ul class="ma-check-list">
+            <li>Verified profile surfaced in client search</li>
+            <li>100% of client fees — zero commission</li>
+            <li>Unlimited article publishing under your name</li>
+            <li>Access to the verified peer network</li>
+            <li>Member-only events and roundtables</li>
+            <li>50+ partner deals &amp; discounts</li>
+            <li>Priority account support</li>
+            <li>Senior-tier visibility in search results</li>
+          </ul>
+          <a href="apply.html" class="ma-tier-cta">Apply <span class="arr">→</span></a>
+        </div>
+
+      </div><!-- /ma-tiers-grid -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       3. BENEFITS GRID — 3-column, light bg
+  ════════════════════════════════════ -->
+  <section class="ma-benefits">
+    <div class="container-wide">
+      <div class="ma-benefits-header">
+        <span class="ma-label">What's included</span>
+        <h2 class="ma-section-title">A professional ecosystem, <em>not just a directory.</em></h2>
+      </div>
+
+      <div class="ma-benefits-grid">
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">New Business</div>
+          <h3>Clients find you. You keep every penny.</h3>
+          <p>Your verified profile surfaces directly in search results. No bidding, no middlemen — enquiries land straight in your inbox.</p>
+        </div>
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">Thought Leadership</div>
+          <h3>Unlimited articles, published under your name.</h3>
+          <p>An unlimited publishing platform — indexed, searchable, and visible to the clients and peers who matter.</p>
+        </div>
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">Peer Network</div>
+          <h3>1:1 calls with peers who get it.</h3>
+          <p>Every person on Expertly is manually verified. Exchange referrals, collaborate on complex work, and stay connected with practitioners at your level.</p>
+        </div>
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">Member Events</div>
+          <h3>Roundtables, webinars, in-person events.</h3>
+          <p>Member-only events at global financial centres — open to members only, not the general public.</p>
+        </div>
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">Deals &amp; Discounts</div>
+          <h3>50+ partner deals on tools you actually use.</h3>
+          <p>Exclusive rates on legal research, AI tools, document automation, and practice management platforms used by senior practitioners.</p>
+        </div>
+
+        <div class="ma-benefit-card">
+          <div class="ma-benefit-tag">Priority Support</div>
+          <h3>A dedicated contact, not a queue.</h3>
+          <p>A named contact for profile questions, platform issues, and optimisation — because your time is too valuable for support tickets.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       4. PROCESS TIMELINE — horizontal 4-step
+  ════════════════════════════════════ -->
+  <section class="ma-timeline">
+    <div class="container-wide">
+      <div class="ma-timeline-inner">
+        <div class="ma-timeline-header">
+          <span class="ma-label">How to join</span>
+          <h2 class="ma-section-title">Four steps. <em>Roughly two weeks.</em></h2>
+        </div>
+
+        <div class="ma-timeline-grid">
+
+          <div class="ma-timeline-step active">
+            <div class="ma-step-num-wrap">
+              <div class="ma-step-num">01</div>
+            </div>
+            <div class="ma-step-title">Apply</div>
+            <p class="ma-step-desc">Tell us about your practice, credentials, and two peer references. Reviewed by a person — no bots.</p>
+            <span class="ma-step-tag">10 min to complete</span>
+          </div>
+
+          <div class="ma-timeline-step">
+            <div class="ma-step-num-wrap">
+              <div class="ma-step-num">02</div>
+            </div>
+            <div class="ma-step-title">Verify</div>
+            <p class="ma-step-desc">Our team cross-checks every credential with issuing bodies and contacts your peer references directly.</p>
+            <span class="ma-step-tag">5 business days</span>
+          </div>
+
+          <div class="ma-timeline-step">
+            <div class="ma-step-num-wrap">
+              <div class="ma-step-num">03</div>
+            </div>
+            <div class="ma-step-title">Onboard</div>
+            <p class="ma-step-desc">Publish your profile, set your rates and availability, and start writing articles. Our team is on hand throughout.</p>
+            <span class="ma-step-tag">Build your profile</span>
+          </div>
+
+          <div class="ma-timeline-step">
+            <div class="ma-step-num-wrap">
+              <div class="ma-step-num">04</div>
+            </div>
+            <div class="ma-step-title">Grow</div>
+            <p class="ma-step-desc">Clients find you via AI search, direct browsing, or article discovery. Every enquiry routes straight to your inbox.</p>
+            <span class="ma-step-tag">From day one</span>
+          </div>
+
+        </div><!-- /ma-timeline-grid -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       5. DEALS — dark bg, category cards
+  ════════════════════════════════════ -->
+  <section class="ma-deals">
+    <div class="container-wide">
+
+      <div class="ma-deals-header">
+        <div>
+          <span class="ma-label ma-label-light">Exclusive Member Deals</span>
+          <div class="ma-deals-big-num"><em>50+</em></div>
+          <div class="ma-deals-big-sub">Partner deals &amp; discounts</div>
+        </div>
+        <div class="ma-deals-desc">
+          <h2>The tools your practice runs on — <em>at member rates.</em></h2>
+          <p>Your membership unlocks an ever-growing catalog of partner discounts on the AI, legal, finance, and productivity tools that serious practitioners actually use. From ChatGPT to LexisNexis — we've negotiated the deals so you don't have to.</p>
+        </div>
+      </div>
+
+      <div class="ma-deals-cats">
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">AI Tools</span>
+            <span class="wjm-deal-count">12 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">ChatGPT</span>
+            <span class="wjm-deal-chip">Claude</span>
+            <span class="wjm-deal-chip">Perplexity</span>
+            <span class="wjm-deal-chip">GitHub Copilot</span>
+            <span class="wjm-deal-chip">Harvey AI</span>
+            <span class="wjm-deal-chip">Notion AI</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Legal &amp; Compliance</span>
+            <span class="wjm-deal-count">9 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">LexisNexis</span>
+            <span class="wjm-deal-chip">Westlaw</span>
+            <span class="wjm-deal-chip">Clio</span>
+            <span class="wjm-deal-chip">Ironclad</span>
+            <span class="wjm-deal-chip">PracticePanther</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Finance &amp; Tax</span>
+            <span class="wjm-deal-count">8 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">QuickBooks</span>
+            <span class="wjm-deal-chip">Xero</span>
+            <span class="wjm-deal-chip">Koinly</span>
+            <span class="wjm-deal-chip">Dext</span>
+            <span class="wjm-deal-chip">Bloomberg</span>
+            <span class="wjm-deal-chip">TaxJar</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Document &amp; Contract</span>
+            <span class="wjm-deal-count">7 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">DocuSign</span>
+            <span class="wjm-deal-chip">PandaDoc</span>
+            <span class="wjm-deal-chip">Adobe Acrobat</span>
+            <span class="wjm-deal-chip">Ironclad</span>
+            <span class="wjm-deal-chip">Juro</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Productivity</span>
+            <span class="wjm-deal-count">10 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">Notion</span>
+            <span class="wjm-deal-chip">Zoom</span>
+            <span class="wjm-deal-chip">Calendly</span>
+            <span class="wjm-deal-chip">Loom</span>
+            <span class="wjm-deal-chip">1Password</span>
+            <span class="wjm-deal-chip">Slack</span>
+          </div>
+        </div>
+
+        <div class="wjm-deal-cat">
+          <div class="wjm-deal-cat-head">
+            <span class="wjm-deal-cat-name">Business &amp; Practice</span>
+            <span class="wjm-deal-count">6 deals</span>
+          </div>
+          <div class="wjm-deal-chips">
+            <span class="wjm-deal-chip">Stripe</span>
+            <span class="wjm-deal-chip">Wise</span>
+            <span class="wjm-deal-chip">Deel</span>
+            <span class="wjm-deal-chip">Brex</span>
+            <span class="wjm-deal-chip">Filevine</span>
+            <span class="wjm-deal-chip">Lawmatics</span>
+          </div>
+        </div>
+
+      </div><!-- /ma-deals-cats -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       6. CTA BANNER
+  ════════════════════════════════════ -->
+  <section class="ma-cta-section">
+    <div class="container-wide">
+      <div class="wjm-cta-card">
+        <div>
+          <span style="display:inline-flex; align-items:center; gap:9px; font-size:11px; font-family:'Archivo',sans-serif; letter-spacing:0.14em; color:rgba(255,255,255,0.35); font-weight:500;">
+            <span style="width:22px; height:2px; background:rgba(255,255,255,0.2); border-radius:2px; display:inline-block;"></span>
+            Ready to join?
+          </span>
+          <h2 class="wjm-cta-heading">Applications reviewed in five business days.</h2>
+          <p class="wjm-cta-sub">Every application is personally reviewed. If accepted, your profile goes live within two weeks and clients can find you from day one.</p>
+        </div>
+        <div class="wjm-cta-btns">
+          <a href="apply.html" class="btn btn-lg" style="background:var(--bg); color:var(--ink); white-space:nowrap;">Apply for membership <span class="arr">→</span></a>
+          <a href="#" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.55); white-space:nowrap; text-align:center;">See pricing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container-wide">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Expertly<span style="width:9px; height:9px; background:var(--accent); border-radius:50%; display:inline-block; margin-left:2px;"></span></div>
+        <p>The curated professional network for verified finance &amp; legal experts worldwide.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="members.html">Member Directory</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="apply.html">Apply for Membership</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Our Mission</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="why-join.html">Why Become a Member</a></li>
+          <li><a href="#">Verified Experts</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Expertly · All Rights Reserved</span>
+      <span>Verified · Global · Independent</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/shared.js"></script>
+<script src="assets/members.js"></script>
+</body>
+</html>
