@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expertly: Verified Finance & Legal Counsel, On Demand</title>
+  <meta name="description" content="Find verified finance and legal experts across 20+ jurisdictions. M&A tax, transfer pricing, corporate law, compliance — book directly, no middlemen.">
+  <link rel="canonical" href="https://expertly.network/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Expertly">
+  <meta property="og:title" content="Expertly: Verified Finance & Legal Counsel, On Demand">
+  <meta property="og:description" content="A curated network of verified finance and legal professionals across 20+ jurisdictions. Skip the cold outreach — find, verify, and book senior counsel directly.">
+  <meta property="og:url" content="https://expertly.network/">
+  <meta property="og:image" content="https://expertly.network/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Expertly: Verified Finance & Legal Counsel, On Demand">
+  <meta name="twitter:description" content="A curated network of verified finance and legal professionals across 20+ jurisdictions. Find, verify, and book directly.">
+  <meta name="twitter:image" content="https://expertly.network/assets/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <style>
+    .hero-split-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100% !important;
+      max-width: 1180px !important;
+    }
+
+    #hero-rotator {
+      font-size: clamp(38px, 4.2vw, 68px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      height: 3.6em;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-rotator-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      opacity: 1;
+      transform: translate(0, 0);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    /* Outgoing line: slides out to the left while the incoming line slides in,
+     at the same time, instead of one finishing before the other starts. */
+    .hero-rotator-line.is-leaving {
+      opacity: 0;
+      transform: translate(-56px, 0);
+    }
+
+    /* Incoming line: starts off to the right, then slides in to center */
+    .hero-rotator-line.is-entering {
+      opacity: 0;
+      transform: translate(56px, 0);
+    }
+
+    .hero-lede {
+      max-width: 760px;
+      font-size: clamp(18px, 1.4vw, 22px);
+      line-height: 1.55;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-trust-strip {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+    .hero-trust-strip b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .hero-trust-strip-dot {
+      color: var(--line-2);
+    }
+    .hero-avatar-stack {
+      display: flex;
+      margin-right: 4px;
+    }
+    .hero-avatar-stack .avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 11px;
+      border: 2px solid var(--bg);
+      margin-left: -10px;
+    }
+    .hero-avatar-stack .avatar:first-child {
+      margin-left: 0;
+    }
+
+    /* Toggle Wrapper */
+    .hero-toggle-wrapper {
+      display: inline-flex;
+      background: #EAF7F4;
+      border: 1px solid #CDECE4;
+      padding: 5px;
+      border-radius: 100px;
+      margin-top: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 10;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .hero-toggle-wrapper.large-toggle {
+      padding: 10px;
+      background: color-mix(in oklab, var(--accent) 8%, var(--bg-alt));
+      border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent);
+      box-shadow: 0 16px 40px -12px color-mix(in oklab, var(--accent) 20%, transparent), inset 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: all 0.25s ease;
+    }
+    .hero-toggle-wrapper.large-toggle:hover {
+      border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+      box-shadow: 0 20px 48px -10px color-mix(in oklab, var(--accent) 30%, transparent), inset 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .hero-toggle-wrapper.large-toggle .hero-toggle-btn {
+      padding: 18px 52px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+    .hero-toggle-wrapper.large-toggle .hero-toggle-indicator {
+      top: 10px;
+      left: 10px;
+      bottom: 10px;
+      width: calc(50% - 10px);
+      background: var(--accent);
+      box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 40%, rgba(0, 0, 0, 0.22));
+    }
+
+    /* Sliding Indicator */
+    .hero-toggle-indicator {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      bottom: 5px;
+      width: calc(50% - 5px);
+      background: var(--ink);
+      border-radius: 100px;
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 1;
+      box-shadow: 0 4px 12px rgba(11, 11, 12, 0.15);
+    }
+
+    /* Sliding hover indicators using :has() */
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-indicator {
+      transform: translateX(100%);
+    }
+
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-indicator {
+      transform: translateX(0);
+    }
+
+    /* Toggle Buttons */
+    .hero-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-family: 'Geist', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: color-mix(in oklab, var(--accent) 70%, var(--ink));
+      padding: 10px 28px;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: color 0.25s ease, transform 0.2s ease;
+      position: relative;
+      z-index: 2;
+      outline: none;
+      user-select: none;
+    }
+
+    /* Hover effect: highlight scale when cursor is on it */
+    .hero-toggle-btn:hover {
+      transform: scale(1.03);
+    }
+
+    /* Active / Hover text colors: */
+    /* Default active: Find an Expert is white */
+    .hero-toggle-btn.active {
+      color: #FFFFFF;
+    }
+
+    /* Hover become one: make it white, and make find an expert theme mixed accent */
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="become"] {
+      color: #FFFFFF;
+    }
+
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="find"] {
+      color: color-mix(in oklab, var(--accent) 70%, var(--ink));
+    }
+
+    /* Hover find an expert: make it white, and make become one theme mixed accent */
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-btn[data-mode="find"] {
+      color: #FFFFFF;
+    }
+
+    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-btn[data-mode="become"] {
+      color: color-mix(in oklab, var(--accent) 70%, var(--ink));
+    }
+
+    /* Active state scale press effect */
+    .hero-toggle-btn:active {
+      transform: scale(0.96);
+    }
+
+    @media (max-width: 768px) {
+      #hero-rotator {
+        font-size: clamp(30px, 6.8vw, 42px);
+        height: 3.6em;
+      }
+    }
+
+    /* OVERRIDE TO CENTER THE HERO SPLIT GRID */
+    .hero-split-grid {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      min-height: 420px !important;
+    }
+
+    /* Pull the hero in tighter so the green toggle pill stays in view and
+       the AI section starts closer to the fold instead of below it. */
+    .hero-split {
+      padding: 48px 0 56px !important;
+      background: var(--bg) !important;
+      border-bottom: none !important;
+    }
+
+    .ai-section {
+      padding-top: 56px !important;
+      background: var(--bg-alt) !important;
+      border-top: none !important;
+      border-bottom: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Dynamic Navigation -->
+  <nav class="nav"></nav>
+
+  <main>
+    <!-- ====================== HERO - SPLIT (DEFAULT) ====================== -->
+    <section class="hero-split">
+      <div class="container-wide">
+        <div class="hero-split-grid">
+          <div class="hero-split-text">
+
+            <h1 class="display" id="hero-rotator">
+              <span class="hero-rotator-line" data-audience="common">You Have Expertise.<br>Clients Have Needs.<br><span
+                  class="accent-text">We Bring You Together.</span></span>
+            </h1>
+            <p class="lede hero-lede">
+              Every expert on Expertly has passed a real review. Every article comes from someone who's actually lived it.
+              Every event on the calendar is one worth showing up to. Find the right expert now, or become one worth
+              finding.
+            </p>
+
+            <!-- Centered Toggle Wrapper relative to the subhead (max-width: 760px) -->
+            <div style="display: flex; justify-content: center; margin-top: 36px; max-width: 760px; width: 100%;">
+              <div class="hero-toggle-wrapper" style="margin-top: 0; margin-bottom: 0;">
+                <div class="hero-toggle-indicator"></div>
+                <a href="login.html" class="hero-toggle-btn active" data-mode="find">Find an Expert</a>
+                <a href="apply.html" class="hero-toggle-btn" data-mode="become">Become One</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== HERO - MOSAIC (TWEAKS OPTION) ====================== -->
+    <section class="hero-mosaic-section" style="display: none;">
+      <div class="mosaic-bg">
+        <div class="mosaic-bg-cell" style="animation-delay: 0s;">
+          <div class="avatar" data-initials="MK"><span class="avatar-initials">MK</span><img
+              src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.1s;">
+          <div class="avatar" data-initials="SM"><span class="avatar-initials">SM</span><img
+              src="https://randomuser.me/api/portraits/men/45.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.2s;">
+          <div class="avatar" data-initials="SA"><span class="avatar-initials">SA</span><img
+              src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.3s;">
+          <div class="avatar" data-initials="PV"><span class="avatar-initials">PV</span><img
+              src="https://randomuser.me/api/portraits/women/68.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.4s;">
+          <div class="avatar" data-initials="MC"><span class="avatar-initials">MC</span><img
+              src="https://randomuser.me/api/portraits/men/52.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.5s;">
+          <div class="avatar" data-initials="AO"><span class="avatar-initials">AO</span><img
+              src="https://randomuser.me/api/portraits/women/90.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.6s;">
+          <div class="avatar" data-initials="FA"><span class="avatar-initials">FA</span><img
+              src="https://randomuser.me/api/portraits/women/57.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+        <div class="mosaic-bg-cell" style="animation-delay: 0.7s;">
+          <div class="avatar" data-initials="JO"><span class="avatar-initials">JO</span><img
+              src="https://randomuser.me/api/portraits/men/76.jpg" alt="" class="avatar-img loaded"></div>
+        </div>
+      </div>
+      <div class="mosaic-overlay"></div>
+      <div class="container" style="position: relative; z-index: 2;">
+        <div class="hero-mosaic-content">
+          <span class="eyebrow">Global Network · 2026</span>
+          <h1 class="display" style="margin-top: 20px;">
+            The world's most<br>
+            <span class="accent-text italic">discerning</span> network<br>
+            of finance & legal experts.
+          </h1>
+          <p class="lede"
+            style="max-width: 620px; margin-top: 28px; margin-left: auto; margin-right: auto; text-align: center;">
+            Curated. Verified. Directly accessible. Skip the RFPs and find the right counsel in minutes.
+          </p>
+          <div style="display: flex; gap: 12px; justify-content: center; margin-top: 36px;">
+            <a href="members.html" class="btn btn-primary btn-lg">Browse network <span class="arr">→</span></a>
+            <a href="apply.html" class="btn btn-outline btn-lg">Apply to join</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== HERO - EDITORIAL MASTHEAD (TWEAKS OPTION) ====================== -->
+    <section class="hero-editorial" style="display: none;">
+      <div class="container-wide">
+        <div class="masthead">
+          <div class="masthead-left mono">
+            <div>Vol. III · Issue 04</div>
+            <div id="masthead-date">12 June 2026</div>
+          </div>
+          <div class="masthead-center">Expertly</div>
+          <div class="masthead-right mono">
+            <div>20+ Verified Experts</div>
+            <div>20+ Jurisdictions</div>
+          </div>
+        </div>
+        <div class="hero-ed-grid">
+          <div class="hero-ed-main">
+            <span class="eyebrow">Cover story · The curated network</span>
+            <h1 class="display" style="margin-top: 16px;">
+              The world's most <em class="accent-text">trusted</em> finance & legal professionals, on one platform.
+            </h1>
+            <p class="lede" style="max-width: 540px; margin-top: 24px;">
+              Every member is vetted by credentials, experience, and peer review. No junior associates. No middlemen.
+              Just counsel that sees through.
+            </p>
+            <div style="display: flex; gap: 10px; margin-top: 28px;">
+              <a href="members.html" class="btn btn-primary btn-lg">Browse members <span class="arr">→</span></a>
+              <a href="apply.html" class="btn btn-outline btn-lg">Apply</a>
+            </div>
+          </div>
+          <div class="hero-ed-side">
+            <div class="hero-ed-card">
+              <span class="mono" style="color: var(--ink-3); font-size: 10px; letter-spacing: 0.12em;">Featured This
+                Week</span>
+              <h3
+                style="font-size: 22px; font-weight: 500; margin-top: 10px; letter-spacing: -0.015em; line-height: 1.15;">
+                Transfer Pricing in 2026: BEPS 2.0 and What Comes Next</h3>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+                <div class="avatar" style="width: 36px; height: 36px; font-size: 12.6px;" data-initials="DM">
+                  <span class="avatar-initials" aria-hidden="true">DM</span>
+                  <img src="https://randomuser.me/api/portraits/men/18.jpg" alt="" class="avatar-img loaded" />
+                </div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 500;">Diego Martínez</div>
+                  <div class="mono" style="font-size: 10px; color: var(--ink-3);">Transfer Pricing · 4 Min Read</div>
+                </div>
+              </div>
+            </div>
+            <div class="hero-ed-search">
+              <input placeholder="Ask our network…" onclick="window.dispatchEvent(new CustomEvent('expertly:search'))"
+                readonly />
+              <button class="btn btn-primary"
+                onclick="window.dispatchEvent(new CustomEvent('expertly:search'))">⌕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== AI SEARCH SECTION ====================== -->
+    <section class="ai-section">
+      <div class="ai-section-glow"></div>
+      <div class="container-wide">
+        <div class="ai-section-grid">
+          <div class="ai-section-text">
+            <span class="eyebrow">Expertly · Intelligent discovery</span>
+            <h2 class="section-title" style="margin-top: 16px;">
+              Finding expertise isn't difficult.<br>Finding the <span class="accent-text">right</span> expertise is.
+            </h2>
+            <p class="lede" style="margin-top: 20px; max-width: 480px;">
+              One query searches the entire network at once, no filters to fiddle with, no jargon required. Describe the
+              matter and Expertly search surfaces the right people, the relevant reading, and the events worth your
+              time. <strong style="color: var(--accent); font-weight: 500;">Click on the search box to start searching directly.</strong>
+            </p>
+            <ul class="ai-section-list">
+              <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                    <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg></span>
+                <div><b>Verified experts</b>, matched by practice, jurisdiction & rate</div>
+              </li>
+              <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                    <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg></span>
+                <div><b>Articles & insights</b>, peer-reviewed analysis on point</div>
+              </li>
+              <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                    <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg></span>
+                <div><b>Upcoming events</b>, conferences and meetings that fit</div>
+              </li>
+            </ul>
+            <button class="btn btn-primary btn-lg" style="margin-top: 32px;"
+              onclick="window.dispatchEvent(new CustomEvent('expertly:search'))">Try Expertly <span
+                class="arr">→</span></button>
+          </div>
+          <div class="ai-section-search-col" style="display: flex; flex-direction: column;">
+            <style>
+              #ai-section-search-panel {
+                transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+              }
+              #ai-section-search-panel:hover {
+                border-color: var(--accent) !important;
+                box-shadow: 0 30px 60px -15px rgba(79, 123, 232, 0.12), 0 0 0 1px rgba(79, 123, 232, 0.15) !important;
+                transform: translateY(-2px);
+              }
+            </style>
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+              <span class="ai-pulse" style="width: 6px; height: 6px;"></span>
+              Interactive Search Box — Click anywhere to search
+            </div>
+            <div class="gsearch-panel" id="ai-section-search-panel" style="box-shadow: 0 20px 50px -12px rgba(0,0,0,0.08); height: 480px; display: flex; flex-direction: column; width: 100%; cursor: pointer;">
+              <div class="gsearch-bar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px; color: var(--accent); flex-shrink: 0;">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input class="gsearch-input" id="ai-section-search-field" type="text" autocomplete="off" aria-label="Search Expertly" placeholder="" readonly style="cursor: pointer;" value="Cross-border tax Singapore & Dubai" />
+                <button class="gsearch-clear" style="display: none;">×</button>
+                <button class="gsearch-esc" style="pointer-events: none; display: flex; align-items: center; gap: 8px;">
+                  <span class="ai-pulse" style="background: var(--accent);"></span>
+                  <span>Click to type</span>
+                </button>
+              </div>
+              <div class="gsearch-body" style="flex: 1; overflow-y: auto;">
+                <div class="gsearch-results" id="ai-section-search-results" style="display: block;">
+                  <!-- Populated dynamically by script -->
+                </div>
+              </div>
+              <div class="gsearch-foot">
+                <div class="gsearch-foot-keys">
+                  <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                  <span><kbd>↵</kbd> open</span>
+                  <span><kbd>esc</kbd> close</span>
+                </div>
+                <div class="gsearch-foot-brand"><span class="ai-pulse small"></span> Powered by Expertly AI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================== FEATURED MEMBERS ====================== -->
+    <section class="section split-section">
+      <div class="container-wide">
+        <div class="split-feature reverse">
+          <div class="split-text">
+            <span class="eyebrow">Our Network</span>
+            <h2 class="section-title" style="margin-top: 16px;">A boutique network of verified practitioners.</h2>
+            <p class="lede" style="margin-top: 20px;">
+              Every member is credential-verified and peer-reviewed before they join. No junior associates, no
+              middlemen, just serious practitioners you can reach directly across every jurisdiction and practice areas.
+            </p>
+            <div class="split-stats">
+              <div><b><span data-counter-value="20" data-counter-suffix="+" data-stat="total-members">0</span></b><span>Verified members</span>
+              </div>
+              <div><b><span data-counter-value="20" data-counter-suffix="+" data-stat="total-jurisdictions">0</span></b><span>Jurisdictions</span></div>
+              <div><b><span data-counter-value="12" data-stat="total-practices">0</span></b><span>Practice areas</span></div>
+            </div>
+            <a href="members.html" class="btn btn-primary btn-lg" style="margin-top: 28px;" id="browse-members-btn">Browse all 20+ members <span
+                class="arr">→</span></a>
+          </div>
+          <div class="split-panel split-panel-mint tall">
+            <div class="marquee" id="featured-members-marquee">
+              <!-- Populated dynamically by home.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== PRACTICE AREAS ====================== -->
+    <section class="section split-section">
+      <div class="container-wide">
+        <div class="split-feature">
+          <div class="split-text">
+            <span class="eyebrow">Coverage</span>
+            <h2 class="section-title" style="margin-top: 16px;">Specialists across every corner of finance & law.</h2>
+            <p class="lede" style="margin-top: 20px;">
+              From M&A tax and transfer pricing to antitrust, capital markets, and IP, find a verified expert for the
+              exact matter in front of you, in the jurisdiction that counts, not a generalist who's close enough.
+            </p>
+            <div class="split-stats">
+              <div><b><span data-counter-value="47" data-stat="ma-tax-count">0</span></b><span>M&A tax experts</span></div>
+              <div><b><span data-counter-value="62" data-stat="corporate-count">0</span></b><span>Corporate counsel</span></div>
+              <div><b><span data-counter-value="44" data-stat="compliance-count">0</span></b><span>Compliance pros</span></div>
+            </div>
+            <a href="members.html" class="btn btn-primary btn-lg" style="margin-top: 28px;">Explore all practice areas
+              <span class="arr">→</span></a>
+          </div>
+          <div class="split-panel split-panel-sky tall">
+            <div class="marquee" id="practice-areas-marquee">
+              <!-- Populated dynamically by home.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================== FIRMS BAND ====================== -->
+    <section class="firms">
+      <div class="firms-glow"></div>
+      <div class="container-wide">
+        <div class="firms-head">
+          <span class="eyebrow" style="color: rgba(255,255,255,0.55)">Where our members practice</span>
+          <h2 class="section-title" style="color: #fff; margin-top: 14px; max-width: 760px;">
+            Senior Professionals from firms that <span class="accent-text">set the standard.</span>
+          </h2>
+          <p class="lede" style="margin-top: 18px; max-width: 560px; color: rgba(255,255,255,0.6);">
+            From the Big Four to elite boutiques, our members are partners, founders, and senior professional at
+            respected
+            firms across 20+ jurisdictions.
+          </p>
+        </div>
+      </div>
+      <div class="firms-marquee" id="firms-marquee-container">
+        <!-- Populated dynamically by home.js -->
+      </div>
+    </section>
+
+
+    <!-- ====================== LATEST ARTICLES ====================== -->
+    <section class="section articles-section">
+      <div class="container-wide">
+        <div class="section-head-row">
+          <div>
+            <span class="eyebrow">Articles</span>
+            <h2 class="section-title" style="margin-top: 16px;">Finance & legal insights from verified practitioners.</h2>
+            <p class="lede" style="margin-top: 16px; max-width: 560px;">Thoughtful perspectives from people working
+              through the same challenges, regulations, transactions, and decisions you face every day.</p>
+          </div>
+          <a href="articles.html" class="btn btn-outline">View all <span class="arr">→</span></a>
+        </div>
+        <div class="articles-grid" id="latest-articles-container">
+          <!-- Populated dynamically by home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== EVENTS CALENDAR ====================== -->
+    <section class="section events-section">
+      <div class="container-wide">
+        <div class="section-head-row">
+          <div>
+            <span class="eyebrow">Calendar</span>
+            <h2 class="section-title" style="margin-top: 16px;">Finance & legal events worth your time</h2>
+          </div>
+          <a href="events.html" class="btn btn-outline">All events <span class="arr">→</span></a>
+        </div>
+
+        <div class="home-calendar">
+          <div class="hcal-head">
+            <span class="hcal-month-label" id="hcal-month-label"></span>
+          </div>
+
+          <div class="hcal-layout">
+
+            <!-- Left: Calendar -->
+            <div class="hcal-main">
+              <div class="hcal-wrap">
+                <div class="hcal-dow">
+                  <div class="hcal-dh">Mon</div>
+                  <div class="hcal-dh">Tue</div>
+                  <div class="hcal-dh">Wed</div>
+                  <div class="hcal-dh">Thu</div>
+                  <div class="hcal-dh">Fri</div>
+                  <div class="hcal-dh">Sat</div>
+                  <div class="hcal-dh">Sun</div>
+                </div>
+                <div id="hcal-body"></div>
+              </div>
+            </div>
+
+            <!-- Right: Promo sidebar -->
+            <aside class="hcal-sidebar hcal-sidebar--promo">
+              <div class="hcal-promo">
+                <span class="hcal-promo-eyebrow">Stay informed</span>
+                <h3 class="hcal-promo-title">Know which events the right people are attending.</h3>
+                <p class="hcal-promo-body">These events are hosted across the industry. Join Expertly to get curated
+                  updates, see who's attending, and connect with the right practitioners.</p>
+                <a href="login.html" class="hcal-promo-cta">Join for free →</a>
+                <a href="events.html" class="hcal-promo-link">Browse all events</a>
+              </div>
+            </aside>
+
+          </div>
+
+          <!-- Mobile: upcoming list -->
+          <div class="hcal-mobile" id="hcal-mobile"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          'use strict';
+
+          /* ── Event data ── */
+          var EVENTS = [
+            { title: 'Transfer Pricing Webinar', country: 'SG', s: [2026, 5, 3], e: [2026, 5, 3] },
+            { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026, 5, 10], e: [2026, 5, 11] },
+            { title: 'UAE Corporate Tax Briefing', country: 'AE', s: [2026, 5, 12], e: [2026, 5, 12] },
+            { title: 'TP Minds Intl: BEPS 2.0', country: 'US', s: [2026, 5, 17], e: [2026, 5, 19] },
+            { title: 'Global M&A Roundtable', country: 'UK', s: [2026, 5, 23], e: [2026, 5, 23] },
+            { title: 'Expertly Members Social', country: 'SG', s: [2026, 5, 23], e: [2026, 5, 23] },
+            { title: 'Compliance Leaders Forum', country: 'US', s: [2026, 5, 25], e: [2026, 5, 26] },
+            { title: 'Capital Markets Outlook H2', country: 'HK', s: [2026, 5, 30], e: [2026, 5, 30] }
+          ];
+
+          /* ── Date helpers ── */
+          var today = new Date(); today.setHours(0, 0, 0, 0);
+          var yr = today.getFullYear();
+          var mo = today.getMonth();
+
+          var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+
+          var labelEl = document.getElementById('hcal-month-label');
+          if (labelEl) labelEl.textContent = MONTH_NAMES[mo] + ' ' + yr;
+
+          var firstDOW = new Date(yr, mo, 1).getDay();
+          var startOffset = firstDOW === 0 ? 6 : firstDOW - 1;
+          var daysInMonth = new Date(yr, mo + 1, 0).getDate();
+          var totalWeeks = Math.ceil((startOffset + daysInMonth) / 7);
+
+          var events = EVENTS.map(function (ev) {
+            var sd = new Date(ev.s[0], ev.s[1], ev.s[2]);
+            var ed = new Date(ev.e[0], ev.e[1], ev.e[2]);
+            return { title: ev.title, country: ev.country || '', sd: sd, ed: ed, isPast: ed < today };
+          });
+
+          /* ── Build calendar grid ── */
+          var body = document.getElementById('hcal-body');
+          if (!body) return;
+          var liveDelay = 0.2;
+
+          for (var w = 0; w < totalWeeks; w++) {
+            var weekStart = w * 7 - startOffset + 1;
+            var weekEl = document.createElement('div');
+            weekEl.className = 'hcal-week';
+
+            var bgEl = document.createElement('div');
+            bgEl.className = 'hcal-bg';
+
+            for (var d = 0; d < 7; d++) {
+              var dn = weekStart + d;
+              var cel = document.createElement('div');
+              if (dn < 1 || dn > daysInMonth) {
+                cel.className = 'hcal-cell hcal-cell--empty';
+              } else {
+                var cDate = new Date(yr, mo, dn);
+                var isToday = cDate.getTime() === today.getTime();
+                var isPastDay = cDate < today;
+                var cls = 'hcal-cell';
+                if (isToday) cls += ' today';
+                else if (isPastDay) cls += ' past';
+                if (d >= 5) cls += ' weekend';
+                cel.className = cls;
+                var dnEl = document.createElement('span');
+                dnEl.className = 'hcal-dn';
+                dnEl.textContent = dn;
+                cel.appendChild(dnEl);
+              }
+              bgEl.appendChild(cel);
+            }
+            weekEl.appendChild(bgEl);
+
+            var weekEvs = [];
+            events.forEach(function (ev) {
+              if (ev.sd.getFullYear() !== yr || ev.sd.getMonth() !== mo) {
+                if (ev.ed.getFullYear() !== yr || ev.ed.getMonth() !== mo) return;
+              }
+              var esd = ev.sd.getDate(), eed = ev.ed.getDate();
+              var wEnd = weekStart + 6;
+              if (esd > Math.min(daysInMonth, wEnd)) return;
+              if (eed < Math.max(1, weekStart)) return;
+              var ds = Math.max(esd, Math.max(1, weekStart));
+              var de = Math.min(eed, Math.min(daysInMonth, wEnd));
+              weekEvs.push({ ev: ev, col: ds - weekStart + 1, span: de - ds + 1 });
+            });
+
+            if (weekEvs.length) {
+              var layerEl = document.createElement('div');
+              layerEl.className = 'hcal-ev-layer';
+              weekEvs.forEach(function (item) {
+                var ev = item.ev;
+                var aEl = document.createElement('a');
+                aEl.href = 'events.html';
+                aEl.className = 'hcal-ev ' + (ev.isPast ? 'hcal-ev--past' : 'hcal-ev--live');
+                var delay = ev.isPast ? '0.1' : (liveDelay += 0.18, (liveDelay - 0.18).toFixed(2));
+                aEl.style.cssText = 'grid-column:' + item.col + '/span ' + item.span +
+                  (ev.isPast ? ';--ev-color:#C0C0C5' : '') +
+                  ';--ev-delay:' + delay + 's';
+                var html = '';
+                if (ev.country) html += '<span class="hcal-ev-country">' + ev.country + '</span>';
+                html += '<span class="hcal-ev-title">' + ev.title + '</span>';
+                aEl.innerHTML = html;
+                layerEl.appendChild(aEl);
+              });
+              weekEl.appendChild(layerEl);
+            }
+            body.appendChild(weekEl);
+          }
+
+          /* ── Mobile: upcoming list ── */
+          var mobileEl = document.getElementById('hcal-mobile');
+          if (mobileEl) {
+            var upcomingMob = events.filter(function (ev) { return !ev.isPast; });
+            var mon3m = MONTH_NAMES[mo].slice(0, 3).toUpperCase();
+            mobileEl.innerHTML = upcomingMob.map(function (ev) {
+              var sDay = ev.sd.getDate(), eDay = ev.ed.getDate();
+              var dateHtml = sDay === eDay
+                ? '<div class="event-date-day">' + sDay + '</div>'
+                : '<div class="event-date-range">' + sDay + '–' + eDay + '</div>';
+              return '<a href="events.html" class="event-card">' +
+                '<div class="event-date"><div class="event-date-month">' + mon3m + '</div>' + dateHtml + '</div>' +
+                '<div class="event-body">' +
+                '<h3>' + ev.title + '</h3>' +
+                '<div class="event-foot"><span class="event-register">Find out more →</span></div>' +
+                '</div></a>';
+            }).join('');
+          }
+
+          /* ── Entrance animations + spotlight cycle ── */
+          var cal = document.querySelector('.home-calendar');
+
+          function startSpotlight() {
+            var evEls = Array.from(document.querySelectorAll('.hcal-ev--live'));
+            if (evEls.length < 2) return;
+            evEls.forEach(function (el) { el.classList.add('hcal-ev--done'); });
+            evEls.forEach(function (el) { el.classList.add('hcal-ev--spotlit'); });
+
+            var idx = 0;
+            var bulkPhase = true;
+            function cycle() {
+              if (bulkPhase) {
+                bulkPhase = false;
+                evEls.forEach(function (el) { el.classList.remove('hcal-ev--spotlit'); });
+                evEls[idx].classList.add('hcal-ev--spotlit');
+                idx = (idx + 1) % evEls.length;
+              } else if (idx === 0) {
+                bulkPhase = true;
+                evEls.forEach(function (el) { el.classList.add('hcal-ev--spotlit'); });
+              } else {
+                evEls.forEach(function (el) { el.classList.remove('hcal-ev--spotlit'); });
+                evEls[idx].classList.add('hcal-ev--spotlit');
+                idx = (idx + 1) % evEls.length;
+              }
+            }
+            setInterval(cycle, 2200);
+          }
+
+          function activate() {
+            if (!cal) return;
+            cal.classList.add('hcal-animated');
+            var waitMs = Math.round((liveDelay + 0.55 + 0.25) * 1000);
+            setTimeout(startSpotlight, waitMs);
+          }
+
+          if (!window.IntersectionObserver) { setTimeout(activate, 100); return; }
+          var t = setTimeout(activate, 400);
+          new IntersectionObserver(function (e) {
+            if (e[0].isIntersecting) { clearTimeout(t); activate(); }
+          }, { threshold: 0.05 }).observe(cal);
+        })();
+      </script>
+    </section>
+
+    <!-- ====================== TESTIMONIALS ====================== -->
+    <section class="section testimonials">
+      <div class="container-wide">
+        <div class="section-head">
+          <span class="eyebrow">Voices</span>
+          <h2 class="section-title" style="margin-top: 16px;">Trusted by professionals worldwide.</h2>
+          <div class="testimonial-tabs">
+            <button class="active">For members</button>
+            <button class="">For clients</button>
+          </div>
+        </div>
+        <div class="testimonial-grid">
+          <!-- Rendered dynamically by home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== DUAL CTA ====================== -->
+    <section class="section dual-cta">
+      <div class="container-wide">
+        <div class="section-head">
+          <span class="eyebrow">Two Ways In</span>
+          <h2 class="section-title" style="margin-top: 16px;">One platform. Two ways in.</h2>
+        </div>
+        <div class="dual-grid">
+          <div class="dual-card">
+            <div class="dual-label mono">For Clients & Businesses</div>
+            <h3>Find the right expert. Fast.</h3>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Browse 18+ vetted finance & legal professionals</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Read expert articles on tax, law, M&A, compliance</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Request consultations directly, no middlemen</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Transparent rates upfront before you commit</span>
+              </li>
+            </ul>
+            <a href="members.html" class="btn btn-primary btn-lg"
+              style="background: var(--ink); color: var(--bg); border: 1px solid var(--ink);">Browse members <span
+                class="arr">→</span></a>
+          </div>
+          <div class="dual-card dual-card-dark">
+            <div class="dual-label mono">For Finance & Legal Pros</div>
+            <h3>Build your professional presence.</h3>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Get discovered by clients globally</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Publish articles, establish authority</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Exclusive events with verified peers</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;">
+                  <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Set your rates, keep 100% of fees</span>
+              </li>
+            </ul>
+            <a href="apply.html" class="btn btn-outline btn-lg"
+              style="background: #fff; color: var(--ink); border-color: #fff;">Apply for membership <span
+                class="arr">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== NEWSLETTER ====================== -->
+    <section class="section newsletter">
+      <div class="container-wide">
+        <div class="newsletter-card">
+          <div class="newsletter-bg" style="opacity: 1;"></div>
+          <div class="newsletter-content">
+            <span class="eyebrow" style="color: rgba(255,255,255,0.55);">The Expertly Brief · Weekly</span>
+            <h2 class="section-title" style="margin-top: 16px; color: #fff;">
+              Regulatory changes. New members. Case studies.<br>
+              <span style="color: rgba(255,255,255,0.55);">One email, every Thursday.</span>
+            </h2>
+            <form class="newsletter-form">
+              <input type="email" placeholder="you@firm.com" required />
+              <button class="btn btn-primary btn-lg" type="submit">Subscribe</button>
+            </form>
+            <p class="mono"
+              style="font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 16px; letter-spacing: 0.08em;">
+              No spam · Unsubscribe anytime · 4,200+ professional readers
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== FAQ ====================== -->
+    <section class="section faq">
+      <div class="container-wide">
+        <div class="faq-head">
+          <span class="eyebrow">Questions</span>
+          <h2 class="section-title" style="margin-top: 16px;">Common questions.</h2>
+          <p class="lede" style="margin-top: 18px; max-width: 520px;">Still curious? Email us at <a
+              href="mailto:contact@expertly.network"
+              style="color: var(--accent); text-decoration: underline;">contact@expertly.network</a>. We reply within one
+            business day.</p>
+        </div>
+        <div class="faq-columns">
+          <div class="faq-group">
+            <h4 class="mono">Joining & membership</h4>
+            <div class="faq-item open">
+              <button class="faq-q">
+                <span>Who can join Expertly?</span>
+                <span class="faq-toggle">−</span>
+              </button>
+              <div class="faq-a">
+                <p>Expertly is open to all practising finance and legal professionals across the world. Whether you are an independent practitioner or part of a firm, if you are serious about your practice and looking for a trusted network of verified peers to collaborate, share knowledge, and grow across borders — Expertly is the right place for you.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What types of professionals are on Expertly?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Our network spans professionals across all finance and legal domains — including tax and transfer pricing advisors, M&A and transaction advisors, investment bankers, private equity and venture capital advisors, insolvency and restructuring professionals, corporate and commercial lawyers, dispute resolution and arbitration counsel, banking and finance lawyers, capital markets and securities lawyers, intellectual property and technology lawyers, company secretaries, compliance and governance professionals, forensic accountants, valuation experts, and cost accountants.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>How are members onboarded?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Every member goes through a robust selection process before being onboarded and listed in the directory. We review professional credentials, years of experience, and areas of specialisation, and take feedback from fellow professionals before granting membership. The process typically takes 5 to 7 business days from application to approval.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>How do I apply for membership?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Click 'Apply for Membership' on our website and complete the application form. We review all applications and notify you by email within 5 business days.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What is the difference between a Budding and a Seasoned Professional?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>A Budding Professional has more than 5 but fewer than 12 years of experience, whereas a Seasoned Professional has more than 12 years. Professionals with fewer than 5 years are not currently eligible, though we intend to introduce an associate category for early-career professionals in due course.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What does membership cost?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Annual membership is $499 for Budding Professionals and $699 for Seasoned Professionals. Occasionally, we offer promotional discount codes for new members — keep an eye on our website and social media channels for such offers.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Can I publish articles on Expertly?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Yes — members can publish articles through the member portal. Articles are reviewed before going live and becoming visible to the public, helping you build your professional brand and reach a targeted audience of peers and potential clients.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Can firms or organisations join Expertly?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Membership on Expertly is individual-based, not firm-based. Each professional joins on their own merits, credentials, and experience — independent of the firm or organisation they work for. This means your profile, reputation, articles, and network on Expertly belong entirely to you. If you move firms, set up your own practice, or change roles, your membership and everything you have built on the platform remains fully intact.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-group">
+            <h4 class="mono">For clients & users</h4>
+            <div class="faq-item open">
+              <button class="faq-q">
+                <span>Is Expertly free to browse?</span>
+                <span class="faq-toggle">−</span>
+              </button>
+              <div class="faq-a">
+                <p>Yes. Anyone can browse the member directory, view article headlines, and view event headlines without signing up. Full contact details of members, consultation requests, and full article and event details require registering a free account as a 'User'.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What is the difference between a User and a Member?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>A User is a person who has created a free account on Expertly but is not a member. A User can view member contact details, place consultation requests, read full articles, and view all event details — but cannot post a profile or write articles. A Member can create a profile, be searchable on the platform, write articles, and more.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Can I request a consultation with a member?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Yes. Registered users and members can send consultation requests directly to any member. Members set their own availability and fee range — so you will always know exactly what to expect upfront before committing.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What does the Verified badge actually mean?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>The Verified badge is awarded only to profiles we have manually reviewed and approved. Verification covers professional credentials, qualifications, and years of experience as declared in the member's profile. If any section of a profile does not display the Verified badge, that information is either under review or has not yet been verified by the Expertly team.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>How does Expertly handle complaints or concerns about a member?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-a">
+                <p>All members are required to maintain good standing with their respective professional bodies as a condition of membership. If you have a genuine concern about a member's conduct on the platform, you may submit a complaint through the platform and it will be reviewed by the Expertly compliance team. We take the integrity of our network seriously and will take appropriate action where warranted.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="wordmark">Expertly<span
+              style="width: 9px; height: 9px; background: var(--accent); border-radius: 50%; display: inline-block; margin-left: 2px;"></span>
+          </div>
+          <p>The curated professional network for verified finance & legal experts worldwide.</p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="members.html">Member Directory</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="apply.html">Apply for Membership</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">Our Mission</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="#">Verified Experts</a></li>
+            <li><a href="#">Membership Benefits</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@expertly.network">contact@expertly.network</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Expertly · All Rights Reserved</span>
+        <span>Verified · Global · Independent</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/members.js?v=11"></script>
+  <script src="assets/shared.js?v=11"></script>
+  <script src="assets/home-v2.js?v=1"></script>
+
+  <!-- Auto-derive stats from live data -->
+  <script>
+  (function () {
+    var members   = window.EXPERTLY_MEMBERS || [];
+    var practices = window.EXPERTLY_PRACTICE_AREAS || [];
+
+    var totalMembers      = members.length;
+    var totalJurisdictions = [...new Set(members.map(m => m.country))].length;
+    var totalPractices    = practices.length;
+
+    function practiceCount(name) {
+      var p = practices.find(function(x) { return x.name === name; });
+      return p ? p.count : 0;
+    }
+
+    var statMap = {
+      'total-members':       { value: totalMembers,                    suffix: '+' },
+      'total-jurisdictions': { value: totalJurisdictions,              suffix: '+' },
+      'total-practices':     { value: totalPractices,                  suffix: ''  },
+      'ma-tax-count':        { value: practiceCount('M&A Tax'),        suffix: ''  },
+      'corporate-count':     { value: practiceCount('Corporate Law'),  suffix: ''  },
+      'compliance-count':    { value: practiceCount('Compliance'),     suffix: ''  },
+    };
+
+    Object.keys(statMap).forEach(function (key) {
+      var el = document.querySelector('[data-stat="' + key + '"]');
+      if (!el) return;
+      var s = statMap[key];
+      el.setAttribute('data-counter-value', s.value);
+      if (s.suffix) el.setAttribute('data-counter-suffix', s.suffix);
+      else el.removeAttribute('data-counter-suffix');
+    });
+
+    // Update "Browse all X+ members" button text
+    var browseBtn = document.getElementById('browse-members-btn');
+    if (browseBtn) {
+      browseBtn.childNodes[0].textContent = 'Browse all ' + totalMembers + '+ members ';
+    }
+  })();
+  </script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Expertly",
+        "url": "https://expertly.network",
+        "logo": "https://expertly.network/assets/favicon.png",
+        "description": "A curated network of verified finance and legal professionals across 20+ jurisdictions.",
+        "email": "contact@expertly.network",
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://expertly.network",
+        "name": "Expertly",
+        "description": "Find verified finance and legal experts across M&A tax, transfer pricing, corporate law, compliance, and more.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://expertly.network/members.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Who can join Expertly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Expertly is open to all practising finance and legal professionals across the world. Whether you are an independent practitioner or part of a firm, if you are serious about your practice and looking for a trusted network of verified peers to collaborate, share knowledge, and grow across borders — Expertly is the right place for you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What types of professionals are on Expertly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our network spans professionals across all finance and legal domains — including tax and transfer pricing advisors, M&A and transaction advisors, investment bankers, private equity and venture capital advisors, insolvency and restructuring professionals, corporate and commercial lawyers, dispute resolution and arbitration counsel, banking and finance lawyers, capital markets and securities lawyers, intellectual property and technology lawyers, company secretaries, compliance and governance professionals, forensic accountants, valuation experts, and cost accountants."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How are members onboarded?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every member goes through a robust selection process before being onboarded and listed in the directory. We review professional credentials, years of experience, and areas of specialisation, and take feedback from fellow professionals before granting membership. The process typically takes 5 to 7 business days from application to approval."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I apply for membership?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Click 'Apply for Membership' on our website and complete the application form. We review all applications and notify you by email within 5 business days."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between a Budding and a Seasoned Professional?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A Budding Professional has more than 5 but fewer than 12 years of experience, whereas a Seasoned Professional has more than 12 years. Professionals with fewer than 5 years are not currently eligible, though we intend to introduce an associate category for early-career professionals in due course."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does membership cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Annual membership is $499 for Budding Professionals and $699 for Seasoned Professionals. Occasionally, we offer promotional discount codes for new members — keep an eye on our website and social media channels for such offers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I publish articles on Expertly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — members can publish articles through the member portal. Articles are reviewed before going live and becoming visible to the public, helping you build your professional brand and reach a targeted audience of peers and potential clients."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can firms or organisations join Expertly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Membership on Expertly is individual-based, not firm-based. Each professional joins on their own merits, credentials, and experience — independent of the firm or organisation they work for. Your profile, reputation, articles, and network on Expertly belong entirely to you. If you move firms, set up your own practice, or change roles, your membership remains fully intact."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Expertly free to browse?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Anyone can browse the member directory, view article headlines, and view event headlines without signing up. Full contact details of members, consultation requests, and full article and event details require registering a free account as a User."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between a User and a Member?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A User is a person who has created a free account on Expertly but is not a member. A User can view member contact details, place consultation requests, read full articles, and view all event details — but cannot post a profile or write articles. A Member can create a profile, be searchable on the platform, write articles, and more."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I request a consultation with a member?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Registered users and members can send consultation requests directly to any member. Members set their own availability and fee range — so you will always know exactly what to expect upfront before committing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does the Verified badge actually mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Verified badge is awarded only to profiles we have manually reviewed and approved. Verification covers professional credentials, qualifications, and years of experience as declared in the member's profile. If any section of a profile does not display the Verified badge, that information is either under review or has not yet been verified by the Expertly team."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does Expertly handle complaints or concerns about a member?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "All members are required to maintain good standing with their respective professional bodies as a condition of membership. If you have a genuine concern about a member's conduct on the platform, you may submit a complaint through the platform and it will be reviewed by the Expertly compliance team. We take the integrity of our network seriously and will take appropriate action where warranted."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script>
+    (function () {
+      const phrases = [
+        { q: 'Cross-border M&A counsel in Dubai, fluent in English & Arabic', label: 'Find experts' },
+        { q: 'Articles on UAE corporate tax for 2026', label: 'Find articles' },
+        { q: 'Transfer pricing conferences in Singapore', label: 'Find events' },
+        { q: 'IP counsel for SaaS, EU + US coverage', label: 'Find experts' }
+      ];
+
+      let phraseIdx = 0;
+      const field = document.getElementById('ai-section-search-field');
+      const previewDiv = document.getElementById('ai-section-search-results');
+
+      if (!field) return;
+
+      const initialPreviewHtml = `
+        <div class="gsearch-group">
+          <div class="gsearch-group-head"><span>Experts</span><span class="gsearch-group-count">1</span></div>
+          <div class="gsearch-row" style="pointer-events: none;">
+            <div class="avatar" style="width: 40px; height: 40px; font-size: 14px;" data-initials="PN">
+              <span class="avatar-initials">PN</span>
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="avatar-img loaded" />
+            </div>
+            <div class="gsearch-row-body">
+              <div class="gsearch-row-title">Priya Nair <span class="float-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span></div>
+              <div class="gsearch-row-meta">Cross-border tax · Singapore & Dubai</div>
+            </div>
+            <div class="gsearch-row-tag">Tax</div>
+            <div class="gsearch-row-rate mono">$420/hr</div>
+          </div>
+        </div>
+        <div class="gsearch-group">
+          <div class="gsearch-group-head"><span>Articles</span><span class="gsearch-group-count">1</span></div>
+          <div class="gsearch-row" style="pointer-events: none;">
+            <div class="gsearch-row-icon gsearch-icon-article">¶</div>
+            <div class="gsearch-row-body">
+              <div class="gsearch-row-title">Structuring a Series B for international expansion</div>
+              <div class="gsearch-row-meta">Priya Nair · 4 min read</div>
+            </div>
+            <div class="gsearch-row-tag">Funding</div>
+          </div>
+        </div>
+        <div class="gsearch-group">
+          <div class="gsearch-group-head"><span>Events</span><span class="gsearch-group-count">1</span></div>
+          <div class="gsearch-row" style="pointer-events: none;">
+            <div class="gsearch-row-icon gsearch-icon-event"><b>14</b><span>JUL</span></div>
+            <div class="gsearch-row-body">
+              <div class="gsearch-row-title">Cross-Border Tax Roundtable</div>
+              <div class="gsearch-row-meta">Virtual · In Person</div>
+            </div>
+            <div class="gsearch-row-tag">Tax</div>
+          </div>
+        </div>
+      `;
+
+      if (previewDiv) {
+        previewDiv.innerHTML = initialPreviewHtml;
+      }
+
+      // Helper sleep function
+      const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+      let typingIntervalActive = true;
+
+      // Local search algorithm matching shared.js logic
+      function getLocalMatches(q) {
+        const term = (q || '').toLowerCase();
+        const words = term.split(/\s+/).filter(Boolean);
+        if (words.length === 0) return { members: [], articles: [], events: [] };
+
+        const strictMatch = (text) => {
+          return words.every(w => text.toLowerCase().includes(w));
+        };
+
+        let matchedMembers = (window.EXPERTLY_MEMBERS || []).filter(m =>
+          strictMatch(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`)
+        );
+        let matchedArticles = (window.EXPERTLY_ARTICLES || []).filter(a =>
+          strictMatch(`${a.title} ${a.category} ${a.excerpt}`)
+        );
+        let matchedEvents = (window.EXPERTLY_EVENTS || []).filter(e =>
+          strictMatch(`${e.title} ${e.category} ${e.city} ${e.country} ${e.desc}`)
+        );
+
+        if (matchedMembers.length === 0 && matchedArticles.length === 0 && matchedEvents.length === 0) {
+          const stopWords = new Set(['in', 'under', 'for', 'advisor', 'advisors', 'expert', 'experts', 'with', 'the', 'a', 'an', 'of', 'to', 'at', 'on', 'by', 'is', 'and', 'or', 'about', 'who', 'what', 'where', 'conferences']);
+          const queryKeywords = words.filter(w => !stopWords.has(w));
+
+          if (queryKeywords.length > 0) {
+            const getMatchScore = (text) => {
+              let score = 0;
+              queryKeywords.forEach(w => {
+                if (text.toLowerCase().includes(w)) score += 1;
+              });
+              return score;
+            };
+
+            matchedMembers = (window.EXPERTLY_MEMBERS || [])
+              .map(m => ({ m, score: getMatchScore(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`) }))
+              .filter(x => x.score > 0)
+              .sort((a, b) => b.score - a.score)
+              .map(x => x.m);
+
+            matchedArticles = (window.EXPERTLY_ARTICLES || [])
+              .map(a => ({ a, score: getMatchScore(`${a.title} ${a.category} ${a.excerpt}`) }))
+              .filter(x => x.score > 0)
+              .sort((a, b) => b.score - a.score)
+              .map(x => x.a);
+
+            matchedEvents = (window.EXPERTLY_EVENTS || [])
+              .map(e => ({ e, score: getMatchScore(`${e.title} ${e.category} ${e.city} ${e.country} ${e.desc}`) }))
+              .filter(x => x.score > 0)
+              .sort((a, b) => b.score - a.score)
+              .map(x => x.e);
+          }
+        }
+
+        return {
+          members: matchedMembers.slice(0, 2),
+          articles: matchedArticles.slice(0, 1),
+          events: matchedEvents.slice(0, 1)
+        };
+      }
+
+      async function showThinkingAnimation() {
+        if (!previewDiv || !typingIntervalActive) return;
+        previewDiv.innerHTML = `
+          <div class="ai-demo-thinking" style="padding: 32px 16px; justify-content: center; animation: riseIn 0.3s ease-out both;">
+            <div class="ai-thinking-dot"></div>
+            <div class="ai-thinking-dot"></div>
+            <div class="ai-thinking-dot"></div>
+            <span class="mono" style="margin-left: 8px;">Searching experts · articles · events</span>
+          </div>
+        `;
+        await sleep(500);
+      }
+
+      async function renderResultsStaggered(q) {
+        if (!previewDiv || !typingIntervalActive) return;
+        
+        const matches = getLocalMatches(q);
+        const total = matches.members.length + matches.articles.length + matches.events.length;
+
+        previewDiv.innerHTML = '';
+
+        if (total === 0) {
+          if (!typingIntervalActive) return;
+          previewDiv.innerHTML = `
+            <div class="gsearch-empty" style="animation: riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;">
+              <div class="gsearch-empty-spark">✦</div>
+              <h4>No matches for “<span>${q}</span>”</h4>
+              <p>Try a practice area, a jurisdiction, or a name.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Render Experts
+        if (matches.members.length > 0) {
+          if (!typingIntervalActive) return;
+          const groupEl = document.createElement('div');
+          groupEl.className = 'gsearch-group';
+          
+          const headEl = document.createElement('div');
+          headEl.className = 'gsearch-group-head';
+          headEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+          headEl.innerHTML = `<span>Experts</span><span class="gsearch-group-count">${matches.members.length}</span>`;
+          groupEl.appendChild(headEl);
+          
+          previewDiv.appendChild(groupEl);
+          await sleep(90);
+
+          for (const m of matches.members) {
+            if (!typingIntervalActive) return;
+            const verifiedBadge = m.verified ? `<span class="float-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>` : '';
+            
+            const rowEl = document.createElement('div');
+            rowEl.className = 'gsearch-row';
+            rowEl.style.pointerEvents = 'none';
+            rowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+            rowEl.innerHTML = `
+              ${window.getAvatarHtml(m, 40)}
+              <div class="gsearch-row-body">
+                <div class="gsearch-row-title">${m.name}${verifiedBadge}</div>
+                <div class="gsearch-row-meta">${m.title} · ${m.location}</div>
+              </div>
+              <div class="gsearch-row-tag">${m.practice}</div>
+              <div class="gsearch-row-rate mono">${m.rate}</div>
+            `;
+            groupEl.appendChild(rowEl);
+            await sleep(90);
+          }
+        }
+
+        // Render Articles
+        if (matches.articles.length > 0) {
+          if (!typingIntervalActive) return;
+          const groupEl = document.createElement('div');
+          groupEl.className = 'gsearch-group';
+          
+          const headEl = document.createElement('div');
+          headEl.className = 'gsearch-group-head';
+          headEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+          headEl.innerHTML = `<span>Articles</span><span class="gsearch-group-count">${matches.articles.length}</span>`;
+          groupEl.appendChild(headEl);
+          
+          previewDiv.appendChild(groupEl);
+          await sleep(90);
+
+          for (const a of matches.articles) {
+            if (!typingIntervalActive) return;
+            const author = (window.EXPERTLY_MEMBERS || []).find(m => m.id === a.author);
+            const authorName = author ? author.name : 'Expertly Counsel';
+            
+            const rowEl = document.createElement('div');
+            rowEl.className = 'gsearch-row';
+            rowEl.style.pointerEvents = 'none';
+            rowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+            rowEl.innerHTML = `
+              <div class="gsearch-row-icon gsearch-icon-article">¶</div>
+              <div class="gsearch-row-body">
+                <div class="gsearch-row-title">${a.title}</div>
+                <div class="gsearch-row-meta">${authorName} · ${a.readTime} read</div>
+              </div>
+              <div class="gsearch-row-tag">${a.category}</div>
+            `;
+            groupEl.appendChild(rowEl);
+            await sleep(90);
+          }
+        }
+
+        // Render Events
+        if (matches.events.length > 0) {
+          if (!typingIntervalActive) return;
+          const groupEl = document.createElement('div');
+          groupEl.className = 'gsearch-group';
+          
+          const headEl = document.createElement('div');
+          headEl.className = 'gsearch-group-head';
+          headEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+          headEl.innerHTML = `<span>Events</span><span class="gsearch-group-count">${matches.events.length}</span>`;
+          groupEl.appendChild(headEl);
+          
+          previewDiv.appendChild(groupEl);
+          await sleep(90);
+
+          for (const e of matches.events) {
+            if (!typingIntervalActive) return;
+            const month = e.start.split(' ')[0];
+            const day = e.start.split(' ')[1];
+            
+            const rowEl = document.createElement('div');
+            rowEl.className = 'gsearch-row';
+            rowEl.style.pointerEvents = 'none';
+            rowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both';
+            rowEl.innerHTML = `
+              <div class="gsearch-row-icon gsearch-icon-event"><b>${day}</b><span>${month}</span></div>
+              <div class="gsearch-row-body">
+                <div class="gsearch-row-title">${e.title}</div>
+                <div class="gsearch-row-meta">${e.city}, ${e.country} · ${e.format}</div>
+              </div>
+              <div class="gsearch-row-tag">${e.category}</div>
+            `;
+            groupEl.appendChild(rowEl);
+            await sleep(90);
+          }
+        }
+      }
+
+      async function typeQuery(fullText) {
+        if (!typingIntervalActive) return;
+
+        for (let i = 1; i <= fullText.length; i++) {
+          if (!typingIntervalActive) return;
+          let typedPart = fullText.slice(0, i);
+          field.value = typedPart + '|';
+          await sleep(8 + Math.random() * 10);
+        }
+        if (!typingIntervalActive) return;
+        // Blink the cursor a few times after typing is complete
+        for (let b = 0; b < 2; b++) {
+          if (!typingIntervalActive) return;
+          field.value = fullText + '|';
+          await sleep(80);
+          if (!typingIntervalActive) return;
+          field.value = fullText;
+          await sleep(80);
+        }
+      }
+
+      async function eraseQuery() {
+        if (!typingIntervalActive) return;
+        let currentText = field.value || "";
+        currentText = currentText.trim();
+
+        while (currentText.length > 0) {
+          if (!typingIntervalActive) return;
+          currentText = currentText.slice(0, -1);
+          field.value = currentText + '|';
+          await sleep(4 + Math.random() * 6);
+        }
+        if (typingIntervalActive) {
+          field.value = '|';
+        }
+      }
+
+      async function runTypingLoop() {
+        // Initial pause of 2.5s displaying the initial preview state
+        await sleep(2500);
+
+        while (typingIntervalActive) {
+          let currentPhrase = phrases[phraseIdx % phrases.length];
+
+          // 1. Clear results and erase current text letter-by-letter
+          previewDiv.innerHTML = '';
+          await eraseQuery();
+          if (!typingIntervalActive) return;
+
+          // 2. Wait a small delay before starting to type (e.g. 120ms) with blinking cursor
+          for (let b = 0; b < 2; b++) {
+            if (!typingIntervalActive) return;
+            field.value = '|';
+            await sleep(60);
+            if (!typingIntervalActive) return;
+            field.value = '';
+            await sleep(60);
+          }
+          if (!typingIntervalActive) return;
+
+          // 3. Type the next query letter-by-letter. No results rendering during typing.
+          await typeQuery(currentPhrase.q);
+          if (!typingIntervalActive) return;
+
+          // 4. Wait 180ms after typing finishes before showing the thinking animation (similar to hero sec)
+          await sleep(180);
+          if (!typingIntervalActive) return;
+
+          // 5. Show thinking animation (bouncing dots loader) for 500ms
+          await showThinkingAnimation();
+          if (!typingIntervalActive) return;
+
+          // 6. Fade in results one by one (90ms stagger)
+          await renderResultsStaggered(currentPhrase.q);
+          if (!typingIntervalActive) return;
+
+          // 7. Hold the final state for 2.5 seconds (2500ms) before repeating
+          await sleep(2500);
+          
+          // Next phrase index
+          phraseIdx++;
+        }
+      }
+
+      // Handle clicking anywhere in the search panel
+      const searchPanel = document.getElementById('ai-section-search-panel');
+      if (searchPanel) {
+        searchPanel.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          
+          // Stop typing animation and clear
+          typingIntervalActive = false;
+          field.value = '';
+          previewDiv.innerHTML = '';
+          
+          // Open search modal empty so they can type fresh
+          window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
+        });
+      }
+
+      // Listen to search closed to resume typing loop
+      window.addEventListener('expertly:search-closed', () => {
+        if (!typingIntervalActive) {
+          typingIntervalActive = true;
+          field.value = '';
+          previewDiv.innerHTML = initialPreviewHtml;
+          phraseIdx = 0;
+          runTypingLoop();
+        }
+      });
+
+
+      // Start typing loop
+      runTypingLoop();
+    })();
+  </script>
+</body>
+
+</html>
