@@ -1,6 +1,6 @@
 /* Expertly Design System */
 :root {
-  /* Default: Neon Mint — white-forward, pale neon accent, neutral ink */
+  /* Default: Neon Mint - white-forward, pale neon accent, neutral ink */
   --bg: #FFFFFF;
   --bg-alt: #F2FBF7;
   --bg-card: #FFFFFF;
@@ -345,7 +345,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .footer-grid { grid-template-columns: 1fr; }
 }
 
-/* Animation utilities — content is ALWAYS visible. No entrance animation, because this
+/* Animation utilities - content is ALWAYS visible. No entrance animation, because this
    preview runs with document.visibilityState "hidden", which freezes animation timelines
    at frame 0 and would otherwise pin opacity:0 content permanently invisible. */
 .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }

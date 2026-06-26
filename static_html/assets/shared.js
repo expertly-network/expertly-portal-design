@@ -577,6 +577,7 @@ function initGlobalSearch() {
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     input.blur();
+    window.dispatchEvent(new CustomEvent('expertly:search-closed'));
   };
 
   // Click listeners
