@@ -1016,6 +1016,7 @@
           : '';
 
         return `
+      <a href="member-profile.html?id=${m.id}" style="text-decoration:none;display:block;">
       <div class="mv4-card" id="${m.id}"
            style="animation: cardSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
         <div class="mv4-photo-col">
@@ -1048,6 +1049,7 @@
           </div>
         </div>
       </div>
+      </a>
     `;
       };
 

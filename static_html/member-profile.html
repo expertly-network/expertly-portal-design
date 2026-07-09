@@ -1,0 +1,3653 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Member Profile — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/auth.css">
+  <style>
+    /* ── Page base ──────────────────────────────── */
+    body {
+      background: #f0f4f2;
+      color: #0a1a14;
+    }
+
+    .mp-page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    @media (max-width: 639px) {
+      .mp-page { padding: 20px 16px 60px; }
+    }
+
+    /* ── Auth Wall ──────────────────────────────── */
+    #mp-auth-wall {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .mp-auth-card {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .mp-auth-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #7a9b8e;
+      text-decoration: none;
+      margin-bottom: 28px;
+      transition: color 0.15s;
+    }
+    .mp-auth-back:hover { color: #0a1a14; }
+
+    .mp-auth-icon {
+      width: 56px; height: 56px;
+      background: rgba(0,165,130,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .mp-auth-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0a1a14;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .mp-auth-sub {
+      font-size: 14px;
+      color: #4b7060;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .mp-auth-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #033c2f;
+      color: #ffffff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 13px 28px;
+      text-decoration: none;
+      transition: background 0.15s;
+      width: 100%;
+    }
+    .mp-auth-btn:hover { background: #022a20; }
+
+    /* ── Header Card ────────────────────────────── */
+    .mp-header-card {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .mp-header-band {
+      height: 112px;
+      background: #033c2f;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mp-header-band::before {
+      content: '';
+      position: absolute;
+      bottom: -30px; left: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .mp-header-band::after {
+      content: '';
+      position: absolute;
+      top: -20px; right: 10%;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(0,165,130,0.07) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .mp-header-body {
+      padding: 0 24px 24px;
+    }
+
+    .mp-avatar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: -64px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mp-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .mp-avatar {
+      width: 144px; height: 144px;
+      border-radius: 16px;
+      border: 4px solid #ffffff;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+      background: #033c2f;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mp-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .mp-avatar-initials {
+      font-size: 40px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .mp-verified-badge {
+      position: absolute;
+      bottom: -6px; right: -6px;
+      width: 32px; height: 32px;
+      background: #00A582;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 3;
+    }
+
+    .mp-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .mp-name {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700;
+      color: #0a1a14;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .mp-tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+    .mp-tier-seasoned {
+      color: #d97706;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+    }
+    .mp-tier-standard {
+      color: #4b7060;
+      background: #f0f4f2;
+      border: 1px solid #e0eae4;
+    }
+
+    .mp-designation {
+      font-size: 15px;
+      font-weight: 500;
+      color: #4b7060;
+      margin-top: 4px;
+    }
+
+    .mp-firm {
+      font-size: 13px;
+      color: #7a9b8e;
+      margin-top: 4px;
+    }
+
+    .mp-stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .mp-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #7a9b8e;
+    }
+
+    .mp-stat svg {
+      color: #00A582;
+      flex-shrink: 0;
+    }
+
+    /* ── Mobile CTA Strip ───────────────────────── */
+    .mp-mobile-cta {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 1023px) {
+      .mp-mobile-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    }
+
+    .mp-mobile-fee-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0a1a14;
+    }
+
+    .mp-mobile-fee-hr {
+      font-size: 13px;
+      font-weight: 400;
+      color: #7a9b8e;
+    }
+
+    .mp-mobile-avail {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .mp-avail-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mp-avail-dot.available { background: #16a34a; }
+    .mp-avail-dot.unavailable { background: #7a9b8e; }
+
+    .mp-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #033c2f;
+      color: #ffffff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 11px 18px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .mp-cta-btn:hover:not(:disabled) { background: #022a20; }
+    .mp-cta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── Two-column layout ──────────────────────── */
+    .mp-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .mp-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mp-sidebar {
+      width: 288px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 96px;
+    }
+
+    @media (max-width: 1023px) {
+      .mp-layout { flex-direction: column; }
+      .mp-sidebar { display: none; }
+    }
+
+    /* ── Tab Navigation ─────────────────────────── */
+    .mp-tabs-nav {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .mp-tabs-inner {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mp-tabs-inner::-webkit-scrollbar { display: none; }
+
+    .mp-tab {
+      flex-shrink: 0;
+      padding: 14px 20px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #7a9b8e;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .mp-tab:hover { color: #4b7060; }
+    .mp-tab.active {
+      color: #0a1a14;
+      border-bottom-color: #00A582;
+      background: #ffffff;
+    }
+
+    /* ── Tab Content Card ───────────────────────── */
+    .mp-tab-content {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      padding: 24px;
+    }
+
+    .mp-tab-panel { display: none; }
+    .mp-tab-panel.active { display: block; }
+
+    /* ── Section label ──────────────────────────── */
+    .mp-section-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #4b7060;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .mp-section-label svg {
+      color: #00A582;
+      flex-shrink: 0;
+    }
+
+    .mp-section { margin-top: 28px; }
+    .mp-section:first-child { margin-top: 0; }
+
+    /* ── Bio / Headline ─────────────────────────── */
+    .mp-headline {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a1a14;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .mp-bio {
+      font-size: 14px;
+      color: #4b7060;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    /* ── Engagement rows ─────────────────────────── */
+    .mp-engagement {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f0f4f2;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
+    .mp-engagement:last-child { margin-bottom: 0; }
+
+    .mp-eng-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(0,165,130,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .mp-eng-body { flex: 1; min-width: 0; }
+
+    .mp-eng-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #0a1a14;
+      line-height: 1.45;
+    }
+
+    .mp-eng-meta {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 2px;
+    }
+
+    .mp-eng-link {
+      font-size: 11px;
+      color: #00A582;
+      text-decoration: none;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .mp-eng-link:hover { text-decoration: underline; }
+
+    /* ── Qual tags ──────────────────────────────── */
+    .mp-qual-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mp-qual-tag {
+      display: inline-flex;
+      align-items: center;
+      background: #f0f4f2;
+      border: 1px solid #e0eae4;
+      border-radius: 99px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #4b7060;
+    }
+
+    /* ── Education grid ──────────────────────────── */
+    .mp-edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 639px) {
+      .mp-edu-grid { grid-template-columns: 1fr; }
+    }
+
+    .mp-edu-card {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .mp-edu-degree {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      line-height: 1.4;
+    }
+
+    .mp-edu-meta {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 3px;
+    }
+
+    /* ── Work Experience Timeline ─────────────────── */
+    .mp-timeline {
+      border-left: 2px solid #e0eae4;
+      padding-left: 16px;
+    }
+
+    .mp-timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .mp-timeline-item:last-child { margin-bottom: 0; }
+
+    .mp-timeline-dot {
+      position: absolute;
+      left: -21px; top: 6px;
+      width: 10px; height: 10px;
+      background: #00A582;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #e0eae4;
+    }
+
+    .mp-work-card {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .mp-work-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .mp-work-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      line-height: 1.4;
+    }
+
+    .mp-work-company {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 2px;
+    }
+
+    .mp-work-dates {
+      font-size: 11px;
+      color: #7a9b8e;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .mp-work-desc {
+      font-size: 12px;
+      color: #4b7060;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    /* ── Credentials list ─────────────────────────── */
+    .mp-cred-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      margin-bottom: 8px;
+    }
+    .mp-cred-item:last-child { margin-bottom: 0; }
+
+    .mp-cred-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mp-cred-icon.verified { background: rgba(0,165,130,0.1); }
+    .mp-cred-icon.unverified { background: #f0f4f2; }
+
+    .mp-cred-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #0a1a14;
+      line-height: 1.4;
+    }
+
+    .mp-cred-body {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 1px;
+    }
+
+    /* ── Articles tab ─────────────────────────────── */
+    .mp-articles-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b7060;
+      margin-bottom: 16px;
+    }
+
+    .mp-article-card {
+      display: flex;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .mp-article-card:last-child { margin-bottom: 0; }
+    .mp-article-card:hover {
+      border-color: #00A582;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+    }
+
+    .mp-article-thumb {
+      width: 80px; height: 64px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f0f4f2;
+    }
+
+    .mp-article-cat {
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #00A582;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mp-article-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      line-height: 1.45;
+      margin-top: 3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.15s;
+    }
+    .mp-article-card:hover .mp-article-title { color: #00A582; }
+
+    .mp-article-meta {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 4px;
+    }
+
+    /* ── Reviews coming soon ─────────────────────── */
+    .mp-reviews-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 24px;
+      text-align: center;
+    }
+
+    .mp-reviews-icon {
+      width: 56px; height: 56px;
+      background: #f0f4f2;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .mp-reviews-soon {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      margin-bottom: 4px;
+    }
+
+    .mp-reviews-sub {
+      font-size: 12px;
+      color: #7a9b8e;
+    }
+
+    /* ── Testimonials (vertical tiles / carousel) ── */
+    .mp-testi-outer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mp-testi-track {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      width: max-content;
+      transition: transform 0.45s ease;
+    }
+    .mp-testi-outer.static .mp-testi-track {
+      width: auto;
+    }
+
+    .mp-testimonial {
+      width: 250px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: box-shadow 0.18s, border-color 0.18s;
+    }
+    .mp-testimonial:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+      border-color: #c0d8cc;
+    }
+    .mp-testi-outer.static .mp-testimonial {
+      flex: 1 1 0;
+      max-width: calc(50% - 6px);
+    }
+    @media (max-width: 639px) {
+      .mp-testi-outer.static .mp-testimonial {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .mp-testi-next {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .mp-testi-next:hover {
+      border-color: #00A582;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+    }
+
+    .mp-testi-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mp-testi-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(0,165,130,0.1);
+      color: #00A582;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mp-testi-who { flex: 1; min-width: 0; }
+
+    .mp-testi-name {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      line-height: 1.3;
+    }
+    .mp-testi-name svg { flex-shrink: 0; }
+
+    .mp-testi-role {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mp-testi-text {
+      font-size: 12.5px;
+      color: #4b7060;
+      line-height: 1.65;
+      margin: 10px 0 0;
+      flex: 1;
+    }
+
+    .mp-testi-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mp-testi-date {
+      font-size: 11px;
+      color: #7a9b8e;
+      flex-shrink: 0;
+    }
+
+    /* ── Awards & Recognition ────────────────────── */
+    .mp-awards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 639px) {
+      .mp-awards-grid { grid-template-columns: 1fr; }
+    }
+
+    .mp-award-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .mp-award-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: rgba(0,165,130,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mp-award-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      line-height: 1.4;
+    }
+
+    .mp-award-meta {
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 3px;
+    }
+
+    .mp-award-desc {
+      font-size: 11.5px;
+      color: #4b7060;
+      line-height: 1.55;
+      margin-top: 6px;
+    }
+
+    /* ── Contact tab ─────────────────────────────── */
+    .mp-contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 639px) {
+      .mp-contact-grid { grid-template-columns: 1fr; }
+    }
+
+    .mp-contact-card {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: #f0f4f2;
+      border: 1px solid #e0eae4;
+      border-radius: 14px;
+      padding: 14px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .mp-contact-card:hover {
+      border-color: rgba(0,165,130,0.4);
+      background: rgba(0,165,130,0.05);
+    }
+
+    .mp-contact-icon-wrap {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: rgba(0,165,130,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mp-contact-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: #7a9b8e;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mp-contact-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0a1a14;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    /* ── Sidebar cards ───────────────────────────── */
+    .mp-sidebar-card {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .mp-sidebar-card:last-child { margin-bottom: 0; }
+
+    .mp-sidebar-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: #7a9b8e;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .mp-fee-main {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0a1a14;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .mp-fee-max {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .mp-fee-hr {
+      font-size: 13px;
+      font-weight: 400;
+      color: #7a9b8e;
+    }
+
+    .mp-avail-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .mp-avail-row.available { color: #16a34a; }
+    .mp-avail-row.unavailable { color: #7a9b8e; }
+
+    .mp-avail-notes {
+      font-size: 12px;
+      color: #7a9b8e;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .mp-sidebar-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: #033c2f;
+      color: #ffffff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 14px;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .mp-sidebar-btn:hover:not(:disabled) { background: #022a20; }
+    .mp-sidebar-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .mp-firm-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #00A582;
+      text-decoration: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f0f4f2;
+      width: 100%;
+    }
+    .mp-firm-link:hover { text-decoration: underline; }
+
+    .mp-loc-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #0a1a14;
+    }
+
+    .mp-verified-card {
+      background: #033c2f;
+      border: none;
+    }
+
+    .mp-verified-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mp-verified-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .mp-verified-body {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    .mp-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #7a9b8e;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.15s;
+    }
+    .mp-back-link:hover { color: #0a1a14; }
+
+    /* ── Consultation Modal ───────────────────────── */
+    #mp-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+    }
+    #mp-modal-overlay.open { display: flex; }
+
+    .mp-modal {
+      background: #ffffff;
+      border: 1px solid #e0eae4;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      max-width: 512px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .mp-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px 24px;
+      border-bottom: 1px solid #e0eae4;
+    }
+
+    .mp-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a1a14;
+    }
+
+    .mp-modal-sub {
+      font-size: 12px;
+      color: #7a9b8e;
+      margin-top: 2px;
+    }
+
+    .mp-modal-close {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #7a9b8e;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .mp-modal-close:hover { background: #f0f4f2; color: #0a1a14; }
+
+    .mp-modal-body {
+      padding: 24px;
+    }
+
+    .mp-modal-error {
+      display: none;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #dc2626;
+      margin-bottom: 16px;
+    }
+    .mp-modal-error.show { display: block; }
+
+    .mp-form-field {
+      margin-bottom: 16px;
+    }
+
+    .mp-form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0a1a14;
+      margin-bottom: 6px;
+    }
+
+    .mp-form-input,
+    .mp-form-textarea {
+      width: 100%;
+      border: 1px solid #e0eae4;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-family: 'Geist', sans-serif;
+      color: #0a1a14;
+      outline: none;
+      transition: border-color 0.15s;
+      background: #ffffff;
+    }
+    .mp-form-input:focus,
+    .mp-form-textarea:focus { border-color: #00A582; }
+    .mp-form-input::placeholder,
+    .mp-form-textarea::placeholder { color: #7a9b8e; }
+
+    .mp-form-textarea {
+      resize: none;
+      height: 120px;
+    }
+
+    .mp-char-counter {
+      text-align: right;
+      font-size: 11px;
+      color: #7a9b8e;
+      margin-top: 4px;
+    }
+
+    .mp-modal-row {
+      display: flex;
+      gap: 12px;
+      padding-top: 8px;
+    }
+
+    .mp-modal-submit {
+      flex: 1;
+      background: #033c2f;
+      color: #ffffff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .mp-modal-submit:hover:not(:disabled) { background: #022a20; }
+    .mp-modal-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .mp-modal-cancel {
+      flex: 1;
+      background: none;
+      color: #4b7060;
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #e0eae4;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .mp-modal-cancel:hover { border-color: #00A582; color: #00A582; }
+
+    .mp-modal-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .mp-modal-success.show { display: flex; }
+
+    .mp-success-icon {
+      width: 56px; height: 56px;
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .mp-success-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a1a14;
+      margin-bottom: 8px;
+    }
+
+    .mp-success-body {
+      font-size: 14px;
+      color: #4b7060;
+      line-height: 1.6;
+    }
+
+    .mp-success-close {
+      margin-top: 24px;
+      background: #033c2f;
+      color: #ffffff;
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px 32px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .mp-success-close:hover { background: #022a20; }
+
+    /* ── Divider ──────────────────────────────────── */
+    .mp-divider {
+      height: 1px;
+      background: #f0f4f2;
+      margin: 20px 0;
+    }
+
+    /* ── Section header with edit button ─────────── */
+    .mp-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .mp-section-header .mp-section-label { margin-bottom: 0; }
+
+    .mp-edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Archivo', sans-serif;
+      color: #00A582;
+      background: rgba(0,165,130,0.08);
+      border: 1px solid rgba(0,165,130,0.2);
+      border-radius: 8px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mp-edit-btn:hover { background: rgba(0,165,130,0.16); }
+
+    /* ── Engagement empty state ───────────────────── */
+    .mp-eng-empty {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 22px;
+      background: rgba(0,165,130,0.04);
+      border: 1.5px dashed rgba(0,165,130,0.25);
+      border-radius: 12px;
+      color: #7a9b8e;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .mp-eng-empty svg { flex-shrink: 0; opacity: 0.5; }
+    .mp-eng-empty strong { color: #4b7060; font-weight: 600; }
+    .mp-eng-empty button {
+      background: none; border: none; color: #00A582;
+      font-weight: 600; cursor: pointer; font-size: 13.5px;
+      text-decoration: underline; padding: 0;
+    }
+
+    /* ── Key Clients grid ─────────────────────────── */
+    /* ── V3: Auto-scrolling Marquee Strip ───────────── */
+    .mp-clients-section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0a1a14;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .mp-clients-outer {
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+    .mp-clients-grid {
+      display: flex;
+      gap: 10px;
+      width: max-content;
+      animation: mp-marquee 28s linear infinite;
+    }
+    .mp-clients-outer:hover .mp-clients-grid {
+      animation-play-state: paused;
+    }
+    @keyframes mp-marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .mp-client-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e4ede9;
+      border-radius: 14px;
+      padding: 10px 18px 10px 10px;
+      flex-shrink: 0;
+      transition: box-shadow 0.18s, border-color 0.18s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      cursor: default;
+      min-width: 160px;
+    }
+    .mp-client-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+      border-color: #c0d8cc;
+    }
+    .mp-client-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mp-client-icon img {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 11px;
+    }
+    .mp-client-icon-fallback {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      font-family: 'Archivo', sans-serif;
+      color: #fff;
+    }
+    .mp-client-name {
+      font-size: 13.5px;
+      font-weight: 650;
+      color: #0a1a14;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    /* ── Engagement edit modal ────────────────────── */
+    #mp-eng-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 1100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #mp-eng-modal-overlay.open { display: flex; }
+    .mp-eng-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .mp-eng-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .mp-eng-modal-head h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a1a14;
+      letter-spacing: -0.02em;
+    }
+    .mp-eng-modal-close {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #f0f4f2;
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: #4b7060;
+      transition: background 0.15s;
+    }
+    .mp-eng-modal-close:hover { background: #e0ece6; }
+    .mp-eng-modal-sub {
+      font-size: 13px;
+      color: #7a9b8e;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .mp-eng-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .mp-eng-row-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .mp-eng-row input {
+      width: 100%;
+      font-size: 13px;
+      font-family: 'Geist', sans-serif;
+      border: 1px solid #d4e4da;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #0a1a14;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .mp-eng-row input:focus { border-color: #00A582; }
+    .mp-eng-del-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: #fff0f0;
+      border: 1px solid #fcdada;
+      color: #c94040;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: background 0.15s;
+    }
+    .mp-eng-del-btn:hover { background: #fde8e8; }
+    .mp-eng-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Archivo', sans-serif;
+      color: #00A582;
+      background: rgba(0,165,130,0.07);
+      border: 1.5px dashed rgba(0,165,130,0.3);
+      border-radius: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      margin: 4px 0 24px;
+      transition: background 0.15s;
+    }
+    .mp-eng-add-btn:hover { background: rgba(0,165,130,0.13); }
+    .mp-eng-modal-foot {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      border-top: 1px solid #f0f4f2;
+      padding-top: 20px;
+    }
+    .mp-eng-cancel-btn {
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1px solid #d4e4da;
+      background: #fff;
+      color: #4b7060;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .mp-eng-cancel-btn:hover { background: #f6faf8; }
+    .mp-eng-save-btn {
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: none;
+      background: #033c2f;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .mp-eng-save-btn:hover { background: #022a20; }
+  </style>
+</head>
+<body>
+
+<!-- Dynamic Navigation -->
+<nav class="nav"></nav>
+
+<!-- ═══════════════════════════════════════════════ AUTH WALL -->
+<div id="mp-auth-wall" style="display:none;">
+  <div class="mp-auth-card">
+    <a href="members.html" class="mp-auth-back">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Members
+    </a>
+    <div class="mp-auth-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" stroke="#00A582" stroke-width="1.8"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#00A582" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1 class="mp-auth-heading">Sign in to view this profile</h1>
+    <p class="mp-auth-sub" id="mp-auth-sub-text">Sign in to view the full profile, including their experience, services, and contact details.</p>
+    <a href="login.html" class="mp-auth-btn">Sign in to continue →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PROFILE -->
+<div id="mp-profile">
+  <div class="mp-page">
+
+    <!-- Back link -->
+    <a href="members.html" class="mp-back-link">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Members
+    </a>
+
+    <!-- ── Header Card ── -->
+    <div class="mp-header-card">
+      <div class="mp-header-band"></div>
+      <div class="mp-header-body">
+        <div class="mp-avatar-row">
+          <div class="mp-avatar-wrap">
+            <div class="mp-avatar" id="mp-avatar-el">
+              <!-- filled by JS -->
+            </div>
+            <div class="mp-verified-badge" id="mp-header-verified-badge" style="display:none;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="mp-name-row">
+          <span class="mp-name" id="mp-name-el"></span>
+          <svg id="mp-name-verified-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" style="display:none;flex-shrink:0;">
+            <path d="M12 2L14.5 7H20l-4.5 4 1.5 6L12 14l-5 3 1.5-6L4 7h5.5L12 2z" fill="#00A582"/>
+            <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="mp-tier-badge" id="mp-tier-badge-el"></span>
+        </div>
+
+        <div class="mp-designation" id="mp-designation-el"></div>
+        <div class="mp-firm" id="mp-firm-el"></div>
+
+        <div class="mp-stats-row" id="mp-stats-row">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Mobile CTA Strip ── -->
+    <div class="mp-mobile-cta" id="mp-mobile-cta">
+      <div>
+        <div>
+          <span class="mp-mobile-fee-label" id="mp-mobile-fee-el"></span>
+          <span class="mp-mobile-fee-hr"> / hr</span>
+        </div>
+        <div class="mp-mobile-avail" id="mp-mobile-avail-el"></div>
+      </div>
+      <button class="mp-cta-btn" id="mp-mobile-cta-btn" onclick="openModal()">Request Consultation</button>
+    </div>
+
+    <!-- ── Two Column Layout ── -->
+    <div class="mp-layout">
+
+      <!-- Left Column -->
+      <div class="mp-left">
+
+        <!-- Tab Navigation -->
+        <div class="mp-tabs-nav">
+          <div class="mp-tabs-inner">
+            <button class="mp-tab active" data-tab="about">About</button>
+            <button class="mp-tab" data-tab="credentials">Credentials</button>
+            <button class="mp-tab" data-tab="articles">Articles</button>
+            <button class="mp-tab" data-tab="reviews">Reviews &amp; Recognition</button>
+            <button class="mp-tab" data-tab="contact">Contact Information</button>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="mp-tab-content">
+
+          <!-- ABOUT TAB -->
+          <div class="mp-tab-panel active" id="tab-about">
+
+            <!-- Headline (LinkedIn summary line) -->
+            <div class="mp-section" id="about-headline-section" style="display:none;">
+              <p class="mp-headline" id="about-headline"></p>
+            </div>
+
+            <!-- Bio -->
+            <div id="about-bio-section" style="display:none;">
+              <p class="mp-bio" id="about-bio"></p>
+            </div>
+
+            <!-- Key Engagements -->
+            <div class="mp-section" id="about-engagements-section">
+              <div class="mp-section-header">
+                <div class="mp-section-label">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1L10 6h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5L8 1z" fill="#00A582"/>
+                  </svg>
+                  Key Engagements
+                </div>
+                <button class="mp-edit-btn" id="eng-edit-btn" onclick="openEngEdit()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Edit
+                </button>
+              </div>
+              <div id="about-engagements-list">
+                <!-- filled by JS or empty state -->
+              </div>
+            </div>
+
+            <!-- Key Clients -->
+            <div class="mp-section" id="about-clients-section" style="display:none;">
+              <div class="mp-section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#00A582" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="9" cy="7" r="4" stroke="#00A582" stroke-width="1.6"/>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#00A582" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                Key Clients
+              </div>
+              <div class="mp-clients-outer">
+                <div class="mp-clients-grid" id="about-clients-grid"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CREDENTIALS TAB -->
+          <div class="mp-tab-panel" id="tab-credentials">
+
+            <!-- Education -->
+            <div class="mp-section" id="creds-edu-section" style="display:none;">
+              <div class="mp-section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3L22 8l-10 5L2 8l10-5z" stroke="#00A582" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M6 11v5c0 2.2 2.7 4 6 4s6-1.8 6-4v-5" stroke="#00A582" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                Education
+              </div>
+              <div class="mp-edu-grid" id="creds-edu-grid"></div>
+            </div>
+
+            <!-- Work Experience -->
+            <div class="mp-section" id="creds-work-section" style="display:none;">
+              <div class="mp-section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="7" width="20" height="14" rx="2" stroke="#00A582" stroke-width="1.6"/>
+                  <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="#00A582" stroke-width="1.6"/>
+                </svg>
+                Work Experience
+              </div>
+              <div class="mp-timeline" id="creds-work-list"></div>
+            </div>
+
+          </div>
+
+          <!-- ARTICLES TAB -->
+          <div class="mp-tab-panel" id="tab-articles">
+            <div class="mp-articles-header" id="articles-header">Articles</div>
+            <div id="articles-list"></div>
+          </div>
+
+          <!-- REVIEWS TAB -->
+          <div class="mp-tab-panel" id="tab-reviews">
+
+            <!-- Client Testimonials -->
+            <div class="mp-section" id="reviews-testi-section" style="display:none;">
+              <div class="mp-section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#00A582" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+                Client Testimonials
+              </div>
+              <div class="mp-testi-outer" id="reviews-testi-outer">
+                <div class="mp-testi-track" id="reviews-testi-list"></div>
+                <button class="mp-testi-next" id="reviews-testi-next" style="display:none;" onclick="nextTestimonial()" aria-label="Next testimonial">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 6l6 6-6 6" stroke="#00A582" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Awards & Recognition -->
+            <div class="mp-section" id="reviews-awards-section" style="display:none;">
+              <div class="mp-section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Awards &amp; Recognition
+              </div>
+              <div class="mp-awards-grid" id="reviews-awards-grid"></div>
+            </div>
+
+            <!-- Empty state -->
+            <div class="mp-reviews-empty" id="reviews-empty" style="display:none;">
+              <div class="mp-reviews-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#d1d5db" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="mp-reviews-soon">No reviews yet</div>
+              <div class="mp-reviews-sub">Client testimonials and recognition will appear here.</div>
+            </div>
+
+          </div>
+
+          <!-- CONTACT TAB -->
+          <div class="mp-tab-panel" id="tab-contact">
+            <div class="mp-contact-grid" id="contact-grid"></div>
+          </div>
+
+        </div><!-- /mp-tab-content -->
+      </div><!-- /mp-left -->
+
+      <!-- Right Sidebar -->
+      <div class="mp-sidebar">
+
+        <!-- Fee + CTA -->
+        <div class="mp-sidebar-card">
+          <div class="mp-sidebar-label">Consultation Fee</div>
+          <div class="mp-fee-main" id="sidebar-fee-el"></div>
+          <div class="mp-avail-row" id="sidebar-avail-row"></div>
+          <p class="mp-avail-notes" id="sidebar-avail-notes" style="display:none;"></p>
+          <button class="mp-sidebar-btn" id="sidebar-cta-btn" onclick="openModal()">Request Consultation</button>
+          <a href="#" id="sidebar-firm-link" class="mp-firm-link" target="_blank" rel="noopener noreferrer" style="display:none;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 2h5v5M14 2L8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Company website
+          </a>
+        </div>
+
+        <!-- Verified badge card -->
+        <div class="mp-sidebar-card mp-verified-card" id="sidebar-verified-card" style="display:none;">
+          <div class="mp-verified-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2l2.4 5H20l-4.5 3.5 1.7 5.5L12 13l-5.2 3 1.7-5.5L4 7h5.6L12 2z" fill="#00A582"/>
+              <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="mp-verified-label">Expertly Verified</span>
+          </div>
+          <p class="mp-verified-body" id="sidebar-verified-body"></p>
+        </div>
+
+      </div><!-- /mp-sidebar -->
+    </div><!-- /mp-layout -->
+  </div><!-- /mp-page -->
+</div><!-- /mp-profile -->
+
+<!-- ═══════════════════════════════════════════════ ENGAGEMENT EDIT MODAL -->
+<div id="mp-eng-modal-overlay" role="dialog" aria-modal="true">
+  <div class="mp-eng-modal">
+    <div class="mp-eng-modal-head">
+      <h2>Edit Key Engagements</h2>
+      <button class="mp-eng-modal-close" onclick="closeEngEdit()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <p class="mp-eng-modal-sub">Add or remove engagement items that highlight your most impactful work.</p>
+    <div id="mp-eng-edit-list"></div>
+    <button class="mp-eng-add-btn" onclick="addEngRow()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Add engagement
+    </button>
+    <div class="mp-eng-modal-foot">
+      <button class="mp-eng-cancel-btn" onclick="closeEngEdit()">Cancel</button>
+      <button class="mp-eng-save-btn" onclick="saveEngEdit()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ CONSULTATION MODAL -->
+<div id="mp-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mp-modal-title">
+  <div class="mp-modal" id="mp-modal-panel">
+
+    <div class="mp-modal-header">
+      <div>
+        <div class="mp-modal-title" id="mp-modal-title">Request Consultation</div>
+        <div class="mp-modal-sub" id="mp-modal-sub">with an Expertly member</div>
+      </div>
+      <button class="mp-modal-close" onclick="closeModal()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Form body -->
+    <div class="mp-modal-body" id="mp-modal-form-body">
+      <div class="mp-modal-error" id="mp-modal-error"></div>
+
+      <div class="mp-form-field">
+        <label class="mp-form-label" for="mp-form-subject">Subject</label>
+        <input
+          type="text"
+          class="mp-form-input"
+          id="mp-form-subject"
+          maxlength="200"
+          placeholder="e.g. Transfer pricing advice for Singapore entity"
+        />
+      </div>
+
+      <div class="mp-form-field">
+        <label class="mp-form-label" for="mp-form-message">Message</label>
+        <textarea
+          class="mp-form-textarea"
+          id="mp-form-message"
+          rows="5"
+          maxlength="2000"
+          placeholder="Briefly describe what you need help with…"
+        ></textarea>
+        <div class="mp-char-counter"><span id="mp-char-count">0</span> / 2000</div>
+      </div>
+
+      <div class="mp-modal-row">
+        <button class="mp-modal-submit" id="mp-modal-submit-btn" disabled onclick="submitConsultation()">Send Request</button>
+        <button class="mp-modal-cancel" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="mp-modal-success" id="mp-modal-success">
+      <div class="mp-success-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12l5 5L20 7" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="mp-success-title">Request Sent</div>
+      <p class="mp-success-body" id="mp-modal-success-body">
+        Your consultation request has been sent. They will respond to you directly.
+      </p>
+      <button class="mp-success-close" onclick="closeModal()">Close</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCRIPTS -->
+<script src="assets/members.js?v=11"></script>
+<script src="assets/shared.js?v=11"></script>
+<script>
+// ── Extended profile data ────────────────────────
+const PROFILE_EXTENDED = {
+  'mukesh-kumar-m': {
+    headline: 'M&A tax architect with 18+ years structuring landmark cross-border deals across South Asia.',
+    bio: 'I co-founded M2K Advisors to provide senior-level M&A tax counsel that large firms often reserve for their biggest clients. My practice covers deal structuring, tax due diligence, post-merger integration, and regulatory approvals for transactions in India and the broader South Asian market.\n\nOver two decades I have advised on transactions ranging from ₹50Cr bolt-on acquisitions to multi-billion-dollar cross-border mergers, working directly with promoters, CFOs, and PE sponsors. I believe that good tax advice at the term-sheet stage saves more money than any restructuring after the fact.',
+    firmName: 'M2K Advisors',
+    firmWebsite: 'https://m2kadvisors.in',
+    yearsOfExperience: 18,
+    feeRangeMin: 380,
+    feeRangeMax: 460,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Open to new mandates from August 2026. Retainers and deal-specific engagements welcome.',
+    contactEmail: 'mukesh@m2kadvisors.in',
+    contactPhone: '+91 98400 12345',
+    linkedinUrl: 'https://linkedin.com/in/mukesh-kumar-m2k',
+    website: 'https://m2kadvisors.in',
+    services: [{ name: 'M&A Tax' }],
+    engagements: [
+      { id: 1, title: 'Tax structuring for $800M inbound acquisition of Indian manufacturing group', organization: 'Global PE Sponsor (Confidential)', year: 2024, url: null },
+      { id: 2, title: 'Led merger tax analysis for two listed Indian conglomerates — NCLT scheme approval', organization: 'Listed Conglomerate Group', year: 2023, url: null },
+      { id: 3, title: 'Advised on stamp duty optimisation saving ₹42Cr on cross-state asset transfer', organization: 'Infrastructure Developer', year: 2022, url: null },
+      { id: 4, title: 'Structured ESOP tax plan pre-IPO for 1,200-employee technology company', organization: 'Chennai-based SaaS Co.', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Accountant (FCA)', year: 2006 },
+      { id: 2, name: 'Company Secretary (ACS)', year: 2007 },
+      { id: 3, name: 'Diploma in IFRS — ACCA', year: 2012 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLB (Corporate & Tax Law)', institution: 'Madras Law College', field: 'Corporate & Tax Law', endYear: 2008 },
+      { id: 2, degree: 'BCom (Hons)', institution: 'Loyola College, Chennai', field: 'Commerce & Accountancy', endYear: 2003 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Co-Founder & Managing Partner', company: 'M2K Advisors', startYear: 2014, endYear: null, isCurrent: true, description: 'Built a boutique M&A tax practice serving PE funds, promoter families, and listed entities on transactions across India, Singapore, and Mauritius.' },
+      { id: 2, title: 'Associate Director — M&A Tax', company: 'Ernst & Young India', startYear: 2009, endYear: 2014, isCurrent: false, description: 'Advised on tax aspects of 40+ transactions including cross-border acquisitions, demergers, and joint ventures. Led the South India M&A tax team from 2012.' },
+      { id: 3, title: 'Tax Manager', company: 'KPMG India', startYear: 2006, endYear: 2009, isCurrent: false, description: 'Handled corporate tax compliance and advisory for a portfolio of 30+ mid-market clients across manufacturing, pharma, and services sectors.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Fellow Chartered Accountant (FCA)', issuingBody: 'Institute of Chartered Accountants of India', year: 2006, isVerified: true },
+      { id: 2, name: 'Associate Company Secretary (ACS)', issuingBody: 'Institute of Company Secretaries of India', year: 2007, isVerified: true },
+      { id: 3, name: 'Diploma in International Financial Reporting', issuingBody: 'ACCA, UK', year: 2012, isVerified: false },
+    ],
+    articles: [
+      { id: 'stamp-duty-mergers', slug: 'stamp-duty-mergers', title: 'Navigating Stamp Duty on Mergers and Restructuring: A State-by-State Guide', publishedAt: '2026-04-14', readTimeMinutes: 3, featuredImageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=70', category: { name: 'Direct Tax' } },
+      { id: 'income-tax-2025', slug: 'income-tax-2025', title: 'Key Changes in the New Income Tax Act 2025: What You Need to Know', publishedAt: '2026-04-02', readTimeMinutes: 3, featuredImageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=70', category: { name: 'Direct Tax' } },
+    ],
+  },
+
+  'shreyans-maloo': {
+    headline: 'Transfer pricing specialist focused on BEPS-aligned documentation and dispute prevention across India.',
+    bio: 'I work as an independent transfer pricing adviser helping multinationals and Indian companies build defensible TP documentation, manage APA applications, and navigate OECD BEPS 2.0 compliance.\n\nHaving spent my formative years at the Big 4, I now work directly with CFOs and group tax teams who want senior attention without Big 4 overhead. My practice is lean, responsive, and focused on outcomes.',
+    firmName: 'Independent',
+    firmWebsite: null,
+    yearsOfExperience: 9,
+    feeRangeMin: 250,
+    feeRangeMax: 310,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Currently accepting new clients. Prefer project-based engagements of 3–6 months.',
+    contactEmail: 'shreyans.maloo@gmail.com',
+    contactPhone: '+91 99400 67890',
+    linkedinUrl: 'https://linkedin.com/in/shreyans-maloo',
+    website: null,
+    services: [{ name: 'Transfer Pricing' }],
+    engagements: [
+      { id: 1, title: 'Master File and Local File preparation for 8-country APAC group', organization: 'Technology MNE (Confidential)', year: 2024, url: null },
+      { id: 2, title: 'Bilateral APA negotiation between India and Singapore tax authorities', organization: 'Confidential Manufacturing Group', year: 2023, url: null },
+      { id: 3, title: 'Pillar Two GloBE impact assessment and TP policy redesign', organization: 'European Pharma Group — India Subsidiary', year: 2023, url: null },
+      { id: 4, title: 'TP audit defence — ₹28Cr addition reduced to nil on appeal', organization: 'ITAT Chennai', year: 2022, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Accountant (ACA)', year: 2016 },
+      { id: 2, name: 'IBFD Transfer Pricing Certificate', year: 2019 },
+    ],
+    educations: [
+      { id: 1, degree: 'BCom', institution: 'University of Madras', field: 'Commerce', endYear: 2013 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Independent Transfer Pricing Adviser', company: 'Self-Employed', startYear: 2020, endYear: null, isCurrent: true, description: 'Advise PE-backed and listed companies on TP documentation, APA strategy, and BEPS 2.0 readiness across India, Singapore, and Mauritius structures.' },
+      { id: 2, title: 'Senior Consultant — Transfer Pricing', company: 'Deloitte India', startYear: 2016, endYear: 2020, isCurrent: false, description: 'Part of the Chennai TP team advising 25+ MNE clients on annual documentation, benchmarking, and regulatory responses. Managed two successful MAP proceedings.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Associate Chartered Accountant (ACA)', issuingBody: 'Institute of Chartered Accountants of India', year: 2016, isVerified: true },
+      { id: 2, name: 'Transfer Pricing Certificate', issuingBody: 'International Bureau of Fiscal Documentation (IBFD)', year: 2019, isVerified: false },
+    ],
+    articles: [],
+  },
+
+  'swetha-prasad': {
+    headline: 'M&A tax partner with 14 years advising Indian promoters and PE sponsors on complex deal structures.',
+    bio: 'As a Partner at M2K Advisors, I specialise in the tax structuring of M&A transactions, demergers, and family business successions. My clients range from first-generation entrepreneurs planning a partial exit to large listed groups restructuring for the next phase of growth.\n\nI am particularly experienced in structuring deals that involve family trusts, promoter holdcos, and ESOP schemes — areas where personal and corporate tax considerations intersect.',
+    firmName: 'M2K Advisors',
+    firmWebsite: 'https://m2kadvisors.in',
+    yearsOfExperience: 14,
+    feeRangeMin: 340,
+    feeRangeMax: 420,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: false,
+    availabilityNotes: 'Currently fully engaged. Available for new mandates from Q4 2026.',
+    contactEmail: 'swetha@m2kadvisors.in',
+    contactPhone: '+91 98401 54321',
+    linkedinUrl: 'https://linkedin.com/in/swetha-prasad-tax',
+    website: 'https://m2kadvisors.in',
+    services: [{ name: 'M&A Tax' }],
+    engagements: [
+      { id: 1, title: 'Family office restructuring via trust and holdco — succession planning for ₹600Cr group', organization: 'South Indian Business Family (Confidential)', year: 2024, url: null },
+      { id: 2, title: 'Tax-efficient demerger of retail and hospitality verticals — NCLT approved', organization: 'Listed Diversified Group', year: 2023, url: null },
+      { id: 3, title: 'Advised sell-side promoters on LTCG optimisation and reinvestment planning', organization: 'Mid-market FMCG Company', year: 2022, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Accountant (FCA)', year: 2012 },
+      { id: 2, name: 'Diploma in Business Finance — ICAI', year: 2014 },
+    ],
+    educations: [
+      { id: 1, degree: 'BCom (Hons)', institution: 'Stella Maris College, Chennai', field: 'Commerce', endYear: 2009 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Partner — M&A Tax', company: 'M2K Advisors', startYear: 2018, endYear: null, isCurrent: true, description: 'Lead the firm\'s family business and private equity tax practice, advising on deal structuring, succession planning, and regulatory approvals.' },
+      { id: 2, title: 'Manager — Transaction Tax', company: 'Grant Thornton India', startYear: 2012, endYear: 2018, isCurrent: false, description: 'Managed tax due diligence and structuring for mid-market M&A transactions across retail, manufacturing, and healthcare.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Fellow Chartered Accountant (FCA)', issuingBody: 'Institute of Chartered Accountants of India', year: 2012, isVerified: true },
+      { id: 2, name: 'Diploma in Business Finance', issuingBody: 'ICAI', year: 2014, isVerified: false },
+    ],
+    articles: [
+      { id: 'companies-amendment-bill', slug: 'companies-amendment-bill', title: 'Understanding the Companies Amendment Bill: Key Changes for All Companies', publishedAt: '2026-04-05', readTimeMinutes: 2, featuredImageUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=70', category: { name: 'Corporate Law' } },
+    ],
+  },
+
+  'priya-venkatesh': {
+    headline: 'India\'s go-to GST and indirect tax authority for complex supply chain and e-commerce businesses.',
+    bio: 'I head the indirect tax practice at Venkatesh & Co., advising businesses on GST compliance, classification disputes, cross-border service tax, and customs duty optimisation. My clients span e-commerce, manufacturing, logistics, and fintech — sectors where indirect tax is high-stakes and constantly evolving.\n\nI have appeared before the GST Council technical committees and authored representations on behalf of industry bodies seeking clarificatory circulars on contentious classification issues.',
+    firmName: 'Venkatesh & Co.',
+    firmWebsite: 'https://venkateshco.in',
+    yearsOfExperience: 13,
+    feeRangeMin: 270,
+    feeRangeMax: 350,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Accepting new clients. Specialised in GST audits and notices — can mobilise within 48 hours.',
+    contactEmail: 'priya@venkateshco.in',
+    contactPhone: '+91 98490 11223',
+    linkedinUrl: 'https://linkedin.com/in/priya-venkatesh-gst',
+    website: 'https://venkateshco.in',
+    services: [{ name: 'Indirect Tax' }],
+    engagements: [
+      { id: 1, title: 'GST audit defence for large e-commerce marketplace — ₹15Cr demand dropped', organization: 'Leading E-Commerce Platform', year: 2024, url: null },
+      { id: 2, title: 'HSN classification advisory for 200-SKU medical device product line', organization: 'European MedTech Group — India', year: 2023, url: null },
+      { id: 3, title: 'Customs duty optimisation and FTA utilisation strategy for auto-component exporter', organization: 'Chennai Auto Components Co.', year: 2022, url: null },
+      { id: 4, title: 'GST refund recovery of ₹9.2Cr on zero-rated exports — IGST route', organization: 'Software Exporter', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Accountant (ACA)', year: 2013 },
+      { id: 2, name: 'GST Practitioner Certification — NACIN', year: 2017 },
+      { id: 3, name: 'Customs & Trade Compliance — ITC', year: 2020 },
+    ],
+    educations: [
+      { id: 1, degree: 'MCom (Taxation)', institution: 'Osmania University, Hyderabad', field: 'Taxation', endYear: 2013 },
+      { id: 2, degree: 'BCom', institution: 'Nizam College, Hyderabad', field: 'Commerce', endYear: 2011 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Director — Indirect Tax', company: 'Venkatesh & Co.', startYear: 2019, endYear: null, isCurrent: true, description: 'Leads a 6-member GST team advising 40+ clients on GST compliance, audits, refunds, and representation before appellate authorities.' },
+      { id: 2, title: 'Senior Manager — Indirect Tax', company: 'BDO India', startYear: 2013, endYear: 2019, isCurrent: false, description: 'Advised manufacturing and retail clients on VAT-to-GST transition, return filing, and audit responses across Telangana and Andhra Pradesh.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Associate Chartered Accountant (ACA)', issuingBody: 'Institute of Chartered Accountants of India', year: 2013, isVerified: true },
+      { id: 2, name: 'GST Practitioner', issuingBody: 'National Academy of Customs, Indirect Taxes & Narcotics (NACIN)', year: 2017, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'marcus-chen': {
+    headline: 'Cross-border tax structuring specialist with 16+ years advising MNEs across APAC.',
+    bio: 'I advise multinational enterprises on tax-efficient structures for cross-border investments, M&A transactions, and supply chain reorganisations across the Asia-Pacific region.\n\nMy practice focuses on Singapore as a regional hub — inbound/outbound investment structuring, PE fund formation, and dispute resolution with regional tax authorities. I work closely with CFOs, group tax heads, and M&A counsel to ensure tax considerations are integrated from term sheet to close.',
+    firmName: 'Chen Advisory Pte. Ltd.',
+    firmWebsite: 'https://chenadvisory.sg',
+    yearsOfExperience: 16,
+    feeRangeMin: 350,
+    feeRangeMax: 450,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available for new engagements from July 2026. Prefer structured retainers or project-based mandates.',
+    contactEmail: 'marcus.chen@chenadvisory.sg',
+    contactPhone: '+65 9123 4567',
+    linkedinUrl: 'https://linkedin.com/in/marcus-chen-tax',
+    website: 'https://chenadvisory.sg',
+    services: [{ name: 'Cross-Border Tax' }],
+    engagements: [
+      { id: 1, title: 'Advised on $1.2B cross-border acquisition structure for Asian PE fund', organization: 'Confidential PE Client', year: 2024, url: null },
+      { id: 2, title: 'Led Singapore holdco restructuring for Fortune 500 consumer goods MNE', organization: 'Confidential MNE', year: 2023, url: null },
+      { id: 3, title: 'Transfer pricing documentation for 12-jurisdiction APAC supply chain', organization: 'Global Technology Co.', year: 2022, url: null },
+      { id: 4, title: 'Represented client in IRAS audit — $8M reassessment reduced to nil', organization: 'IRAS / Singapore Tax Authority', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Tax Adviser (CTA)', year: 2010 },
+      { id: 2, name: 'ACCA Fellow (FCCA)', year: 2009 },
+      { id: 3, name: 'Certified Public Accountant (CPA)', year: 2008 },
+      { id: 4, name: 'IBFD Advanced Certificate in International Tax', year: 2011 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in International Tax', institution: 'National University of Singapore', field: 'International Tax Law', endYear: 2010 },
+      { id: 2, degree: 'BCom (Hons) Accounting', institution: 'University of Melbourne', field: 'Accounting & Finance', endYear: 2007 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founder & Senior Tax Advisor', company: 'Chen Advisory Pte. Ltd.', startYear: 2018, endYear: null, isCurrent: true, description: 'Boutique tax advisory practice specialising in cross-border transactions, PE fund structures, and APAC regional tax optimisation for MNEs and family offices.' },
+      { id: 2, title: 'Tax Director, Transaction Advisory', company: 'Deloitte Singapore', startYear: 2013, endYear: 2018, isCurrent: false, description: 'Led the M&A tax practice for Southeast Asia — deal structuring, buy-side and sell-side due diligence, and post-merger integration for mid-market and large-cap transactions.' },
+      { id: 3, title: 'Senior Tax Manager', company: 'PricewaterhouseCoopers', startYear: 2008, endYear: 2013, isCurrent: false, description: 'Managed a portfolio of MNE clients on international tax compliance, corporate restructuring, and transfer pricing documentation across 8 jurisdictions.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Chartered Tax Adviser', issuingBody: 'Chartered Institute of Taxation, UK', year: 2010, isVerified: true },
+      { id: 2, name: 'ACCA Fellowship', issuingBody: 'Association of Chartered Certified Accountants', year: 2009, isVerified: true },
+      { id: 3, name: 'Singapore Chartered Accountant', issuingBody: 'Institute of Singapore Chartered Accountants', year: 2008, isVerified: true },
+      { id: 4, name: "IBFD Advanced Int'l Tax Certificate", issuingBody: 'International Bureau of Fiscal Documentation', year: 2011, isVerified: false },
+    ],
+    articles: [
+      { id: 'singapore-tax-rebate', slug: 'singapore-tax-rebate', title: "Understanding Singapore's Enhanced Corporate Income Tax Rebate for YA 2026", publishedAt: '2026-04-10', readTimeMinutes: 3, featuredImageUrl: 'https://images.unsplash.com/photo-1565967511849-76a60a516170?auto=format&fit=crop&w=800&q=70', category: { name: 'Corporate Tax' } },
+      { id: 'transfer-pricing-2026', slug: 'transfer-pricing-2026', title: 'Transfer Pricing in 2026: BEPS 2.0 and What Comes Next', publishedAt: '2026-03-20', readTimeMinutes: 4, featuredImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70', category: { name: 'Transfer Pricing' } },
+    ],
+  },
+
+  'amara-osei': {
+    headline: 'West Africa\'s trusted corporate counsel for cross-border investment, governance, and regulatory compliance.',
+    bio: 'I founded Osei Legal to bring international-quality corporate legal advice to businesses investing in and out of Ghana and West Africa. My practice covers company formation, M&A, joint ventures, regulatory approvals, and board advisory work.\n\nI have acted as counsel on some of the most significant FDI transactions in Ghana\'s mining, energy, and fintech sectors over the last decade, and I serve as a non-executive director on two listed boards.',
+    firmName: 'Osei Legal',
+    firmWebsite: 'https://oseilegal.com',
+    yearsOfExperience: 11,
+    feeRangeMin: 220,
+    feeRangeMax: 300,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available for cross-border mandates. Based in Accra; travel to London and New York quarterly.',
+    contactEmail: 'amara.osei@oseilegal.com',
+    contactPhone: '+233 20 123 4567',
+    linkedinUrl: 'https://linkedin.com/in/amara-osei-legal',
+    website: 'https://oseilegal.com',
+    services: [{ name: 'Corporate Law' }],
+    engagements: [
+      { id: 1, title: 'Lead counsel on $240M FDI acquisition of Ghanaian gold mining rights', organization: 'Canadian Mining Corporation', year: 2024, url: null },
+      { id: 2, title: 'Joint venture structuring between US fintech and local Ghanaian bank', organization: 'Confidential Fintech', year: 2023, url: null },
+      { id: 3, title: 'Corporate governance overhaul for state-owned energy enterprise', organization: 'Ghana Energy Regulatory Commission', year: 2022, url: null },
+      { id: 4, title: 'Advised on GHS 180M rights issue and GSE listing compliance', organization: 'Listed Consumer Goods Company', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Barrister-at-Law (BL)', year: 2013 },
+      { id: 2, name: 'LLM in International Commercial Law', year: 2014 },
+      { id: 3, name: 'IFC Corporate Governance Certification', year: 2019 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in International Commercial Law', institution: 'University of Edinburgh', field: 'International Commercial Law', endYear: 2014 },
+      { id: 2, degree: 'LLB', institution: 'University of Ghana', field: 'Law', endYear: 2012 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founder & Managing Partner', company: 'Osei Legal', startYear: 2018, endYear: null, isCurrent: true, description: 'Boutique corporate law firm advising multinationals, PE funds, and local conglomerates on M&A, FDI, governance, and regulatory compliance across West Africa.' },
+      { id: 2, title: 'Associate — Corporate & M&A', company: 'Reindorf Chambers, Accra', startYear: 2014, endYear: 2018, isCurrent: false, description: 'Advised on cross-border acquisitions, concession agreements, and regulatory filings for clients in mining, telecoms, and financial services.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Barrister-at-Law', issuingBody: 'Ghana School of Law', year: 2013, isVerified: true },
+      { id: 2, name: 'Corporate Governance Certification', issuingBody: 'IFC / World Bank Group', year: 2019, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'fatima-al-hassan': {
+    headline: 'GCC compliance authority with 15 years navigating UAE regulatory frameworks for financial institutions.',
+    bio: 'I lead the compliance and regulatory advisory practice at Gulf Advisory Partners, helping financial institutions, fintech companies, and corporates build robust compliance programmes aligned with UAE Central Bank, DIFC, and ADGM requirements.\n\nMy work spans AML/CFT frameworks, sanctions screening, regulatory licensing, and board-level governance. I have guided 30+ institutions through CBUAE inspections and managed several significant regulatory remediation programmes.',
+    firmName: 'Gulf Advisory Partners',
+    firmWebsite: 'https://gulfadvisorypartners.ae',
+    yearsOfExperience: 15,
+    feeRangeMin: 350,
+    feeRangeMax: 430,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Accepting new engagements. Priority given to financial institutions and fintech companies.',
+    contactEmail: 'fatima@gulfadvisory.ae',
+    contactPhone: '+971 50 234 5678',
+    linkedinUrl: 'https://linkedin.com/in/fatima-al-hassan-compliance',
+    website: 'https://gulfadvisorypartners.ae',
+    services: [{ name: 'Compliance' }],
+    engagements: [
+      { id: 1, title: 'AML framework redesign post-FATF mutual evaluation for UAE bank', organization: 'Confidential UAE Bank', year: 2024, url: null },
+      { id: 2, title: 'DIFC licensing and regulatory approval for global asset manager entering UAE', organization: 'European Asset Manager', year: 2023, url: null },
+      { id: 3, title: 'Sanctions screening programme overhaul — OFAC and EU compliance', organization: 'Regional Insurance Group', year: 2022, url: null },
+      { id: 4, title: 'Led CBUAE inspection readiness for 3 exchange houses', organization: 'Exchange House Group', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Certified Anti-Money Laundering Specialist (CAMS)', year: 2012 },
+      { id: 2, name: 'ICA International Diploma in Compliance', year: 2014 },
+      { id: 3, name: 'Certified Fraud Examiner (CFE)', year: 2016 },
+    ],
+    educations: [
+      { id: 1, degree: 'MBA in Finance', institution: 'American University of Sharjah', field: 'Finance & Compliance', endYear: 2011 },
+      { id: 2, degree: 'BSc in Banking & Finance', institution: 'UAE University', field: 'Banking & Finance', endYear: 2009 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Compliance Director', company: 'Gulf Advisory Partners', startYear: 2017, endYear: null, isCurrent: true, description: 'Heads the compliance practice providing AML, governance, and regulatory advisory to banks, fintech, and insurance clients across the GCC.' },
+      { id: 2, title: 'Head of Compliance', company: 'Abu Dhabi Islamic Bank', startYear: 2011, endYear: 2017, isCurrent: false, description: 'Managed all compliance functions including AML/CFT, sanctions, and regulatory reporting for a $35B Islamic bank. Led two successful CBUAE inspections.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Certified Anti-Money Laundering Specialist (CAMS)', issuingBody: 'ACAMS', year: 2012, isVerified: true },
+      { id: 2, name: 'Certified Fraud Examiner (CFE)', issuingBody: 'Association of Certified Fraud Examiners', year: 2016, isVerified: true },
+      { id: 3, name: 'International Diploma in Compliance', issuingBody: 'International Compliance Association (ICA)', year: 2014, isVerified: false },
+    ],
+    articles: [
+      { id: 'uae-corporate-tax', slug: 'uae-corporate-tax', title: 'Understanding UAE Corporate Tax: What Companies Need to Know', publishedAt: '2026-04-12', readTimeMinutes: 3, featuredImageUrl: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=70', category: { name: 'Direct Tax' } },
+    ],
+  },
+
+  'james-okafor': {
+    headline: 'Preeminent M&A counsel for pan-African transactions — 19 years closing deals from Lagos to London.',
+    bio: 'As the founding partner of Okafor & Partners, I have built one of Nigeria\'s most respected M&A practices. My team advises on acquisitions, divestitures, joint ventures, and private equity transactions across West and East Africa, with a particular focus on energy, fintech, and infrastructure.\n\nI have completed over 60 transactions and have been consistently recognised by IFLR1000 and Chambers Africa as a leading M&A lawyer. I also serve as an arbitrator for ICCA-affiliated panels.',
+    firmName: 'Okafor & Partners',
+    firmWebsite: 'https://okaforpartners.com',
+    yearsOfExperience: 19,
+    feeRangeMin: 300,
+    feeRangeMax: 380,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Selective new mandates accepted. Please provide transaction overview for initial assessment.',
+    contactEmail: 'j.okafor@okaforpartners.com',
+    contactPhone: '+234 80 3456 7890',
+    linkedinUrl: 'https://linkedin.com/in/james-okafor-ma',
+    website: 'https://okaforpartners.com',
+    services: [{ name: 'M&A' }],
+    engagements: [
+      { id: 1, title: 'Lead counsel on $1.5B acquisition of Nigerian independent power producer', organization: 'Pan-African Infrastructure Fund', year: 2024, url: null },
+      { id: 2, title: 'Advised on merger of two leading Nigerian fintech platforms — CBN approval secured', organization: 'Confidential Fintech', year: 2023, url: null },
+      { id: 3, title: 'Joint venture formation between Italian energy company and Nigerian state entity', organization: 'ENI Nigeria JV', year: 2022, url: null },
+      { id: 4, title: 'Cross-border M&A in telecoms sector — Ghana, Nigeria, Ivory Coast assets', organization: 'Confidential Telecoms Group', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Barrister & Solicitor of the Supreme Court of Nigeria', year: 2007 },
+      { id: 2, name: 'LLM in Corporate & Commercial Law', year: 2008 },
+      { id: 3, name: 'IFLR1000 Recognised Leading Lawyer', year: 2022 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in Corporate & Commercial Law', institution: 'London School of Economics', field: 'Corporate & Commercial Law', endYear: 2008 },
+      { id: 2, degree: 'LLB', institution: 'University of Lagos', field: 'Law', endYear: 2006 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founding Partner', company: 'Okafor & Partners', startYear: 2012, endYear: null, isCurrent: true, description: 'Founded and leads a 15-lawyer M&A boutique ranked among Nigeria\'s top deal firms. Practice covers energy, fintech, infrastructure, and real estate transactions.' },
+      { id: 2, title: 'Senior Associate — M&A', company: 'Udo Udoma & Belo-Osagie, Lagos', startYear: 2008, endYear: 2012, isCurrent: false, description: 'Worked on cross-border M&A, regulatory filings, and capital markets transactions for Nigerian and international clients.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Barrister & Solicitor', issuingBody: 'Supreme Court of Nigeria / Nigerian Law School', year: 2007, isVerified: true },
+      { id: 2, name: 'IFLR1000 Leading Lawyer — Nigeria M&A', issuingBody: 'International Financial Law Review', year: 2022, isVerified: true },
+    ],
+    articles: [
+      { id: 'ma-due-diligence', slug: 'ma-due-diligence', title: 'The New Rules of Cross-Border M&A Due Diligence', publishedAt: '2026-03-28', readTimeMinutes: 5, featuredImageUrl: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=70', category: { name: 'M&A' } },
+    ],
+  },
+
+  'elena-volkova': {
+    headline: 'London\'s leading IP and technology counsel at the intersection of AI, data, and emerging regulation.',
+    bio: 'I advise technology companies, publishers, and creative industries on intellectual property strategy, AI governance, data licensing, and content rights. My practice sits at the cutting edge of how IP law is adapting to generative AI, large language models, and digital content markets.\n\nI am a frequent speaker at IP law conferences in London, Brussels, and New York, and I have submitted evidence to Parliamentary inquiries on AI and copyright. My clients include some of the world\'s most innovative media and technology companies.',
+    firmName: 'Volkova Law',
+    firmWebsite: 'https://volkovalaw.co.uk',
+    yearsOfExperience: 12,
+    feeRangeMin: 480,
+    feeRangeMax: 560,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Taking new advisory engagements from September 2026. Limited capacity — early contact recommended.',
+    contactEmail: 'elena@volkovalaw.co.uk',
+    contactPhone: '+44 20 7946 0123',
+    linkedinUrl: 'https://linkedin.com/in/elena-volkova-ip',
+    website: 'https://volkovalaw.co.uk',
+    services: [{ name: 'IP & Tech' }],
+    engagements: [
+      { id: 1, title: 'Advised major publisher on AI training data licensing — landmark UK High Court case', organization: 'Confidential Publishing Group', year: 2025, url: null },
+      { id: 2, title: 'IP due diligence and licensing strategy for $900M acquisition of software portfolio', organization: 'US Technology Acquirer', year: 2024, url: null },
+      { id: 3, title: 'GDPR and AI Act compliance strategy for pan-European data marketplace', organization: 'European Data Platform', year: 2023, url: null },
+      { id: 4, title: 'Negotiated multi-territory content licensing deal between UK broadcaster and streaming platform', organization: 'Confidential Media Co.', year: 2022, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Solicitor of England & Wales', year: 2014 },
+      { id: 2, name: 'European Patent Attorney (EQE)', year: 2017 },
+      { id: 3, name: 'CIPP/E — Certified Information Privacy Professional', year: 2019 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in Intellectual Property Law', institution: 'Queen Mary University of London', field: 'Intellectual Property', endYear: 2013 },
+      { id: 2, degree: 'LLB (First Class)', institution: 'University of Bristol', field: 'Law', endYear: 2012 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founder — IP & Technology Law', company: 'Volkova Law', startYear: 2020, endYear: null, isCurrent: true, description: 'Specialist IP and technology boutique advising on AI copyright, data licensing, software IP, and emerging technology regulation in the UK and EU.' },
+      { id: 2, title: 'Senior Associate — IP & Technology', company: 'Bird & Bird LLP, London', startYear: 2014, endYear: 2020, isCurrent: false, description: 'Advised technology, media, and telecoms clients on IP licensing, software agreements, data protection, and platform regulation across the UK and EU.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Solicitor of England & Wales', issuingBody: 'Solicitors Regulation Authority', year: 2014, isVerified: true },
+      { id: 2, name: 'European Qualifying Examination (EQE)', issuingBody: 'European Patent Office', year: 2017, isVerified: true },
+      { id: 3, name: 'CIPP/E', issuingBody: 'International Association of Privacy Professionals', year: 2019, isVerified: false },
+    ],
+    articles: [
+      { id: 'ip-ai-training', slug: 'ip-ai-training', title: 'IP Rights in the Era of AI Training Data: What Counsel Needs to Know', publishedAt: '2026-03-25', readTimeMinutes: 6, featuredImageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=70', category: { name: 'IP & Tech' } },
+    ],
+  },
+
+  'diego-martinez': {
+    headline: 'BEPS 2.0 and transfer pricing strategist for European and Latin American multinationals.',
+    bio: 'I lead the transfer pricing practice at Martinez Consultores, advising clients across Spain, the EU, and Latin America on TP documentation, intercompany pricing policies, and BEPS Pillar Two readiness.\n\nMy experience spans manufacturing, pharma, financial services, and digital businesses. I have successfully managed transfer pricing audits and advance pricing agreements in Spain, Germany, Mexico, and Colombia, and I am a regular contributor to OECD consultations on TP guidelines.',
+    firmName: 'Martinez Consultores',
+    firmWebsite: 'https://martinezconsultores.es',
+    yearsOfExperience: 14,
+    feeRangeMin: 370,
+    feeRangeMax: 450,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Open to new engagements. Particularly interested in Pillar Two readiness and global TP policy mandates.',
+    contactEmail: 'diego@martinezconsultores.es',
+    contactPhone: '+34 91 234 5678',
+    linkedinUrl: 'https://linkedin.com/in/diego-martinez-tp',
+    website: 'https://martinezconsultores.es',
+    services: [{ name: 'Transfer Pricing' }],
+    engagements: [
+      { id: 1, title: 'Global TP policy redesign under BEPS Pillar Two for 18-country pharma group', organization: 'European Pharmaceutical MNE', year: 2024, url: null },
+      { id: 2, title: 'Bilateral APA between Spain and Germany for intra-group financial services', organization: 'Spanish Banking Group', year: 2023, url: null },
+      { id: 3, title: 'Country-by-Country Reporting implementation and process automation', organization: 'Manufacturing Conglomerate', year: 2022, url: null },
+      { id: 4, title: 'TP audit defence resulting in zero adjustment — Spanish Tax Agency', organization: 'Technology Distribution Group', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Economista Colegiado (REAF)', year: 2012 },
+      { id: 2, name: 'IBFD Transfer Pricing Certificate', year: 2015 },
+      { id: 3, name: 'IFA Branch Officer — Spain', year: 2020 },
+    ],
+    educations: [
+      { id: 1, degree: 'Master in International Taxation', institution: 'Instituto de Estudios Fiscales, Madrid', field: 'International Taxation', endYear: 2013 },
+      { id: 2, degree: 'Licenciado en Economía', institution: 'Universidad Complutense de Madrid', field: 'Economics', endYear: 2011 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founding Partner — Transfer Pricing', company: 'Martinez Consultores', startYear: 2019, endYear: null, isCurrent: true, description: 'Boutique transfer pricing advisory firm serving European and Latin American multinationals on TP strategy, documentation, APAs, and dispute resolution.' },
+      { id: 2, title: 'Manager — Transfer Pricing', company: 'KPMG Spain', startYear: 2012, endYear: 2019, isCurrent: false, description: 'Managed TP engagements across pharma, retail, and financial services. Led the Barcelona TP sub-team and coordinated with KPMG Germany and Netherlands.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Economista Colegiado', issuingBody: 'Consejo General de Economistas (REAF)', year: 2012, isVerified: true },
+      { id: 2, name: 'IBFD Transfer Pricing Certificate', issuingBody: 'International Bureau of Fiscal Documentation', year: 2015, isVerified: false },
+    ],
+    articles: [
+      { id: 'transfer-pricing-2026', slug: 'transfer-pricing-2026', title: 'Transfer Pricing in 2026: BEPS 2.0 and What Comes Next', publishedAt: '2026-03-20', readTimeMinutes: 4, featuredImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70', category: { name: 'Transfer Pricing' } },
+    ],
+  },
+
+  'hiroshi-tanaka': {
+    headline: 'Japan\'s premier banking and finance partner — 22 years structuring landmark capital markets transactions.',
+    bio: 'I am a senior partner at Tanaka Kawasaki, one of Tokyo\'s most established banking and finance law firms. My practice covers project finance, syndicated lending, structured products, regulatory capital, and cross-border financing transactions.\n\nOver a 22-year career I have advised Japanese megabanks, global investment banks, and sovereign borrowers on some of the most complex financing transactions in Asia. I am dual-qualified in Japan and New York and advise on both domestic and offshore financing structures.',
+    firmName: 'Tanaka Kawasaki',
+    firmWebsite: 'https://tanakakawasaki.com',
+    yearsOfExperience: 22,
+    feeRangeMin: 580,
+    feeRangeMax: 660,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: false,
+    availabilityNotes: 'Not accepting new mandates at present. Waitlist available for Q1 2027.',
+    contactEmail: 'h.tanaka@tanakakawasaki.com',
+    contactPhone: '+81 3 1234 5678',
+    linkedinUrl: 'https://linkedin.com/in/hiroshi-tanaka-banking',
+    website: 'https://tanakakawasaki.com',
+    services: [{ name: 'Banking & Finance' }],
+    engagements: [
+      { id: 1, title: 'Lead counsel on ¥800B project finance facility for offshore wind portfolio', organization: 'JBIC / Major Japanese Consortium', year: 2024, url: null },
+      { id: 2, title: 'Structured ¥200B green bond framework for Japanese megabank', organization: 'Confidential Japanese Bank', year: 2023, url: null },
+      { id: 3, title: 'Advised on cross-border syndicated facility for Southeast Asian infrastructure project', organization: 'MUFG / ADB Co-financing', year: 2022, url: null },
+      { id: 4, title: 'Regulatory capital and AT1 issuance — first Japanese bank Basel III transaction', organization: 'Confidential Megabank', year: 2020, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Bengoshi (Japan Bar)', year: 2004 },
+      { id: 2, name: 'New York Bar Admission', year: 2006 },
+      { id: 3, name: 'LMA Qualified', year: 2008 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in Banking & Finance', institution: 'Columbia Law School', field: 'Banking & Finance Law', endYear: 2005 },
+      { id: 2, degree: 'LLB', institution: 'University of Tokyo', field: 'Law', endYear: 2003 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Senior Partner — Banking & Finance', company: 'Tanaka Kawasaki', startYear: 2010, endYear: null, isCurrent: true, description: 'Leads the banking and finance practice advising Japanese and international financial institutions on project finance, structured lending, capital markets, and regulatory capital transactions.' },
+      { id: 2, title: 'Associate — Banking & Finance', company: 'Linklaters LLP, Tokyo', startYear: 2006, endYear: 2010, isCurrent: false, description: 'Worked on syndicated loans, project finance, and restructuring transactions across Japan and Southeast Asia with a focus on energy and infrastructure.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Bengoshi (Japanese Bar)', issuingBody: 'Japan Federation of Bar Associations', year: 2004, isVerified: true },
+      { id: 2, name: 'New York Bar Admission', issuingBody: 'New York State Bar Association', year: 2006, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'nadia-hassan': {
+    headline: 'International arbitration counsel resolving complex commercial and investment disputes across MENA.',
+    bio: 'I specialise in international commercial and investment treaty arbitration, acting as both counsel and arbitrator in disputes before the ICC, ICSID, LCIA, and Cairo Regional Centre for International Commercial Arbitration.\n\nMy disputes experience spans energy, construction, technology, and financial services — sectors where high-value cross-border disputes are most common. I am fluent in Arabic and English and have managed proceedings in both languages across Egyptian, UAE, and English governing law.',
+    firmName: 'Cairo Chambers',
+    firmWebsite: 'https://cairochambers.com',
+    yearsOfExperience: 17,
+    feeRangeMin: 330,
+    feeRangeMax: 410,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available as counsel or arbitrator. ICC emergency arbitration experience available.',
+    contactEmail: 'nadia@cairochambers.com',
+    contactPhone: '+20 2 2345 6789',
+    linkedinUrl: 'https://linkedin.com/in/nadia-hassan-arbitration',
+    website: 'https://cairochambers.com',
+    services: [{ name: 'Dispute Resolution' }],
+    engagements: [
+      { id: 1, title: 'Lead counsel — $450M ICC arbitration in energy sector (claimant win)', organization: 'Confidential Energy Company', year: 2024, url: null },
+      { id: 2, title: 'ICSID investment treaty arbitration — Egyptian BIT (bilateral dispute resolved)', organization: 'European FDI Investor vs Egypt', year: 2023, url: null },
+      { id: 3, title: 'Appointed sole arbitrator in CRCICA construction dispute — $60M award', organization: 'CRCICA', year: 2022, url: null },
+      { id: 4, title: 'Enforcement of foreign arbitral award under New York Convention — Egyptian courts', organization: 'Confidential Client', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Egyptian Bar Admission', year: 2009 },
+      { id: 2, name: 'FCIArb — Fellow, Chartered Institute of Arbitrators', year: 2016 },
+      { id: 3, name: 'ICC International Arbitration Certificate', year: 2014 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in International Dispute Resolution', institution: 'Paris II Panthéon-Assas', field: 'International Dispute Resolution', endYear: 2010 },
+      { id: 2, degree: 'LLB', institution: 'Cairo University Faculty of Law', field: 'Law', endYear: 2008 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Senior Partner — International Arbitration', company: 'Cairo Chambers', startYear: 2016, endYear: null, isCurrent: true, description: 'Leads the international arbitration practice acting as counsel and arbitrator in ICC, ICSID, LCIA, and CRCICA proceedings across MENA and internationally.' },
+      { id: 2, title: 'Associate — Litigation & Arbitration', company: 'Denton Wilde Sapte (now Dentons), Cairo', startYear: 2010, endYear: 2016, isCurrent: false, description: 'Advised on commercial disputes, arbitration proceedings, and enforcement of foreign awards across Egypt, UAE, and the broader MENA region.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Egyptian Bar Member', issuingBody: 'Egyptian Bar Association', year: 2009, isVerified: true },
+      { id: 2, name: 'FCIArb', issuingBody: 'Chartered Institute of Arbitrators, London', year: 2016, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'oliver-schmidt': {
+    headline: 'Frankfurt\'s top capital markets partner for ECM, DCM, and regulatory transactions across Europe.',
+    bio: 'I am a capital markets partner at Schmidt Frankfurt, advising issuers, underwriters, and investors on equity and debt capital markets transactions, structured finance, and securities regulation across Germany and the EU.\n\nMy practice spans IPOs, rights issues, Eurobond programmes, covered bond issuances, and MiFID II / EMIR regulatory matters. I have led over 80 ECM and DCM transactions with a combined value exceeding €40B.',
+    firmName: 'Schmidt Frankfurt',
+    firmWebsite: 'https://schmidtfrankfurt.de',
+    yearsOfExperience: 20,
+    feeRangeMin: 540,
+    feeRangeMax: 620,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available for capital markets mandates. Lead time of 3–4 weeks for new engagements.',
+    contactEmail: 'oliver.schmidt@schmidtffm.de',
+    contactPhone: '+49 69 1234 5678',
+    linkedinUrl: 'https://linkedin.com/in/oliver-schmidt-capital',
+    website: 'https://schmidtfrankfurt.de',
+    services: [{ name: 'Capital Markets' }],
+    engagements: [
+      { id: 1, title: 'Counsel to underwriters on €3.2B Frankfurt IPO of German technology group', organization: 'Confidential Tech Company', year: 2024, url: null },
+      { id: 2, title: 'Led €1.5B dual-tranche green Eurobond issuance for DAX-40 issuer', organization: 'Listed German Industrial', year: 2023, url: null },
+      { id: 3, title: 'SPAC de-SPAC transaction — Euronext Amsterdam listing and regulatory approvals', organization: 'Confidential SPAC Sponsor', year: 2022, url: null },
+      { id: 4, title: 'Covered bond programme establishment — €5B EMTN framework', organization: 'German Landesbank', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Rechtsanwalt (German Bar)', year: 2006 },
+      { id: 2, name: 'New York Bar Admission', year: 2008 },
+      { id: 3, name: 'ICMA Capital Markets Certificate', year: 2010 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in Banking & Finance Law', institution: 'Humboldt University Berlin', field: 'Banking & Finance Law', endYear: 2007 },
+      { id: 2, degree: 'First State Exam (Erstes Staatsexamen)', institution: 'Goethe University Frankfurt', field: 'Law', endYear: 2005 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founding Partner — Capital Markets', company: 'Schmidt Frankfurt', startYear: 2014, endYear: null, isCurrent: true, description: 'Boutique capital markets law firm advising on IPOs, bond issuances, structured finance, and securities regulation across Germany and international markets.' },
+      { id: 2, title: 'Counsel — Capital Markets', company: 'Freshfields Bruckhaus Deringer, Frankfurt', startYear: 2008, endYear: 2014, isCurrent: false, description: 'Advised blue-chip issuers and investment banks on ECM, DCM, and structured finance transactions across Germany and the EU.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Rechtsanwalt', issuingBody: 'Rechtsanwaltskammer Frankfurt', year: 2006, isVerified: true },
+      { id: 2, name: 'New York Bar Admission', issuingBody: 'New York State Bar Association', year: 2008, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'isabella-rossi': {
+    headline: 'Milan\'s leading restructuring adviser — guiding distressed businesses through insolvency and turnaround.',
+    bio: 'I advise creditors, debtors, and insolvency professionals on corporate restructurings, debt workouts, and turnaround strategies under Italian and cross-border insolvency law. My clients range from banks managing non-performing loan portfolios to PE sponsors taking over distressed assets.\n\nI have led or co-led over 35 major restructuring mandates since the 2008 financial crisis, including several landmark Italian concordato preventivo and piani di risanamento proceedings.',
+    firmName: 'Rossi Milano',
+    firmWebsite: 'https://rossimilano.it',
+    yearsOfExperience: 16,
+    feeRangeMin: 400,
+    feeRangeMax: 480,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available for new restructuring and distressed M&A mandates. Urgent situations prioritised.',
+    contactEmail: 'i.rossi@rossimilano.it',
+    contactPhone: '+39 02 1234 5678',
+    linkedinUrl: 'https://linkedin.com/in/isabella-rossi-restructuring',
+    website: 'https://rossimilano.it',
+    services: [{ name: 'Restructuring' }],
+    engagements: [
+      { id: 1, title: 'Lead financial restructuring counsel for €900M Italian retail group', organization: 'Confidential Retail Group', year: 2024, url: null },
+      { id: 2, title: 'NPL portfolio sale and securitisation — €1.2B Italian bank workout', organization: 'Northern Italian Bank', year: 2023, url: null },
+      { id: 3, title: 'Distressed acquisition of manufacturing business in concordato', organization: 'PE Sponsor (Confidential)', year: 2022, url: null },
+      { id: 4, title: 'Cross-border restructuring under English and Italian law for luxury goods group', organization: 'Confidential Luxury Brand', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Avvocato (Italian Bar)', year: 2010 },
+      { id: 2, name: 'INSOL International Fellow', year: 2015 },
+      { id: 3, name: 'Certified Turnaround Professional (CTP)', year: 2017 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in International Corporate Finance', institution: 'Bocconi University, Milan', field: 'Corporate Finance Law', endYear: 2010 },
+      { id: 2, degree: 'Laurea Magistrale in Giurisprudenza', institution: 'University of Milan', field: 'Law', endYear: 2009 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founding Partner', company: 'Rossi Milano', startYear: 2017, endYear: null, isCurrent: true, description: 'Specialist restructuring boutique advising creditors, debtors, and investors on Italian and cross-border insolvency, turnaround, and distressed M&A.' },
+      { id: 2, title: 'Senior Associate — Restructuring', company: 'Allen & Overy, Milan', startYear: 2010, endYear: 2017, isCurrent: false, description: 'Worked on major Italian and cross-border restructuring transactions including NPL disposals, debt-to-equity swaps, and concordato proceedings.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Avvocato', issuingBody: 'Consiglio dell\'Ordine degli Avvocati di Milano', year: 2010, isVerified: true },
+      { id: 2, name: 'Certified Turnaround Professional (CTP)', issuingBody: 'Turnaround Management Association', year: 2017, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'rajiv-menon': {
+    headline: 'India\'s trusted independent valuation expert for M&A, FEMA, and regulatory compliance assignments.',
+    bio: 'I provide independent business valuation opinions for M&A transactions, dispute resolution, regulatory compliance (FEMA/RBI), and financial reporting under Ind AS. My clients include investment banks, PE funds, listed companies, and law firms requiring credible third-party valuations.\n\nWith a background spanning investment banking and Big 4 advisory, I bring both technical rigour and commercial judgement to every valuation mandate. I am a registered Category I Merchant Banker with SEBI and a panel valuer with multiple Indian courts and arbitration tribunals.',
+    firmName: 'Menon Partners',
+    firmWebsite: 'https://menonpartners.in',
+    yearsOfExperience: 18,
+    feeRangeMin: 280,
+    feeRangeMax: 360,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Currently accepting valuation mandates. Rush reports available with 7-day turnaround.',
+    contactEmail: 'rajiv@menonpartners.in',
+    contactPhone: '+91 98200 78901',
+    linkedinUrl: 'https://linkedin.com/in/rajiv-menon-valuation',
+    website: 'https://menonpartners.in',
+    services: [{ name: 'Valuation' }],
+    engagements: [
+      { id: 1, title: 'Independent fairness opinion on ₹3,200Cr open offer for listed pharmaceutical company', organization: 'PE Acquirer (Confidential)', year: 2024, url: null },
+      { id: 2, title: 'Business valuation for FEMA-compliant cross-border equity issuance', organization: 'US-headquartered Technology Company', year: 2023, url: null },
+      { id: 3, title: 'Expert witness valuation in ₹450Cr arbitration for SPA breach of warranty', organization: 'SIAC Arbitration Panel', year: 2022, url: null },
+      { id: 4, title: 'Purchase price allocation and impairment testing for 5-entity acquisition', organization: 'Confidential Conglomerate', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Chartered Accountant (FCA)', year: 2008 },
+      { id: 2, name: 'CFA Charterholder', year: 2011 },
+      { id: 3, name: 'Registered Valuer (Securities & Financial Assets) — IBBI', year: 2019 },
+    ],
+    educations: [
+      { id: 1, degree: 'MBA in Finance', institution: 'Indian Institute of Management, Ahmedabad', field: 'Finance', endYear: 2009 },
+      { id: 2, degree: 'BCom (Hons)', institution: 'Sydenham College, Mumbai', field: 'Commerce', endYear: 2005 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founder & Managing Partner', company: 'Menon Partners', startYear: 2015, endYear: null, isCurrent: true, description: 'Independent valuation and financial advisory firm providing fairness opinions, purchase price allocations, FEMA valuations, and expert witness services.' },
+      { id: 2, title: 'Associate Director — Valuation', company: 'KPMG India', startYear: 2009, endYear: 2015, isCurrent: false, description: 'Led valuation assignments for M&A, financial reporting, and tax purposes across Mumbai and Pune. Developed the firm\'s Ind AS 103 PPA methodology.' },
+    ],
+    credentials: [
+      { id: 1, name: 'CFA Charterholder', issuingBody: 'CFA Institute', year: 2011, isVerified: true },
+      { id: 2, name: 'Registered Valuer (Securities & Financial Assets)', issuingBody: 'Insolvency and Bankruptcy Board of India (IBBI)', year: 2019, isVerified: true },
+      { id: 3, name: 'Fellow Chartered Accountant', issuingBody: 'Institute of Chartered Accountants of India', year: 2008, isVerified: true },
+    ],
+    articles: [],
+  },
+
+  'claire-dubois': {
+    headline: 'French and EU antitrust expert advising on merger control, cartel defence, and abuse of dominance.',
+    bio: 'I advise companies on all aspects of EU and French competition law — merger control filings, cartel investigations, abuse of dominance proceedings, and private damages actions. My practice is concentrated on the digital economy, pharma, and consumer goods sectors where competition scrutiny is most intense.\n\nI have acted in proceedings before the European Commission, Autorité de la concurrence, and the French courts, and I have been rated as a leading competition lawyer by Legal 500 Europe for six consecutive years.',
+    firmName: 'Dubois Paris',
+    firmWebsite: 'https://duboisparis.fr',
+    yearsOfExperience: 13,
+    feeRangeMin: 450,
+    feeRangeMax: 530,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Accepting new mandates. Experience in urgent EC pre-notification and dawn raid response.',
+    contactEmail: 'claire.dubois@duboisparis.fr',
+    contactPhone: '+33 1 4567 8901',
+    linkedinUrl: 'https://linkedin.com/in/claire-dubois-antitrust',
+    website: 'https://duboisparis.fr',
+    services: [{ name: 'Antitrust' }],
+    engagements: [
+      { id: 1, title: 'Phase II EC merger clearance for €6B acquisition in digital advertising sector', organization: 'Global Technology Company', year: 2024, url: null },
+      { id: 2, title: 'Cartel leniency application and immunity negotiation — French construction sector', organization: 'Confidential Construction Group', year: 2023, url: null },
+      { id: 3, title: 'Antitrust due diligence and filing strategy for 8-jurisdiction pharmaceutical merger', organization: 'US Pharma Acquirer', year: 2022, url: null },
+      { id: 4, title: 'Private damages claim under Article 101 TFEU — €35M settlement achieved', organization: 'Confidential Claimant', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'Avocat au Barreau de Paris', year: 2013 },
+      { id: 2, name: 'LLM in European Competition Law', year: 2014 },
+      { id: 3, name: 'Legal 500 Leading Individual — Competition', year: 2024 },
+    ],
+    educations: [
+      { id: 1, degree: 'LLM in European Competition Law', institution: 'College of Europe, Bruges', field: 'EU Competition Law', endYear: 2014 },
+      { id: 2, degree: 'Master 2 Droit des Affaires', institution: 'Université Paris I Panthéon-Sorbonne', field: 'Business Law', endYear: 2012 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founding Partner — Competition Law', company: 'Dubois Paris', startYear: 2020, endYear: null, isCurrent: true, description: 'Competition law boutique advising on EU and French merger control, cartel investigations, dominance cases, and private enforcement actions.' },
+      { id: 2, title: 'Senior Associate — Competition', company: 'Cleary Gottlieb Steen & Hamilton, Paris', startYear: 2014, endYear: 2020, isCurrent: false, description: 'Advised on major EC merger clearances, Article 101/102 TFEU investigations, and private damages cases for leading technology, pharma, and consumer goods companies.' },
+    ],
+    credentials: [
+      { id: 1, name: 'Avocat au Barreau de Paris', issuingBody: 'Barreau de Paris', year: 2013, isVerified: true },
+      { id: 2, name: 'LLM — European Competition Law', issuingBody: 'College of Europe, Bruges', year: 2014, isVerified: false },
+    ],
+    articles: [],
+  },
+
+  'ahmed-khoury': {
+    headline: 'MENA private equity adviser with 15 years deploying and structuring capital across the GCC and Levant.',
+    bio: 'I advise GPs, LPs, and portfolio companies on PE fund structuring, co-investment strategies, and value creation plans across the Middle East and North Africa. My practice spans buyout, growth equity, and infrastructure funds, with a particular focus on DIFC-domiciled structures and Shariah-compliant PE.\n\nBefore founding Khoury Capital, I spent eight years at a leading Beirut and Dubai-based investment bank running the MENA private equity origination and execution team.',
+    firmName: 'Khoury Capital',
+    firmWebsite: 'https://khourydcapital.com',
+    yearsOfExperience: 15,
+    feeRangeMin: 360,
+    feeRangeMax: 440,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Open to advisory and board-level engagements across MENA PE. Based in Beirut; travel to Dubai monthly.',
+    contactEmail: 'ahmed@khourydcapital.com',
+    contactPhone: '+961 3 456 789',
+    linkedinUrl: 'https://linkedin.com/in/ahmed-khoury-pe',
+    website: 'https://khourydcapital.com',
+    services: [{ name: 'Private Equity' }],
+    engagements: [
+      { id: 1, title: 'Structured $300M Shariah-compliant PE fund — DIFC domicile, Saudi LP base', organization: 'GCC Asset Manager', year: 2024, url: null },
+      { id: 2, title: 'Buy-side advisory on $120M healthcare platform acquisition in UAE', organization: 'Regional PE Fund', year: 2023, url: null },
+      { id: 3, title: 'LP advisory on secondary sale of MENA infrastructure fund interests', organization: 'Confidential Family Office', year: 2022, url: null },
+      { id: 4, title: 'Portfolio company exit — IPO on Tadawul (Saudi Stock Exchange)', organization: 'PE-backed Technology Company', year: 2021, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'CFA Charterholder', year: 2013 },
+      { id: 2, name: 'CAIA Charterholder', year: 2015 },
+      { id: 3, name: 'DFSA Authorised Individual', year: 2018 },
+    ],
+    educations: [
+      { id: 1, degree: 'MBA in Finance (with Distinction)', institution: 'London Business School', field: 'Finance', endYear: 2012 },
+      { id: 2, degree: 'BSc in Economics', institution: 'American University of Beirut', field: 'Economics', endYear: 2009 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Founder & Managing Partner', company: 'Khoury Capital', startYear: 2017, endYear: null, isCurrent: true, description: 'Independent PE advisory platform covering fund structuring, deal origination, LP relations, and portfolio company value creation across the GCC and Levant.' },
+      { id: 2, title: 'Vice President — Private Equity', company: 'Arqaam Capital, Dubai', startYear: 2012, endYear: 2017, isCurrent: false, description: 'Ran the MENA PE origination desk — sourced, structured, and executed growth equity and buyout transactions across Saudi Arabia, UAE, Egypt, and Lebanon.' },
+    ],
+    credentials: [
+      { id: 1, name: 'CFA Charterholder', issuingBody: 'CFA Institute', year: 2013, isVerified: true },
+      { id: 2, name: 'CAIA Charterholder', issuingBody: 'CAIA Association', year: 2015, isVerified: true },
+      { id: 3, name: 'DFSA Authorised Individual', issuingBody: 'Dubai Financial Services Authority', year: 2018, isVerified: false },
+    ],
+    articles: [],
+  },
+
+  'sophie-anderson': {
+    headline: 'New York securities lawyer for global capital markets, enforcement defence, and fintech regulation.',
+    bio: 'I represent issuers, underwriters, and investment advisers in SEC enforcement proceedings, securities class actions, and complex regulatory matters. My practice also covers capital markets transactions including US IPOs, Rule 144A offerings, and private placements under Regulation D.\n\nI have defended clients in SEC investigations, FINRA proceedings, and DOJ inquiries, and I have represented issuers and underwriters in securities fraud class actions. I am fluent in the language of structured products and fintech, having advised crypto exchanges and digital asset issuers on SEC registration and enforcement strategy.',
+    firmName: 'Anderson Legal',
+    firmWebsite: 'https://andersonlegalnyc.com',
+    yearsOfExperience: 11,
+    feeRangeMin: 520,
+    feeRangeMax: 600,
+    feeCurrency: '$',
+    memberTier: 'seasoned_professional',
+    isAvailable: true,
+    availabilityNotes: 'Available for SEC enforcement, capital markets, and fintech regulatory mandates.',
+    contactEmail: 'sophie@andersonlegalnyc.com',
+    contactPhone: '+1 212 345 6789',
+    linkedinUrl: 'https://linkedin.com/in/sophie-anderson-securities',
+    website: 'https://andersonlegalnyc.com',
+    services: [{ name: 'Securities' }],
+    engagements: [
+      { id: 1, title: 'Lead defence counsel in SEC enforcement action — $200M trading desk investigation (no charges)', organization: 'Confidential Investment Bank', year: 2024, url: null },
+      { id: 2, title: 'Counsel to issuer in $1.1B NYSE IPO — registration statement and roadshow', organization: 'Confidential Biotech Company', year: 2023, url: null },
+      { id: 3, title: 'SEC registration and Howey analysis for tokenised asset platform', organization: 'Digital Asset Exchange', year: 2023, url: null },
+      { id: 4, title: 'Defence of securities fraud class action — early dismissal secured', organization: 'Listed Technology Company', year: 2022, url: null },
+    ],
+    qualifications: [
+      { id: 1, name: 'New York Bar Admission', year: 2015 },
+      { id: 2, name: 'SEC Enforcement Division (Alumni)', year: 2018 },
+      { id: 3, name: 'Chambers USA — Securities Regulation: Up and Coming', year: 2024 },
+    ],
+    educations: [
+      { id: 1, degree: 'JD', institution: 'Columbia Law School', field: 'Law', endYear: 2015 },
+      { id: 2, degree: 'BA in Economics', institution: 'University of Chicago', field: 'Economics', endYear: 2012 },
+    ],
+    workExperiences: [
+      { id: 1, title: 'Partner — Securities Regulation', company: 'Anderson Legal', startYear: 2021, endYear: null, isCurrent: true, description: 'Boutique securities law firm advising on SEC enforcement defence, capital markets transactions, securities litigation, and fintech/digital asset regulation.' },
+      { id: 2, title: 'Staff Attorney — Division of Enforcement', company: 'U.S. Securities and Exchange Commission', startYear: 2015, endYear: 2018, isCurrent: false, description: 'Investigated and prosecuted securities fraud, insider trading, and disclosure violations. Developed deep institutional knowledge of SEC enforcement priorities and tactics.' },
+      { id: 3, title: 'Associate — Securities & Capital Markets', company: 'Sullivan & Cromwell LLP', startYear: 2018, endYear: 2021, isCurrent: false, description: 'Advised investment banks and issuers on IPOs, high-yield offerings, and SEC reporting obligations. Managed three major securities class action defences.' },
+    ],
+    credentials: [
+      { id: 1, name: 'New York Bar Admission', issuingBody: 'New York State Bar Association', year: 2015, isVerified: true },
+      { id: 2, name: 'Chambers USA — Securities Regulation', issuingBody: 'Chambers and Partners', year: 2024, isVerified: true },
+    ],
+    articles: [
+      { id: 'us-tariff-refunds', slug: 'us-tariff-refunds', title: 'Understanding US Tariff Refunds: Insights Post-Supreme Court Ruling', publishedAt: '2026-04-08', readTimeMinutes: 3, featuredImageUrl: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=70', category: { name: 'Indirect Tax' } },
+    ],
+  },
+};
+
+// ── Key Clients per member ────────────────────────
+const KEY_CLIENTS = {
+  'mukesh-kumar-m': [
+    { name: 'Tata Group', domain: 'tata.com' },
+    { name: 'Mahindra', domain: 'mahindra.com' },
+    { name: 'Deloitte', domain: 'deloitte.com' },
+    { name: 'KPMG', domain: 'kpmg.com' },
+    { name: 'Infosys', domain: 'infosys.com' },
+    { name: 'L&T', domain: 'lntecc.com' },
+  ],
+  'shreyans-maloo': [
+    { name: 'Cognizant', domain: 'cognizant.com' },
+    { name: 'HCLTech', domain: 'hcltech.com' },
+    { name: 'Wipro', domain: 'wipro.com' },
+    { name: 'Hexaware', domain: 'hexaware.com' },
+    { name: 'Mphasis', domain: 'mphasis.com' },
+  ],
+  'swetha-prasad': [
+    { name: 'Asian Paints', domain: 'asianpaints.com' },
+    { name: 'TVS Motor', domain: 'tvsmotor.com' },
+    { name: 'JSW Group', domain: 'jsw.in' },
+    { name: 'Hinduja Group', domain: 'hindujagroup.com' },
+    { name: 'Murugappa', domain: 'murugappa.com' },
+  ],
+  'priya-venkatesh': [
+    { name: 'Amazon', domain: 'amazon.com' },
+    { name: 'Flipkart', domain: 'flipkart.com' },
+    { name: 'Zomato', domain: 'zomato.com' },
+    { name: 'Nykaa', domain: 'nykaa.com' },
+    { name: 'Meesho', domain: 'meesho.com' },
+    { name: 'BigBasket', domain: 'bigbasket.com' },
+  ],
+  'marcus-chen': [
+    { name: 'HSBC', domain: 'hsbc.com' },
+    { name: 'DBS Bank', domain: 'dbs.com' },
+    { name: 'Grab', domain: 'grab.com' },
+    { name: 'Singapore Airlines', domain: 'singaporeair.com' },
+    { name: 'Temasek', domain: 'temasek.com.sg' },
+    { name: 'CapitaLand', domain: 'capitaland.com' },
+  ],
+  'amara-osei': [
+    { name: 'MTN', domain: 'mtn.com' },
+    { name: 'Vodacom', domain: 'vodacom.com' },
+    { name: 'Ecobank', domain: 'ecobank.com' },
+    { name: 'Standard Chartered', domain: 'sc.com' },
+    { name: 'Absa Group', domain: 'absa.africa' },
+  ],
+  'fatima-al-hassan': [
+    { name: 'Emirates NBD', domain: 'emiratesnbd.com' },
+    { name: 'ADCB', domain: 'adcb.com' },
+    { name: 'ADIB', domain: 'adib.ae' },
+    { name: 'Mashreq Bank', domain: 'mashreqbank.com' },
+    { name: 'FAB', domain: 'bankfab.com' },
+    { name: 'ENBD', domain: 'emiratesnbd.com' },
+  ],
+  'james-okafor': [
+    { name: 'MTN Nigeria', domain: 'mtn.com' },
+    { name: 'Dangote', domain: 'dangote.com' },
+    { name: 'Access Bank', domain: 'accessbankplc.com' },
+    { name: 'Zenith Bank', domain: 'zenithbank.com' },
+    { name: 'Airtel Africa', domain: 'airtel.com' },
+  ],
+  'elena-volkova': [
+    { name: 'Sky', domain: 'sky.com' },
+    { name: 'Spotify', domain: 'spotify.com' },
+    { name: 'Getty Images', domain: 'gettyimages.com' },
+    { name: 'Shutterstock', domain: 'shutterstock.com' },
+    { name: 'Canva', domain: 'canva.com' },
+    { name: 'Adobe', domain: 'adobe.com' },
+  ],
+  'diego-martinez': [
+    { name: 'Inditex', domain: 'inditex.com' },
+    { name: 'Telefónica', domain: 'telefonica.com' },
+    { name: 'BBVA', domain: 'bbva.com' },
+    { name: 'Santander', domain: 'santander.com' },
+    { name: 'Repsol', domain: 'repsol.com' },
+    { name: 'Acciona', domain: 'acciona.com' },
+  ],
+  'hiroshi-tanaka': [
+    { name: 'Toyota', domain: 'toyota.com' },
+    { name: 'Nomura', domain: 'nomura.com' },
+    { name: 'SoftBank', domain: 'softbank.jp' },
+    { name: 'NTT', domain: 'ntt.com' },
+    { name: 'Sony', domain: 'sony.com' },
+    { name: 'Mizuho', domain: 'mizuho-fg.co.jp' },
+  ],
+  'nadia-hassan': [
+    { name: 'Emaar', domain: 'emaar.com' },
+    { name: 'Orascom', domain: 'orascomdevelopment.com' },
+    { name: 'Majid Al Futtaim', domain: 'majidalfuttaim.com' },
+    { name: 'Amer Sports', domain: 'amersports.com' },
+    { name: 'CIB Egypt', domain: 'cibeg.com' },
+  ],
+  'oliver-schmidt': [
+    { name: 'Siemens', domain: 'siemens.com' },
+    { name: 'Deutsche Bank', domain: 'db.com' },
+    { name: 'Allianz', domain: 'allianz.com' },
+    { name: 'BMW', domain: 'bmw.com' },
+    { name: 'SAP', domain: 'sap.com' },
+    { name: 'Volkswagen', domain: 'volkswagen.com' },
+  ],
+  'isabella-rossi': [
+    { name: 'UniCredit', domain: 'unicredit.eu' },
+    { name: 'Intesa Sanpaolo', domain: 'intesasanpaolo.com' },
+    { name: 'Stellantis', domain: 'stellantis.com' },
+    { name: 'Enel', domain: 'enel.com' },
+    { name: 'Mediobanca', domain: 'mediobanca.com' },
+    { name: 'Pirelli', domain: 'pirelli.com' },
+  ],
+  'rajiv-menon': [
+    { name: 'HDFC Bank', domain: 'hdfcbank.com' },
+    { name: 'Reliance', domain: 'ril.com' },
+    { name: 'Bajaj Finserv', domain: 'bajajfinserv.in' },
+    { name: 'Mahindra', domain: 'mahindra.com' },
+    { name: 'Kotak Bank', domain: 'kotak.com' },
+    { name: 'Aditya Birla', domain: 'adityabirla.com' },
+  ],
+  'claire-dubois': [
+    { name: "L'Oréal", domain: 'loreal.com' },
+    { name: 'LVMH', domain: 'lvmh.com' },
+    { name: 'BNP Paribas', domain: 'bnpparibas.com' },
+    { name: 'Sanofi', domain: 'sanofi.com' },
+    { name: 'Danone', domain: 'danone.com' },
+    { name: 'AXA', domain: 'axa.com' },
+  ],
+  'ahmed-khoury': [
+    { name: 'Saudi Aramco', domain: 'aramco.com' },
+    { name: 'Mubadala', domain: 'mubadala.com' },
+    { name: 'QIA', domain: 'qia.qa' },
+    { name: 'SWVL', domain: 'swvl.com' },
+    { name: 'Anghami', domain: 'anghami.com' },
+    { name: 'stc', domain: 'stc.com.sa' },
+  ],
+  'sophie-anderson': [
+    { name: 'Goldman Sachs', domain: 'goldmansachs.com' },
+    { name: 'Morgan Stanley', domain: 'morganstanley.com' },
+    { name: 'BlackRock', domain: 'blackrock.com' },
+    { name: 'Citadel', domain: 'citadel.com' },
+    { name: 'Coinbase', domain: 'coinbase.com' },
+    { name: 'Robinhood', domain: 'robinhood.com' },
+  ],
+};
+
+// ── Reviews & Recognition per member ──────────────
+const PROFILE_REVIEWS = {
+  'mukesh-kumar-m': {
+    testimonials: [
+      { id: 1, quote: 'Mukesh guided our three-way demerger with exceptional clarity. He anticipated regulatory questions months before they arose, and his structuring saved us significant tax outflow while keeping the NCLT process on schedule.', clientName: 'Rahul S.', clientTitle: 'Group CFO', clientCompany: 'Confidential Listed Conglomerate', serviceName: 'M&A Tax', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'We engaged Mukesh for the tax structuring of our Singapore holdco acquisition. His command of the India–Singapore treaty and GAAR implications was outstanding — he explained complex positions in language our board could act on.', clientName: 'Ananya K.', clientTitle: 'Partner', clientCompany: 'Mid-Market PE Fund', serviceName: 'M&A Tax', date: 'November 2025', isVerified: true },
+      { id: 3, quote: 'Responsive, commercially sharp, and always a step ahead of the tax department. The capital reduction he structured for our promoter family stood up to scrutiny without a single adverse finding.', clientName: 'Vikram T.', clientTitle: 'Promoter Director', clientCompany: 'Family-Owned Manufacturing Group', serviceName: 'M&A Tax', date: 'July 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Highly Regarded — M&A Tax', issuingBody: 'ITR World Tax', year: 2025, description: 'Ranked among India\'s leading M&A tax advisers for the third consecutive year.' },
+      { id: 2, title: 'Tax Adviser of the Year — South India', issuingBody: 'Achromic Point Tax Awards', year: 2023, description: null },
+      { id: 3, title: '40 Under 40 — Tax Professionals', issuingBody: 'Taxsutra', year: 2019, description: null },
+    ],
+  },
+  'shreyans-maloo': {
+    testimonials: [
+      { id: 1, quote: 'Shreyans rebuilt our transfer pricing documentation across eight APAC entities and defended it through an Indian TP audit without a single addition. Senior attention, fast turnarounds, no Big 4 overhead.', clientName: 'Meera J.', clientTitle: 'Head of Tax', clientCompany: 'Technology MNE (Confidential)', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
+      { id: 2, quote: 'Our bilateral APA between India and Singapore closed faster than our advisers said was possible. Shreyans managed both competent authorities with real skill.', clientName: 'Daniel W.', clientTitle: 'Group Tax Director', clientCompany: 'Confidential Manufacturing Group', serviceName: 'Transfer Pricing', date: 'September 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Rising Star — Transfer Pricing', issuingBody: 'ITR World TP', year: 2024, description: null },
+      { id: 2, title: 'Best Newcomer — Tax Practice', issuingBody: 'India Tax Awards', year: 2022, description: null },
+    ],
+  },
+  'swetha-prasad': {
+    testimonials: [
+      { id: 1, quote: 'Swetha structured our family trust and ESOP scheme ahead of a partial exit, balancing personal and corporate tax considerations that three previous advisers had treated separately. The outcome exceeded our expectations.', clientName: 'Arjun R.', clientTitle: 'Founder & MD', clientCompany: 'First-Generation FMCG Business', serviceName: 'M&A Tax', date: 'January 2026', isVerified: true },
+      { id: 2, quote: 'On our promoter holdco restructuring, Swetha\'s attention to succession detail was remarkable. She works at partner level on every workstream — nothing is delegated into a black box.', clientName: 'Lakshmi N.', clientTitle: 'Family Office Head', clientCompany: 'Confidential Promoter Family', serviceName: 'M&A Tax', date: 'August 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Women in Tax Leaders', issuingBody: 'ITR World Tax', year: 2025, description: null },
+      { id: 2, title: 'Notable Practitioner — M&A Tax', issuingBody: 'Chambers Asia-Pacific', year: 2024, description: null },
+    ],
+  },
+  'priya-venkatesh': {
+    testimonials: [
+      { id: 1, quote: 'Priya untangled a multi-state GST credit dispute that had been stuck for two years. Her supply chain restructuring advice now saves us crores annually in blocked credits.', clientName: 'Suresh B.', clientTitle: 'VP Finance', clientCompany: 'Pan-India E-commerce Platform', serviceName: 'Indirect Tax', date: 'April 2026', isVerified: true },
+      { id: 2, quote: 'The clearest indirect tax adviser we have worked with. Priya\'s advance ruling strategy gave us certainty on a classification issue the entire industry was struggling with.', clientName: 'Kavitha M.', clientTitle: 'CFO', clientCompany: 'Consumer Durables Manufacturer', serviceName: 'Indirect Tax', date: 'October 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Indirect Tax Leader — India', issuingBody: 'ITR World Tax', year: 2025, description: null },
+      { id: 2, title: 'GST Excellence Award', issuingBody: 'All India Tax Practitioners Federation', year: 2022, description: null },
+    ],
+  },
+  'marcus-chen': {
+    testimonials: [
+      { id: 1, quote: 'Marcus designed our APAC holding structure across five jurisdictions with a clarity we had not seen from larger firms. His BEPS 2.0 impact modelling directly shaped our board\'s regional strategy.', clientName: 'Jennifer L.', clientTitle: 'Regional CFO', clientCompany: 'US-Headquartered MNE', serviceName: 'Cross-Border Tax', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'Pragmatic, fast, and deeply connected across APAC tax authorities. Marcus turned a two-jurisdiction PE risk into a clean, defendable operating model.', clientName: 'Wei Zhang', clientTitle: 'Head of Tax, Asia', clientCompany: 'Confidential Logistics Group', serviceName: 'Cross-Border Tax', date: 'December 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Highly Regarded — International Tax', issuingBody: 'ITR World Tax', year: 2025, description: null },
+      { id: 2, title: 'Asia Tax Practice Leader of the Year (shortlist)', issuingBody: 'Asia Tax Awards', year: 2023, description: null },
+    ],
+  },
+  'amara-osei': {
+    testimonials: [
+      { id: 1, quote: 'Amara steered our market entry into Ghana and Côte d\'Ivoire, handling regulatory approvals and local governance requirements that would have taken us a year to navigate alone.', clientName: 'Thomas E.', clientTitle: 'General Counsel', clientCompany: 'European Infrastructure Investor', serviceName: 'Corporate Law', date: 'February 2026', isVerified: true },
+      { id: 2, quote: 'Precise, responsive, and commercially aware. Amara\'s board governance overhaul prepared us for institutional investment ahead of schedule.', clientName: 'Nana A.', clientTitle: 'CEO', clientCompany: 'West African Fintech Scale-up', serviceName: 'Corporate Law', date: 'September 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Leading Individual — Corporate & Commercial, Ghana', issuingBody: 'IFLR1000', year: 2025, description: null },
+      { id: 2, title: 'Top 50 Women in Law — Africa', issuingBody: 'ESQ Legal Awards', year: 2023, description: null },
+    ],
+  },
+  'fatima-al-hassan': {
+    testimonials: [
+      { id: 1, quote: 'Fatima built our UAE compliance framework from the ground up ahead of a central bank inspection. The examiners closed with zero material findings — a first for us in the region.', clientName: 'Omar D.', clientTitle: 'Chief Compliance Officer', clientCompany: 'GCC Retail Bank', serviceName: 'Compliance', date: 'January 2026', isVerified: true },
+      { id: 2, quote: 'Her knowledge of DFSA and central bank expectations is encyclopaedic. Fatima translated a daunting remediation programme into a plan our teams could actually deliver.', clientName: 'Sarah M.', clientTitle: 'Head of Risk', clientCompany: 'DIFC Investment Firm', serviceName: 'Compliance', date: 'June 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Compliance Professional of the Year — MENA', issuingBody: 'Thomson Reuters Regulatory Awards', year: 2024, description: null },
+      { id: 2, title: 'Recognised Practitioner — Regulatory & Compliance', issuingBody: 'Chambers Global', year: 2023, description: null },
+    ],
+  },
+  'james-okafor': {
+    testimonials: [
+      { id: 1, quote: 'James ran our four-country African acquisition like a conductor — local counsel in Lagos, Nairobi, and Johannesburg all moving to one timetable. We closed on time and under budget.', clientName: 'Richard O.', clientTitle: 'Head of Corporate Development', clientCompany: 'FTSE-Listed Consumer Group', serviceName: 'M&A', date: 'April 2026', isVerified: true },
+      { id: 2, quote: 'The rare M&A counsel who is both technically superb and genuinely commercial. James found deal solutions where others saw only regulatory roadblocks.', clientName: 'Chidi N.', clientTitle: 'Managing Partner', clientCompany: 'Pan-African PE Fund', serviceName: 'M&A', date: 'November 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Band 1 — Corporate/M&A, Nigeria', issuingBody: 'Chambers Global', year: 2025, description: 'Ranked Band 1 for four consecutive years.' },
+      { id: 2, title: 'M&A Lawyer of the Year — Africa', issuingBody: 'African Legal Awards', year: 2022, description: null },
+    ],
+  },
+  'elena-volkova': {
+    testimonials: [
+      { id: 1, quote: 'Elena\'s advice on our AI training data licensing was months ahead of the market. She structured agreements that anticipated the EU AI Act before most firms had read the draft.', clientName: 'Sophie H.', clientTitle: 'General Counsel', clientCompany: 'Series C AI Company', serviceName: 'IP & Tech', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'Outstanding counsel on our global patent and data strategy. Elena bridges deep technical understanding with genuinely practical legal advice.', clientName: 'Mark R.', clientTitle: 'VP Legal', clientCompany: 'US Enterprise SaaS Provider', serviceName: 'IP & Tech', date: 'August 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Leading Individual — Technology & Data', issuingBody: 'Legal 500 UK', year: 2025, description: null },
+      { id: 2, title: 'Innovation in Technology Law', issuingBody: 'Financial Times Innovative Lawyers', year: 2023, description: null },
+    ],
+  },
+  'diego-martinez': {
+    testimonials: [
+      { id: 1, quote: 'Diego\'s Pillar Two readiness assessment across our European and LatAm entities was the most rigorous piece of tax work we have commissioned. His TP policy redesign passed review by two Big 4 firms without amendment.', clientName: 'Carmen V.', clientTitle: 'Global Head of Tax', clientCompany: 'Spanish-Listed Industrial Group', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
+      { id: 2, quote: 'He resolved a Mexico–Spain double taxation dispute that had dragged on for three years. Diego knows how the MAP process really works on both sides of the Atlantic.', clientName: 'Luis F.', clientTitle: 'Tax Director', clientCompany: 'LatAm Consumer Goods Group', serviceName: 'Transfer Pricing', date: 'October 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Highly Regarded — Transfer Pricing, Spain', issuingBody: 'ITR World TP', year: 2025, description: null },
+      { id: 2, title: 'Transfer Pricing Firm of the Year — Iberia (team award)', issuingBody: 'International Tax Review', year: 2023, description: null },
+    ],
+  },
+  'hiroshi-tanaka': {
+    testimonials: [
+      { id: 1, quote: 'Tanaka-sensei structured our ¥120bn syndicated facility with flawless coordination between Japanese and New York law workstreams. His dual qualification is a genuine advantage on cross-border financings.', clientName: 'Kenji I.', clientTitle: 'Head of Treasury', clientCompany: 'Japanese Trading House', serviceName: 'Banking & Finance', date: 'January 2026', isVerified: true },
+      { id: 2, quote: 'The most experienced project finance counsel in Tokyo. Hiroshi\'s regulatory capital advice shaped a structure that satisfied both the FSA and our international lenders.', clientName: 'David P.', clientTitle: 'Managing Director', clientCompany: 'Global Investment Bank', serviceName: 'Banking & Finance', date: 'July 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Band 1 — Banking & Finance, Japan', issuingBody: 'Chambers Asia-Pacific', year: 2025, description: null },
+      { id: 2, title: 'Banking Lawyer of the Year — Japan', issuingBody: 'ALB Japan Law Awards', year: 2023, description: null },
+    ],
+  },
+  'nadia-hassan': {
+    testimonials: [
+      { id: 1, quote: 'Nadia led our ICC arbitration against a state-owned counterparty and secured a full award plus costs. Her cross-examination strategy was decisive.', clientName: 'Georges K.', clientTitle: 'CEO', clientCompany: 'Regional Construction Group', serviceName: 'Dispute Resolution', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'She enforced a foreign arbitral award across two MENA jurisdictions where local counsel said it could not be done. Tenacious, strategic, and completely dependable.', clientName: 'Amira S.', clientTitle: 'Group Legal Director', clientCompany: 'Gulf Investment Holding', serviceName: 'Dispute Resolution', date: 'September 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Future Leader — Arbitration', issuingBody: 'Who\'s Who Legal', year: 2025, description: null },
+      { id: 2, title: 'Rising Star — Dispute Resolution, MENA', issuingBody: 'Legal 500 EMEA', year: 2023, description: null },
+    ],
+  },
+  'oliver-schmidt': {
+    testimonials: [
+      { id: 1, quote: 'Oliver led our €800m dual-listing on the Frankfurt and Amsterdam exchanges. His handling of BaFin and AFM in parallel was masterful — we never missed a milestone.', clientName: 'Katrin B.', clientTitle: 'CFO', clientCompany: 'German Technology Issuer', serviceName: 'Capital Markets', date: 'February 2026', isVerified: true },
+      { id: 2, quote: 'The benchmark for DCM counsel in Frankfurt. Oliver\'s EMTN programme update was the smoothest we have run in a decade of issuances.', clientName: 'Michael H.', clientTitle: 'Head of Funding', clientCompany: 'European Landesbank', serviceName: 'Capital Markets', date: 'November 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Leading Individual — Capital Markets, Germany', issuingBody: 'IFLR1000', year: 2025, description: null },
+      { id: 2, title: 'ECM Deal of the Year (lead counsel)', issuingBody: 'IFLR Europe Awards', year: 2024, description: null },
+    ],
+  },
+  'isabella-rossi': {
+    testimonials: [
+      { id: 1, quote: 'Isabella guided our concordato preventivo through the Milan courts while keeping suppliers, banks, and the union at the table. The business survived because of her.', clientName: 'Paolo G.', clientTitle: 'Chairman', clientCompany: 'Italian Fashion Manufacturer', serviceName: 'Restructuring', date: 'January 2026', isVerified: true },
+      { id: 2, quote: 'Clear-eyed and calm under pressure. Isabella\'s debt restructuring plan won unanimous creditor approval — something our banks told us was impossible.', clientName: 'Francesca T.', clientTitle: 'CEO', clientCompany: 'Family-Owned Food Group', serviceName: 'Restructuring', date: 'August 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Leading Individual — Restructuring & Insolvency, Italy', issuingBody: 'Legal 500 EMEA', year: 2025, description: null },
+      { id: 2, title: 'Restructuring Lawyer of the Year — Italy', issuingBody: 'TopLegal Awards', year: 2023, description: null },
+    ],
+  },
+  'rajiv-menon': {
+    testimonials: [
+      { id: 1, quote: 'Rajiv\'s fairness opinion on our related-party acquisition withstood SEBI scrutiny and a shareholder challenge. His independence and rigour are exactly why boards retain him.', clientName: 'Deepak M.', clientTitle: 'Independent Director', clientCompany: 'NSE-Listed Pharma Company', serviceName: 'Valuation', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'The purchase price allocation for our five-entity acquisition was delivered ahead of audit deadlines and accepted by our auditors without a single adjustment.', clientName: 'Priya R.', clientTitle: 'Group Controller', clientCompany: 'Confidential Conglomerate', serviceName: 'Valuation', date: 'October 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Registered Valuer of the Year (shortlist)', issuingBody: 'IBBI Valuation Excellence Awards', year: 2024, description: null },
+      { id: 2, title: 'Best Independent Valuation Practice — South India', issuingBody: 'VCCircle Awards', year: 2022, description: null },
+    ],
+  },
+  'claire-dubois': {
+    testimonials: [
+      { id: 1, quote: 'Claire secured unconditional Phase 1 clearance from the European Commission on a merger our previous counsel said would go to Phase 2. Her read of the case team was uncanny.', clientName: 'Henri L.', clientTitle: 'General Counsel', clientCompany: 'French Industrial Group', serviceName: 'Antitrust', date: 'February 2026', isVerified: true },
+      { id: 2, quote: 'In our cartel defence before the Autorité de la concurrence, Claire\'s leniency strategy reduced our exposure by more than half. Formidable and precise.', clientName: 'Isabelle M.', clientTitle: 'Directrice Juridique', clientCompany: 'European Distribution Group', serviceName: 'Antitrust', date: 'September 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Leading Individual — Competition/European Law, France', issuingBody: 'Legal 500 EMEA', year: 2025, description: null },
+      { id: 2, title: 'Competition Lawyer of the Year — France', issuingBody: 'Le Point / Statista Rankings', year: 2023, description: null },
+    ],
+  },
+  'ahmed-khoury': {
+    testimonials: [
+      { id: 1, quote: 'Ahmed structured our $250m GCC buyout platform end to end — fund domicile, acquisition vehicles, and management incentive plans. He thinks like an investor, not just an adviser.', clientName: 'Faisal A.', clientTitle: 'Managing Partner', clientCompany: 'Gulf-Based PE Firm', serviceName: 'Private Equity', date: 'January 2026', isVerified: true },
+      { id: 2, quote: 'Our co-investment into a Saudi logistics platform closed in eleven weeks thanks to Ahmed\'s command of the new investment regulations. Exceptional execution.', clientName: 'Layla H.', clientTitle: 'Investment Director', clientCompany: 'Sovereign-Backed Fund', serviceName: 'Private Equity', date: 'June 2025', isVerified: true },
+    ],
+    awards: [
+      { id: 1, title: 'Highly Regarded — Private Equity, Middle East', issuingBody: 'IFLR1000', year: 2025, description: null },
+      { id: 2, title: 'PE Deal of the Year — MENA (advisory team)', issuingBody: 'Mergermarket MENA Awards', year: 2023, description: null },
+    ],
+  },
+  'sophie-anderson': {
+    testimonials: [
+      { id: 1, quote: 'Sophie guided us through an SEC enforcement inquiry that ended with no action taken. Her prior regulatory experience showed in every interaction with the staff.', clientName: 'Jonathan B.', clientTitle: 'Chief Legal Officer', clientCompany: 'US Digital Asset Platform', serviceName: 'Securities', date: 'March 2026', isVerified: true },
+      { id: 2, quote: 'Our Reg A+ offering and subsequent uplisting were handled flawlessly. Sophie is the rare securities lawyer who is proactive rather than reactive.', clientName: 'Rachel K.', clientTitle: 'CEO', clientCompany: 'Fintech Growth Company', serviceName: 'Securities', date: 'December 2025', isVerified: false },
+    ],
+    awards: [
+      { id: 1, title: 'Notable Practitioner — Securities Regulation', issuingBody: 'Chambers USA', year: 2025, description: null },
+      { id: 2, title: 'Rising Star — Securities & Corporate Finance', issuingBody: 'New York Law Journal', year: 2022, description: null },
+    ],
+  },
+};
+
+// ── Helpers ──────────────────────────────────────
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── Testimonials carousel ─────────────────────────
+let _testiOffset = 0;
+
+function nextTestimonial() {
+  const outer = document.getElementById('reviews-testi-outer');
+  const track = document.getElementById('reviews-testi-list');
+  const card = track.firstElementChild;
+  if (!card) return;
+  const step = card.offsetWidth + 12;
+  const maxOffset = Math.max(0, track.scrollWidth - outer.clientWidth);
+  if (_testiOffset >= maxOffset - 1) {
+    _testiOffset = 0; // past the last one — loop back to the start
+  } else {
+    _testiOffset = Math.min(_testiOffset + step, maxOffset);
+  }
+  track.style.transform = `translateX(-${_testiOffset}px)`;
+}
+
+// ── Modal state ───────────────────────────────────
+let _modalOpen = false;
+
+function openModal() {
+  const overlay = document.getElementById('mp-modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  _modalOpen = true;
+  // reset form
+  document.getElementById('mp-modal-form-body').style.display = '';
+  document.getElementById('mp-modal-success').classList.remove('show');
+  document.getElementById('mp-modal-error').classList.remove('show');
+  document.getElementById('mp-form-subject').value = '';
+  document.getElementById('mp-form-message').value = '';
+  document.getElementById('mp-char-count').textContent = '0';
+  document.getElementById('mp-modal-submit-btn').disabled = true;
+  document.getElementById('mp-modal-submit-btn').textContent = 'Send Request';
+}
+
+function closeModal() {
+  const overlay = document.getElementById('mp-modal-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  _modalOpen = false;
+}
+
+function submitConsultation() {
+  const subject = document.getElementById('mp-form-subject').value.trim();
+  const message = document.getElementById('mp-form-message').value.trim();
+  const btn = document.getElementById('mp-modal-submit-btn');
+  const errorEl = document.getElementById('mp-modal-error');
+
+  if (!subject || !message) {
+    errorEl.textContent = 'Please fill in both the subject and message fields.';
+    errorEl.classList.add('show');
+    return;
+  }
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  setTimeout(() => {
+    document.getElementById('mp-modal-form-body').style.display = 'none';
+    document.getElementById('mp-modal-success').classList.add('show');
+  }, 1500);
+}
+
+// ── Engagement list render + edit ────────────────
+let _engagements = [];
+
+function renderEngagements(list) {
+  const el = document.getElementById('about-engagements-list');
+  if (!list || !list.length) {
+    el.innerHTML = `
+      <div class="mp-eng-empty">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2l2.4 5H20l-4.5 3.5 1.7 5.5L12 13l-5.2 3 1.7-5.5L4 7h5.6L12 2z" stroke="#00A582" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <strong>No key engagements yet.</strong><br>
+          Showcase your most impactful work — <button onclick="openEngEdit()">click Edit</button> to add your first engagement.
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = list.map(e => `
+      <div class="mp-engagement">
+        <div class="mp-eng-icon">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8l4 4 6-7" stroke="#00A582" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="mp-eng-body">
+          <div class="mp-eng-title">${escHtml(e.title)}</div>
+          <div class="mp-eng-meta">${escHtml(e.organization)}${e.year ? ' · ' + e.year : ''}</div>
+        </div>
+        ${e.url ? `<a href="${escHtml(e.url)}" class="mp-eng-link" target="_blank" rel="noopener">↗</a>` : ''}
+      </div>`).join('');
+  }
+}
+
+function openEngEdit() {
+  const overlay = document.getElementById('mp-eng-modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // populate rows
+  const listEl = document.getElementById('mp-eng-edit-list');
+  listEl.innerHTML = '';
+  (_engagements.length ? _engagements : [{ title: '', organization: '', year: '' }])
+    .forEach(e => addEngRow(e));
+}
+
+function closeEngEdit() {
+  document.getElementById('mp-eng-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function addEngRow(data) {
+  data = data || {};
+  const listEl = document.getElementById('mp-eng-edit-list');
+  const row = document.createElement('div');
+  row.className = 'mp-eng-row';
+  row.innerHTML = `
+    <div class="mp-eng-row-inputs">
+      <input type="text" placeholder="Engagement title…" value="${escHtml(data.title || '')}">
+      <input type="text" placeholder="Organisation · Year" value="${escHtml((data.organization ? data.organization + (data.year ? ' · ' + data.year : '') : (data.year || '')))}">
+    </div>
+    <button class="mp-eng-del-btn" onclick="this.closest('.mp-eng-row').remove()" title="Remove">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>`;
+  listEl.appendChild(row);
+}
+
+function saveEngEdit() {
+  const rows = document.querySelectorAll('#mp-eng-edit-list .mp-eng-row');
+  _engagements = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const title = inputs[0].value.trim();
+    const orgYear = inputs[1].value.trim();
+    if (!title) return;
+    let organization = orgYear, year = '';
+    const m = orgYear.match(/^(.*?)\s*[·•\-]\s*(\d{4})$/);
+    if (m) { organization = m[1].trim(); year = m[2]; }
+    _engagements.push({ title, organization, year });
+  });
+  renderEngagements(_engagements);
+  closeEngEdit();
+}
+
+document.getElementById('mp-eng-modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('mp-eng-modal-overlay')) closeEngEdit();
+});
+
+// ── Render helpers ────────────────────────────────
+function renderEduCard(edu) {
+  return `<div class="mp-edu-card">
+    <div class="mp-edu-degree">${escHtml(edu.degree)}</div>
+    <div class="mp-edu-meta">${escHtml(edu.institution)}${edu.endYear ? ' · ' + edu.endYear : ''}</div>
+    ${edu.field ? `<div class="mp-edu-meta">${escHtml(edu.field)}</div>` : ''}
+  </div>`;
+}
+
+// ── Populate all DOM elements ────────────────────
+function populateProfile(member, extended) {
+  const name = member.name || '';
+  const isVerified = member.verified || false;
+  const isSeasoned = (extended && extended.memberTier === 'seasoned_professional') || false;
+  const isAvailable = extended ? (extended.isAvailable !== false) : false;
+  const location = member.location || '';
+  const linkedinUrl = extended && extended.linkedinUrl ? extended.linkedinUrl : null;
+
+  // Document title
+  document.title = `${name} — Expertly`;
+
+  // Auth sub text (update if already shown — won't be displayed, but set it)
+  const authSub = document.getElementById('mp-auth-sub-text');
+  if (authSub) authSub.textContent = `Sign in to view the full profile of ${name}, including their experience, services, and contact details.`;
+
+  // Modal sub
+  const modalSub = document.getElementById('mp-modal-sub');
+  if (modalSub) modalSub.textContent = `with ${name}`;
+
+  // ── Avatar ──
+  const avatarEl = document.getElementById('mp-avatar-el');
+  if (member.img) {
+    avatarEl.innerHTML = `<img src="${escHtml(member.img)}" alt="${escHtml(name)}" />`;
+  } else {
+    avatarEl.innerHTML = `<span class="mp-avatar-initials">${escHtml(member.initials || name.charAt(0))}</span>`;
+  }
+
+  // Verified badge on avatar
+  const verifiedBadge = document.getElementById('mp-header-verified-badge');
+  if (isVerified) verifiedBadge.style.display = 'flex';
+
+  // Name + verified icon + tier
+  document.getElementById('mp-name-el').textContent = name;
+  const nameVerified = document.getElementById('mp-name-verified-icon');
+  if (isVerified) nameVerified.style.display = 'inline-block';
+
+  const tierBadge = document.getElementById('mp-tier-badge-el');
+  if (isSeasoned) {
+    tierBadge.textContent = 'Seasoned Professional';
+    tierBadge.className = 'mp-tier-badge mp-tier-seasoned';
+  } else {
+    tierBadge.textContent = 'Member';
+    tierBadge.className = 'mp-tier-badge mp-tier-standard';
+  }
+
+  // Designation + firm
+  const designation = member.title || '';
+  const firmName = (extended && extended.firmName) || member.firm || '';
+  const designationEl = document.getElementById('mp-designation-el');
+  const firmEl = document.getElementById('mp-firm-el');
+  
+  if (designation && firmName && firmName !== 'Independent') {
+    designationEl.textContent = `${designation} at ${firmName}`;
+  } else if (designation) {
+    designationEl.textContent = designation;
+  } else if (firmName && firmName !== 'Independent') {
+    designationEl.textContent = firmName;
+  } else {
+    designationEl.textContent = '';
+  }
+  firmEl.style.display = 'none';
+
+  // Stats row
+  const statsRow = document.getElementById('mp-stats-row');
+  const pinSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.7 2 6 4.7 6 8c0 4.5 6 12 6 12s6-7.5 6-12c0-3.3-2.7-6-6-6z" stroke="#00A582" stroke-width="1.6"/><circle cx="12" cy="8" r="2" stroke="#00A582" stroke-width="1.4"/></svg>`;
+  const clockSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#00A582" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="#00A582" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+  const clipSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="8" y="2" width="8" height="4" rx="1" stroke="#00A582" stroke-width="1.5"/><path d="M8 4H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2" stroke="#00A582" stroke-width="1.5"/></svg>`;
+
+  let statsHtml = '';
+  if (location) statsHtml += `<span class="mp-stat">${pinSvg} ${escHtml(location)}</span>`;
+
+  const yrs = (extended && extended.yearsOfExperience) ? extended.yearsOfExperience : parseInt(member.tenure);
+  if (yrs) statsHtml += `<span class="mp-stat">${clockSvg} ${yrs}+ years experience</span>`;
+
+  const serviceName = (extended && extended.services && extended.services[0]) ? extended.services[0].name : member.practice;
+  if (serviceName) statsHtml += `<span class="mp-stat">${clipSvg} ${escHtml(serviceName)}</span>`;
+
+  statsRow.innerHTML = statsHtml;
+
+  // ── Mobile CTA ──
+  const mobileFeeEl = document.getElementById('mp-mobile-fee-el');
+  const mobileAvailEl = document.getElementById('mp-mobile-avail-el');
+  const mobileCTABtn = document.getElementById('mp-mobile-cta-btn');
+
+  if (extended && extended.feeRangeMin) {
+    const cur = extended.feeCurrency || '$';
+    mobileFeeEl.textContent = `${cur}${extended.feeRangeMin}–${cur}${extended.feeRangeMax}`;
+  } else {
+    mobileFeeEl.textContent = member.rate || '';
+    // remove " /hr" suffix if present since the strip adds its own
+    mobileFeeEl.textContent = mobileFeeEl.textContent.replace('/hr', '').trim();
+  }
+
+  if (isAvailable) {
+    mobileAvailEl.innerHTML = `<span class="mp-avail-dot available"></span><span style="color:#16a34a;font-weight:500;">Available</span>`;
+    mobileCTABtn.disabled = false;
+  } else {
+    mobileAvailEl.innerHTML = `<span class="mp-avail-dot unavailable"></span><span style="color:#7a9b8e;">Currently unavailable</span>`;
+    mobileCTABtn.disabled = true;
+  }
+
+  // ── ABOUT TAB ──
+  const headline = extended && extended.headline ? extended.headline : '';
+  const bio = extended && extended.bio ? extended.bio : '';
+
+  if (headline) {
+    document.getElementById('about-headline').textContent = headline;
+    document.getElementById('about-headline-section').style.display = '';
+  }
+  if (bio) {
+    document.getElementById('about-bio').textContent = bio;
+    document.getElementById('about-bio-section').style.display = '';
+  }
+
+  // ── Engagements (always visible with edit/empty state) ──
+  _engagements = extended && extended.engagements ? extended.engagements.slice() : [];
+  renderEngagements(_engagements);
+
+  // ── Featured Clients (V3: Auto-scrolling marquee — pauses on hover) ──
+  const keyClients = (KEY_CLIENTS && KEY_CLIENTS[member.id]) ? KEY_CLIENTS[member.id] : [];
+  if (keyClients.length) {
+    const iconColors = ['#0A66C2','#F97316','#16A34A','#7C3AED','#DC2626','#0891B2','#B45309','#1D4ED8','#9333EA','#059669'];
+    const clientsGrid = document.getElementById('about-clients-grid');
+    const renderCards = (list) => list.map((c, i) => {
+      const ic = iconColors[i % iconColors.length];
+      const iconHtml = c.domain
+        ? `<img src="https://www.google.com/s2/favicons?sz=64&domain=${escHtml(c.domain)}" width="44" height="44" style="border-radius:11px;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="mp-client-icon-fallback" style="background:${ic};display:none;">${escHtml(c.name.charAt(0))}</span>`
+        : `<span class="mp-client-icon-fallback" style="background:${ic};">${escHtml(c.name.charAt(0))}</span>`;
+      return `<div class="mp-client-card"><div class="mp-client-icon">${iconHtml}</div><div class="mp-client-name">${escHtml(c.name)}</div></div>`;
+    }).join('');
+    // Duplicate cards so translateX(-50%) loops seamlessly
+    clientsGrid.innerHTML = renderCards(keyClients) + renderCards(keyClients);
+    document.getElementById('about-clients-section').style.display = '';
+  }
+
+  // ── CREDENTIALS TAB ──
+  const educations = extended && extended.educations ? extended.educations : [];
+  if (educations.length) {
+    document.getElementById('creds-edu-grid').innerHTML = educations.map(renderEduCard).join('');
+    document.getElementById('creds-edu-section').style.display = '';
+  }
+
+  const workExps = extended && extended.workExperiences ? extended.workExperiences : [];
+  if (workExps.length) {
+    const workList = document.getElementById('creds-work-list');
+    workList.innerHTML = workExps.map(w => {
+      const endLabel = w.isCurrent ? 'Present' : (w.endYear || '');
+      return `
+        <div class="mp-timeline-item">
+          <div class="mp-timeline-dot"></div>
+          <div class="mp-work-card">
+            <div class="mp-work-top">
+              <div>
+                <div class="mp-work-title">${escHtml(w.title)}</div>
+                <div class="mp-work-company">${escHtml(w.company)}</div>
+              </div>
+              <div class="mp-work-dates">${w.startYear} – ${endLabel}</div>
+            </div>
+            ${w.description ? `<div class="mp-work-desc">${escHtml(w.description)}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('creds-work-section').style.display = '';
+  }
+
+  // ── REVIEWS TAB ──
+  const reviews = (typeof PROFILE_REVIEWS !== 'undefined' && PROFILE_REVIEWS[member.id]) ? PROFILE_REVIEWS[member.id] : null;
+  const testimonials = reviews && reviews.testimonials ? reviews.testimonials : [];
+  const awards = reviews && reviews.awards ? reviews.awards : [];
+
+  if (testimonials.length) {
+    const initialsOf = (n) => n.split(/\s+/).map(p => p.charAt(0)).join('').toUpperCase().slice(0, 2);
+    const testiCardsHtml = testimonials.map(t => {
+      const role = [t.clientTitle, t.clientCompany].filter(Boolean).join(' · ');
+      const verifiedIcon = t.isVerified
+        ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#00A582"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : '';
+      return `
+        <div class="mp-testimonial">
+          <div class="mp-testi-header">
+            <div class="mp-testi-avatar">${escHtml(initialsOf(t.clientName))}</div>
+            <div class="mp-testi-who">
+              <div class="mp-testi-name">${escHtml(t.clientName)} ${verifiedIcon}</div>
+              <div class="mp-testi-role">${escHtml(role)}</div>
+            </div>
+          </div>
+          <p class="mp-testi-text">${escHtml(t.quote)}</p>
+          <div class="mp-testi-footer">
+            ${t.serviceName ? `<span class="mp-qual-tag">${escHtml(t.serviceName)}</span>` : '<span></span>'}
+            ${t.date ? `<span class="mp-testi-date">${escHtml(t.date)}</span>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const testiOuter = document.getElementById('reviews-testi-outer');
+    const testiTrack = document.getElementById('reviews-testi-list');
+    testiTrack.innerHTML = testiCardsHtml;
+    if (testimonials.length > 2) {
+      document.getElementById('reviews-testi-next').style.display = '';
+    } else {
+      testiOuter.classList.add('static');
+    }
+    document.getElementById('reviews-testi-section').style.display = '';
+  }
+
+  if (awards.length) {
+    document.getElementById('reviews-awards-grid').innerHTML = awards.map(a => `
+      <div class="mp-award-card">
+        <div class="mp-award-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="mp-award-title">${escHtml(a.title)}</div>
+          <div class="mp-award-meta">${escHtml(a.issuingBody)}${a.year ? ' · ' + a.year : ''}</div>
+          ${a.description ? `<div class="mp-award-desc">${escHtml(a.description)}</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('reviews-awards-section').style.display = '';
+  }
+
+  if (!testimonials.length && !awards.length) {
+    document.getElementById('reviews-empty').style.display = '';
+  }
+
+  // ── ARTICLES TAB ──
+  const articlesHeader = document.getElementById('articles-header');
+  articlesHeader.textContent = `Articles by ${name}`;
+
+  const articles = extended && extended.articles ? extended.articles : [];
+  const articlesList = document.getElementById('articles-list');
+  if (articles.length) {
+    articlesList.innerHTML = articles.map(a => {
+      const dateStr = fmtDate(a.publishedAt);
+      const catName = a.category && a.category.name ? a.category.name : '';
+      return `
+        <a href="articles.html#${escHtml(a.slug)}" class="mp-article-card">
+          ${a.featuredImageUrl ? `<img class="mp-article-thumb" src="${escHtml(a.featuredImageUrl)}" alt="${escHtml(a.title)}" loading="lazy" />` : '<div class="mp-article-thumb"></div>'}
+          <div>
+            ${catName ? `<div class="mp-article-cat">${escHtml(catName)}</div>` : ''}
+            <div class="mp-article-title">${escHtml(a.title)}</div>
+            <div class="mp-article-meta">${dateStr}${a.readTimeMinutes ? ' · ' + a.readTimeMinutes + ' min read' : ''}</div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  } else {
+    articlesList.innerHTML = `<p style="font-size:13px;color:#7a9b8e;">No articles published yet.</p>`;
+  }
+
+  // ── CONTACT TAB ──
+  const contactGrid = document.getElementById('contact-grid');
+  const contactItems = [];
+
+  const email = extended && extended.contactEmail ? extended.contactEmail : null;
+  const phone = extended && extended.contactPhone ? extended.contactPhone : null;
+  const linkedin = linkedinUrl;
+  const website = extended && extended.website ? extended.website : null;
+
+  if (email) {
+    contactItems.push({ label: 'Email', value: email, href: `mailto:${email}`, icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#00A582" stroke-width="1.6"/><path d="M2 8l10 7 10-7" stroke="#00A582" stroke-width="1.6"/></svg>` });
+  }
+  if (phone) {
+    contactItems.push({ label: 'Phone', value: phone, href: `tel:${phone.replace(/\s/g, '')}`, icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" stroke="#00A582" stroke-width="1.6"/></svg>` });
+  }
+  if (linkedin) {
+    contactItems.push({ label: 'LinkedIn', value: 'View Profile', href: linkedin, icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="#00A582"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.2V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>`, target: '_blank' });
+  }
+  if (website) {
+    const dispUrl = website.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    contactItems.push({ label: 'Website', value: dispUrl, href: website, icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#00A582" stroke-width="1.6"/><path d="M2 12h20M12 2c-3 2-5 5.4-5 10s2 8 5 10M12 2c3 2 5 5.4 5 10s-2 8-5 10" stroke="#00A582" stroke-width="1.4"/></svg>`, target: '_blank' });
+  }
+
+  contactGrid.innerHTML = contactItems.map(item => `
+    <a href="${escHtml(item.href)}" class="mp-contact-card" ${item.target ? `target="${item.target}" rel="noopener noreferrer"` : ''}>
+      <div class="mp-contact-icon-wrap">${item.icon}</div>
+      <div>
+        <div class="mp-contact-label">${escHtml(item.label)}</div>
+        <div class="mp-contact-value" title="${escHtml(item.value)}">${escHtml(item.value)}</div>
+      </div>
+    </a>
+  `).join('');
+
+  // ── SIDEBAR ──
+  // Fee card
+  const sidebarFeeEl = document.getElementById('sidebar-fee-el');
+  if (extended && extended.feeRangeMin && extended.feeRangeMax) {
+    const cur = extended.feeCurrency || '$';
+    sidebarFeeEl.innerHTML = `${cur}${extended.feeRangeMin}<span class="mp-fee-max"> – ${cur}${extended.feeRangeMax}</span><span class="mp-fee-hr"> / hr</span>`;
+  } else {
+    sidebarFeeEl.textContent = member.rate || 'Contact for rates';
+  }
+
+  const sidebarAvailRow = document.getElementById('sidebar-avail-row');
+  if (isAvailable) {
+    sidebarAvailRow.className = 'mp-avail-row available';
+    sidebarAvailRow.innerHTML = `<span class="mp-avail-dot available" style="width:8px;height:8px;border-radius:50%;background:#16a34a;display:inline-block;"></span> Available for consultations`;
+  } else {
+    sidebarAvailRow.className = 'mp-avail-row unavailable';
+    sidebarAvailRow.innerHTML = `<span class="mp-avail-dot unavailable" style="width:8px;height:8px;border-radius:50%;background:#7a9b8e;display:inline-block;"></span> Currently unavailable`;
+  }
+
+  const availNotes = extended && extended.availabilityNotes ? extended.availabilityNotes : '';
+  if (availNotes) {
+    const notesEl = document.getElementById('sidebar-avail-notes');
+    notesEl.textContent = availNotes;
+    notesEl.style.display = '';
+  }
+
+  const sidebarBtn = document.getElementById('sidebar-cta-btn');
+  if (!isAvailable) sidebarBtn.disabled = true;
+
+  // Firm link
+  const firmWebsite = extended && extended.firmWebsite ? extended.firmWebsite : null;
+  if (firmWebsite) {
+    const firmLink = document.getElementById('sidebar-firm-link');
+    firmLink.href = firmWebsite;
+    firmLink.style.display = 'inline-flex';
+  }
+
+  // Verified card
+  if (isVerified) {
+    const verifiedCard = document.getElementById('sidebar-verified-card');
+    verifiedCard.style.display = '';
+    document.getElementById('sidebar-verified-body').textContent =
+      `${name}'s credentials, employment history, and identity have been verified by the Expertly team.`;
+  }
+}
+
+// ── Tab switching ─────────────────────────────────
+function setupTabs() {
+  const tabs = document.querySelectorAll('.mp-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.mp-tab-panel').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById('tab-' + target);
+      if (panel) panel.classList.add('active');
+    });
+  });
+}
+
+// ── Keyboard / overlay listeners ─────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && _modalOpen) closeModal();
+});
+
+document.getElementById('mp-modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('mp-modal-overlay')) closeModal();
+});
+
+// ── Character counter ─────────────────────────────
+document.getElementById('mp-form-message').addEventListener('input', function() {
+  const len = this.value.length;
+  document.getElementById('mp-char-count').textContent = len;
+  validateModal();
+});
+document.getElementById('mp-form-subject').addEventListener('input', validateModal);
+
+function validateModal() {
+  const subject = document.getElementById('mp-form-subject').value.trim();
+  const message = document.getElementById('mp-form-message').value.trim();
+  const btn = document.getElementById('mp-modal-submit-btn');
+  btn.disabled = !subject || !message;
+}
+
+// ── DOMContentLoaded ──────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const memberId = params.get('id') || 'marcus-chen';
+
+  const session = localStorage.getItem('expertly_session');
+
+  const members = window.EXPERTLY_MEMBERS || [];
+  const member = members.find(m => m.id === memberId) || members.find(m => m.id === 'marcus-chen') || members[0];
+  const extended = (PROFILE_EXTENDED && PROFILE_EXTENDED[memberId]) || null;
+
+  if (!session) {
+    // Show auth wall
+    document.getElementById('mp-auth-wall').style.display = 'flex';
+    document.getElementById('mp-profile').style.display = 'none';
+    // Update auth sub text with member name
+    if (member) {
+      const authSub = document.getElementById('mp-auth-sub-text');
+      if (authSub) authSub.textContent = `Sign in to view the full profile of ${member.name}, including their experience, services, and contact details.`;
+    }
+  } else {
+    // Show profile
+    document.getElementById('mp-auth-wall').style.display = 'none';
+    document.getElementById('mp-profile').style.display = '';
+    if (member) {
+      populateProfile(member, extended);
+      setupTabs();
+    }
+  }
+});
+</script>
+</body>
+</html>
