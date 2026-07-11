@@ -58,9 +58,9 @@ Replace the underlined tab bar with **standalone filter pills**:
 
 ## 5. Right Sidebar
 
-- **Consultation Fee + CTA card** gets the Airbnb "booking card" treatment: stronger border + shadow than other cards, fee shown as a large hero number (`$Min – $Max / hr`), availability status (green dot "Available" / muted "Currently unavailable") directly beneath the fee using existing `isAvailable` data, a thin divider, then the full-width "Request Consultation" button (existing disabled/50%-opacity-when-unavailable rule preserved). Add one small reassurance microcopy line beneath the button, static text (not tied to any new data field) — e.g. "Typically responds within 24 hours." Unauthenticated variant ("Sign in to send a consultation request…" + "Sign in to Contact" button) keeps its current copy and logic, restyled to match.
-- **Location card** and **Verified badge card**: unchanged content/visibility rules, restyled with the new rounded-corner/shadow language.
-- **Back to Members** link: unchanged.
+- **Consultation Fee + CTA card** gets the Airbnb "booking card" treatment: stronger border + shadow than other cards, fee shown as a large hero number (`$Min – $Max / hr`), availability status (green dot "Available" / muted "Currently unavailable") directly beneath the fee using existing `isAvailable` data, a thin divider, then the full-width "Request Consultation" button (existing disabled/50%-opacity-when-unavailable rule preserved), plus the existing conditional "Company website" link. Add one small reassurance microcopy line beneath the button, static text (not tied to any new data field) — e.g. "Typically responds within 24 hours."
+- **Verified badge card**: unchanged content/visibility rules (`isVerified`), restyled with the new rounded-corner/shadow language. (Correction from initial draft: v2's sidebar has no separate Location card, and there is no unauthenticated variant of the sidebar CTA — the whole profile is gated behind the page-level auth wall before any sidebar renders, so `populateProfile` only ever runs for authenticated sessions.)
+- **Back to Members** link: this is a page-top element above the header card (not inside the sidebar) in v2, always visible regardless of viewport — unchanged.
 - Sticky positioning, breakpoint visibility (`hidden` below `lg`), and width (`256px`/`288px`) unchanged.
 
 ## 6. Mobile CTA Strip & Consultation Modal
