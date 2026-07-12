@@ -296,6 +296,35 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
   .hero-stellar .hs-orbit-container { transform: scale(0.44); margin-top: -165px; margin-bottom: -165px; }
   .hero-stellar .hs-body { padding: 100px 20px 20px; }
 }
+
+/* ── Dark nav while stellar hero is visible ── */
+/* nav-inner transitions smoothly between dark (hero) and white (content) */
+html[data-hero="orbit"] .nav-inner {
+  transition: background 0.45s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.45s ease;
+}
+html[data-hero="orbit"] .nav-logo,
+html[data-hero="orbit"] .nav-links a,
+html[data-hero="orbit"] .nav .btn-ghost {
+  transition: color 0.45s ease;
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-inner {
+  background: rgba(11,11,12,0.88);
+  border-bottom-color: rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-logo { color: #fff; }
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a { color: rgba(255,255,255,0.65); }
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost { color: rgba(255,255,255,0.65); }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary {
+  background: transparent;
+  color: #00C99E;
+  border: 1px solid rgba(0,165,130,0.5);
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0,165,130,0.14); }
 </style>
 </head>
 <body>
@@ -1298,6 +1327,16 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
     var d = parseFloat(img.getAttribute('data-reveal') || 0.5);
     setTimeout(function () { img.style.opacity = '1'; }, d * 1000);
   });
+
+  /* Dark nav while stellar hero is visible */
+  var navEl = document.querySelector('.nav');
+  var heroSection = document.querySelector('.hero-stellar');
+  if (navEl && heroSection) {
+    navEl.classList.add('hs-nav-dark'); /* dark immediately on load */
+    new IntersectionObserver(function (entries) {
+      navEl.classList.toggle('hs-nav-dark', entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(heroSection);
+  }
 
   /* Firm ticker */
   var FIRMS = [
