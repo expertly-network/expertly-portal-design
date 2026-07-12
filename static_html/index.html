@@ -10,6 +10,59 @@
 <link rel="stylesheet" href="assets/theme.css">
 <link rel="stylesheet" href="assets/home.css">
 <link rel="stylesheet" href="assets/pages.css">
+<style>
+  .hero-toggle-wrapper {
+    display: inline-flex;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 5px;
+    border-radius: 100px;
+    margin-top: 32px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .hero-toggle-indicator {
+    position: absolute;
+    top: 5px; left: 5px; bottom: 5px;
+    width: calc(50% - 5px);
+    background: #111111;
+    border-radius: 100px;
+    transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-indicator { transform: translateX(100%); }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-indicator { transform: translateX(0); }
+  .hero-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 10px 28px;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.25s ease, transform 0.2s ease;
+    position: relative;
+    z-index: 2;
+    user-select: none;
+  }
+  .hero-toggle-btn:hover { transform: scale(1.03); }
+  .hero-toggle-btn:active { transform: scale(0.96); }
+  .hero-toggle-btn.active { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="become"] { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="find"]   { color: #6b7280; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="find"]   { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="become"] { color: #6b7280; }
+  .hero-center .hero-search { margin-top: 32px; }
+</style>
 </head>
 <body>
 
@@ -28,6 +81,12 @@
         <p class="lede hero-lede">
           A curated network of <span data-counter-value="20" data-counter-suffix="+">0</span> practitioners across <span data-counter-value="20" data-counter-suffix="+">0</span> jurisdictions. Skip the cold outreach — search, verify credentials, and book directly.
         </p>
+
+        <div class="hero-toggle-wrapper">
+          <div class="hero-toggle-indicator"></div>
+          <a href="members.html" class="hero-toggle-btn active" data-mode="find">Find an Expert</a>
+          <a href="apply.html" class="hero-toggle-btn" data-mode="become">Become One</a>
+        </div>
 
         <div class="hero-search">
           <div class="hero-search-input">
@@ -340,14 +399,14 @@
 
       /* ── Event data ── */
       var EVENTS = [
-        { title: 'Transfer Pricing Webinar',    country: 'SG', s: [2026,5,3],  e: [2026,5,3]  },
-        { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026,5,10], e: [2026,5,11] },
-        { title: 'UAE Corporate Tax Briefing',  country: 'AE', s: [2026,5,12], e: [2026,5,12] },
-        { title: 'TP Minds Intl: BEPS 2.0',     country: 'US', s: [2026,5,17], e: [2026,5,19] },
-        { title: 'Global M&A Roundtable',       country: 'UK', s: [2026,5,23], e: [2026,5,23] },
-        { title: 'Expertly Members Social',     country: 'SG', s: [2026,5,23], e: [2026,5,23] },
-        { title: 'Compliance Leaders Forum',    country: 'US', s: [2026,5,25], e: [2026,5,26] },
-        { title: 'Capital Markets Outlook H2',  country: 'HK', s: [2026,5,30], e: [2026,5,30] }
+        { title: 'Transfer Pricing Webinar',    country: 'SG', s: [2026,6,7],  e: [2026,6,7]  },
+        { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026,6,10], e: [2026,6,11] },
+        { title: 'UAE Corporate Tax Briefing',  country: 'AE', s: [2026,6,14], e: [2026,6,14] },
+        { title: 'TP Minds Intl: BEPS 2.0',     country: 'US', s: [2026,6,17], e: [2026,6,19] },
+        { title: 'Global M&A Roundtable',       country: 'UK', s: [2026,6,22], e: [2026,6,22] },
+        { title: 'Expertly Members Social',     country: 'SG', s: [2026,6,24], e: [2026,6,24] },
+        { title: 'Compliance Leaders Forum',    country: 'US', s: [2026,6,28], e: [2026,6,29] },
+        { title: 'Capital Markets Outlook H2',  country: 'HK', s: [2026,6,31], e: [2026,6,31] }
       ];
 
       /* ── Date helpers ── */
@@ -612,57 +671,150 @@
     <div class="container-wide">
       <div class="faq-head">
         <span class="eyebrow">Questions</span>
-        <h2 class="section-title" style="margin-top: 16px;">Common questions.</h2>
-        <p class="lede" style="margin-top: 18px; max-width: 520px;">Still curious? Email us at <a href="mailto:contact@expertly.global" style="color: var(--accent); text-decoration: underline;">contact@expertly.global</a> — we reply within one business day.</p>
+        <h2 class="section-title" style="margin-top: 16px;">Common <span class="accent-text">questions</span>.</h2>
+        <p class="lede" style="margin-top: 16px; max-width: 560px;">Everything you need to know about joining as a professional or finding the right expert as a client.</p>
       </div>
       <div class="faq-columns">
         <div class="faq-group">
           <h4 class="mono">Joining & membership</h4>
-          <div class="faq-item open">
+          <div class="faq-item">
             <button class="faq-q">
               <span>Who can join Expertly?</span>
-              <span class="faq-toggle">−</span>
+              <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Expertly is open to all practising finance and legal professionals worldwide. Whether you're independent or part of a firm, if you're serious about your practice and looking for a trusted network of verified peers, Expertly is the right place for you.</p></div>
+            <div class="faq-a">
+              <p>Expertly is open to all practising finance and legal professionals across the world. Whether you are an independent practitioner or part of a firm, if you are serious about your practice and looking for a trusted network of verified peers to collaborate, share knowledge, and grow across borders — Expertly is the right place for you.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
               <span>What types of professionals are on Expertly?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Our network spans tax advisors, M&A counsel, investment bankers, PE/VC advisors, insolvency professionals, corporate lawyers, dispute resolution counsel, banking & finance lawyers, capital markets lawyers, IP and technology lawyers, compliance professionals, forensic accountants, and valuation experts.</p></div>
+            <div class="faq-a">
+              <p>Our network spans professionals across all finance and legal domains — including tax and transfer pricing advisors, M&A and transaction advisors, investment bankers, private equity and venture capital advisors, insolvency and restructuring professionals, corporate and commercial lawyers, dispute resolution and arbitration counsel, banking and finance lawyers, capital markets and securities lawyers, intellectual property and technology lawyers, company secretaries, compliance and governance professionals, forensic accountants, valuation experts, and cost accountants.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
-              <span>Budding vs. Seasoned — what's the difference?</span>
+              <span>How are members onboarded?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>A Budding Professional has 5–12 years of experience. A Seasoned Professional has 12+ years. Professionals with fewer than 5 years are not currently eligible, though we intend to introduce an associate category for early-career professionals.</p></div>
+            <div class="faq-a">
+              <p>Every member goes through a robust selection process before being onboarded and listed in the directory. We review professional credentials, years of experience, and areas of specialisation, and take feedback from fellow professionals before granting membership. The process typically takes 5 to 7 business days from application to approval.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>How do I apply for membership?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Click 'Apply for Membership' on our website and complete the application form. We review all applications and notify you by email within 5 business days.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What is the difference between a Budding and a Seasoned Professional?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>A Budding Professional has more than 7 but fewer than 12 years of experience, whereas a Seasoned Professional has more than 12 years. Professionals with fewer than 7 years are not currently eligible.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What does membership cost?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Annual membership is $499 for Budding Professionals and $699 for Seasoned Professionals. Occasionally, we offer promotional discount codes for new members — keep an eye on our website and social media channels for such offers.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can I publish articles on Expertly?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes — members can publish articles through the member portal. Articles are reviewed before going live and becoming visible to the public, helping you build your professional brand and reach a targeted audience of peers and potential clients.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can firms or organisations join Expertly?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Membership on Expertly is individual-based, not firm-based. Each professional joins on their own merits, credentials, and experience — independent of the firm or organisation they work for. This means your profile, reputation, articles, and network on Expertly belong entirely to you.</p>
+            </div>
           </div>
         </div>
 
         <div class="faq-group">
-          <h4 class="mono">Using the platform</h4>
+          <h4 class="mono">For clients & users</h4>
           <div class="faq-item">
             <button class="faq-q">
               <span>Is Expertly free to browse?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Yes. Anyone can browse the member directory, view article headlines, and view event listings without signing up. Full contact details, consultation requests, and full articles require a free user account.</p></div>
+            <div class="faq-a">
+              <p>Yes. Anyone can browse the member directory, view article headlines, and view event headlines without signing up. Full contact details of members, consultation requests, and full article and event details require registering a free account as a 'User'.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What is the difference between a User and a Member?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>A User is a person who has created a free account on Expertly but is not a member. A User can view member contact details, place consultation requests, read full articles, and view all event details — but cannot post a profile or write articles. A Member can create a profile, be searchable on the platform, write articles, and more.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can I request a consultation with a member?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes. Registered users and members can send consultation requests directly to any member. Members set their own availability and fee range — so you will always know exactly what to expect upfront before committing.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
               <span>What does the Verified badge actually mean?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>The Verified badge is awarded only to profiles we have manually reviewed and approved — covering professional credentials, qualifications, and years of experience. If a section lacks the badge, it's either under review or not yet verified by our team.</p></div>
+            <div class="faq-a">
+              <p>The Verified badge is awarded only to profiles we have manually reviewed and approved. Verification covers professional credentials, qualifications, and years of experience as declared in the member's profile. If any section of a profile does not display the Verified badge, that information is either under review or has not yet been verified by the Expertly team.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
-              <span>Does Expertly take a cut of fees?</span>
+              <span>How does Expertly handle complaints or concerns about a member?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>No. We're a membership platform, not a marketplace. When a client pays you, 100% of that goes to you. You pay an annual membership fee, and the client relationship is yours to keep.</p></div>
+            <div class="faq-a">
+              <p>All members are required to maintain good standing with their respective professional bodies as a condition of membership. If you have a genuine concern about a member's conduct on the platform, you may submit a complaint through the platform and it will be reviewed by the Expertly compliance team.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Are consultations handled on the platform?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>No. Expertly acts as a discovery and connection directory. Once you connect with an expert, you schedule, agree on terms, and conduct your engagement offline or on your preferred systems directly with the practitioner.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Is my search activity private?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes. Your search queries, directory browsing, and page history are completely confidential. Members are never notified when you view their profiles or read their articles unless you choose to contact them directly.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -716,5 +868,65 @@
 <script src="assets/members.js?v=11"></script>
 <script src="assets/shared.js?v=11"></script>
 <script src="assets/home.js?v=11"></script>
+<script>
+(function () {
+  const phrases = [
+    { q: 'M&A tax advisor in Singapore under $500/hr',  label: 'Find experts'  },
+    { q: 'Articles on UAE corporate tax for 2026',      label: 'Find articles' },
+    { q: 'Transfer pricing conferences in London',      label: 'Find events'   },
+    { q: 'IP counsel for SaaS, EU + US coverage',      label: 'Find experts'  },
+  ];
+
+  const el  = document.querySelector('.hero-phrase');
+  const btn = document.querySelector('.hero-find-label');
+  if (!el) return;
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let active = true;
+  let idx = 0;
+
+  async function typeEl(target, text) {
+    for (let i = 1; i <= text.length; i++) {
+      if (!active) return;
+      target.textContent = text.slice(0, i) + '|';
+      await sleep(18 + Math.random() * 10);
+    }
+    target.textContent = text;
+  }
+
+  async function eraseEl(target) {
+    let text = target.textContent.replace(/\|$/, '');
+    while (text.length > 0) {
+      if (!active) return;
+      text = text.slice(0, -1);
+      target.textContent = text + (text.length ? '|' : '');
+      await sleep(10 + Math.random() * 5);
+    }
+  }
+
+  async function loop() {
+    await sleep(2000);
+    while (active) {
+      const p = phrases[idx % phrases.length];
+      // type search phrase and button label in parallel
+      await Promise.all([
+        typeEl(el, p.q),
+        btn ? typeEl(btn, p.label) : Promise.resolve(),
+      ]);
+      if (!active) return;
+      await sleep(2200);
+      // erase both in parallel
+      await Promise.all([
+        eraseEl(el),
+        btn ? eraseEl(btn) : Promise.resolve(),
+      ]);
+      if (!active) return;
+      idx++;
+    }
+  }
+
+  loop();
+})();
+</script>
 </body>
 </html>

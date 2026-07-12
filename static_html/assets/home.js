@@ -281,13 +281,7 @@ function initHeroSwitcher() {
   const typebox = document.querySelector('.hero-typebox');
   const findBtnLabel = document.querySelector('.hero-find-label');
 
-  if (typebox && findBtnLabel) {
-    setInterval(() => {
-      phraseIdx = (phraseIdx + 1) % searchPhrases.length;
-      typebox.innerHTML = `<span class="hero-phrase" style="animation: heroPhraseIn 0.45s cubic-bezier(0.22,1,0.36,1);">${searchPhrases[phraseIdx].q}</span>`;
-      findBtnLabel.innerHTML = `<span class="hero-find-label" style="animation: heroLabelIn 0.45s cubic-bezier(0.22,1,0.36,1);">${searchPhrases[phraseIdx].label}</span>`;
-    }, 3200);
-  }
+  // phrase cycling handled by typewriter script in index.html
 }
 
 /* ==========================================================================
@@ -431,7 +425,7 @@ function initFeaturedMembers() {
                 <div class="m-chip-name">${m.name}${m.verified ? ` <span class="float-tick">${window.getCheckIconHtml()}</span>` : ''}</div>
                 <div class="m-chip-role">${m.title}</div>
                 <div class="m-chip-tags">
-                  <span class="m-chip-tag">${m.practice}</span>
+                  <span class="m-chip-practice">${m.practice}</span>
                   <span class="m-chip-loc">
                     <svg class="m-chip-pin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M12 21s-6-5.3-6-10a6 6 0 1112 0c0 4.7-6 10-6 10z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
