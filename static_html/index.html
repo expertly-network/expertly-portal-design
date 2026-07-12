@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<html lang="en" data-theme="" data-hero="orbit" data-grid="1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,6 +62,240 @@
   .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="find"]   { color: #ffffff; }
   .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="become"] { color: #6b7280; }
   .hero-center .hero-search { margin-top: 32px; }
+</style>
+<style>
+/* ════════════════════════════════════════════════════
+   STELLAR ORBIT HERO
+   Active when: <html data-hero="orbit">
+   To revert to original: change data-hero="orbit"
+   back to data-hero="split" on the <html> tag (line 2).
+   All styles scoped to .hero-stellar — zero bleed.
+   ════════════════════════════════════════════════════ */
+
+/* Toggle */
+.hero-stellar { display: none; }
+html[data-hero="orbit"] .hero-stellar   { display: flex !important; }
+html[data-hero="orbit"] .hero-split     { display: none !important; }
+
+/* Section shell */
+.hero-stellar {
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0B0B0C;
+  color: #fff;
+  min-height: 100dvh;
+}
+
+/* Atmosphere */
+.hero-stellar .hs-glow-1 {
+  position: absolute; top: -15%; right: -8%;
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(0,165,130,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-stellar .hs-glow-2 {
+  position: absolute; bottom: 5%; left: 5%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,165,130,0.04) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Layout */
+.hero-stellar .hs-body {
+  flex: 1; display: flex; align-items: center;
+  max-width: 1520px; margin: 0 auto;
+  padding: 130px 64px 80px; width: 100%;
+  position: relative; z-index: 1;
+}
+
+/* Left */
+.hero-stellar .hs-left {
+  flex: 0 1 580px; display: flex; flex-direction: column;
+  animation: hs-fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+@keyframes hs-fadeUp  { from{opacity:0;transform:translateY(40px);} to{opacity:1;transform:translateY(0);} }
+@keyframes hs-fadeIn  { from{opacity:0;} to{opacity:1;} }
+@keyframes hs-scaleIn { from{opacity:0;transform:scale(0.85);} to{opacity:1;transform:scale(1);} }
+
+.hero-stellar .hs-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: #00A582; margin-bottom: 30px;
+}
+.hero-stellar .hs-eyebrow::before {
+  content: ''; width: 22px; height: 1.5px; background: #00A582; border-radius: 100px; flex-shrink: 0;
+}
+.hero-stellar .hs-heading {
+  font-size: clamp(38px, 4.2vw, 66px); font-weight: 600;
+  line-height: 1.02; letter-spacing: -0.035em; color: #fff;
+  text-wrap: balance; min-height: 3.8em;
+}
+.hero-stellar .hs-heading .part-accent { color: #00A582; }
+.hs-tw-cursor {
+  display: inline-block; width: 3px; height: 0.82em;
+  background: #00A582; margin-left: 3px; vertical-align: middle;
+  animation: hs-blink 0.85s steps(1) infinite;
+}
+.hs-tw-cursor.done { animation: none; opacity: 0; transition: opacity 0.6s 1.2s; }
+@keyframes hs-blink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+.hero-stellar .hs-lede {
+  font-size: 16.5px; line-height: 1.65; color: rgba(255,255,255,0.5);
+  margin-top: 28px; max-width: 460px; letter-spacing: -0.005em;
+  opacity: 0; animation: hs-fadeIn 0.7s ease 3.8s both;
+}
+.hero-stellar .hs-actions {
+  display: flex; align-items: center; gap: 14px; margin-top: 40px;
+  opacity: 0; animation: hs-fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 4.1s both;
+}
+.hero-stellar .hs-btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px; border-radius: 100px;
+  background: #00A582; color: #fff; font-size: 15px; font-weight: 500;
+  letter-spacing: -0.01em; border: 1px solid #00A582;
+  transition: background 0.25s, transform 0.2s;
+}
+.hero-stellar .hs-btn-primary:hover { background: #00C99E; border-color: #00C99E; transform: translateY(-2px); }
+.hero-stellar .hs-btn-primary svg { transition: transform 0.2s; }
+.hero-stellar .hs-btn-primary:hover svg { transform: translateX(3px); }
+.hero-stellar .hs-btn-ghost {
+  display: inline-flex; align-items: center; padding: 13px 22px;
+  border-radius: 100px; background: transparent;
+  color: rgba(255,255,255,0.55); font-size: 15px; font-weight: 450;
+  border: 1px solid rgba(255,255,255,0.14); transition: color 0.2s, border-color 0.2s;
+}
+.hero-stellar .hs-btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+.hero-stellar .hs-trust {
+  display: flex; align-items: flex-start; margin-top: 52px;
+  padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08);
+  opacity: 0; animation: hs-fadeIn 0.6s ease 4.3s both;
+}
+.hero-stellar .hs-trust-item {
+  display: flex; flex-direction: column; gap: 5px;
+  padding-right: 28px; margin-right: 28px; border-right: 1px solid rgba(255,255,255,0.08);
+}
+.hero-stellar .hs-trust-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hero-stellar .hs-trust-num { font-size: 20px; font-weight: 600; letter-spacing: -0.025em; color: #fff; line-height: 1; }
+.hero-stellar .hs-trust-label {
+  font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); white-space: nowrap;
+}
+
+/* Right: orbit */
+.hero-stellar .hs-right {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  opacity: 0; animation: hs-scaleIn 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+}
+.hero-stellar .hs-orbit-container { position: relative; width: 540px; height: 540px; flex-shrink: 0; }
+
+.hero-stellar .hs-orbit-ring {
+  position: absolute; top: 50%; left: 50%; border-radius: 50%; transform-origin: 50% 50%;
+}
+.hero-stellar .hs-orbit-ring::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; padding: 1px;
+  background: linear-gradient(180deg, rgba(0,165,130,0) 0%, rgba(0,165,130,0.85) 43%, rgba(0,165,130,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+.hero-stellar .hs-orbit-1 { width:265px; height:265px; margin-top:-132.5px; margin-left:-132.5px; animation:hs-spin-ccw 40s linear infinite; }
+.hero-stellar .hs-orbit-2 { width:376px; height:376px; margin-top:-188px;   margin-left:-188px;   animation:hs-spin-cw  40s linear infinite; }
+.hero-stellar .hs-orbit-3 { width:487px; height:487px; margin-top:-243.5px; margin-left:-243.5px; animation:hs-spin-cw  40s linear infinite; }
+.hero-stellar .hs-orbit-4 { width:598px; height:598px; margin-top:-299px;   margin-left:-299px;   animation:hs-spin-ccw 40s linear infinite; }
+@keyframes hs-spin-cw  { to{transform:rotate(360deg);}  }
+@keyframes hs-spin-ccw { to{transform:rotate(-360deg);} }
+@media (prefers-reduced-motion: reduce) {
+  .hero-stellar .hs-orbit-ring, .hero-stellar .hs-avatar-img { animation: none !important; }
+}
+
+.hero-stellar .hs-avatar  { position: absolute; top: 50%; left: 50%; }
+.hero-stellar .hs-cancel  { display: block; }
+.hero-stellar .hs-avatar-img {
+  display: block; width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+  border: 2px solid rgba(0,165,130,0.5);
+  box-shadow: 0 0 0 3px #0B0B0C, 0 3px 10px rgba(11,11,12,0.5);
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.hero-stellar .hs-avatar-img.sz-lg { width: 58px; height: 58px; }
+.hero-stellar .hs-avatar-img.sz-xl { width: 66px; height: 66px; }
+.hero-stellar .hs-orbit-1 .hs-avatar-img { animation: hs-co-1 40s linear infinite; }
+.hero-stellar .hs-orbit-2 .hs-avatar-img { animation: hs-co-2 40s linear infinite; }
+.hero-stellar .hs-orbit-3 .hs-avatar-img { animation: hs-co-3 40s linear infinite; }
+.hero-stellar .hs-orbit-4 .hs-avatar-img { animation: hs-co-4 40s linear infinite; }
+@keyframes hs-co-1 { from{transform:rotate(0deg);}   to{transform:rotate(360deg);}  }
+@keyframes hs-co-2 { from{transform:rotate(0deg);}   to{transform:rotate(-360deg);} }
+@keyframes hs-co-3 { from{transform:rotate(0deg);}   to{transform:rotate(-360deg);} }
+@keyframes hs-co-4 { from{transform:rotate(0deg);}   to{transform:rotate(360deg);}  }
+
+.hero-stellar .hs-center {
+  position: absolute; top: 50%; left: 50%;
+  width: 116px; height: 116px; margin-top: -58px; margin-left: -58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(0,165,130,0.1) 0%, rgba(0,165,130,0.04) 60%, transparent 80%);
+  border: 1px solid rgba(0,165,130,0.25);
+  display: flex; align-items: center; justify-content: center; z-index: 10;
+}
+.hero-stellar .hs-center-inner { text-align: center; }
+.hero-stellar .hs-count-num { font-size: 28px; font-weight: 600; letter-spacing: -0.04em; color: #8BFCD8; line-height: 1; display: block; }
+.hero-stellar .hs-count-label {
+  font-family: 'Archivo', sans-serif; font-size: 8px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 5px; display: block;
+}
+
+/* Ticker */
+.hero-stellar .hs-ticker {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.015); padding: 24px 0; position: relative; z-index: 1;
+}
+.hero-stellar .hs-ticker-label {
+  font-family: 'Archivo', sans-serif; font-size: 9px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.22);
+  text-align: center; margin-bottom: 16px;
+}
+.hero-stellar .hs-ticker-wrap {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+.hero-stellar .hs-ticker-track {
+  display: flex; align-items: center; gap: 56px; width: max-content;
+  animation: hs-ticker 42s linear infinite; will-change: transform;
+}
+@keyframes hs-ticker { to{transform:translateX(-50%);} }
+@media (prefers-reduced-motion: reduce) { .hero-stellar .hs-ticker-track { animation: none; } }
+.hero-stellar .hs-ticker-firm {
+  font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.22); white-space: nowrap; flex-shrink: 0; transition: color 0.2s;
+}
+.hero-stellar .hs-ticker-firm:hover { color: rgba(255,255,255,0.55); }
+.hero-stellar .hs-ticker-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+
+/* Responsive */
+@media (max-width: 1280px) { .hero-stellar .hs-orbit-container { transform: scale(0.9); } }
+@media (max-width: 1100px) {
+  .hero-stellar .hs-body { padding: 120px 48px 60px; }
+  .hero-stellar .hs-orbit-container { transform: scale(0.78); margin-right: -40px; }
+}
+@media (max-width: 960px) {
+  .hero-stellar .hs-body { flex-direction: column; padding: 110px 40px 40px; align-items: center; text-align: center; }
+  .hero-stellar .hs-left { flex: none; align-items: center; }
+  .hero-stellar .hs-eyebrow { justify-content: center; }
+  .hero-stellar .hs-lede { text-align: center; margin-left: auto; margin-right: auto; }
+  .hero-stellar .hs-actions { justify-content: center; }
+  .hero-stellar .hs-trust { justify-content: center; }
+  .hero-stellar .hs-heading { min-height: auto; }
+  .hero-stellar .hs-orbit-container { transform: scale(0.75); margin-top: -60px; margin-bottom: -60px; }
+}
+@media (max-width: 768px) {
+  .hero-stellar .hs-orbit-container { transform: scale(0.58); margin-top: -110px; margin-bottom: -110px; }
+  .hero-stellar .hs-trust { flex-wrap: wrap; gap: 16px; }
+  .hero-stellar .hs-trust-item { border-right: none; margin-right: 0; padding-right: 0; }
+}
+@media (max-width: 480px) {
+  .hero-stellar .hs-orbit-container { transform: scale(0.44); margin-top: -165px; margin-bottom: -165px; }
+  .hero-stellar .hs-body { padding: 100px 20px 20px; }
+}
 </style>
 </head>
 <body>
@@ -202,6 +436,81 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ====================== HERO - STELLAR ORBIT ====================== -->
+  <!-- REVERT: change data-hero="orbit" → data-hero="split" on the <html> tag (line 2) -->
+  <section class="hero-stellar" aria-label="Hero">
+    <div class="hs-glow-1" aria-hidden="true"></div>
+    <div class="hs-glow-2" aria-hidden="true"></div>
+
+    <div class="hs-body">
+      <div class="hs-left">
+        <div class="hs-eyebrow">Curated &middot; Verified &middot; Global</div>
+        <h1 class="hs-heading" aria-label="The Right Finance and Legal Expert Is Already in Our Network.">
+          <span id="hs-tw-output"></span><span class="hs-tw-cursor" id="hs-tw-cursor" aria-hidden="true"></span>
+        </h1>
+        <p class="hs-lede">A boutique network of verified senior practitioners. Skip the referral chains and junior associates. Search, verify credentials, and book the right expert directly.</p>
+        <div class="hs-actions">
+          <a href="members.html" class="hs-btn-primary">
+            Find an Expert
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="apply.html" class="hs-btn-ghost">Apply to join</a>
+        </div>
+        <div class="hs-trust">
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-experts">0</span>+</span><span class="hs-trust-label">Verified Experts</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-juris">0</span>+</span><span class="hs-trust-label">Jurisdictions</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-areas">0</span></span><span class="hs-trust-label">Practice Areas</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-matched">0</span>+</span><span class="hs-trust-label">Matched</span></div>
+        </div>
+      </div>
+
+      <div class="hs-right" aria-hidden="true">
+        <div class="hs-orbit-container">
+
+          <div class="hs-orbit-ring hs-orbit-1">
+            <div class="hs-avatar" style="transform:rotate(90deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-90deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/1.jpg" alt="" loading="lazy" data-reveal="0.5"></div></div>
+            <div class="hs-avatar" style="transform:rotate(210deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-210deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/10.jpg" alt="" loading="lazy" data-reveal="0.7"></div></div>
+            <div class="hs-avatar" style="transform:rotate(330deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-330deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/20.jpg" alt="" loading="lazy" data-reveal="0.9"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-2">
+            <div class="hs-avatar" style="transform:rotate(0deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(0deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/15.jpg" alt="" loading="lazy" data-reveal="1.0"></div></div>
+            <div class="hs-avatar" style="transform:rotate(90deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-90deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/25.jpg" alt="" loading="lazy" data-reveal="1.1"></div></div>
+            <div class="hs-avatar" style="transform:rotate(180deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-180deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/30.jpg" alt="" loading="lazy" data-reveal="1.2"></div></div>
+            <div class="hs-avatar" style="transform:rotate(270deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-270deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/35.jpg" alt="" loading="lazy" data-reveal="1.3"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-3">
+            <div class="hs-avatar" style="transform:rotate(45deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-45deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/40.jpg" alt="" loading="lazy" data-reveal="1.4"></div></div>
+            <div class="hs-avatar" style="transform:rotate(135deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-135deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/women/50.jpg" alt="" loading="lazy" data-reveal="1.5"></div></div>
+            <div class="hs-avatar" style="transform:rotate(225deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-225deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/55.jpg" alt="" loading="lazy" data-reveal="1.6"></div></div>
+            <div class="hs-avatar" style="transform:rotate(315deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-315deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/women/60.jpg" alt="" loading="lazy" data-reveal="1.7"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-4">
+            <div class="hs-avatar" style="transform:rotate(0deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(0deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/65.jpg" alt="" loading="lazy" data-reveal="1.8"></div></div>
+            <div class="hs-avatar" style="transform:rotate(60deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-60deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/70.jpg" alt="" loading="lazy" data-reveal="1.9"></div></div>
+            <div class="hs-avatar" style="transform:rotate(120deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-120deg)"><img class="hs-avatar-img sz-xl" src="https://randomuser.me/api/portraits/men/75.jpg" alt="" loading="lazy" data-reveal="2.0"></div></div>
+            <div class="hs-avatar" style="transform:rotate(180deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-180deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/80.jpg" alt="" loading="lazy" data-reveal="2.1"></div></div>
+            <div class="hs-avatar" style="transform:rotate(240deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-240deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/85.jpg" alt="" loading="lazy" data-reveal="2.2"></div></div>
+            <div class="hs-avatar" style="transform:rotate(300deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-300deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/90.jpg" alt="" loading="lazy" data-reveal="2.3"></div></div>
+          </div>
+
+          <div class="hs-center"><div class="hs-center-inner">
+            <span class="hs-count-num"><span id="hs-orbit-count">0</span>k+</span>
+            <span class="hs-count-label">Practitioners</span>
+          </div></div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="hs-ticker">
+      <div class="hs-ticker-label">Where our members practice</div>
+      <div class="hs-ticker-wrap"><div class="hs-ticker-track" id="hs-ticker-track"></div></div>
     </div>
   </section>
 
@@ -926,6 +1235,93 @@
   }
 
   loop();
+})();
+</script>
+
+<script>
+/* ── STELLAR ORBIT HERO — only runs when data-hero="orbit" ── */
+(function () {
+  'use strict';
+  if (document.documentElement.getAttribute('data-hero') !== 'orbit') return;
+
+  /* Typewriter */
+  var PART1 = "The Right Finance & Legal Expert\nIsn't Out of Reach—";
+  var PART2 = "\nThey're Already in Our Network.";
+  var FULL  = PART1 + PART2;
+  var SPLIT = PART1.length;
+  var outEl = document.getElementById('hs-tw-output');
+  var curEl = document.getElementById('hs-tw-cursor');
+  var typed = 0;
+
+  function renderTyped() {
+    var p1 = FULL.slice(0, Math.min(typed, SPLIT)).replace(/\n/g, '<br>');
+    var p2 = typed > SPLIT
+      ? '<span class="part-accent">' + FULL.slice(SPLIT, typed).replace(/\n/g, '<br>') + '</span>'
+      : '';
+    outEl.innerHTML = p1 + p2;
+  }
+
+  setTimeout(function () {
+    var iv = setInterval(function () {
+      typed++;
+      renderTyped();
+      if (typed >= FULL.length) {
+        clearInterval(iv);
+        curEl.classList.add('done');
+        setTimeout(startCounters, 200);
+      }
+    }, 32);
+  }, 400);
+
+  /* Count-up */
+  function countTo(el, target, ms) {
+    if (!el) return;
+    var start = performance.now();
+    (function tick(now) {
+      var p = Math.min((now - start) / ms, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+      if (p < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  setTimeout(function () { countTo(document.getElementById('hs-orbit-count'), 20, 2000); }, 1200);
+
+  function startCounters() {
+    countTo(document.getElementById('hs-c-experts'), 20, 1600);
+    countTo(document.getElementById('hs-c-juris'),   20, 1600);
+    countTo(document.getElementById('hs-c-areas'),   12, 1200);
+    countTo(document.getElementById('hs-c-matched'), 100, 2000);
+  }
+
+  /* Avatar staggered reveal */
+  document.querySelectorAll('.hs-avatar-img').forEach(function (img) {
+    var d = parseFloat(img.getAttribute('data-reveal') || 0.5);
+    setTimeout(function () { img.style.opacity = '1'; }, d * 1000);
+  });
+
+  /* Firm ticker */
+  var FIRMS = [
+    'Freshfields Bruckhaus Deringer', 'Clifford Chance', 'Linklaters',
+    'Allen & Overy', 'Baker McKenzie', 'Hogan Lovells',
+    'White & Case', 'Sullivan & Cromwell', 'Slaughter and May',
+    'Herbert Smith Freehills', 'Shearman & Sterling', 'Latham & Watkins',
+  ];
+  var track = document.getElementById('hs-ticker-track');
+  if (track) {
+    var items = FIRMS.concat(FIRMS, FIRMS, FIRMS);
+    items.forEach(function (firm, i) {
+      var s = document.createElement('span');
+      s.className = 'hs-ticker-firm';
+      s.textContent = firm;
+      track.appendChild(s);
+      if (i < items.length - 1) {
+        var dot = document.createElement('span');
+        dot.className = 'hs-ticker-dot';
+        dot.setAttribute('aria-hidden', 'true');
+        track.appendChild(dot);
+      }
+    });
+  }
 })();
 </script>
 </body>
