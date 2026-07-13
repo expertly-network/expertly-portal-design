@@ -1,10 +1,10 @@
-# Expertly Onboarding — Complete Questions & Fields Reference
+# Expertly Onboarding: Complete Questions & Fields Reference
 
 > **Purpose:** A detailed record of every question, field, input type, validation rule, and available options in the Expertly membership-application onboarding flow. Use this as a blueprint when implementing a similar flow in another application.
 
 ---
 
-## Overview — Step Structure
+## Overview: Step Structure
 
 The onboarding is a **4-step linear wizard** with a locked Review state after submission.
 
@@ -27,11 +27,11 @@ Before step 1 is shown, the system checks whether the authenticated user has lin
 - **If NOT linked:** A full-screen gate is shown with a **"Connect LinkedIn"** button that triggers `supabase.auth.linkIdentity()`.
 - **If linked:** The wizard proceeds normally.
 
-This is not a "question" per se — it's an identity verification checkpoint.
+This is not a "question" per se, it's an identity verification checkpoint.
 
 ---
 
-## Step 1 — Identity
+## Step 1: Identity
 
 **Section title:** "Your Identity"  
 **Advance button label:** "Next: Experience"
@@ -79,7 +79,7 @@ This is not a "question" per se — it's an identity verification checkpoint.
 | Property | Value |
 |----------|-------|
 | **Label** | WhatsApp / Phone |
-| **Type** | Composite — phone extension `<select>` + phone number `<input type="tel">` |
+| **Type** | Composite: phone extension `<select>` + phone number `<input type="tel">` |
 | **Required** | ❌ No |
 | **Extension default** | `+1` |
 | **Extension options** | Populated from `PHONE_CODES` utility (country dial codes, e.g. `+44`, `+91`, `+971`, etc.) |
@@ -94,7 +94,7 @@ This is not a "question" per se — it's an identity verification checkpoint.
 | **Type** | `<input type="email">` |
 | **Placeholder** | `you@example.com` |
 | **Required** | ✅ Yes |
-| **Auto-populated** | ✅ Yes — pre-filled from the authenticated Supabase user's email (non-destructive) |
+| **Auto-populated** | ✅ Yes, pre-filled from the authenticated Supabase user's email (non-destructive) |
 | **Validation** | Must be non-empty AND match basic email regex (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`) |
 | **Validation errors** | "Email is required" / "Enter a valid email address" |
 
@@ -123,7 +123,7 @@ This is not a "question" per se — it's an identity verification checkpoint.
 | **Placeholder option** | "Select country" |
 | **Options** | Filtered to countries within the selected region. If no region selected, shows all countries from `COUNTRY_NAMES`. Data sourced from `COUNTRIES_BY_REGION` / `COUNTRY_NAMES` utilities. |
 | **Behaviour** | Selecting a country auto-populates available States and clears State/City. Also auto-sets Region if not already set. |
-| **LinkedIn auto-fill** | ✅ Yes (`country`) — never overwritten once manually set |
+| **LinkedIn auto-fill** | ✅ Yes (`country`), never overwritten once manually set |
 | **Validation error** | "Country is required" |
 
 ---
@@ -132,7 +132,7 @@ This is not a "question" per se — it's an identity verification checkpoint.
 | Property | Value |
 |----------|-------|
 | **Label** | State / Province |
-| **Type** | Dynamic — `<select>` if states are available for the chosen country (via `country-state-city` library), otherwise falls back to `<input type="text">` |
+| **Type** | Dynamic: `<select>` if states are available for the chosen country (via `country-state-city` library), otherwise falls back to `<input type="text">` |
 | **Required** | ❌ No |
 | **Placeholder** | Dropdown: "Select state" / Text: `e.g. California` |
 | **Behaviour** | Selecting a state populates available Cities for that state. |
@@ -144,7 +144,7 @@ This is not a "question" per se — it's an identity verification checkpoint.
 | Property | Value |
 |----------|-------|
 | **Label** | City |
-| **Type** | Dynamic — `<select>` if cities are available for the chosen state, otherwise falls back to `<input type="text">` |
+| **Type** | Dynamic: `<select>` if cities are available for the chosen state, otherwise falls back to `<input type="text">` |
 | **Required** | ❌ No |
 | **Placeholder** | Dropdown: "Select city" / Text: `e.g. London` |
 | **LinkedIn auto-fill** | ✅ Yes (`city`) |
@@ -178,12 +178,12 @@ This is not a "question" per se — it's an identity verification checkpoint.
 
 ---
 
-### Step 1 — LinkedIn Import Feature
-A secondary "Import from LinkedIn" button in the step header opens a modal where the user can paste their LinkedIn profile URL. The system then calls a webhook to fetch profile data and auto-populates all eligible fields. Only empty fields are overwritten — manually entered data is never replaced.
+### Step 1: LinkedIn Import Feature
+A secondary "Import from LinkedIn" button in the step header opens a modal where the user can paste their LinkedIn profile URL. The system then calls a webhook to fetch profile data and auto-populates all eligible fields. Only empty fields are overwritten, manually entered data is never replaced.
 
 ---
 
-## Step 2 — Experience
+## Step 2: Experience
 
 **Section title:** "Professional Background" + "Education & Qualification"  
 **Advance button label:** "Next: Services"
@@ -214,8 +214,8 @@ Each entry is a card with the following sub-fields:
 | Company Website | "Company website" | `<input type="url">` | ❌ | Placeholder: `https://example.com` (optional) |
 | City | "City" | Text input | ❌ | Placeholder: `e.g. London` |
 | Firm Size | "Firm size" | `<select>` | ❌ | Options: `Solo`, `2–10`, `11–50`, `51–200`, `200+` |
-| Start Date | "Start date" | `MonthYearPicker` — two linked `<select>` (Month + Year) | ❌ | Month: Jan–Dec; Year: 1960–current year |
-| End Date | "End date" | `MonthYearPicker` — two linked `<select>` (Month + Year) | ❌ | Disabled when "I currently work here" is checked |
+| Start Date | "Start date" | `MonthYearPicker`: two linked `<select>` (Month + Year) | ❌ | Month: Jan–Dec; Year: 1960–current year |
+| End Date | "End date" | `MonthYearPicker`: two linked `<select>` (Month + Year) | ❌ | Disabled when "I currently work here" is checked |
 | Current Employer | "I currently work here" | `<input type="checkbox">` | ❌ | When checked, disables End Date and sets `isCurrent: true` |
 
 **Validation error:** "At least one work experience entry is required"
@@ -239,7 +239,7 @@ Each entry is a card with the following sub-fields:
 
 ---
 
-## Step 3 — Services
+## Step 3: Services
 
 **Section titles:** "Services" + "Consultation Rates"  
 **Advance button label:** "Next: Review"
@@ -252,14 +252,14 @@ Each entry is a card with the following sub-fields:
 | **Type** | `<select>` dropdown for each preference rank |
 | **Required** | 1st Preference only ✅ Yes; 2nd & 3rd ❌ optional |
 | **Placeholder option** | "Select service…" |
-| **Options source** | Fetched dynamically from `GET /taxonomy/services` — grouped by category via `<optgroup>` |
+| **Options source** | Fetched dynamically from `GET /taxonomy/services`, grouped by category via `<optgroup>` |
 | **Category filter** | Pill buttons above the dropdowns let users filter by service category (fetched from `GET /taxonomy/categories`). Clicking a category pill filters all three dropdowns to only show services in that category. |
 | **Deduplication** | A service already selected in one preference rank is excluded from the other two. |
 | **Validation error** | "Please select your 1st preference service" |
 
 ---
 
-### 3.2 Consultation Fee — Minimum (USD)
+### 3.2 Consultation Fee: Minimum (USD)
 | Property | Value |
 |----------|-------|
 | **Label** | Min (USD) |
@@ -272,7 +272,7 @@ Each entry is a card with the following sub-fields:
 
 ---
 
-### 3.3 Consultation Fee — Maximum (USD)
+### 3.3 Consultation Fee: Maximum (USD)
 | Property | Value |
 |----------|-------|
 | **Label** | Max (USD) |
@@ -285,11 +285,11 @@ Each entry is a card with the following sub-fields:
 
 ---
 
-## Step 4 — Review & Declaration
+## Step 4: Review & Declaration
 
-This step is **read-only** — it displays a summary of all data entered in steps 1–3. No new data is collected except for the three consent checkboxes below.
+This step is **read-only**, it displays a summary of all data entered in steps 1–3. No new data is collected except for the three consent checkboxes below.
 
-### 4.1 Consent — Terms of Service
+### 4.1 Consent: Terms of Service
 | Property | Value |
 |----------|-------|
 | **Label** | "I agree to the Terms of Service (v1.0)" |
@@ -300,7 +300,7 @@ This step is **read-only** — it displays a summary of all data entered in step
 
 ---
 
-### 4.2 Consent — Privacy Policy
+### 4.2 Consent: Privacy Policy
 | Property | Value |
 |----------|-------|
 | **Label** | "I agree to the Privacy Policy (v1.0)" |
@@ -311,7 +311,7 @@ This step is **read-only** — it displays a summary of all data entered in step
 
 ---
 
-### 4.3 Consent — Credential Verification
+### 4.3 Consent: Credential Verification
 | Property | Value |
 |----------|-------|
 | **Label** | "I consent to Expertly verifying my professional credentials and background as part of the membership review process." |
@@ -394,10 +394,10 @@ Based on analysis of the full application architecture (data model, API payload,
 
 | # | Question / Field | Type | Rationale |
 |---|-----------------|------|-----------|
-| R8 | **Availability — Working Days** | Multi-select toggle (Mon–Sun) | `availability.days[]` is in the model and shown in the Review, but is never collected in the wizard. Clients need to know when experts are reachable. |
-| R9 | **Availability — Working Hours** | Range slider or two `<select>` (Start Hour / End Hour) | `availability.startHour` (default 9) and `availability.endHour` (default 17) are model fields shown in Review but never asked. |
-| R10 | **Availability — Timezone** | `<select>` (IANA timezone list) | `availability.timezone` is shown in the Review as "—" for all users because it's never collected. Crucial for scheduling consultations across time zones. |
-| R11 | **Availability — Additional Notes** | `<textarea>` (optional) | `availability.notes` is in the model but never surfaced. Could capture nuances like "Available weekends by request" or "On sabbatical until August". |
+| R8 | **Availability: Working Days** | Multi-select toggle (Mon–Sun) | `availability.days[]` is in the model and shown in the Review, but is never collected in the wizard. Clients need to know when experts are reachable. |
+| R9 | **Availability: Working Hours** | Range slider or two `<select>` (Start Hour / End Hour) | `availability.startHour` (default 9) and `availability.endHour` (default 17) are model fields shown in Review but never asked. |
+| R10 | **Availability: Timezone** | `<select>` (IANA timezone list) | `availability.timezone` is shown in the Review as "-" for all users because it's never collected. Crucial for scheduling consultations across time zones. |
+| R11 | **Availability: Additional Notes** | `<textarea>` (optional) | `availability.notes` is in the model but never surfaced. Could capture nuances like "Available weekends by request" or "On sabbatical until August". |
 | R12 | **Engagement Format** | Multi-select (e.g. Video Call, Phone, In-Person, Written Report, Retainer) | Helps clients understand how the expert prefers to engage and what formats they offer. |
 
 ---
@@ -406,8 +406,8 @@ Based on analysis of the full application architecture (data model, API payload,
 
 | # | Question / Field | Type | Rationale |
 |---|-----------------|------|-----------|
-| R13 | **"Why do you want to join Expertly?"** (motivation) | `<textarea>` (optional, 300 chars) | A brief statement of motivation helps the Expertly review team make better membership decisions. Note: the store version comment says "motivation step removed" — but this could be re-introduced as a lightweight single field rather than a full step. |
-| R14 | **How did you hear about us?** | `<select>` (LinkedIn, Google, Referral, Event, Other) | Standard acquisition channel question — valuable for marketing analytics and can be collected at the end without breaking the flow. |
+| R13 | **"Why do you want to join Expertly?"** (motivation) | `<textarea>` (optional, 300 chars) | A brief statement of motivation helps the Expertly review team make better membership decisions. Note: the store version comment says "motivation step removed", but this could be re-introduced as a lightweight single field rather than a full step. |
+| R14 | **How did you hear about us?** | `<select>` (LinkedIn, Google, Referral, Event, Other) | Standard acquisition channel question, valuable for marketing analytics and can be collected at the end without breaking the flow. |
 
 ---
 

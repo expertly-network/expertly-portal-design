@@ -310,7 +310,7 @@ function initTestimonials() {
     clients: [
       { q: "We replaced six months of RFPs with one afternoon on Expertly. Found the right M&A counsel in Chennai by Tuesday, signed by Friday.", who: 'oliver-schmidt' },
       { q: "The rate transparency alone is worth the membership. No surprises, no hourly creep, no mystery partners billing us.", who: 'elena-volkova' },
-      { q: "Finally — a network where 'verified' actually means something. Every expert we've engaged delivered on the first conversation.", who: 'claire-dubois' }
+      { q: "Finally, a network where 'verified' actually means something. Every expert we've engaged delivered on the first conversation.", who: 'claire-dubois' }
     ]
   };
 

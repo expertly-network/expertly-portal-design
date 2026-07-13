@@ -478,7 +478,7 @@ function initApplicationWizard() {
 
     const setReviewText = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = val || '—';
+      if (el) el.textContent = val || '-';
     };
 
     // 1. Photo Avatar
@@ -493,32 +493,32 @@ function initApplicationWizard() {
     // 2. Identity info
     const fName = getValue('apply-first-name');
     const lName = getValue('apply-last-name');
-    setReviewText('review-name', `${fName} ${lName}`.trim() || '—');
+    setReviewText('review-name', `${fName} ${lName}`.trim() || '-');
     setReviewText('review-email', getValue('apply-email'));
     
     const phoneExt = getValue('apply-phone-ext');
     const phoneNum = getValue('apply-phone');
-    setReviewText('review-phone', phoneNum ? `${phoneExt} ${phoneNum}` : '—');
+    setReviewText('review-phone', phoneNum ? `${phoneExt} ${phoneNum}` : '-');
 
     const city = getValue('apply-city');
     const state = getValue('apply-state');
     const country = getValue('apply-country');
     const locParts = [city, state, country].filter(Boolean);
-    setReviewText('review-location', locParts.join(', ') || '—');
+    setReviewText('review-location', locParts.join(', ') || '-');
 
     setReviewText('review-linkedin', getValue('apply-linkedin'));
     setReviewText('review-bio', getValue('apply-bio'));
 
     // 3. Experience info
     const years = getValue('apply-years');
-    setReviewText('review-years', years ? `${years} years` : '—');
+    setReviewText('review-years', years ? `${years} years` : '-');
 
     // Work History Entries
     const reviewWork = document.getElementById('review-work');
     if (reviewWork) {
       const workEntries = document.querySelectorAll('#apply-work-entries .apply-work-entry');
       if (workEntries.length === 0) {
-        reviewWork.innerHTML = '<b style="font-weight: 450; color: var(--ink-3);">—</b>';
+        reviewWork.innerHTML = '<b style="font-weight: 450; color: var(--ink-3);">-</b>';
       } else {
         let workHtml = '';
         workEntries.forEach(entry => {
@@ -546,7 +546,7 @@ function initApplicationWizard() {
             `;
           }
         });
-        reviewWork.innerHTML = workHtml || '<b style="font-weight: 450; color: var(--ink-3);">—</b>';
+        reviewWork.innerHTML = workHtml || '<b style="font-weight: 450; color: var(--ink-3);">-</b>';
       }
     }
 
@@ -555,7 +555,7 @@ function initApplicationWizard() {
     if (reviewEdu) {
       const eduEntries = document.querySelectorAll('#apply-edu-entries .apply-edu-entry');
       if (eduEntries.length === 0) {
-        reviewEdu.innerHTML = '<b style="font-weight: 450; color: var(--ink-3);">—</b>';
+        reviewEdu.innerHTML = '<b style="font-weight: 450; color: var(--ink-3);">-</b>';
       } else {
         let eduHtml = '';
         eduEntries.forEach(entry => {
@@ -574,7 +574,7 @@ function initApplicationWizard() {
             `;
           }
         });
-        reviewEdu.innerHTML = eduHtml || '<b style="font-weight: 450; color: var(--ink-3);">—</b>';
+        reviewEdu.innerHTML = eduHtml || '<b style="font-weight: 450; color: var(--ink-3);">-</b>';
       }
     }
 
@@ -587,11 +587,11 @@ function initApplicationWizard() {
       service2 ? `${service2}` : '',
       service3 ? `${service3}` : ''
     ].filter(Boolean);
-    setReviewText('review-services', services.join(' · ') || '—');
+    setReviewText('review-services', services.join(' · ') || '-');
 
     const rateMin = getValue('apply-rate-min');
     const rateMax = getValue('apply-rate-max');
-    setReviewText('review-rate', rateMin || rateMax ? `$${rateMin || '0'} – $${rateMax || '0'} / hour` : '—');
+    setReviewText('review-rate', rateMin || rateMax ? `$${rateMin || '0'} – $${rateMax || '0'} / hour` : '-');
   };
 
   // LinkedIn Import Step 1 Listeners & Logic

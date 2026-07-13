@@ -809,12 +809,12 @@ function initNavigationStepper() {
     document.getElementById('onboarding-review-email').textContent = formData.contactEmail;
 
     const locArr = [formData.city, formData.state, formData.country].filter(Boolean);
-    document.getElementById('onboarding-review-location').textContent = locArr.join(', ') || '—';
-    document.getElementById('onboarding-review-phone').textContent = formData.phone ? `${formData.phoneExtension} ${formData.phone}` : '—';
-    document.getElementById('onboarding-review-bio').textContent = formData.bio || '—';
-    
+    document.getElementById('onboarding-review-location').textContent = locArr.join(', ') || '-';
+    document.getElementById('onboarding-review-phone').textContent = formData.phone ? `${formData.phoneExtension} ${formData.phone}` : '-';
+    document.getElementById('onboarding-review-bio').textContent = formData.bio || '-';
+
     const lnk = document.getElementById('onboarding-review-linkedin');
-    lnk.textContent = formData.linkedinUrl || '—';
+    lnk.textContent = formData.linkedinUrl || '-';
     lnk.href = formData.linkedinUrl || '#';
 
     // Experience
@@ -850,7 +850,7 @@ function initNavigationStepper() {
 
     // Services
     const srvArr = [formData.firstPref, formData.secondPref, formData.thirdPref].filter(Boolean);
-    document.getElementById('onboarding-review-services').textContent = srvArr.join(' · ') || '—';
+    document.getElementById('onboarding-review-services').textContent = srvArr.join(' · ') || '-';
     document.getElementById('onboarding-review-rates').textContent = `$${formData.minFee} – $${formData.maxFee} USD / Hour`;
   };
 
