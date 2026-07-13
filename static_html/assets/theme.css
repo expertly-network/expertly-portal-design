@@ -301,49 +301,100 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .verified svg { width: 11px; height: 11px; }
 
-/* Footer */
-.footer {
+/* ── Parallax reveal footer ─────────────────────────────────────────
+   The footer is position:fixed behind the page content.
+   .page-body (z-index:1) slides over it; the body background (nav-green)
+   matches the footer so the reveal is seamless as you scroll to the bottom.
+   ─────────────────────────────────────────────────────────────────── */
+:root { --footer-h: 410px; }
+
+body:has(.footer--minimal) {
   background: var(--nav-green);
-  color: #fff;
-  padding: 80px 0 40px;
-  margin-top: 0;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
-  gap: 40px;
-}
-.footer h4 {
-  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: capitalize;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-  margin-bottom: 18px;
-}
-.footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer a { color: rgba(255,255,255,0.78); font-size: 14px; }
-.footer a:hover { color: #fff; }
-.footer-brand .wordmark { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; display: flex; align-items: baseline; gap: 0; color: #fff; }
-.footer-brand p { font-size: 14px; color: rgba(255,255,255,0.62); max-width: 300px; line-height: 1.55; }
-.footer-bottom {
-  margin-top: 64px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.16);
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: 0.04em;
+  padding-bottom: var(--footer-h);
 }
 
-@media (max-width: 900px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+.page-body {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
 }
-@media (max-width: 560px) {
-  .footer-grid { grid-template-columns: 1fr; }
+
+.footer--minimal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-h);
+  z-index: 0;
+  background: var(--nav-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-min-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.footer-min-wordmark {
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.footer-min-dot {
+  width: 11px;
+  height: 11px;
+  background: var(--accent-2);
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 4px;
+  align-self: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(0,201,158,0.55);
+}
+
+.footer-min-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+}
+
+.footer-min-links a {
+  color: rgba(255,255,255,0.58);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.footer-min-links a:hover { color: #fff; }
+
+.footer-min-copy {
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+}
+
+@media (max-width: 600px) {
+  :root { --footer-h: 440px; }
+  .footer-min-wordmark { font-size: 40px; }
+  .footer-min-links { gap: 20px; }
+  .footer-min-links a { font-size: 14px; }
 }
 
 /* Animation utilities - content is ALWAYS visible. No entrance animation, because this

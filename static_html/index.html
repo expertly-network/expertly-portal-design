@@ -6,7 +6,7 @@
 <title>Expertly: Verified finance & legal counsel, on demand</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/theme.css">
 <link rel="stylesheet" href="assets/home.css">
 <link rel="stylesheet" href="assets/pages.css">
@@ -284,6 +284,9 @@ html[data-hero="orbit"] .nav-links a,
 html[data-hero="orbit"] .nav .btn-ghost {
   transition: color 0.45s ease;
 }
+html[data-hero="orbit"] .nav.hs-nav-dark {
+  background: #0B0B0C;
+}
 html[data-hero="orbit"] .nav.hs-nav-dark .nav-inner {
   background: #0B0B0C;
   border-bottom-color: #0B0B0C;
@@ -301,8 +304,10 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary {
 }
 html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0,165,130,0.14); }
 </style>
+
 </head>
 <body>
+<div class="page-body">
 
 <!-- Dynamic Navigation -->
 <nav class="nav"></nav>
@@ -541,7 +546,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
             }
             #ai-section-search-panel:hover {
               border-color: var(--accent) !important;
-              box-shadow: 0 30px 60px -15px rgba(79,123,232,0.12), 0 0 0 1px rgba(79,123,232,0.15) !important;
+              box-shadow: 0 30px 60px -15px rgba(0,165,130,0.14), 0 0 0 1px rgba(0,165,130,0.18) !important;
               transform: translateY(-2px);
             }
           </style>
@@ -549,7 +554,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
             <span class="ai-pulse" style="width: 6px; height: 6px;"></span>
             Interactive search box -in click anywhere to search
           </div>
-          <div class="gsearch-panel" id="ai-section-search-panel" style="box-shadow: 0 20px 50px -12px rgba(0,0,0,0.08); height: 480px; display: flex; flex-direction: column; width: 100%; cursor: pointer;">
+          <div class="gsearch-panel" id="ai-section-search-panel" style="box-shadow: 0 20px 50px -12px rgba(15,18,20,0.08); height: 480px; display: flex; flex-direction: column; width: 100%; cursor: pointer;">
             <div class="gsearch-bar">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px; color: var(--accent); flex-shrink: 0;">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -1163,48 +1168,9 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
   </section>
 </main>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container-wide">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="wordmark">Expertly<span style="width: 9px; height: 9px; background: var(--accent); border-radius: 50%; display: inline-block; margin-left: 2px;"></span></div>
-        <p>The curated professional network for verified finance & legal experts worldwide.</p>
-      </div>
-      <div>
-        <h4>Platform</h4>
-        <ul>
-          <li><a href="members.html">Member Directory</a></li>
-          <li><a href="articles.html">Articles</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="apply.html">Apply for Membership</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>About</h4>
-        <ul>
-          <li><a href="#">Our Mission</a></li>
-          <li><a href="how-it-works.html">How It Works</a></li>
-          <li><a href="#">Verified Experts</a></li>
-          <li><a href="#">Membership Benefits</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:contact@expertly.global">contact@expertly.global</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Expertly · All Rights Reserved</span>
-      <span>Verified · Global · Independent</span>
-    </div>
-  </div>
-</footer>
+</div><!-- /.page-body -->
+
+<footer class="footer--minimal" aria-label="Site footer"></footer>
 
 <script src="assets/members.js?v=11"></script>
 <script src="assets/shared.js?v=11"></script>

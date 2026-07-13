@@ -156,6 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 0. Render shared navbar
   renderNav();
 
+  // 0b. Render shared footer
+  renderFooter();
+
   // 1. Navigation Scroll State and active link logic
   initNavigation();
 
@@ -177,6 +180,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Initialize Animated Counters
   initCounters();
 });
+
+/* ==========================================================================
+   0b. FOOTER RENDER — single source of truth for all pages
+   ========================================================================== */
+function renderFooter() {
+  const footer = document.querySelector('.footer--minimal');
+  if (!footer) return;
+  footer.innerHTML = `
+    <div class="footer-min-inner">
+      <div class="footer-min-wordmark" aria-label="Expertly">
+        Expertly<span class="footer-min-dot" aria-hidden="true"></span>
+      </div>
+      <nav aria-label="Footer links">
+        <ul class="footer-min-links">
+          <li><a href="https://www.linkedin.com/company/expertly-network" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Membership Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </nav>
+      <p class="footer-min-copy">© ${new Date().getFullYear()} Expertly · All Rights Reserved</p>
+    </div>
+  `;
+}
 
 /* ==========================================================================
    0. NAVBAR RENDER — single source of truth for all pages
