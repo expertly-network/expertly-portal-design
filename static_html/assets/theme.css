@@ -139,9 +139,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-width: calc(100% - var(--nav-p, 0) * (100% - 1340px));
   margin: 0 auto;
   padding: 0 calc(40px - var(--nav-p, 0) * 12px);
-  background: var(--nav-green);
+  background: #fff;
   border-radius: calc(var(--nav-p, 0) * 22px);
-  box-shadow: 0 calc(var(--nav-p, 0) * 18px) calc(var(--nav-p, 0) * 44px) calc(var(--nav-p, 0) * -18px) color-mix(in oklab, var(--nav-green) 60%, transparent);
+  box-shadow: 0 calc(var(--nav-p, 0) * 18px) calc(var(--nav-p, 0) * 44px) calc(var(--nav-p, 0) * -18px) rgba(0,0,0,0.12);
+  border-bottom: 1px solid var(--line);
 }
 .nav-logo {
   font-weight: 600;
@@ -150,26 +151,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: inline-flex;
   align-items: baseline;
   gap: 0;
-  color: #fff;
+  color: var(--nav-green);
 }
 .nav-logo .dot { width: 7px; height: 7px; background: var(--accent-2); border-radius: 50%; display: inline-block; margin-left: 2px; box-shadow: 0 0 8px color-mix(in oklab, var(--accent-2) 70%, transparent); }
 .nav-links { display: flex; gap: 6px; }
 .nav-links a {
   padding: 10px 16px;
   font-size: 16px;
-  color: rgba(255,255,255,0.74);
+  color: var(--ink-2);
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
   font-weight: 450;
 }
-.nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
-.nav-links a.active { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-links a:hover { background: var(--bg-alt); color: var(--ink); }
+.nav-links a.active { color: var(--ink); background: var(--bg-alt); }
 .nav-actions { display: flex; gap: 16px; align-items: center; }
 .nav-actions .btn { font-size: 15px; padding: 11px 22px; }
-.nav .btn-ghost { color: rgba(255,255,255,0.9); }
-.nav .btn-ghost:hover { background: rgba(255,255,255,0.12); color: #fff; }
-.nav .btn-primary { background: #fff; color: var(--nav-green); }
-.nav .btn-primary:hover { background: var(--accent-2); color: var(--nav-green); }
+.nav .btn-ghost { color: var(--ink-2); }
+.nav .btn-ghost:hover { background: var(--bg-alt); color: var(--ink); }
+.nav .btn-primary { background: var(--nav-green); color: #fff; }
+.nav .btn-primary:hover { background: color-mix(in oklab, var(--nav-green) 85%, #000); color: #fff; }
 
 /* Profile avatar */
 .nav-avatar {
@@ -197,7 +198,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block; width: 100%; text-align: left;
   padding: 8px 6px; font-size: 13px; color: var(--ink);
   background: none; border: none; cursor: pointer;
-  font-family: inherit; border-radius: 6px;
+  font-family: inherit; border-radius: 8px;
 }
 .nav-avatar-menu button:hover { background: var(--bg-alt); color: var(--accent); }
 
@@ -372,7 +373,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed; bottom: 20px; right: 20px;
   background: var(--bg-card); color: var(--ink);
   border: 1px solid var(--line-2);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 18px;
   width: 280px;
   z-index: 101;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<html lang="en" data-theme="" data-hero="orbit" data-grid="1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +10,297 @@
 <link rel="stylesheet" href="assets/theme.css">
 <link rel="stylesheet" href="assets/home.css">
 <link rel="stylesheet" href="assets/pages.css">
+<style>
+  .hero-toggle-wrapper {
+    display: inline-flex;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 5px;
+    border-radius: 100px;
+    margin-top: 32px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .hero-toggle-indicator {
+    position: absolute;
+    top: 5px; left: 5px; bottom: 5px;
+    width: calc(50% - 5px);
+    background: #111111;
+    border-radius: 100px;
+    transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-indicator { transform: translateX(100%); }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-indicator { transform: translateX(0); }
+  .hero-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 10px 28px;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.25s ease, transform 0.2s ease;
+    position: relative;
+    z-index: 2;
+    user-select: none;
+  }
+  .hero-toggle-btn:hover { transform: scale(1.03); }
+  .hero-toggle-btn:active { transform: scale(0.96); }
+  .hero-toggle-btn.active { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="become"] { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="find"]   { color: #6b7280; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="find"]   { color: #ffffff; }
+  .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover)   .hero-toggle-btn[data-mode="become"] { color: #6b7280; }
+  .hero-center .hero-search { margin-top: 32px; }
+</style>
+<style>
+/* ════════════════════════════════════════════════════
+   STELLAR ORBIT HERO
+   Active when: <html data-hero="orbit">
+   To revert to original: change data-hero="orbit"
+   back to data-hero="split" on the <html> tag (line 2).
+   All styles scoped to .hero-stellar - zero bleed.
+   ════════════════════════════════════════════════════ */
+
+/* Toggle */
+.hero-stellar { display: none; }
+html[data-hero="orbit"] .hero-stellar   { display: flex !important; }
+html[data-hero="orbit"] .hero-split     { display: none !important; }
+
+/* Section shell */
+.hero-stellar {
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0B0B0C;
+  color: #fff;
+  min-height: 80dvh;
+}
+
+/* Atmosphere */
+.hero-stellar .hs-glow-1 {
+  position: absolute; top: -15%; right: -8%;
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(0,165,130,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-stellar .hs-glow-2 {
+  position: absolute; bottom: 5%; left: 5%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,165,130,0.04) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Layout */
+.hero-stellar .hs-body {
+  flex: 1; display: flex; align-items: center;
+  max-width: 1520px; margin: 0 auto;
+  padding: 48px 64px 40px; width: 100%;
+  position: relative; z-index: 1;
+}
+
+/* Left */
+.hero-stellar .hs-left {
+  flex: 0 1 580px; display: flex; flex-direction: column;
+  animation: hs-fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+@keyframes hs-fadeUp  { from{opacity:0;transform:translateY(40px);} to{opacity:1;transform:translateY(0);} }
+@keyframes hs-fadeIn  { from{opacity:0;} to{opacity:1;} }
+@keyframes hs-scaleIn { from{opacity:0;transform:scale(0.85);} to{opacity:1;transform:scale(1);} }
+
+.hero-stellar .hs-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: #00A582; margin-bottom: 30px;
+}
+.hero-stellar .hs-eyebrow::before {
+  content: ''; width: 22px; height: 1.5px; background: #00A582; border-radius: 100px; flex-shrink: 0;
+}
+.hero-stellar .hs-heading {
+  font-size: clamp(38px, 4.2vw, 66px); font-weight: 600;
+  line-height: 1.02; letter-spacing: -0.035em; color: #fff;
+  text-wrap: balance; min-height: 3.8em;
+}
+.hero-stellar .hs-heading .part-accent { color: #00A582; }
+.hs-tw-cursor {
+  display: inline-block; width: 3px; height: 0.82em;
+  background: #00A582; margin-left: 3px; vertical-align: middle;
+  animation: hs-blink 0.85s steps(1) infinite;
+}
+.hs-tw-cursor.done { animation: none; opacity: 0; transition: opacity 0.6s 1.2s; }
+@keyframes hs-blink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+.hero-stellar .hs-lede {
+  font-size: 16.5px; line-height: 1.65; color: rgba(255,255,255,0.5);
+  margin-top: 28px; max-width: 460px; letter-spacing: -0.005em;
+  opacity: 0; animation: hs-fadeIn 0.7s ease 3.8s both;
+}
+.hero-stellar .hs-actions {
+  display: flex; align-items: center; gap: 14px; margin-top: 40px;
+  opacity: 0; animation: hs-fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 4.1s both;
+}
+.hero-stellar .hs-btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px; border-radius: 100px;
+  background: #00A582; color: #fff; font-size: 15px; font-weight: 500;
+  letter-spacing: -0.01em; border: 1px solid #00A582;
+  transition: background 0.25s, transform 0.2s;
+}
+.hero-stellar .hs-btn-primary:hover { background: #00C99E; border-color: #00C99E; transform: translateY(-2px); }
+.hero-stellar .hs-btn-primary svg { transition: transform 0.2s; }
+.hero-stellar .hs-btn-primary:hover svg { transform: translateX(3px); }
+.hero-stellar .hs-btn-ghost {
+  display: inline-flex; align-items: center; padding: 13px 22px;
+  border-radius: 100px; background: transparent;
+  color: rgba(255,255,255,0.55); font-size: 15px; font-weight: 450;
+  border: 1px solid rgba(255,255,255,0.14); transition: color 0.2s, border-color 0.2s;
+}
+.hero-stellar .hs-btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+.hero-stellar .hs-trust {
+  display: flex; align-items: flex-start; margin-top: 52px;
+  padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08);
+  opacity: 0; animation: hs-fadeIn 0.6s ease 4.3s both;
+}
+.hero-stellar .hs-trust-item {
+  display: flex; flex-direction: column; gap: 5px;
+  padding-right: 28px; margin-right: 28px; border-right: 1px solid rgba(255,255,255,0.08);
+}
+.hero-stellar .hs-trust-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hero-stellar .hs-trust-num { font-size: 20px; font-weight: 600; letter-spacing: -0.025em; color: #fff; line-height: 1; }
+.hero-stellar .hs-trust-label {
+  font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); white-space: nowrap;
+}
+
+/* Right: orbit */
+.hero-stellar .hs-right {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  opacity: 0; animation: hs-scaleIn 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+}
+.hero-stellar .hs-orbit-container { position: relative; width: 540px; height: 540px; flex-shrink: 0; }
+
+.hero-stellar .hs-orbit-ring {
+  position: absolute; top: 50%; left: 50%; border-radius: 50%; transform-origin: 50% 50%;
+}
+.hero-stellar .hs-orbit-ring::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; padding: 1px;
+  background: linear-gradient(180deg, rgba(0,165,130,0) 0%, rgba(0,165,130,0.85) 43%, rgba(0,165,130,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+.hero-stellar .hs-orbit-1 { width:265px; height:265px; margin-top:-132.5px; margin-left:-132.5px; animation:hs-spin-ccw 40s linear infinite; }
+.hero-stellar .hs-orbit-2 { width:376px; height:376px; margin-top:-188px;   margin-left:-188px;   animation:hs-spin-cw  40s linear infinite; }
+.hero-stellar .hs-orbit-3 { width:487px; height:487px; margin-top:-243.5px; margin-left:-243.5px; animation:hs-spin-cw  40s linear infinite; }
+.hero-stellar .hs-orbit-4 { width:598px; height:598px; margin-top:-299px;   margin-left:-299px;   animation:hs-spin-ccw 40s linear infinite; }
+@keyframes hs-spin-cw  { to{transform:rotate(360deg);}  }
+@keyframes hs-spin-ccw { to{transform:rotate(-360deg);} }
+@media (prefers-reduced-motion: reduce) {
+  .hero-stellar .hs-orbit-ring, .hero-stellar .hs-avatar-img { animation: none !important; }
+}
+
+.hero-stellar .hs-avatar  { position: absolute; top: 50%; left: 50%; }
+.hero-stellar .hs-cancel  { display: block; }
+.hero-stellar .hs-avatar-img {
+  display: block; width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+  border: 2px solid rgba(0,165,130,0.5);
+  box-shadow: 0 0 0 3px #0B0B0C, 0 3px 10px rgba(11,11,12,0.5);
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.hero-stellar .hs-avatar-img.sz-lg { width: 58px; height: 58px; }
+.hero-stellar .hs-avatar-img.sz-xl { width: 66px; height: 66px; }
+.hero-stellar .hs-orbit-1 .hs-avatar-img { animation: hs-co-1 40s linear infinite; }
+.hero-stellar .hs-orbit-2 .hs-avatar-img { animation: hs-co-2 40s linear infinite; }
+.hero-stellar .hs-orbit-3 .hs-avatar-img { animation: hs-co-3 40s linear infinite; }
+.hero-stellar .hs-orbit-4 .hs-avatar-img { animation: hs-co-4 40s linear infinite; }
+@keyframes hs-co-1 { from{transform:rotate(0deg);}   to{transform:rotate(360deg);}  }
+@keyframes hs-co-2 { from{transform:rotate(0deg);}   to{transform:rotate(-360deg);} }
+@keyframes hs-co-3 { from{transform:rotate(0deg);}   to{transform:rotate(-360deg);} }
+@keyframes hs-co-4 { from{transform:rotate(0deg);}   to{transform:rotate(360deg);}  }
+
+.hero-stellar .hs-center {
+  position: absolute; top: 50%; left: 50%;
+  width: 116px; height: 116px; margin-top: -58px; margin-left: -58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(0,165,130,0.1) 0%, rgba(0,165,130,0.04) 60%, transparent 80%);
+  border: 1px solid rgba(0,165,130,0.25);
+  display: flex; align-items: center; justify-content: center; z-index: 10;
+}
+.hero-stellar .hs-center-inner { text-align: center; }
+.hero-stellar .hs-count-num { font-size: 28px; font-weight: 600; letter-spacing: -0.04em; color: #8BFCD8; line-height: 1; display: block; }
+.hero-stellar .hs-count-label {
+  font-family: 'Archivo', sans-serif; font-size: 8px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 5px; display: block;
+}
+
+/* Responsive */
+@media (max-width: 1280px) { .hero-stellar .hs-orbit-container { transform: scale(0.9); } }
+@media (max-width: 1100px) {
+  .hero-stellar .hs-body { padding: 44px 48px 32px; }
+  .hero-stellar .hs-orbit-container { transform: scale(0.78); margin-right: -40px; }
+}
+@media (max-width: 960px) {
+  .hero-stellar .hs-body { flex-direction: column; padding: 40px 40px 24px; align-items: center; text-align: center; }
+  .hero-stellar .hs-left { flex: none; align-items: center; }
+  .hero-stellar .hs-eyebrow { justify-content: center; }
+  .hero-stellar .hs-lede { text-align: center; margin-left: auto; margin-right: auto; }
+  .hero-stellar .hs-actions { justify-content: center; }
+  .hero-stellar .hs-trust { justify-content: center; }
+  .hero-stellar .hs-heading { min-height: auto; }
+  .hero-stellar .hs-orbit-container { transform: scale(0.75); margin-top: -60px; margin-bottom: -60px; }
+}
+@media (max-width: 768px) {
+  .hero-stellar .hs-orbit-container { transform: scale(0.58); margin-top: -110px; margin-bottom: -110px; }
+  .hero-stellar .hs-trust { flex-wrap: wrap; gap: 16px; }
+  .hero-stellar .hs-trust-item { border-right: none; margin-right: 0; padding-right: 0; }
+}
+@media (max-width: 480px) {
+  .hero-stellar .hs-orbit-container { transform: scale(0.44); margin-top: -165px; margin-bottom: -165px; }
+  .hero-stellar .hs-body { padding: 36px 20px 12px; }
+}
+
+/* Match page background to hero so scroll/overscroll never flashes white at the top */
+html[data-hero="orbit"] { background: #0B0B0C; }
+
+/* ── Dark nav while stellar hero is visible ── */
+/* nav-inner transitions smoothly between dark (hero) and white (content) */
+html[data-hero="orbit"] .nav-inner {
+  transition: background 0.45s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.45s ease;
+}
+html[data-hero="orbit"] .nav-logo,
+html[data-hero="orbit"] .nav-links a,
+html[data-hero="orbit"] .nav .btn-ghost {
+  transition: color 0.45s ease;
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-inner {
+  background: #0B0B0C;
+  border-bottom-color: #0B0B0C;
+  box-shadow: none;
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-logo { color: #fff; }
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a { color: rgba(255,255,255,0.65); }
+html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost { color: rgba(255,255,255,0.65); }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary {
+  background: transparent;
+  color: #00C99E;
+  border: 1px solid rgba(0,165,130,0.5);
+}
+html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0,165,130,0.14); }
+</style>
 </head>
 <body>
 
@@ -28,6 +319,12 @@
         <p class="lede hero-lede">
           A curated network of <span data-counter-value="20" data-counter-suffix="+">0</span> practitioners across <span data-counter-value="20" data-counter-suffix="+">0</span> jurisdictions. Skip the cold outreach: search, verify credentials, and book directly.
         </p>
+
+        <div class="hero-toggle-wrapper">
+          <div class="hero-toggle-indicator"></div>
+          <a href="members.html" class="hero-toggle-btn active" data-mode="find">Find an Expert</a>
+          <a href="apply.html" class="hero-toggle-btn" data-mode="become">Become One</a>
+        </div>
 
         <div class="hero-search">
           <div class="hero-search-input">
@@ -146,49 +443,139 @@
     </div>
   </section>
 
+  <!-- ====================== HERO - STELLAR ORBIT ====================== -->
+  <!-- REVERT: change data-hero="orbit" → data-hero="split" on the <html> tag (line 2) -->
+  <section class="hero-stellar" aria-label="Hero">
+    <div class="hs-glow-1" aria-hidden="true"></div>
+    <div class="hs-glow-2" aria-hidden="true"></div>
+
+    <div class="hs-body">
+      <div class="hs-left">
+        <div class="hs-eyebrow">Curated &middot; Verified &middot; Global</div>
+        <h1 class="hs-heading" aria-label="The Right Finance and Legal Expert Is Already in Our Network.">
+          <span id="hs-tw-output"></span><span class="hs-tw-cursor" id="hs-tw-cursor" aria-hidden="true"></span>
+        </h1>
+        <p class="hs-lede">A boutique network of verified senior practitioners. Skip the referral chains and junior associates. Search, verify credentials, and book the right expert directly.</p>
+        <div class="hs-actions">
+          <a href="members.html" class="hs-btn-primary">
+            Find an Expert
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="apply.html" class="hs-btn-ghost">Apply to join</a>
+        </div>
+        <div class="hs-trust">
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-experts">0</span>+</span><span class="hs-trust-label">Verified Experts</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-juris">0</span>+</span><span class="hs-trust-label">Jurisdictions</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-areas">0</span></span><span class="hs-trust-label">Practice Areas</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-matched">0</span>+</span><span class="hs-trust-label">Matched</span></div>
+        </div>
+      </div>
+
+      <div class="hs-right" aria-hidden="true">
+        <div class="hs-orbit-container">
+
+          <div class="hs-orbit-ring hs-orbit-1">
+            <div class="hs-avatar" style="transform:rotate(90deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-90deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/1.jpg" alt="" loading="lazy" data-reveal="0.5"></div></div>
+            <div class="hs-avatar" style="transform:rotate(210deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-210deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/10.jpg" alt="" loading="lazy" data-reveal="0.7"></div></div>
+            <div class="hs-avatar" style="transform:rotate(330deg) translateX(132.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-330deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/20.jpg" alt="" loading="lazy" data-reveal="0.9"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-2">
+            <div class="hs-avatar" style="transform:rotate(0deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(0deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/15.jpg" alt="" loading="lazy" data-reveal="1.0"></div></div>
+            <div class="hs-avatar" style="transform:rotate(90deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-90deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/25.jpg" alt="" loading="lazy" data-reveal="1.1"></div></div>
+            <div class="hs-avatar" style="transform:rotate(180deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-180deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/30.jpg" alt="" loading="lazy" data-reveal="1.2"></div></div>
+            <div class="hs-avatar" style="transform:rotate(270deg) translateX(188px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-270deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/35.jpg" alt="" loading="lazy" data-reveal="1.3"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-3">
+            <div class="hs-avatar" style="transform:rotate(45deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-45deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/40.jpg" alt="" loading="lazy" data-reveal="1.4"></div></div>
+            <div class="hs-avatar" style="transform:rotate(135deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-135deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/women/50.jpg" alt="" loading="lazy" data-reveal="1.5"></div></div>
+            <div class="hs-avatar" style="transform:rotate(225deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-225deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/men/55.jpg" alt="" loading="lazy" data-reveal="1.6"></div></div>
+            <div class="hs-avatar" style="transform:rotate(315deg) translateX(243.5px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-315deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/women/60.jpg" alt="" loading="lazy" data-reveal="1.7"></div></div>
+          </div>
+
+          <div class="hs-orbit-ring hs-orbit-4">
+            <div class="hs-avatar" style="transform:rotate(0deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(0deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/65.jpg" alt="" loading="lazy" data-reveal="1.8"></div></div>
+            <div class="hs-avatar" style="transform:rotate(60deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-60deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/70.jpg" alt="" loading="lazy" data-reveal="1.9"></div></div>
+            <div class="hs-avatar" style="transform:rotate(120deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-120deg)"><img class="hs-avatar-img sz-xl" src="https://randomuser.me/api/portraits/men/75.jpg" alt="" loading="lazy" data-reveal="2.0"></div></div>
+            <div class="hs-avatar" style="transform:rotate(180deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-180deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/80.jpg" alt="" loading="lazy" data-reveal="2.1"></div></div>
+            <div class="hs-avatar" style="transform:rotate(240deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-240deg)"><img class="hs-avatar-img sz-lg" src="https://randomuser.me/api/portraits/men/85.jpg" alt="" loading="lazy" data-reveal="2.2"></div></div>
+            <div class="hs-avatar" style="transform:rotate(300deg) translateX(299px)"><div class="hs-cancel" style="transform:translate(-50%,-50%) rotate(-300deg)"><img class="hs-avatar-img" src="https://randomuser.me/api/portraits/women/90.jpg" alt="" loading="lazy" data-reveal="2.3"></div></div>
+          </div>
+
+          <div class="hs-center"><div class="hs-center-inner">
+            <span class="hs-count-num"><span id="hs-orbit-count">0</span>k+</span>
+            <span class="hs-count-label">Practitioners</span>
+          </div></div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <!-- ====================== AI SEARCH SECTION ====================== -->
   <section class="ai-section">
     <div class="ai-section-glow"></div>
     <div class="container-wide">
       <div class="ai-section-grid">
         <div class="ai-section-text">
-          <span class="eyebrow">Expertly AI · Intelligent discovery</span>
+          <span class="eyebrow">Expertly · Intelligent discovery</span>
           <h2 class="section-title" style="margin-top: 16px;">
             Ask in plain English.<br>Get <span class="accent-text">exactly</span> who & what you need.
           </h2>
           <p class="lede" style="margin-top: 20px; max-width: 480px;">
-            One query searches the entire network at once, no filters to fiddle with, no jargon required. Describe the matter and Expertly AI surfaces the right people, the relevant reading, and the events worth your time.
+            One query searches the entire network at once, no filters to fiddle with, no jargon required. Describe the matter and Expertly search surfaces the right people, the relevant reading, and the events worth your time. <strong style="color: var(--accent); font-weight: 500;">Click on the search box to start searching directly.</strong>
           </p>
           <ul class="ai-section-list">
             <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span> <div><b>Verified experts</b>, matched by practice, jurisdiction & rate</div></li>
             <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span> <div><b>Articles & insights</b>, peer-reviewed analysis on point</div></li>
             <li><span class="ai-list-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span> <div><b>Upcoming events</b>, conferences and meetings that fit</div></li>
           </ul>
-          <button class="btn btn-primary btn-lg" style="margin-top: 32px;" onclick="window.dispatchEvent(new CustomEvent('expertly:search'))">Try Expertly AI <span class="arr">→</span></button>
+          <button class="btn btn-primary btn-lg" style="margin-top: 32px;" onclick="window.dispatchEvent(new CustomEvent('expertly:search'))">Try Expertly <span class="arr">→</span></button>
         </div>
-        <div class="ai-section-demo">
-          <div class="ai-demo">
-            <div class="ai-demo-chrome">
-              <div class="ai-demo-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="ai-demo-url mono">expertly.network/search</div>
-              <div class="ai-demo-live">
-                <span class="ai-pulse small"></span> <span class="mono">Live</span>
+        <div class="ai-section-search-col" style="display: flex; flex-direction: column;">
+          <style>
+            #ai-section-search-panel {
+              transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+            }
+            #ai-section-search-panel:hover {
+              border-color: var(--accent) !important;
+              box-shadow: 0 30px 60px -15px rgba(79,123,232,0.12), 0 0 0 1px rgba(79,123,232,0.15) !important;
+              transform: translateY(-2px);
+            }
+          </style>
+          <div style="font-size: 13px; font-weight: 400; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span class="ai-pulse" style="width: 6px; height: 6px;"></span>
+            Interactive search box -in click anywhere to search
+          </div>
+          <div class="gsearch-panel" id="ai-section-search-panel" style="box-shadow: 0 20px 50px -12px rgba(0,0,0,0.08); height: 480px; display: flex; flex-direction: column; width: 100%; cursor: pointer;">
+            <div class="gsearch-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px; color: var(--accent); flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input class="gsearch-input" id="ai-section-search-field" type="text" autocomplete="off"
+                aria-label="Search Expertly" placeholder="" readonly style="cursor: pointer;"
+                value="Cross-border tax Singapore & Dubai" />
+              <button class="gsearch-clear" style="display: none;">×</button>
+              <button class="gsearch-esc" style="pointer-events: none; display: flex; align-items: center; gap: 8px;">
+                <span class="ai-pulse" style="background: var(--accent);"></span>
+                <span>Click to type</span>
+              </button>
+            </div>
+            <div class="gsearch-body" style="flex: 1; overflow-y: auto;">
+              <div class="gsearch-results" id="ai-section-search-results" style="display: block;">
+                <!-- Populated dynamically by script -->
               </div>
             </div>
-            <div class="ai-demo-body">
-              <div class="ai-demo-input">
-                <span class="ai-demo-spark">✦</span>
-                <div class="ai-demo-text">
-                  <span class="ai-caret"></span>
-                </div>
+            <div class="gsearch-foot">
+              <div class="gsearch-foot-keys">
+                <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> open</span>
+                <span><kbd>esc</kbd> close</span>
               </div>
-              <div class="ai-demo-chips"></div>
-            </div>
-            <div class="ai-demo-foot mono">
-              <span>Powered by Expertly AI</span>
-              <span>Experts · Articles · Events</span>
+              <div class="gsearch-foot-brand"><span class="ai-pulse small"></span> Powered by Expertly</div>
             </div>
           </div>
         </div>
@@ -203,15 +590,10 @@
       <div class="split-feature reverse">
         <div class="split-text">
           <span class="eyebrow">Our Network</span>
-          <h2 class="section-title" style="margin-top: 16px;">A boutique network of verified practitioners.</h2>
+          <h2 class="section-title" style="margin-top: 16px;">A boutique network of <span class="accent-text">verified</span> practitioners.</h2>
           <p class="lede" style="margin-top: 20px;">
-            Every member is credential-verified and peer-reviewed before they join. No junior associates, no middlemen, just senior counsel you can reach directly.
+            Every member is credential-verified and peer-reviewed before they join. No junior associates, no middlemen, just serious practitioners you can reach directly across every jurisdiction and practice areas.
           </p>
-          <div class="split-stats">
-            <div><b><span data-counter-value="20" data-counter-suffix="+">0</span></b><span>Verified members</span></div>
-            <div><b><span data-counter-value="20" data-counter-suffix="+">0</span></b><span>Jurisdictions</span></div>
-            <div><b><span data-counter-value="12">0</span></b><span>Practice areas</span></div>
-          </div>
           <a href="members.html" class="btn btn-primary btn-lg" style="margin-top: 28px;">Browse all 20+ members <span class="arr">→</span></a>
         </div>
         <div class="split-panel split-panel-mint tall">
@@ -229,15 +611,10 @@
       <div class="split-feature">
         <div class="split-text">
           <span class="eyebrow">Coverage</span>
-          <h2 class="section-title" style="margin-top: 16px;">Specialists across every corner of finance & law.</h2>
+          <h2 class="section-title" style="margin-top: 16px;"><span class="accent-text">Specialists</span> across every corner of finance & law.</h2>
           <p class="lede" style="margin-top: 20px;">
-            From M&A tax and transfer pricing to antitrust, capital markets, and IP, find a verified expert for the exact matter in front of you, in the jurisdiction that counts.
+            From M&A tax and transfer pricing to antitrust, capital markets, and IP, find a verified expert for the exact matter in front of you, in the jurisdiction that counts, not a generalist who's close enough.
           </p>
-          <div class="split-stats">
-            <div><b><span data-counter-value="47">0</span></b><span>M&A tax experts</span></div>
-            <div><b><span data-counter-value="62">0</span></b><span>Corporate counsel</span></div>
-            <div><b><span data-counter-value="44">0</span></b><span>Compliance pros</span></div>
-          </div>
           <a href="members.html" class="btn btn-primary btn-lg" style="margin-top: 28px;">Explore all practice areas <span class="arr">→</span></a>
         </div>
         <div class="split-panel split-panel-sky tall">
@@ -257,10 +634,10 @@
       <div class="firms-head">
         <span class="eyebrow" style="color: rgba(255,255,255,0.55)">Where our members practice</span>
         <h2 class="section-title" style="color: #fff; margin-top: 14px; max-width: 760px;">
-          Senior counsel from firms that <span class="accent-text">set the standard.</span>
+          Senior Professionals from firms that <span class="accent-text">set the standard.</span>
         </h2>
         <p class="lede" style="margin-top: 18px; max-width: 560px; color: rgba(255,255,255,0.6);">
-          From the Big Four to elite boutiques, our members are partners, founders, and senior counsel at respected firms across 20+ jurisdictions.
+          From the Big Consulting firms to elite boutiques, our members are partners, founders, and senior professional at respected firms across 20+ jurisdictions.
         </p>
       </div>
     </div>
@@ -276,7 +653,8 @@
       <div class="section-head-row">
         <div>
           <span class="eyebrow">Knowledge Base</span>
-          <h2 class="section-title" style="margin-top: 16px;">Latest articles</h2>
+          <h2 class="section-title" style="margin-top: 16px;">Latest <span class="accent-text">articles</span></h2>
+          <p class="lede" style="margin-top: 16px; max-width: 560px;">Thoughtful perspectives from people working through the same challenges, regulations, transactions, and decisions you face every day.</p>
         </div>
         <a href="articles.html" class="btn btn-outline">View all <span class="arr">→</span></a>
       </div>
@@ -292,7 +670,8 @@
       <div class="section-head-row">
         <div>
           <span class="eyebrow">Calendar</span>
-          <h2 class="section-title" style="margin-top: 16px;">Be part of what's next</h2>
+          <h2 class="section-title" style="margin-top: 16px;">Be part of what's <span class="accent-text">next</span></h2>
+          <p class="lede" style="margin-top: 16px; max-width: 560px;">From tax briefings in Dubai to M&A roundtables in London - the conferences and summits our members actually show up.</p>
         </div>
         <a href="events.html" class="btn btn-outline">All events <span class="arr">→</span></a>
       </div>
@@ -340,14 +719,14 @@
 
       /* ── Event data ── */
       var EVENTS = [
-        { title: 'Transfer Pricing Webinar',    country: 'SG', s: [2026,5,3],  e: [2026,5,3]  },
-        { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026,5,10], e: [2026,5,11] },
-        { title: 'UAE Corporate Tax Briefing',  country: 'AE', s: [2026,5,12], e: [2026,5,12] },
-        { title: 'TP Minds Intl: BEPS 2.0',     country: 'US', s: [2026,5,17], e: [2026,5,19] },
-        { title: 'Global M&A Roundtable',       country: 'UK', s: [2026,5,23], e: [2026,5,23] },
-        { title: 'Expertly Members Social',     country: 'SG', s: [2026,5,23], e: [2026,5,23] },
-        { title: 'Compliance Leaders Forum',    country: 'US', s: [2026,5,25], e: [2026,5,26] },
-        { title: 'Capital Markets Outlook H2',  country: 'HK', s: [2026,5,30], e: [2026,5,30] }
+        { title: 'Transfer Pricing Webinar',    country: 'SG', s: [2026,6,7],  e: [2026,6,7]  },
+        { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026,6,10], e: [2026,6,11] },
+        { title: 'UAE Corporate Tax Briefing',  country: 'AE', s: [2026,6,14], e: [2026,6,14] },
+        { title: 'TP Minds Intl: BEPS 2.0',     country: 'US', s: [2026,6,17], e: [2026,6,19] },
+        { title: 'Global M&A Roundtable',       country: 'UK', s: [2026,6,22], e: [2026,6,22] },
+        { title: 'Expertly Members Social',     country: 'SG', s: [2026,6,24], e: [2026,6,24] },
+        { title: 'Compliance Leaders Forum',    country: 'US', s: [2026,6,28], e: [2026,6,29] },
+        { title: 'Capital Markets Outlook H2',  country: 'HK', s: [2026,6,31], e: [2026,6,31] }
       ];
 
       /* ── Date helpers ── */
@@ -514,7 +893,7 @@
     <div class="container-wide">
       <div class="section-head">
         <span class="eyebrow">Voices</span>
-        <h2 class="section-title" style="margin-top: 16px;">Trusted by professionals worldwide.</h2>
+        <h2 class="section-title" style="margin-top: 16px;"><span class="accent-text">Trusted</span> by professionals worldwide.</h2>
         <div class="testimonial-tabs">
           <button class="active">For members</button>
           <button class="">For clients</button>
@@ -531,12 +910,13 @@
     <div class="container-wide">
       <div class="section-head">
         <span class="eyebrow">Two Ways In</span>
-        <h2 class="section-title" style="margin-top: 16px;">One platform. Two ways in.</h2>
+        <h2 class="section-title" style="margin-top: 16px;">One <span class="accent-text">platform</span>. Two powerful paths.</h2>
+        <p class="lede" style="margin-top: 16px; max-width: 560px;">Whether you need the expertise or you are the expertise — Expertly is built to deliver real value, both ways.</p>
       </div>
       <div class="dual-grid">
         <div class="dual-card">
           <div class="dual-label mono">For Clients & Businesses</div>
-          <h3>Find the right expert. Fast.</h3>
+          <h3>Find the right <span class="accent-text">expert</span>. Fast.</h3>
           <ul>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -554,12 +934,20 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
               <span>Transparent rates upfront before you commit</span>
             </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>Verified credentials, rigorously vetted before listing</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>Book directly from their profile, no delays</span>
+            </li>
           </ul>
           <a href="members.html" class="btn btn-primary btn-lg" style="background: var(--ink); color: var(--bg); border: 1px solid var(--ink);">Browse members <span class="arr">→</span></a>
         </div>
         <div class="dual-card dual-card-dark">
           <div class="dual-label mono">For Finance & Legal Pros</div>
-          <h3>Build your professional presence.</h3>
+          <h3>Build your professional <span class="accent-text">presence</span>.</h3>
           <ul>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -577,6 +965,14 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
               <span>Set your rates, keep 100% of fees</span>
             </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>Connect with a verified peer network across 20+ jurisdictions</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:16px; height:16px; color:var(--accent); flex-shrink:0; margin-top:3px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>Global discovery, found by clients searching by expertise</span>
+            </li>
           </ul>
           <a href="apply.html" class="btn btn-outline btn-lg" style="background: #fff; color: var(--ink); border-color: #fff;">Apply for membership <span class="arr">→</span></a>
         </div>
@@ -592,7 +988,7 @@
         <div class="newsletter-content">
           <span class="eyebrow" style="color: rgba(255,255,255,0.55);">The Expertly Brief · Weekly</span>
           <h2 class="section-title" style="margin-top: 16px; color: #fff;">
-            Regulatory changes. New members. Case studies.<br>
+            <span class="accent-text">Regulatory</span> changes. New members. Case studies.<br>
             <span style="color: rgba(255,255,255,0.55);">One email, every Thursday.</span>
           </h2>
           <form class="newsletter-form">
@@ -608,64 +1004,161 @@
   </section>
 
   <!-- ====================== FAQ ====================== -->
+  <style>
+    .faq .faq-group h4.mono { font-weight: 700; color: var(--accent); font-size: 15px; }
+  </style>
   <section class="section faq">
     <div class="container-wide">
       <div class="faq-head">
         <span class="eyebrow">Questions</span>
-        <h2 class="section-title" style="margin-top: 16px;">Common questions.</h2>
-        <p class="lede" style="margin-top: 18px; max-width: 520px;">Still curious? Email us at <a href="mailto:contact@expertly.global" style="color: var(--accent); text-decoration: underline;">contact@expertly.global</a>. We reply within one business day.</p>
+        <h2 class="section-title" style="margin-top: 16px;">Common <span class="accent-text">questions</span>.</h2>
+        <p class="lede" style="margin-top: 16px; max-width: 560px;">Everything you need to know about joining as a professional or finding the right expert as a client.</p>
       </div>
       <div class="faq-columns">
         <div class="faq-group">
           <h4 class="mono">Joining & membership</h4>
-          <div class="faq-item open">
+          <div class="faq-item">
             <button class="faq-q">
               <span>Who can join Expertly?</span>
-              <span class="faq-toggle">−</span>
+              <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Expertly is open to all practising finance and legal professionals worldwide. Whether you're independent or part of a firm, if you're serious about your practice and looking for a trusted network of verified peers, Expertly is the right place for you.</p></div>
+            <div class="faq-a">
+              <p>Expertly is open to all practising finance and legal professionals across the world. Whether you are an independent practitioner or part of a firm, if you are serious about your practice and looking for a trusted network of verified peers to collaborate, share knowledge, and grow across borders - Expertly is the right place for you.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
               <span>What types of professionals are on Expertly?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Our network spans tax advisors, M&A counsel, investment bankers, PE/VC advisors, insolvency professionals, corporate lawyers, dispute resolution counsel, banking & finance lawyers, capital markets lawyers, IP and technology lawyers, compliance professionals, forensic accountants, and valuation experts.</p></div>
+            <div class="faq-a">
+              <p>Our network spans professionals across all finance and legal domains - including tax and transfer pricing advisors, M&A and transaction advisors, investment bankers, private equity and venture capital advisors, insolvency and restructuring professionals, corporate and commercial lawyers, dispute resolution and arbitration counsel, banking and finance lawyers, capital markets and securities lawyers, intellectual property and technology lawyers, company secretaries, compliance and governance professionals, forensic accountants, valuation experts, and cost accountants.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
-              <span>Budding vs. Seasoned: what's the difference?</span>
+              <span>How are members onboarded?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>A Budding Professional has 5–12 years of experience. A Seasoned Professional has 12+ years. Professionals with fewer than 5 years are not currently eligible, though we intend to introduce an associate category for early-career professionals.</p></div>
+            <div class="faq-a">
+              <p>Every member goes through a robust selection process before being onboarded and listed in the directory. We review professional credentials, years of experience, and areas of specialisation, and take feedback from fellow professionals before granting membership. The process typically takes 5 to 7 business days from application to approval.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>How do I apply for membership?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Click 'Apply for Membership' on our website and complete the application form. We review all applications and notify you by email within 5 business days.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What is the difference between a Budding and a Seasoned Professional?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>A Budding Professional has more than 7 but fewer than 12 years of experience, whereas a Seasoned Professional has more than 12 years. Professionals with fewer than 7 years are not currently eligible.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What does membership cost?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Annual membership is $499 for Budding Professionals and $699 for Seasoned Professionals. Occasionally, we offer promotional discount codes for new members - keep an eye on our website and social media channels for such offers.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can I publish articles on Expertly?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes - members can publish articles through the member portal. Articles are reviewed before going live and becoming visible to the public, helping you build your professional brand and reach a targeted audience of peers and potential clients.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can firms or organisations join Expertly?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Membership on Expertly is individual-based, not firm-based. Each professional joins on their own merits, credentials, and experience - independent of the firm or organisation they work for. This means your profile, reputation, articles, and network on Expertly belong entirely to you. If you move firms, set up your own practice, or change roles, your membership and everything you have built on the platform remains fully intact.</p>
+            </div>
           </div>
         </div>
 
         <div class="faq-group">
-          <h4 class="mono">Using the platform</h4>
+          <h4 class="mono">For clients & users</h4>
           <div class="faq-item">
             <button class="faq-q">
               <span>Is Expertly free to browse?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>Yes. Anyone can browse the member directory, view article headlines, and view event listings without signing up. Full contact details, consultation requests, and full articles require a free user account.</p></div>
+            <div class="faq-a">
+              <p>Yes. Anyone can browse the member directory, view article headlines, and view event headlines without signing up. Full contact details of members, consultation requests, and full article and event details require registering a free account as a 'User'.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>What is the difference between a User and a Member?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>A User is a person who has created a free account on Expertly but is not a member. A User can view member contact details, place consultation requests, read full articles, and view all event details - but cannot post a profile or write articles. A Member can create a profile, be searchable on the platform, write articles, and more.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Can I request a consultation with a member?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes. Registered users and members can send consultation requests directly to any member. Members set their own availability and fee range - so you will always know exactly what to expect upfront before committing.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
               <span>What does the Verified badge actually mean?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>The Verified badge is awarded only to profiles we have manually reviewed and approved, covering professional credentials, qualifications, and years of experience. If a section lacks the badge, it's either under review or not yet verified by our team.</p></div>
+            <div class="faq-a">
+              <p>The Verified badge is awarded only to profiles we have manually reviewed and approved. Verification covers professional credentials, qualifications, and years of experience as declared in the member's profile. If any section of a profile does not display the Verified badge, that information is either under review or has not yet been verified by the Expertly team.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-q">
-              <span>Does Expertly take a cut of fees?</span>
+              <span>How does Expertly handle complaints or concerns about a member?</span>
               <span class="faq-toggle">+</span>
             </button>
-            <div class="faq-a"><p>No. We're a membership platform, not a marketplace. When a client pays you, 100% of that goes to you. You pay an annual membership fee, and the client relationship is yours to keep.</p></div>
+            <div class="faq-a">
+              <p>All members are required to maintain good standing with their respective professional bodies as a condition of membership. If you have a genuine concern about a member's conduct on the platform, you may submit a complaint through the platform and it will be reviewed by the Expertly compliance team. We take the integrity of our network seriously and will take appropriate action where warranted.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Are consultations handled on the platform?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>No. Expertly acts as a discovery and connection directory. Once you connect with an expert, you schedule, agree on terms, and conduct your engagement offline or on your preferred systems directly with the practitioner.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">
+              <span>Is my search activity private?</span>
+              <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes. Your search queries, directory browsing, and page history are completely confidential. Members are never notified when you view their profiles or read their articles unless you choose to contact them directly.</p>
+            </div>
           </div>
         </div>
       </div>
+      <p class="lede" style="margin-top: 48px;">Still curious? Email us at <a href="mailto:contact@expertly.global" style="color: var(--accent); text-decoration: underline;">contact@expertly.global</a>. We reply within one business day.</p>
     </div>
   </section>
 </main>
@@ -716,5 +1209,484 @@
 <script src="assets/members.js?v=11"></script>
 <script src="assets/shared.js?v=11"></script>
 <script src="assets/home.js?v=11"></script>
+<script>
+(function () {
+  const phrases = [
+    { q: 'M&A tax advisor in Singapore under $500/hr',  label: 'Find experts'  },
+    { q: 'Articles on UAE corporate tax for 2026',      label: 'Find articles' },
+    { q: 'Transfer pricing conferences in London',      label: 'Find events'   },
+    { q: 'IP counsel for SaaS, EU + US coverage',      label: 'Find experts'  },
+  ];
+
+  const el  = document.querySelector('.hero-phrase');
+  const btn = document.querySelector('.hero-find-label');
+  if (!el) return;
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let active = true;
+  let idx = 0;
+
+  async function typeEl(target, text) {
+    for (let i = 1; i <= text.length; i++) {
+      if (!active) return;
+      target.textContent = text.slice(0, i) + '|';
+      await sleep(18 + Math.random() * 10);
+    }
+    target.textContent = text;
+  }
+
+  async function eraseEl(target) {
+    let text = target.textContent.replace(/\|$/, '');
+    while (text.length > 0) {
+      if (!active) return;
+      text = text.slice(0, -1);
+      target.textContent = text + (text.length ? '|' : '');
+      await sleep(10 + Math.random() * 5);
+    }
+  }
+
+  async function loop() {
+    await sleep(2000);
+    while (active) {
+      const p = phrases[idx % phrases.length];
+      // type search phrase and button label in parallel
+      await Promise.all([
+        typeEl(el, p.q),
+        btn ? typeEl(btn, p.label) : Promise.resolve(),
+      ]);
+      if (!active) return;
+      await sleep(2200);
+      // erase both in parallel
+      await Promise.all([
+        eraseEl(el),
+        btn ? eraseEl(btn) : Promise.resolve(),
+      ]);
+      if (!active) return;
+      idx++;
+    }
+  }
+
+  loop();
+})();
+</script>
+
+<script>
+/* ── STELLAR ORBIT HERO - only runs when data-hero="orbit" ── */
+(function () {
+  'use strict';
+  if (document.documentElement.getAttribute('data-hero') !== 'orbit') return;
+
+  /* Typewriter */
+  var PART1 = "The Right Finance & Legal Expert\nIsn't Out of Reach-";
+  var PART2 = "\nThey're Already in Our Network.";
+  var FULL  = PART1 + PART2;
+  var SPLIT = PART1.length;
+  var outEl = document.getElementById('hs-tw-output');
+  var curEl = document.getElementById('hs-tw-cursor');
+  var typed = 0;
+
+  function renderTyped() {
+    var p1 = FULL.slice(0, Math.min(typed, SPLIT)).replace(/\n/g, '<br>');
+    var p2 = typed > SPLIT
+      ? '<span class="part-accent">' + FULL.slice(SPLIT, typed).replace(/\n/g, '<br>') + '</span>'
+      : '';
+    outEl.innerHTML = p1 + p2;
+  }
+
+  setTimeout(function () {
+    var iv = setInterval(function () {
+      typed++;
+      renderTyped();
+      if (typed >= FULL.length) {
+        clearInterval(iv);
+        curEl.classList.add('done');
+        setTimeout(startCounters, 200);
+      }
+    }, 32);
+  }, 400);
+
+  /* Count-up */
+  function countTo(el, target, ms) {
+    if (!el) return;
+    var start = performance.now();
+    (function tick(now) {
+      var p = Math.min((now - start) / ms, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+      if (p < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  setTimeout(function () { countTo(document.getElementById('hs-orbit-count'), 20, 2000); }, 1200);
+
+  function startCounters() {
+    countTo(document.getElementById('hs-c-experts'), 20, 1600);
+    countTo(document.getElementById('hs-c-juris'),   20, 1600);
+    countTo(document.getElementById('hs-c-areas'),   12, 1200);
+    countTo(document.getElementById('hs-c-matched'), 100, 2000);
+  }
+
+  /* Avatar staggered reveal */
+  document.querySelectorAll('.hs-avatar-img').forEach(function (img) {
+    var d = parseFloat(img.getAttribute('data-reveal') || 0.5);
+    setTimeout(function () { img.style.opacity = '1'; }, d * 1000);
+  });
+
+  /* Dark nav while stellar hero is visible */
+  var navEl = document.querySelector('.nav');
+  var heroSection = document.querySelector('.hero-stellar');
+  if (navEl && heroSection) {
+    navEl.classList.add('hs-nav-dark'); /* dark immediately on load */
+    new IntersectionObserver(function (entries) {
+      navEl.classList.toggle('hs-nav-dark', entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(heroSection);
+  }
+
+  /* Firm ticker */
+  var FIRMS = [
+    'Freshfields Bruckhaus Deringer', 'Clifford Chance', 'Linklaters',
+    'Allen & Overy', 'Baker McKenzie', 'Hogan Lovells',
+    'White & Case', 'Sullivan & Cromwell', 'Slaughter and May',
+    'Herbert Smith Freehills', 'Shearman & Sterling', 'Latham & Watkins',
+  ];
+  var track = document.getElementById('hs-ticker-track');
+  if (track) {
+    var items = FIRMS.concat(FIRMS, FIRMS, FIRMS);
+    items.forEach(function (firm, i) {
+      var s = document.createElement('span');
+      s.className = 'hs-ticker-firm';
+      s.textContent = firm;
+      track.appendChild(s);
+      if (i < items.length - 1) {
+        var dot = document.createElement('span');
+        dot.className = 'hs-ticker-dot';
+        dot.setAttribute('aria-hidden', 'true');
+        track.appendChild(dot);
+      }
+    });
+  }
+})();
+</script>
+
+<script>
+/* ── AI SEARCH SECTION - interactive box: types example queries, shows
+   staggered live results, and opens the real search modal on click ── */
+(function () {
+  'use strict';
+
+  var phrases = [
+    { q: 'Cross-border M&A counsel in Dubai, fluent in English & Arabic' },
+    { q: 'Articles on UAE corporate tax for 2026' },
+    { q: 'Transfer pricing conferences in Singapore' },
+    { q: 'IP counsel for SaaS, EU + US coverage' }
+  ];
+
+  var phraseIdx = 0;
+  var field = document.getElementById('ai-section-search-field');
+  var previewDiv = document.getElementById('ai-section-search-results');
+  if (!field) return;
+
+  var initialPreviewHtml =
+    '<div class="gsearch-group">' +
+      '<div class="gsearch-group-head"><span>Experts</span><span class="gsearch-group-count">1</span></div>' +
+      '<div class="gsearch-row" style="pointer-events: none;">' +
+        '<div class="avatar" style="width: 40px; height: 40px; font-size: 14px;" data-initials="PN">' +
+          '<span class="avatar-initials">PN</span>' +
+          '<img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="avatar-img loaded" />' +
+        '</div>' +
+        '<div class="gsearch-row-body">' +
+          '<div class="gsearch-row-title">Priya Nair <span class="float-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span></div>' +
+          '<div class="gsearch-row-meta">Cross-border tax · Singapore & Dubai</div>' +
+        '</div>' +
+        '<div class="gsearch-row-tag">Tax</div>' +
+        '<div class="gsearch-row-rate mono">$420/hr</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="gsearch-group">' +
+      '<div class="gsearch-group-head"><span>Articles</span><span class="gsearch-group-count">1</span></div>' +
+      '<div class="gsearch-row" style="pointer-events: none;">' +
+        '<div class="gsearch-row-icon gsearch-icon-article">¶</div>' +
+        '<div class="gsearch-row-body">' +
+          '<div class="gsearch-row-title">Structuring a Series B for international expansion</div>' +
+          '<div class="gsearch-row-meta">Priya Nair · 4 min read</div>' +
+        '</div>' +
+        '<div class="gsearch-row-tag">Funding</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="gsearch-group">' +
+      '<div class="gsearch-group-head"><span>Events</span><span class="gsearch-group-count">1</span></div>' +
+      '<div class="gsearch-row" style="pointer-events: none;">' +
+        '<div class="gsearch-row-icon gsearch-icon-event"><b>14</b><span>JUL</span></div>' +
+        '<div class="gsearch-row-body">' +
+          '<div class="gsearch-row-title">Cross-Border Tax Roundtable</div>' +
+          '<div class="gsearch-row-meta">Virtual · In Person</div>' +
+        '</div>' +
+        '<div class="gsearch-row-tag">Tax</div>' +
+      '</div>' +
+    '</div>';
+
+  if (previewDiv) previewDiv.innerHTML = initialPreviewHtml;
+
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  var typingActive = true;
+
+  function getLocalMatches(q) {
+    var term = (q || '').toLowerCase();
+    var words = term.split(/\s+/).filter(Boolean);
+    if (words.length === 0) return { members: [], articles: [], events: [] };
+
+    var strictMatch = function (text) {
+      return words.every(function (w) { return text.toLowerCase().indexOf(w) !== -1; });
+    };
+
+    var matchedMembers = (window.EXPERTLY_MEMBERS || []).filter(function (m) {
+      return strictMatch(m.name + ' ' + m.practice + ' ' + m.location + ' ' + m.title + ' ' + m.firm);
+    });
+    var matchedArticles = (window.EXPERTLY_ARTICLES || []).filter(function (a) {
+      return strictMatch(a.title + ' ' + a.category + ' ' + a.excerpt);
+    });
+    var matchedEvents = (window.EXPERTLY_EVENTS || []).filter(function (e) {
+      return strictMatch(e.title + ' ' + e.category + ' ' + e.city + ' ' + e.country + ' ' + e.desc);
+    });
+
+    if (matchedMembers.length === 0 && matchedArticles.length === 0 && matchedEvents.length === 0) {
+      var stopWords = { 'in':1,'under':1,'for':1,'advisor':1,'advisors':1,'expert':1,'experts':1,'with':1,'the':1,'a':1,'an':1,'of':1,'to':1,'at':1,'on':1,'by':1,'is':1,'and':1,'or':1,'about':1,'who':1,'what':1,'where':1,'conferences':1 };
+      var queryKeywords = words.filter(function (w) { return !stopWords[w]; });
+
+      if (queryKeywords.length > 0) {
+        var score = function (text) {
+          var s = 0;
+          queryKeywords.forEach(function (w) { if (text.toLowerCase().indexOf(w) !== -1) s++; });
+          return s;
+        };
+
+        matchedMembers = (window.EXPERTLY_MEMBERS || [])
+          .map(function (m) { return { m: m, score: score(m.name + ' ' + m.practice + ' ' + m.location + ' ' + m.title + ' ' + m.firm) }; })
+          .filter(function (x) { return x.score > 0; })
+          .sort(function (a, b) { return b.score - a.score; })
+          .map(function (x) { return x.m; });
+
+        matchedArticles = (window.EXPERTLY_ARTICLES || [])
+          .map(function (a) { return { a: a, score: score(a.title + ' ' + a.category + ' ' + a.excerpt) }; })
+          .filter(function (x) { return x.score > 0; })
+          .sort(function (a, b) { return b.score - a.score; })
+          .map(function (x) { return x.a; });
+
+        matchedEvents = (window.EXPERTLY_EVENTS || [])
+          .map(function (e) { return { e: e, score: score(e.title + ' ' + e.category + ' ' + e.city + ' ' + e.country + ' ' + e.desc) }; })
+          .filter(function (x) { return x.score > 0; })
+          .sort(function (a, b) { return b.score - a.score; })
+          .map(function (x) { return x.e; });
+      }
+    }
+
+    return {
+      members: matchedMembers.slice(0, 2),
+      articles: matchedArticles.slice(0, 1),
+      events: matchedEvents.slice(0, 1)
+    };
+  }
+
+  async function fadePreview(renderFn) {
+    if (!previewDiv) { renderFn(); return; }
+    previewDiv.style.transition = 'opacity 0.12s ease';
+    previewDiv.style.opacity = '0';
+    await sleep(110);
+    if (!typingActive) return;
+    renderFn();
+    previewDiv.style.opacity = '1';
+  }
+
+  async function showThinkingAnimation() {
+    if (!previewDiv || !typingActive) return;
+    await fadePreview(function () {
+      previewDiv.innerHTML =
+        '<div class="ai-demo-thinking" style="padding: 32px 16px; justify-content: center;">' +
+          '<div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div>' +
+          '<span class="mono" style="margin-left: 8px;">Searching experts · articles · events</span>' +
+        '</div>';
+    });
+    await sleep(350);
+  }
+
+  async function renderResultsStaggered(q) {
+    if (!previewDiv || !typingActive) return;
+    var matches = getLocalMatches(q);
+    var total = matches.members.length + matches.articles.length + matches.events.length;
+
+    await fadePreview(function () { previewDiv.innerHTML = ''; });
+    if (!typingActive) return;
+
+    if (total === 0) {
+      previewDiv.innerHTML =
+        '<div class="gsearch-empty" style="animation: riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both;">' +
+          '<div class="gsearch-empty-spark">✦</div>' +
+          '<h4>No matches for “<span>' + q + '</span>”</h4>' +
+          '<p>Try a practice area, a jurisdiction, or a name.</p>' +
+        '</div>';
+      return;
+    }
+
+    if (matches.members.length > 0) {
+      var groupEl = document.createElement('div');
+      groupEl.className = 'gsearch-group';
+      var headEl = document.createElement('div');
+      headEl.className = 'gsearch-group-head';
+      headEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+      headEl.innerHTML = '<span>Experts</span><span class="gsearch-group-count">' + matches.members.length + '</span>';
+      groupEl.appendChild(headEl);
+      previewDiv.appendChild(groupEl);
+      await sleep(45);
+
+      for (var i = 0; i < matches.members.length; i++) {
+        if (!typingActive) return;
+        var m = matches.members[i];
+        var verifiedBadge = m.verified ? '<span class="float-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:1em; height:1em; display:inline-block; vertical-align:middle;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>' : '';
+        var rowEl = document.createElement('div');
+        rowEl.className = 'gsearch-row';
+        rowEl.style.pointerEvents = 'none';
+        rowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+        rowEl.innerHTML =
+          window.getAvatarHtml(m, 40) +
+          '<div class="gsearch-row-body"><div class="gsearch-row-title">' + m.name + verifiedBadge + '</div><div class="gsearch-row-meta">' + m.title + ' · ' + m.location + '</div></div>' +
+          '<div class="gsearch-row-tag">' + m.practice + '</div>' +
+          '<div class="gsearch-row-rate mono">' + m.rate + '</div>';
+        groupEl.appendChild(rowEl);
+        await sleep(45);
+      }
+    }
+
+    if (matches.articles.length > 0) {
+      if (!typingActive) return;
+      var agroupEl = document.createElement('div');
+      agroupEl.className = 'gsearch-group';
+      var aheadEl = document.createElement('div');
+      aheadEl.className = 'gsearch-group-head';
+      aheadEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+      aheadEl.innerHTML = '<span>Articles</span><span class="gsearch-group-count">' + matches.articles.length + '</span>';
+      agroupEl.appendChild(aheadEl);
+      previewDiv.appendChild(agroupEl);
+      await sleep(45);
+
+      for (var j = 0; j < matches.articles.length; j++) {
+        if (!typingActive) return;
+        var a = matches.articles[j];
+        var author = (window.EXPERTLY_MEMBERS || []).find(function (mm) { return mm.id === a.author; });
+        var authorName = author ? author.name : 'Expertly Counsel';
+        var arowEl = document.createElement('div');
+        arowEl.className = 'gsearch-row';
+        arowEl.style.pointerEvents = 'none';
+        arowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+        arowEl.innerHTML =
+          '<div class="gsearch-row-icon gsearch-icon-article">¶</div>' +
+          '<div class="gsearch-row-body"><div class="gsearch-row-title">' + a.title + '</div><div class="gsearch-row-meta">' + authorName + ' · ' + a.readTime + ' read</div></div>' +
+          '<div class="gsearch-row-tag">' + a.category + '</div>';
+        agroupEl.appendChild(arowEl);
+        await sleep(45);
+      }
+    }
+
+    if (matches.events.length > 0) {
+      if (!typingActive) return;
+      var egroupEl = document.createElement('div');
+      egroupEl.className = 'gsearch-group';
+      var eheadEl = document.createElement('div');
+      eheadEl.className = 'gsearch-group-head';
+      eheadEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+      eheadEl.innerHTML = '<span>Events</span><span class="gsearch-group-count">' + matches.events.length + '</span>';
+      egroupEl.appendChild(eheadEl);
+      previewDiv.appendChild(egroupEl);
+      await sleep(45);
+
+      for (var k = 0; k < matches.events.length; k++) {
+        if (!typingActive) return;
+        var e = matches.events[k];
+        var month = e.start.split(' ')[0];
+        var day = e.start.split(' ')[1];
+        var erowEl = document.createElement('div');
+        erowEl.className = 'gsearch-row';
+        erowEl.style.pointerEvents = 'none';
+        erowEl.style.animation = 'riseIn 0.4s cubic-bezier(0.22,1,0.36,1) both';
+        erowEl.innerHTML =
+          '<div class="gsearch-row-icon gsearch-icon-event"><b>' + day + '</b><span>' + month + '</span></div>' +
+          '<div class="gsearch-row-body"><div class="gsearch-row-title">' + e.title + '</div><div class="gsearch-row-meta">' + e.city + ', ' + e.country + ' · ' + e.format + '</div></div>' +
+          '<div class="gsearch-row-tag">' + e.category + '</div>';
+        egroupEl.appendChild(erowEl);
+        await sleep(45);
+      }
+    }
+  }
+
+  async function typeQuery(fullText) {
+    if (!typingActive) return;
+    for (var i = 1; i <= fullText.length; i++) {
+      if (!typingActive) return;
+      field.value = fullText.slice(0, i) + '|';
+      await sleep(6 + Math.random() * 4);
+    }
+    if (!typingActive) return;
+    field.value = fullText + '|';
+    await sleep(150);
+    if (!typingActive) return;
+    field.value = fullText;
+  }
+
+  async function eraseQuery() {
+    if (!typingActive) return;
+    var currentText = (field.value || '').trim();
+    while (currentText.length > 0) {
+      if (!typingActive) return;
+      currentText = currentText.slice(0, -1);
+      field.value = currentText + '|';
+      await sleep(4 + Math.random() * 3);
+    }
+    if (typingActive) field.value = '|';
+  }
+
+  async function runTypingLoop() {
+    await sleep(900);
+    while (typingActive) {
+      var currentPhrase = phrases[phraseIdx % phrases.length];
+      await fadePreview(function () { previewDiv.innerHTML = ''; });
+      if (!typingActive) return;
+      await eraseQuery();
+      if (!typingActive) return;
+      await typeQuery(currentPhrase.q);
+      if (!typingActive) return;
+      await sleep(120);
+      if (!typingActive) return;
+      await showThinkingAnimation();
+      if (!typingActive) return;
+      await renderResultsStaggered(currentPhrase.q);
+      if (!typingActive) return;
+      await sleep(1400);
+      phraseIdx++;
+    }
+  }
+
+  var searchPanel = document.getElementById('ai-section-search-panel');
+  if (searchPanel) {
+    searchPanel.addEventListener('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      typingActive = false;
+      field.value = '';
+      if (previewDiv) previewDiv.innerHTML = '';
+      window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
+    });
+  }
+
+  window.addEventListener('expertly:search-closed', function () {
+    if (!typingActive) {
+      typingActive = true;
+      field.value = '';
+      if (previewDiv) previewDiv.innerHTML = initialPreviewHtml;
+      phraseIdx = 0;
+      runTypingLoop();
+    }
+  });
+
+  runTypingLoop();
+})();
+</script>
 </body>
 </html>

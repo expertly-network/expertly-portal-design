@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peer Connect — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <style>
+    body { background: #f5f5f5; }
+    .pc-page { max-width: 1520px; margin: 0 auto; padding: 36px 32px 80px; }
+
+    /* ── Back + title ── */
+    .pc-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #6b7280; text-decoration: none; margin-bottom: 24px; transition: color 0.15s; }
+    .pc-back:hover { color: #111; }
+    .pc-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .pc-title { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: #111; }
+    .pc-title-sub { font-size: 13px; color: #6b7280; font-weight: 400; margin-top: 4px; display: block; letter-spacing: 0; }
+    .pc-month-pill { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #e5e7eb; border-radius: 99px; padding: 6px 14px; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: #374151; }
+    .pc-month-pill .live { width: 6px; height: 6px; border-radius: 50%; background: #00A582; }
+
+    /* ── Demo switcher (remove in production) ── */
+    .pc-demo-bar {
+      background: #111; border-radius: 12px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .pc-demo-label { font-size: 11px; font-family: 'Archivo', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .pc-demo-btn {
+      padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15);
+      background: transparent; color: rgba(255,255,255,0.6); font-family: inherit;
+      font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .pc-demo-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+    .pc-demo-btn.active { background: #fff; color: #111; border-color: #fff; font-weight: 600; }
+
+    /* ── Phase timeline ── */
+    .pc-phase-bar {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+      padding: 24px 28px; margin-bottom: 24px;
+      display: flex; align-items: flex-start; position: relative;
+    }
+    .pc-phase-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+    .pc-phase-step + .pc-phase-step::before {
+      content: ''; position: absolute; top: 15px; right: 50%; left: -50%;
+      height: 2px; background: #e5e7eb; z-index: 0;
+    }
+    .pc-phase-step.done + .pc-phase-step::before,
+    .pc-phase-step.active + .pc-phase-step::before { background: #00A582; }
+    .pc-phase-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1; flex-shrink: 0;
+    }
+    .pc-phase-step.done .pc-phase-icon { background: #00A582; color: #fff; }
+    .pc-phase-step.active .pc-phase-icon { background: #111; color: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.08); }
+    .pc-phase-step.upcoming .pc-phase-icon { background: #f5f5f5; color: #d1d5db; border: 2px solid #e5e7eb; }
+    .pc-phase-label { font-size: 12px; font-weight: 600; color: #111; text-align: center; line-height: 1.3; }
+    .pc-phase-step.upcoming .pc-phase-label { color: #9ca3af; }
+    .pc-phase-date { font-family: 'Archivo', sans-serif; font-size: 10px; color: #9ca3af; letter-spacing: 0.03em; text-align: center; }
+    .pc-phase-step.active .pc-phase-date { color: #00A582; font-weight: 600; }
+
+    /* ── Card wrapper ── */
+    .pc-main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 860px) { .pc-main-layout { grid-template-columns: 1fr; } }
+
+    .pc-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .pc-card-head {
+      padding: 16px 22px; border-bottom: 1px solid #f0f0f0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .pc-card-label { font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; }
+    .pc-card-body { padding: 22px; }
+
+    /* ══════════════════════════════════════
+       STATE A — Preference Setting
+    ══════════════════════════════════════ */
+    .pc-pref-intro { font-size: 13px; color: #6b7280; line-height: 1.6; margin-bottom: 20px; }
+    .pc-pref-intro strong { color: #111; }
+    .pc-pref-default-note {
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+      padding: 10px 14px; font-size: 12px; color: #6b7280; line-height: 1.55;
+      margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;
+    }
+    .pc-pref-default-note svg { flex-shrink: 0; margin-top: 1px; color: #9ca3af; }
+    .pc-pref-section { margin-bottom: 20px; }
+    .pc-pref-field-label { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .pc-optional-tag { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9ca3af; background: #f5f5f5; border-radius: 99px; padding: 2px 7px; }
+    .pc-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .pc-chip {
+      padding: 7px 14px; border-radius: 99px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 12.5px; color: #374151; cursor: pointer;
+      transition: all 0.15s; user-select: none;
+    }
+    .pc-chip:hover { border-color: #6b7280; }
+    .pc-chip.sel { border-color: #00A582; background: #f0fdf9; color: #00795f; font-weight: 500; }
+    .pc-select {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; font-family: inherit;
+      font-size: 13px; color: #111; outline: none; background: #fff;
+      transition: border-color 0.15s; cursor: pointer;
+    }
+    .pc-select:focus { border-color: #00A582; }
+    .pc-pref-save {
+      width: 100%; padding: 12px; border-radius: 10px;
+      background: #111; color: #fff; border: none;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; margin-top: 4px; transition: background 0.15s;
+    }
+    .pc-pref-save:hover { background: #00A582; }
+    .pc-pref-skip { display: block; text-align: center; font-size: 12px; color: #9ca3af; margin-top: 10px; cursor: pointer; }
+    .pc-pref-skip:hover { color: #374151; }
+
+    /* ══════════════════════════════════════
+       STATE B — Matching in Progress
+    ══════════════════════════════════════ */
+    .pc-matching-wrap { text-align: center; padding: 16px 8px; }
+    .pc-matching-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #f5f5f5; margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pc-matching-spinner {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 3px solid #e5e7eb; border-top-color: #00A582;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .pc-matching-title { font-size: 17px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .pc-matching-sub { font-size: 13px; color: #9ca3af; line-height: 1.6; max-width: 340px; margin: 0 auto; }
+
+    /* Greyed saved preference summary */
+    .pc-pref-saved {
+      background: #f9fafb; border: 1px solid #f0f0f0; border-radius: 12px;
+      padding: 14px 16px; margin-top: 20px; opacity: 0.65;
+    }
+    .pc-pref-saved-label { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 10px; }
+    .pc-pref-saved-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pc-pref-saved-tag { padding: 4px 10px; border-radius: 99px; background: #efefef; font-size: 12px; color: #6b7280; }
+
+    /* ══════════════════════════════════════
+       STATE C — Match Revealed
+    ══════════════════════════════════════ */
+    .pc-reveal-eyebrow {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Archivo', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #00A582; margin-bottom: 20px;
+    }
+    .pc-reveal-eyebrow .pulse {
+      width: 8px; height: 8px; border-radius: 50%; background: #00A582;
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+    .pc-match-profile { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 18px; }
+    .pc-match-avatar {
+      width: 68px; height: 68px; border-radius: 16px;
+      background: #033c2f; color: #8BFCD8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 600; flex-shrink: 0;
+      letter-spacing: -0.01em;
+    }
+    .pc-match-name { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: #111; margin-bottom: 3px; }
+    .pc-match-role { font-size: 13px; color: #6b7280; margin-bottom: 10px; line-height: 1.4; }
+    .pc-match-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .pc-match-tag {
+      padding: 4px 10px; border-radius: 99px;
+      border: 1px solid #e5e7eb; background: #f9fafb;
+      font-size: 12px; color: #374151;
+    }
+    .pc-match-tag.verified { border-color: #a7f3d0; background: #f0fdf4; color: #00795f; font-weight: 500; }
+
+    .pc-match-why {
+      background: #f9fafb; border-radius: 10px; padding: 14px 16px;
+      margin-bottom: 18px; font-size: 13px; color: #374151; line-height: 1.6;
+    }
+    .pc-match-why-lbl { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 6px; }
+
+    .pc-meeting-slot {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px;
+      padding: 14px 16px; margin-bottom: 20px;
+    }
+    .pc-meeting-slot-icon { color: #00A582; flex-shrink: 0; }
+    .pc-meeting-slot-date { font-size: 14px; font-weight: 600; color: #111; }
+    .pc-meeting-slot-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+    .pc-reveal-actions { display: flex; gap: 10px; }
+    .pc-btn-primary {
+      flex: 1; padding: 11px 16px; border-radius: 10px;
+      background: #111; color: #fff; border: none;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      text-decoration: none;
+    }
+    .pc-btn-primary:hover { background: #00A582; }
+    .pc-btn-outline {
+      flex: 1; padding: 11px 16px; border-radius: 10px;
+      background: #fff; color: #374151; border: 1.5px solid #e5e7eb;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; transition: border-color 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      text-decoration: none;
+    }
+    .pc-btn-outline:hover { border-color: #6b7280; }
+
+    /* ══════════════════════════════════════
+       STATE D — Post-Meeting
+    ══════════════════════════════════════ */
+    .pc-post-eyebrow {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .pc-post-eyebrow-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #374151; background: #f5f5f5; border: 1px solid #e5e7eb;
+      border-radius: 99px; padding: 4px 10px;
+    }
+    .pc-post-with { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .pc-post-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: #033c2f; color: #8BFCD8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; flex-shrink: 0;
+    }
+    .pc-post-name { font-size: 14px; font-weight: 600; color: #111; }
+    .pc-post-meta { font-size: 12px; color: #9ca3af; }
+
+    /* Tabs for transcript / key actions / notes in post-meeting card */
+    .pc-post-tabs { display: flex; border-bottom: 1px solid #f0f0f0; margin-bottom: 16px; }
+    .pc-post-tab {
+      padding: 10px 16px; font-size: 13px; font-weight: 500;
+      color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all 0.15s; margin-bottom: -1px;
+    }
+    .pc-post-tab.active { color: #111; border-color: #111; font-weight: 600; }
+    .pc-post-panel { display: none; }
+    .pc-post-panel.active { display: block; }
+
+    .pc-key-actions { list-style: none; padding: 0; margin: 0; }
+    .pc-key-actions li {
+      display: flex; gap: 10px; font-size: 13px; color: #374151;
+      margin-bottom: 10px; line-height: 1.5; align-items: flex-start;
+    }
+    .pc-key-actions li::before { content: '→'; color: #00A582; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    .pc-transcript-block {
+      background: #f9fafb; border-radius: 10px; padding: 14px 16px;
+      font-size: 13px; color: #4b5563; line-height: 1.7; font-style: italic;
+    }
+
+    /* Feedback (inside post-meeting card) */
+    .pc-feedback-wrap { margin-top: 4px; }
+    .pc-feedback-label { font-size: 12.5px; font-weight: 600; color: #111; margin-bottom: 8px; }
+    .pc-stars-input { display: flex; gap: 6px; margin-bottom: 12px; }
+    .pc-star-btn { font-size: 24px; color: #e5e7eb; cursor: pointer; transition: color 0.15s; background: none; border: none; padding: 0; line-height: 1; }
+    .pc-star-btn.lit, .pc-star-btn:hover { color: #f59e0b; }
+    .pc-feedback-textarea {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; font-family: inherit;
+      font-size: 13px; color: #111; outline: none; resize: none;
+      line-height: 1.6; min-height: 80px; box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .pc-feedback-textarea:focus { border-color: #00A582; }
+    .pc-feedback-submit {
+      width: 100%; padding: 11px; border-radius: 10px;
+      background: #111; color: #fff; border: none;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; margin-top: 8px; transition: background 0.15s;
+    }
+    .pc-feedback-submit:hover { background: #00A582; }
+
+    /* ══════════════════════════════════════
+       STATE E — Set Next Preferences (20th-31st)
+       Appears as a small prompt inside the state card
+       when we're in the post-meeting window
+    ══════════════════════════════════════ */
+    .pc-next-pref-banner {
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;
+    }
+    .pc-next-pref-icon { flex-shrink: 0; color: #9ca3af; margin-top: 1px; }
+    .pc-next-pref-text { font-size: 13px; color: #374151; line-height: 1.55; }
+    .pc-next-pref-text strong { color: #111; }
+    .pc-next-pref-btn {
+      display: inline-block; margin-top: 8px; padding: 7px 14px;
+      border-radius: 8px; background: #111; color: #fff; border: none;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .pc-next-pref-btn:hover { background: #00A582; }
+
+    /* ══════════════════════════════════════
+       PAST SESSIONS CARD (always visible)
+    ══════════════════════════════════════ */
+    .pc-session-row {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 16px 22px; border-bottom: 1px solid #f5f5f5;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .pc-session-row:last-child { border-bottom: none; }
+    .pc-session-row:hover { background: #fafafa; }
+    .pc-session-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0;
+    }
+    .pc-session-info { flex: 1; min-width: 0; }
+    .pc-session-name { font-size: 13.5px; font-weight: 600; color: #111; }
+    .pc-session-meta { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+    .pc-session-preview { font-size: 12px; color: #6b7280; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
+    .pc-session-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+    .pc-session-stars { display: flex; gap: 1px; }
+    .pc-session-star { font-size: 11px; color: #d1d5db; }
+    .pc-session-star.on { color: #f59e0b; }
+    .pc-session-count {
+      font-family: 'Archivo', sans-serif; font-size: 10px;
+      font-weight: 600; padding: 2px 8px; border-radius: 99px;
+      background: #f5f5f5; color: #9ca3af;
+    }
+    .pc-session-chevron { color: #d1d5db; transition: transform 0.2s; }
+    .pc-session-row.open .pc-session-chevron { transform: rotate(180deg); }
+
+    /* Expandable session detail */
+    .pc-session-detail {
+      display: none; border-bottom: 1px solid #f0f0f0; background: #fafafa;
+    }
+    .pc-session-detail.open { display: block; }
+    .pc-detail-tabs { display: flex; border-bottom: 1px solid #f0f0f0; padding: 0 22px; }
+    .pc-dtab {
+      padding: 10px 14px; font-size: 12.5px; font-weight: 500;
+      color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all 0.15s; margin-bottom: -1px;
+    }
+    .pc-dtab.active { color: #111; border-color: #111; font-weight: 600; }
+    .pc-detail-content { padding: 16px 22px; }
+    .pc-actions-list { list-style: none; padding: 0; margin: 0; }
+    .pc-actions-list li { display: flex; gap: 8px; font-size: 13px; color: #374151; margin-bottom: 8px; line-height: 1.55; align-items: flex-start; }
+    .pc-actions-list li::before { content: '→'; color: #00A582; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .pc-transcript-text { font-size: 13px; color: #4b5563; line-height: 1.7; font-style: italic; }
+    .pc-note-input {
+      width: 100%; padding: 10px 12px; border-radius: 8px;
+      border: 1.5px solid #e5e7eb; font-family: inherit;
+      font-size: 13px; color: #111; outline: none; resize: none;
+      line-height: 1.6; min-height: 72px; box-sizing: border-box;
+      background: #fff;
+    }
+    .pc-note-input:focus { border-color: #00A582; }
+    .pc-note-save {
+      padding: 8px 16px; border-radius: 8px;
+      background: #111; color: #fff; border: none;
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; margin-top: 8px; transition: background 0.15s;
+    }
+    .pc-note-save:hover { background: #00A582; }
+
+    /* Empty state for past sessions */
+    .pc-empty-sessions {
+      text-align: center; padding: 40px 24px;
+      color: #9ca3af; font-size: 13.5px; line-height: 1.6;
+    }
+    .pc-empty-sessions svg { margin: 0 auto 14px; display: block; opacity: 0.3; }
+
+    /* ── AI note ── */
+    .pc-ai-strip {
+      background: #033c2f; border-radius: 14px; padding: 16px 20px;
+      display: flex; align-items: flex-start; gap: 12px; margin-top: 20px;
+    }
+    .pc-ai-icon { flex-shrink: 0; }
+    .pc-ai-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .pc-ai-text strong { color: #8BFCD8; }
+  </style>
+</head>
+<body>
+<nav class="nav"></nav>
+
+<div class="pc-page">
+
+  <a href="member-profile-v2.html" class="pc-back">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Profile
+  </a>
+
+  <div class="pc-title-row">
+    <div class="pc-title">
+      Peer Connect
+      <span class="pc-title-sub">One curated peer session every month — matched, scheduled, and summarised for you.</span>
+    </div>
+    <div class="pc-month-pill">
+      <span class="live"></span>
+      July 2026
+    </div>
+  </div>
+
+  <!-- Demo state switcher — remove in production -->
+  <div class="pc-demo-bar">
+    <span class="pc-demo-label">Preview state</span>
+    <button class="pc-demo-btn" onclick="setState('pref')">Jun 20–30 · Set Preferences</button>
+    <button class="pc-demo-btn" onclick="setState('matching')">Jul 1 · Matching</button>
+    <button class="pc-demo-btn active" onclick="setState('reveal')">Jul 2–13 · Match Revealed</button>
+    <button class="pc-demo-btn" onclick="setState('post')">Jul 14–19 · Post Meeting</button>
+    <button class="pc-demo-btn" onclick="setState('next')">Jul 20–31 · Next Cycle</button>
+  </div>
+
+  <!-- Phase bar -->
+  <div class="pc-phase-bar" id="phase-bar">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- Main layout: state card left, AI strip + info right -->
+  <div class="pc-main-layout">
+    <!-- Card 1: State card -->
+    <div>
+      <div class="pc-card" id="state-card">
+        <div class="pc-card-head">
+          <div class="pc-card-label" id="state-card-label">This month</div>
+        </div>
+        <div class="pc-card-body" id="state-card-body">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: AI info + stats -->
+    <div>
+      <div class="pc-ai-strip">
+        <div class="pc-ai-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 7H20l-4.5 4 1.5 6L12 14l-5 3 1.5-6L4 7h5.5L12 2z" fill="#8BFCD8"/></svg>
+        </div>
+        <div class="pc-ai-text">
+          <strong>Expertly AI joins every call</strong> — silently transcribing the conversation, surfacing key actions, and delivering a full summary to both participants within minutes of the meeting ending.
+        </div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="pc-card" style="margin-top:16px;">
+        <div class="pc-card-head"><div class="pc-card-label">Your stats</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#f0f0f0;">
+          <div style="background:#fff;padding:16px 18px;">
+            <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;">7</div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:4px;font-family:'Archivo',sans-serif;">Sessions done</div>
+          </div>
+          <div style="background:#fff;padding:16px 18px;">
+            <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;">5 🔥</div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:4px;font-family:'Archivo',sans-serif;">Month streak</div>
+          </div>
+          <div style="background:#fff;padding:16px 18px;border-top:1px solid #f0f0f0;">
+            <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;">4.8</div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:4px;font-family:'Archivo',sans-serif;">Avg rating given</div>
+          </div>
+          <div style="background:#fff;padding:16px 18px;border-top:1px solid #f0f0f0;">
+            <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;">3</div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:4px;font-family:'Archivo',sans-serif;">Referrals made</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Past sessions — always visible -->
+  <div class="pc-card" id="past-sessions-card">
+    <div class="pc-card-head">
+      <div class="pc-card-label">Past sessions</div>
+      <span style="font-size:11.5px;color:#00A582;font-weight:600;font-family:'Archivo',sans-serif;">7 completed</span>
+    </div>
+
+    <!-- Session 1 -->
+    <div class="pc-session-row" onclick="toggleSession(this)">
+      <div class="pc-session-avatar" style="background:#033c2f;">RV</div>
+      <div class="pc-session-info">
+        <div class="pc-session-name">Rohan Verma</div>
+        <div class="pc-session-meta">June 2026 · 28 min · Transfer Pricing</div>
+        <div class="pc-session-preview">"The challenge with CBCR documentation for Mauritius holdco structures is the grandfathering…"</div>
+      </div>
+      <div class="pc-session-right">
+        <div class="pc-session-stars">
+          <span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span>
+        </div>
+        <span class="pc-session-count">3 actions</span>
+        <svg class="pc-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="pc-session-detail" id="s1">
+      <div class="pc-detail-tabs">
+        <div class="pc-dtab active" onclick="switchDTab(this,'s1-actions')">Key Actions</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s1-transcript')">Transcript</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s1-note')">My Note</div>
+      </div>
+      <div class="pc-detail-content" id="s1-actions">
+        <ul class="pc-actions-list">
+          <li>Share CBCR documentation template for Mauritius holdco structure — by Aug 1</li>
+          <li>Intro to Priya Nair at KPMG Singapore for BEPS 2.0 pillar two guidance</li>
+          <li>Review OECD Pillar Two safe harbour rules and follow up end of July</li>
+        </ul>
+      </div>
+      <div class="pc-detail-content" id="s1-transcript" style="display:none;">
+        <div class="pc-transcript-text">"The challenge we're seeing with India-Mauritius treaty renegotiation is that clients don't always understand the grandfathering provisions. Rohan walked through a structure that effectively isolates pre-2017 investments, and then we discussed how the LOB tests interact with Singapore-based SPVs — specifically whether a principal purpose test applies at the entity level or the transaction level…"</div>
+      </div>
+      <div class="pc-detail-content" id="s1-note" style="display:none;">
+        <textarea class="pc-note-input">Rohan's framing of substance-over-form tests was incredibly useful — applying to our Singapore client next week. Want to connect him with Priya for the BEPS working group.</textarea>
+        <button class="pc-note-save">Save note</button>
+      </div>
+    </div>
+
+    <!-- Session 2 -->
+    <div class="pc-session-row" onclick="toggleSession(this)">
+      <div class="pc-session-avatar" style="background:#374151;">ST</div>
+      <div class="pc-session-info">
+        <div class="pc-session-name">Sheila Tanaka</div>
+        <div class="pc-session-meta">May 2026 · 25 min · Corporate Compliance</div>
+        <div class="pc-session-preview">"MAS ESG disclosure requirements for FPIs — the Q4 2026 mandate compresses timelines significantly…"</div>
+      </div>
+      <div class="pc-session-right">
+        <div class="pc-session-stars">
+          <span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star">★</span>
+        </div>
+        <span class="pc-session-count">2 actions</span>
+        <svg class="pc-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="pc-session-detail" id="s2">
+      <div class="pc-detail-tabs">
+        <div class="pc-dtab active" onclick="switchDTab(this,'s2-actions')">Key Actions</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s2-transcript')">Transcript</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s2-note')">My Note</div>
+      </div>
+      <div class="pc-detail-content" id="s2-actions">
+        <ul class="pc-actions-list">
+          <li>Review MAS circular on ESG reporting for Indian-listed subsidiaries by end of June</li>
+          <li>Connect Sheila with our Singapore compliance contact for fund structuring guidance</li>
+        </ul>
+      </div>
+      <div class="pc-detail-content" id="s2-transcript" style="display:none;">
+        <div class="pc-transcript-text">"The Q4 2026 ESG mandate from MAS is quite different from what most Indian FPIs are used to. Sheila explained how the disclosure requirements cascade down to subsidiaries and how some clients are using a phased approach to compliance — starting with scope 1 and 2 emissions before tackling value chain…"</div>
+      </div>
+      <div class="pc-detail-content" id="s2-note" style="display:none;">
+        <textarea class="pc-note-input" placeholder="Add a private note about this session…"></textarea>
+        <button class="pc-note-save">Save note</button>
+      </div>
+    </div>
+
+    <!-- Session 3 -->
+    <div class="pc-session-row" onclick="toggleSession(this)">
+      <div class="pc-session-avatar" style="background:#1e3a5f;">PM</div>
+      <div class="pc-session-info">
+        <div class="pc-session-name">Pradeep Menon</div>
+        <div class="pc-session-meta">Apr 2026 · 30 min · M&A Tax</div>
+        <div class="pc-session-preview">"FEMA implications in cross-border PE acquisitions — OCB restoration under RBI Master Direction 2024…"</div>
+      </div>
+      <div class="pc-session-right">
+        <div class="pc-session-stars">
+          <span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span><span class="pc-session-star on">★</span>
+        </div>
+        <span class="pc-session-count">4 actions</span>
+        <svg class="pc-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="pc-session-detail" id="s3">
+      <div class="pc-detail-tabs">
+        <div class="pc-dtab active" onclick="switchDTab(this,'s3-actions')">Key Actions</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s3-transcript')">Transcript</div>
+        <div class="pc-dtab" onclick="switchDTab(this,'s3-note')">My Note</div>
+      </div>
+      <div class="pc-detail-content" id="s3-actions">
+        <ul class="pc-actions-list">
+          <li>Share Pradeep's FEMA checklist template for cross-border PE deal structuring</li>
+          <li>Review OCB restoration framework under new RBI circular — file by May 15</li>
+          <li>Loop in Pradeep on upcoming Chennai client deal — potential co-counsel opportunity</li>
+          <li>Read SEBI FPI category III circular and compare with Pradeep's interpretation</li>
+        </ul>
+      </div>
+      <div class="pc-detail-content" id="s3-transcript" style="display:none;">
+        <div class="pc-transcript-text">"The 2024 RBI Master Direction has introduced some nuances around OCB restoration that most practitioners are still catching up with. Pradeep walked through a specific PE acquisition where the foreign entity had OCB status pre-2003, and how the restoration pathway now works — there's an application window that most clients miss because it's buried in Schedule 4 of the Direction…"</div>
+      </div>
+      <div class="pc-detail-content" id="s3-note" style="display:none;">
+        <textarea class="pc-note-input" placeholder="Add a private note about this session…"></textarea>
+        <button class="pc-note-save">Save note</button>
+      </div>
+    </div>
+
+  </div><!-- /past sessions -->
+
+</div><!-- /pc-page -->
+
+<script src="assets/shared.js?v=11"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   PHASE BAR RENDERER
+═══════════════════════════════════════════════ */
+const PHASES = [
+  { label: 'Set Preferences', date: '20th–31st', id: 'pref' },
+  { label: 'Matching', date: '1st of month', id: 'matching' },
+  { label: 'Meet Your Peer', date: '2nd onwards', id: 'reveal' },
+  { label: 'Meeting Day', date: '2nd Tuesday', id: 'meeting' },
+  { label: 'Transcript & Feedback', date: 'Post-meeting', id: 'post' },
+];
+
+function renderPhaseBar(activeId) {
+  const states = ['pref', 'matching', 'reveal', 'meeting', 'post', 'next'];
+  const activeIdx = {
+    pref: 0, matching: 1, reveal: 2, post: 4, next: 0
+  }[activeId] ?? 0;
+  // 'meeting' shares reveal phase visually (step 3)
+  const effectiveActive = activeId === 'next' ? 0 : activeIdx;
+
+  const html = PHASES.map((p, i) => {
+    let cls = 'upcoming';
+    if (i < effectiveActive) cls = 'done';
+    if (i === effectiveActive) cls = 'active';
+
+    const icon = cls === 'done'
+      ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : `<span style="width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;"></span>`;
+
+    return `<div class="pc-phase-step ${cls}">
+      <div class="pc-phase-icon">${icon}</div>
+      <div class="pc-phase-label">${p.label}</div>
+      <div class="pc-phase-date">${cls === 'active' && activeId !== 'next' ? '● Now · ' : ''}${p.date}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('phase-bar').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════
+   STATE CARD RENDERER
+═══════════════════════════════════════════════ */
+function setState(state) {
+  // Update demo buttons
+  document.querySelectorAll('.pc-demo-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  renderPhaseBar(state);
+
+  const label = document.getElementById('state-card-label');
+  const body = document.getElementById('state-card-body');
+
+  if (state === 'pref') {
+    label.textContent = 'Set your preferences · Due Jun 30';
+    body.innerHTML = `
+      <p class="pc-pref-intro">
+        Help us find your ideal peer for July. <strong>Completely optional</strong> — if you skip this, we'll match you based on your profile's practice areas and location.
+      </p>
+      <div class="pc-pref-default-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Your defaults: <strong>M&A Tax · Transfer Pricing</strong> · <strong>India</strong> — we'll use these if you don't set a preference.
+      </div>
+      <div class="pc-pref-section">
+        <div class="pc-pref-field-label">
+          Practice area <span class="pc-optional-tag">Optional</span>
+        </div>
+        <div class="pc-chips">
+          <div class="pc-chip sel" onclick="this.classList.toggle('sel')">M&A Tax</div>
+          <div class="pc-chip sel" onclick="this.classList.toggle('sel')">Transfer Pricing</div>
+          <div class="pc-chip" onclick="this.classList.toggle('sel')">Corporate Law</div>
+          <div class="pc-chip" onclick="this.classList.toggle('sel')">Compliance</div>
+          <div class="pc-chip" onclick="this.classList.toggle('sel')">Capital Markets</div>
+          <div class="pc-chip" onclick="this.classList.toggle('sel')">IP & Tech</div>
+          <div class="pc-chip" onclick="this.classList.toggle('sel')">Restructuring</div>
+        </div>
+      </div>
+      <div class="pc-pref-section">
+        <div class="pc-pref-field-label">
+          Peer location <span class="pc-optional-tag">Optional</span>
+        </div>
+        <select class="pc-select">
+          <option>India (default)</option>
+          <option>Singapore</option>
+          <option>UAE</option>
+          <option>United Kingdom</option>
+          <option>United States</option>
+          <option>Any country</option>
+        </select>
+      </div>
+      <button class="pc-pref-save" onclick="setState('matching');document.querySelectorAll('.pc-demo-btn')[1].classList.add('active');document.querySelectorAll('.pc-demo-btn')[0].classList.remove('active');">Save preferences</button>
+      <span class="pc-pref-skip" onclick="setState('matching');document.querySelectorAll('.pc-demo-btn')[1].classList.add('active');document.querySelectorAll('.pc-demo-btn')[0].classList.remove('active');">Skip — use my profile defaults</span>
+    `;
+  }
+
+  else if (state === 'matching') {
+    label.textContent = 'Matching in progress · July 1';
+    body.innerHTML = `
+      <div class="pc-matching-wrap">
+        <div class="pc-matching-icon">
+          <div class="pc-matching-spinner"></div>
+        </div>
+        <div class="pc-matching-title">Finding your peer for July</div>
+        <div class="pc-matching-sub">Our matching algorithm is running today. Your peer's profile will appear here once confirmed — usually within a few hours.</div>
+      </div>
+      <div class="pc-pref-saved" style="margin-top:20px;">
+        <div class="pc-pref-saved-label">Your saved preferences</div>
+        <div class="pc-pref-saved-row">
+          <span class="pc-pref-saved-tag">M&A Tax</span>
+          <span class="pc-pref-saved-tag">Transfer Pricing</span>
+          <span class="pc-pref-saved-tag">India</span>
+        </div>
+      </div>
+    `;
+  }
+
+  else if (state === 'reveal') {
+    label.textContent = 'Your peer for July 2026';
+    body.innerHTML = `
+      <div class="pc-reveal-eyebrow">
+        <span class="pulse"></span>
+        Match confirmed · Meeting on Jul 14
+      </div>
+      <div class="pc-match-profile">
+        <div class="pc-match-avatar">AK</div>
+        <div>
+          <div class="pc-match-name">Ananya Krishnamurthy</div>
+          <div class="pc-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
+          <div class="pc-match-tags">
+            <span class="pc-match-tag verified">✓ Expertly Verified</span>
+            <span class="pc-match-tag">M&A Tax</span>
+            <span class="pc-match-tag">APAC</span>
+            <span class="pc-match-tag">18 yrs experience</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-match-why">
+        <div class="pc-match-why-lbl">Why we matched you</div>
+        Both of you specialise in cross-border M&A tax across APAC jurisdictions. Ananya's expertise in India–Singapore treaty positions and GAAR complements your current practice focus — and she has indicated openness to discussing PE fund structuring.
+      </div>
+      <div class="pc-meeting-slot">
+        <div class="pc-meeting-slot-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="pc-meeting-slot-date">Tuesday, July 14 · 10:00 – 10:30 AM IST</div>
+          <div class="pc-meeting-slot-sub">Meeting link will be shared on Jul 15 · Expertly AI will join to transcribe</div>
+        </div>
+      </div>
+      <div class="pc-reveal-actions">
+        <a href="member-profile-v2.html" class="pc-btn-primary" target="_blank">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 2h5v5M14 2L8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          View full profile
+        </a>
+        <button class="pc-btn-outline">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add to calendar
+        </button>
+      </div>
+    `;
+  }
+
+  else if (state === 'post') {
+    label.textContent = 'Meeting summary · Jul 14';
+    body.innerHTML = `
+      <div class="pc-post-eyebrow">
+        <div class="pc-post-eyebrow-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Meeting completed
+        </div>
+      </div>
+      <div class="pc-post-with">
+        <div class="pc-post-avatar">AK</div>
+        <div>
+          <div class="pc-post-name">Ananya Krishnamurthy</div>
+          <div class="pc-post-meta">Jul 14, 2026 · 28 min · M&A Tax / Cross-Border</div>
+        </div>
+      </div>
+
+      <div class="pc-post-tabs">
+        <div class="pc-post-tab active" onclick="switchPostTab(this,'pt-actions')">Key Actions</div>
+        <div class="pc-post-tab" onclick="switchPostTab(this,'pt-transcript')">Transcript</div>
+        <div class="pc-post-tab" onclick="switchPostTab(this,'pt-feedback')">My Feedback</div>
+      </div>
+
+      <div class="pc-post-panel active" id="pt-actions">
+        <ul class="pc-key-actions">
+          <li>Share India–Singapore treaty position memo on LOB test application to Singapore SPVs</li>
+          <li>Ananya to introduce her contact at Drew &amp; Napier for Singapore TP documentation</li>
+          <li>Follow up on GAAR applicability to the Chennai client restructuring — by Jul 31</li>
+        </ul>
+      </div>
+      <div class="pc-post-panel" id="pt-transcript">
+        <div class="pc-transcript-block">"The LOB test under the India-Singapore treaty is where most practitioners get tripped up. Ananya walked through how MAS guidance on 'economic substance' interacts with the principal purpose test — and we discussed whether a Singapore intermediate holding company with minimal staff would qualify for treaty benefits post the 2021 amendment…"</div>
+      </div>
+      <div class="pc-post-panel" id="pt-feedback">
+        <div class="pc-feedback-wrap">
+          <div class="pc-feedback-label">How was this session?</div>
+          <div class="pc-stars-input">
+            <button class="pc-star-btn lit" title="1">★</button>
+            <button class="pc-star-btn lit" title="2">★</button>
+            <button class="pc-star-btn lit" title="3">★</button>
+            <button class="pc-star-btn lit" title="4">★</button>
+            <button class="pc-star-btn lit" title="5">★</button>
+          </div>
+          <textarea class="pc-feedback-textarea" placeholder="What did you take away? What would you improve?">Ananya's depth on Singapore treaty interpretation was exactly what I needed. The introduction to Drew &amp; Napier is a bonus. Would have liked 5 more minutes on the GAAR question — suggest future sessions run to 35 min.</textarea>
+          <button class="pc-feedback-submit">Save feedback</button>
+        </div>
+      </div>
+    `;
+
+    // Re-attach star interactivity
+    attachStarRating();
+  }
+
+  else if (state === 'next') {
+    label.textContent = 'July complete · Set preferences for August';
+    body.innerHTML = `
+      <div class="pc-post-eyebrow">
+        <div class="pc-post-eyebrow-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          July session complete
+        </div>
+      </div>
+      <div class="pc-post-with" style="margin-bottom:20px;">
+        <div class="pc-post-avatar">AK</div>
+        <div>
+          <div class="pc-post-name">Ananya Krishnamurthy</div>
+          <div class="pc-post-meta">Jul 14, 2026 · 28 min · Rated 5 ★ · 3 actions logged</div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:#f0f0f0;margin-bottom:20px;"></div>
+
+      <div class="pc-next-pref-banner">
+        <div class="pc-next-pref-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="pc-next-pref-text">
+          <strong>August preferences open</strong> — set your preferred practice area and peer location before Aug 31 to guide your next match. Optional.
+          <br>
+          <button class="pc-next-pref-btn" onclick="setState('pref');document.querySelectorAll('.pc-demo-btn')[0].classList.add('active');document.querySelectorAll('.pc-demo-btn')[4].classList.remove('active');">Set August preferences</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TAB HELPERS
+═══════════════════════════════════════════════ */
+function switchPostTab(tab, contentId) {
+  const card = document.getElementById('state-card-body');
+  card.querySelectorAll('.pc-post-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  card.querySelectorAll('.pc-post-panel').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(contentId);
+  if (el) el.classList.add('active');
+}
+
+function toggleSession(row) {
+  const detail = row.nextElementSibling;
+  if (!detail || !detail.classList.contains('pc-session-detail')) return;
+  const isOpen = detail.classList.contains('open');
+  detail.classList.toggle('open');
+  row.classList.toggle('open');
+}
+
+function switchDTab(tab, contentId) {
+  const detail = tab.closest('.pc-session-detail');
+  detail.querySelectorAll('.pc-dtab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  detail.querySelectorAll('.pc-detail-content').forEach(c => c.style.display = 'none');
+  const el = document.getElementById(contentId);
+  if (el) el.style.display = 'block';
+}
+
+/* ═══════════════════════════════════════════════
+   STAR RATING
+═══════════════════════════════════════════════ */
+function attachStarRating() {
+  const stars = document.querySelectorAll('.pc-stars-input .pc-star-btn');
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseover', () => {
+      stars.forEach((s, i) => s.classList.toggle('lit', i <= idx));
+    });
+    star.addEventListener('click', () => {
+      stars.forEach((s, i) => s.classList.toggle('lit', i <= idx));
+    });
+  });
+  const row = document.querySelector('.pc-stars-input');
+  if (row) row.addEventListener('mouseleave', () => {
+    const lit = Array.from(stars).filter(s => s.classList.contains('lit'));
+    // keep current selection
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+renderPhaseBar('reveal');
+setState('reveal');
+// manually set the right demo button active on load
+document.querySelectorAll('.pc-demo-btn')[2].classList.add('active');
+document.querySelectorAll('.pc-demo-btn').forEach((btn, i) => {
+  if (i !== 2) btn.classList.remove('active');
+});
+</script>
+</body>
+</html>

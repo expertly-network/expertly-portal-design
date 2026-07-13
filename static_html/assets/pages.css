@@ -1,11 +1,11 @@
 /* Directory / Members page */
-.dir-hero { padding: 56px 0 32px; }
+.dir-hero { padding: 56px 0 32px; background: var(--bg-alt); }
 .dir-search {
   margin-top: 40px;
   display: flex; gap: 8px;
   background: var(--bg-card);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 10px;
   max-width: 720px;
   box-shadow: 0 4px 20px -8px rgba(0,0,0,0.06);
@@ -39,7 +39,7 @@
 .dir-card {
   background: var(--bg-card);
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 24px;
   transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
   display: flex; flex-direction: column;
@@ -69,7 +69,7 @@
 }
 
 /* ============ ARTICLES PAGE ============ */
-.art-hero { padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+.art-hero { padding: 56px 0 48px; border-bottom: 1px solid var(--line); background: var(--bg-alt); }
 .art-feat-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; margin-top: 48px; }
 .art-feat-main { display: block; }
 .art-feat-main .article-img { height: 280px; aspect-ratio: unset; }
@@ -124,7 +124,7 @@
 .page-panel.active { display: block; }
 
 /* ============ EVENTS PAGE ============ */
-.ev-hero { padding: 56px 0 48px; }
+.ev-hero { padding: 56px 0 48px; background: var(--bg-alt); }
 .ev-hero-stats { display: flex; gap: 48px; margin-top: 40px; padding: 28px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .ev-hero-stats > div b { display: block; font-size: 32px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
 .ev-hero-stats > div span { font-size: 11px; color: var(--ink-3); font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.1em; text-transform: capitalize; }
@@ -168,3 +168,7 @@
   .ev-row-loc, .ev-row-actions { grid-column: 1 / -1; padding-top: 8px; border-top: 1px dashed var(--line); }
   .ev-hero-stats { gap: 24px; flex-wrap: wrap; }
 }
+
+/* ============ HOW IT WORKS & PRICING PAGES ============ */
+.hiw-hero { background: var(--bg-alt); }
+.pricing-hero { background: var(--bg-alt); }

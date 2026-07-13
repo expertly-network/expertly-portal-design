@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peer Connect — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <style>
+    body { background: #fff; }
+
+    .pc-page { max-width: 1520px; margin: 0 auto; padding: 0 32px 80px; }
+
+    /* ── Hero band ── */
+    .pc-hero {
+      background: #033c2f;
+      margin: 0 -32px 0;
+      padding: 48px 32px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pc-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 120px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .pc-hero-inner { max-width: 1520px; margin: 0 auto; position: relative; z-index: 1; }
+    .pc-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 28px; transition: color 0.15s; }
+    .pc-back:hover { color: #fff; }
+    .pc-hero-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 600; letter-spacing: -0.025em; color: #fff; margin-bottom: 8px; }
+    .pc-hero-sub { font-size: 15px; color: rgba(255,255,255,0.55); max-width: 520px; line-height: 1.6; }
+    .pc-hero-stats { display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
+    .pc-hero-stat-num { font-size: 24px; font-weight: 700; color: #8BFCD8; letter-spacing: -0.02em; line-height: 1; }
+    .pc-hero-stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; font-family: 'Archivo', sans-serif; }
+
+    /* ── Content area ── */
+    .pc-content { padding-top: 40px; }
+
+    /* ── State card — the main focus ── */
+    .pc-state-card {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px -12px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+    .pc-state-band {
+      height: 6px;
+      background: linear-gradient(90deg, #00A582, #8BFCD8);
+    }
+    .pc-state-inner { padding: 28px 32px 32px; }
+    .pc-state-eyebrow {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Archivo', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #00A582; margin-bottom: 20px;
+    }
+    .pc-state-eyebrow .ping {
+      width: 8px; height: 8px; border-radius: 50%; background: #00A582;
+      animation: ping 1.5s ease-in-out infinite;
+    }
+    @keyframes ping { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } }
+
+    /* Match proposal */
+    .pc-match-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 22px; }
+    .pc-match-photo {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: #033c2f; color: #8BFCD8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 600; flex-shrink: 0;
+    }
+    .pc-match-name { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; color: #111; }
+    .pc-match-role { font-size: 14px; color: #6b7280; margin: 3px 0 10px; }
+    .pc-match-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pc-chip-sm {
+      padding: 4px 10px; border-radius: 99px;
+      border: 1px solid #e5e7eb; background: #f9fafb;
+      font-size: 12px; color: #374151;
+    }
+    .pc-reason-box {
+      background: #f0fdf9; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 22px;
+      font-size: 13.5px; color: #374151; line-height: 1.6;
+    }
+    .pc-reason-box strong { color: #00795f; }
+    .pc-slot-line {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13.5px; color: #374151; margin-bottom: 24px;
+    }
+    .pc-cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pc-btn-primary {
+      padding: 13px; border-radius: 12px;
+      background: #033c2f; color: #fff; border: none;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .pc-btn-primary:hover { background: #00A582; }
+    .pc-btn-secondary {
+      padding: 13px; border-radius: 12px;
+      background: #fff; color: #374151; border: 1.5px solid #e5e7eb;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .pc-btn-secondary:hover { border-color: #9ca3af; }
+    .pc-state-note { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 14px; }
+
+    /* ── Step-based preferences ── */
+    .pc-pref-wrapper { max-width: 680px; margin: 0 auto 48px; }
+    .pc-pref-heading { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: #111; margin-bottom: 4px; }
+    .pc-pref-sub { font-size: 13.5px; color: #6b7280; margin-bottom: 24px; }
+    .pc-steps { display: flex; gap: 0; margin-bottom: 24px; }
+    .pc-step {
+      flex: 1; padding: 12px 16px;
+      border-bottom: 2px solid #e5e7eb;
+      font-size: 13px; color: #9ca3af; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pc-step.active { border-color: #033c2f; color: #111; font-weight: 600; }
+    .pc-step.done { border-color: #00A582; color: #00795f; }
+    .pc-step-num { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+
+    .pc-pref-panel { display: none; }
+    .pc-pref-panel.active { display: block; }
+    .pc-pref-label { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 10px; }
+    .pc-chip-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .pc-chip-lg {
+      padding: 9px 16px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 13px; color: #374151; cursor: pointer;
+      transition: all 0.15s; user-select: none;
+    }
+    .pc-chip-lg:hover { border-color: #6b7280; }
+    .pc-chip-lg.sel { border-color: #033c2f; background: #f0fdf9; color: #033c2f; font-weight: 500; }
+
+    .pc-time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .pc-time-cell {
+      padding: 12px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; text-align: center;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .pc-time-cell:hover { border-color: #6b7280; }
+    .pc-time-cell.sel { border-color: #033c2f; background: #f0fdf9; }
+    .pc-time-cell-label { font-size: 13px; font-weight: 600; color: #111; }
+    .pc-time-cell-sub { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+    .pc-select {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-family: inherit; font-size: 13px; color: #111;
+      outline: none; margin-bottom: 12px;
+    }
+    .pc-select:focus { border-color: #033c2f; }
+    .pc-step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+    .pc-step-btn {
+      padding: 10px 20px; border-radius: 10px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; border: 1.5px solid #e5e7eb;
+      background: #fff; color: #374151;
+    }
+    .pc-step-btn.primary { background: #033c2f; color: #fff; border-color: #033c2f; }
+    .pc-step-btn.primary:hover { background: #00A582; border-color: #00A582; }
+    .pc-step-btn.secondary:hover { border-color: #6b7280; }
+    .pc-step-dots { display: flex; gap: 6px; }
+    .pc-step-dot { width: 6px; height: 6px; border-radius: 50%; background: #e5e7eb; }
+    .pc-step-dot.active { background: #033c2f; width: 18px; border-radius: 3px; }
+    .pc-step-dot.done { background: #00A582; }
+
+    /* ── History grid ── */
+    .pc-history-section { max-width: 1100px; margin: 0 auto; }
+    .pc-history-heading { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: #111; margin-bottom: 4px; }
+    .pc-history-sub { font-size: 13.5px; color: #6b7280; margin-bottom: 24px; }
+    .pc-history-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .pc-history-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .pc-history-grid { grid-template-columns: 1fr; } }
+
+    .pc-hist-card {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 16px; padding: 20px;
+      transition: box-shadow 0.2s;
+    }
+    .pc-hist-card:hover { box-shadow: 0 6px 24px -6px rgba(0,0,0,0.1); }
+    .pc-hist-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .pc-hist-ava {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; color: #fff; flex-shrink: 0;
+    }
+    .pc-hist-name { font-size: 14px; font-weight: 600; color: #111; }
+    .pc-hist-meta { font-size: 12px; color: #9ca3af; margin-top: 1px; }
+    .pc-hist-practice {
+      display: inline-block; padding: 3px 9px;
+      border-radius: 99px; background: #f5f5f5;
+      font-size: 11px; color: #374151; margin-bottom: 12px;
+    }
+    .pc-hist-summary { font-size: 13px; color: #4b5563; line-height: 1.6; margin-bottom: 14px; }
+    .pc-hist-footer { display: flex; align-items: center; justify-content: space-between; }
+    .pc-hist-stars { display: flex; gap: 1px; }
+    .pc-hist-star { font-size: 12px; color: #d1d5db; }
+    .pc-hist-star.on { color: #f59e0b; }
+    .pc-hist-link { font-size: 12px; color: #00A582; text-decoration: none; font-weight: 500; }
+    .pc-hist-link:hover { text-decoration: underline; }
+
+    .pc-variant-label {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #033c2f; color: #8BFCD8; padding: 6px 14px;
+      border-radius: 99px; font-size: 11px; font-weight: 600;
+      font-family: 'Archivo', sans-serif; letter-spacing: 0.05em;
+      pointer-events: none; z-index: 999;
+    }
+  </style>
+</head>
+<body>
+<nav class="nav"></nav>
+
+<!-- Hero band -->
+<div class="pc-hero">
+  <div class="pc-hero-inner">
+    <a href="member-profile-v2.html" class="pc-back">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Profile
+    </a>
+    <div class="pc-hero-title">Peer Connect</div>
+    <div class="pc-hero-sub">One curated 25-minute peer session every month. Expertly handles the matching — you just show up.</div>
+    <div class="pc-hero-stats">
+      <div><div class="pc-hero-stat-num">7</div><div class="pc-hero-stat-label">Sessions completed</div></div>
+      <div><div class="pc-hero-stat-num">5</div><div class="pc-hero-stat-label">Month streak</div></div>
+      <div><div class="pc-hero-stat-num">4.8★</div><div class="pc-hero-stat-label">Avg rating given</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="pc-page">
+  <div class="pc-content">
+
+    <!-- Current state card -->
+    <div class="pc-state-card">
+      <div class="pc-state-band"></div>
+      <div class="pc-state-inner">
+        <div class="pc-state-eyebrow">
+          <span class="ping"></span>
+          Matching in progress · Jul 11–15
+        </div>
+        <div class="pc-match-row">
+          <div class="pc-match-photo">AK</div>
+          <div>
+            <div class="pc-match-name">Ananya Krishnamurthy</div>
+            <div class="pc-match-role">Partner, Cross-Border Tax · Bangalore, India</div>
+            <div class="pc-match-chips">
+              <span class="pc-chip-sm">Expertly Verified ✓</span>
+              <span class="pc-chip-sm">M&A Tax</span>
+              <span class="pc-chip-sm">18 yrs</span>
+            </div>
+          </div>
+        </div>
+        <div class="pc-reason-box">
+          <strong>Matched because:</strong> both of you focus on cross-border M&A tax in APAC. Ananya's deep India–Singapore treaty expertise complements your current mandates.
+        </div>
+        <div class="pc-slot-line">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#6b7280" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="#6b7280" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Proposed: <strong>Wed Jul 16, 10:00 – 10:30 AM IST</strong>
+        </div>
+        <div class="pc-cta-row">
+          <button class="pc-btn-primary">Accept match →</button>
+          <button class="pc-btn-secondary">Decline</button>
+        </div>
+        <div class="pc-state-note">Deadline: Jul 15 · Declining surfaces a new candidate</div>
+      </div>
+    </div>
+
+    <!-- Preferences — step form -->
+    <div class="pc-pref-wrapper">
+      <div class="pc-pref-heading">Set preferences for August</div>
+      <div class="pc-pref-sub">Helps us find a better match — optional. Deadline: Aug 10.</div>
+
+      <div class="pc-steps">
+        <div class="pc-step done">
+          <span class="pc-step-num">STEP 1</span>
+          Practice area
+        </div>
+        <div class="pc-step active">
+          <span class="pc-step-num">STEP 2</span>
+          Time slots
+        </div>
+        <div class="pc-step">
+          <span class="pc-step-num">STEP 3</span>
+          Country
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="pc-pref-panel">
+        <div class="pc-pref-label">Which practice areas interest you most?</div>
+        <div class="pc-chip-grid">
+          <div class="pc-chip-lg sel">M&A Tax</div>
+          <div class="pc-chip-lg sel">Transfer Pricing</div>
+          <div class="pc-chip-lg">Corporate Law</div>
+          <div class="pc-chip-lg">Compliance</div>
+          <div class="pc-chip-lg">IP & Tech Law</div>
+          <div class="pc-chip-lg">Capital Markets</div>
+        </div>
+      </div>
+
+      <!-- Step 2 (active) -->
+      <div class="pc-pref-panel active">
+        <div class="pc-pref-label">When are you free for a 25-minute session?</div>
+        <div class="pc-time-grid">
+          <div class="pc-time-cell sel">
+            <div class="pc-time-cell-label">Weekday AM</div>
+            <div class="pc-time-cell-sub">9 – 12 in your TZ</div>
+          </div>
+          <div class="pc-time-cell">
+            <div class="pc-time-cell-label">Weekday PM</div>
+            <div class="pc-time-cell-sub">2 – 6 in your TZ</div>
+          </div>
+          <div class="pc-time-cell">
+            <div class="pc-time-cell-label">Weekday Eve</div>
+            <div class="pc-time-cell-sub">6 – 9 in your TZ</div>
+          </div>
+          <div class="pc-time-cell">
+            <div class="pc-time-cell-label">Weekend AM</div>
+            <div class="pc-time-cell-sub">9 – 12 in your TZ</div>
+          </div>
+          <div class="pc-time-cell">
+            <div class="pc-time-cell-label">Weekend PM</div>
+            <div class="pc-time-cell-sub">12 – 5 in your TZ</div>
+          </div>
+          <div class="pc-time-cell">
+            <div class="pc-time-cell-label">Flexible</div>
+            <div class="pc-time-cell-sub">Any time works</div>
+          </div>
+        </div>
+        <div class="pc-step-nav">
+          <button class="pc-step-btn secondary">← Back</button>
+          <div class="pc-step-dots">
+            <div class="pc-step-dot done"></div>
+            <div class="pc-step-dot active"></div>
+            <div class="pc-step-dot"></div>
+          </div>
+          <button class="pc-step-btn primary">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pc-pref-panel">
+        <div class="pc-pref-label">Preferred peer location</div>
+        <select class="pc-select"><option>India</option><option>Singapore</option><option>UAE</option><option>Any</option></select>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="pc-history-section">
+      <div class="pc-history-heading">Past sessions</div>
+      <div class="pc-history-sub">Your meeting history with AI summaries and key actions.</div>
+      <div class="pc-history-grid">
+
+        <div class="pc-hist-card">
+          <div class="pc-hist-top">
+            <div class="pc-hist-ava" style="background:#033c2f;">RV</div>
+            <div>
+              <div class="pc-hist-name">Rohan Verma</div>
+              <div class="pc-hist-meta">June 2026 · 28 min</div>
+            </div>
+          </div>
+          <div class="pc-hist-practice">Transfer Pricing</div>
+          <div class="pc-hist-summary">Discussed CBCR documentation for Mauritius holdco structures and India-Mauritius treaty grandfathering provisions. Rohan shared an internal TP template.</div>
+          <div class="pc-hist-footer">
+            <div class="pc-hist-stars"><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span></div>
+            <a href="#" class="pc-hist-link">Full transcript →</a>
+          </div>
+        </div>
+
+        <div class="pc-hist-card">
+          <div class="pc-hist-top">
+            <div class="pc-hist-ava" style="background:#374151;">ST</div>
+            <div>
+              <div class="pc-hist-name">Sheila Tanaka</div>
+              <div class="pc-hist-meta">May 2026 · 25 min</div>
+            </div>
+          </div>
+          <div class="pc-hist-practice">Corporate Compliance</div>
+          <div class="pc-hist-summary">Explored Singapore MAS compliance requirements for FPIs and how new ESG disclosure rules affect reporting timelines for Indian-listed subsidiaries.</div>
+          <div class="pc-hist-footer">
+            <div class="pc-hist-stars"><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star">★</span></div>
+            <a href="#" class="pc-hist-link">Full transcript →</a>
+          </div>
+        </div>
+
+        <div class="pc-hist-card">
+          <div class="pc-hist-top">
+            <div class="pc-hist-ava" style="background:#1e3a5f;">PM</div>
+            <div>
+              <div class="pc-hist-name">Pradeep Menon</div>
+              <div class="pc-hist-meta">Apr 2026 · 30 min</div>
+            </div>
+          </div>
+          <div class="pc-hist-practice">M&A Tax</div>
+          <div class="pc-hist-summary">Deep dive on FEMA implications in cross-border PE acquisitions and OCB restoration provisions under RBI Master Direction 2024 amendments.</div>
+          <div class="pc-hist-footer">
+            <div class="pc-hist-stars"><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span><span class="pc-hist-star on">★</span></div>
+            <a href="#" class="pc-hist-link">Full transcript →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="pc-variant-label">Variant 2 — Minimal Focus</div>
+<script src="assets/shared.js?v=11"></script>
+</body>
+</html>
