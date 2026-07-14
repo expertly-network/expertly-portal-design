@@ -132,6 +132,7 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
   text-wrap: balance; min-height: 3.8em;
 }
 .hero-stellar .hs-heading .part-accent { color: #00A582; }
+.hero-stellar .hs-heading .hs-heading-gap { display: block; content: ''; height: 14px; }
 .hs-tw-cursor {
   display: inline-block; width: 3px; height: 0.82em;
   background: #00A582; margin-left: 3px; vertical-align: middle;
@@ -456,11 +457,10 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
 
     <div class="hs-body">
       <div class="hs-left">
-        <div class="hs-eyebrow">Curated &middot; Verified &middot; Global</div>
         <h1 class="hs-heading" aria-label="The Right Finance and Legal Expert Is Already in Our Network.">
           <span id="hs-tw-output"></span><span class="hs-tw-cursor" id="hs-tw-cursor" aria-hidden="true"></span>
         </h1>
-        <p class="hs-lede">A boutique network of verified senior practitioners. Skip the referral chains and junior associates. Search, verify credentials, and book the right expert directly.</p>
+        <p class="hs-lede">A boutique network of verified senior practitioners. Skip the referral chains and junior associates. Search, verify credentials, and meet the right expert directly.</p>
         <div class="hs-actions">
           <a href="members.html" class="hs-btn-primary">
             Find an Expert
@@ -1243,7 +1243,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
   if (document.documentElement.getAttribute('data-hero') !== 'orbit') return;
 
   /* Typewriter */
-  var PART1 = "The Right Finance & Legal Expert\nIsn't Out of Reach-";
+  var PART1 = "The Right Finance & Legal Expert\nIsn't Out of Reach,";
   var PART2 = "\nThey're Already in Our Network.";
   var FULL  = PART1 + PART2;
   var SPLIT = PART1.length;
@@ -1254,7 +1254,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
   function renderTyped() {
     var p1 = FULL.slice(0, Math.min(typed, SPLIT)).replace(/\n/g, '<br>');
     var p2 = typed > SPLIT
-      ? '<span class="part-accent">' + FULL.slice(SPLIT, typed).replace(/\n/g, '<br>') + '</span>'
+      ? '<br class="hs-heading-gap">' + '<span class="part-accent">' + FULL.slice(SPLIT + 1, typed).replace(/\n/g, '<br>') + '</span>'
       : '';
     outEl.innerHTML = p1 + p2;
   }
