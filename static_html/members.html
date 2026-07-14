@@ -108,40 +108,174 @@
       flex-wrap: wrap;
     }
 
-    .mv4-select-wrap {
-      position: relative;
+    /* ── Filter dropdowns (button + searchable popover, same pattern as events page) ── */
+    .mv4-filter-btn {
       display: inline-flex;
       align-items: center;
-    }
-
-    .mv4-select-wrap::after {
-      content: '▾';
-      position: absolute;
-      right: 11px;
-      font-size: 9px;
-      color: var(--ink-3);
-      pointer-events: none;
-    }
-
-    .mv4-select {
-      appearance: none;
-      -webkit-appearance: none;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 100px;
       background: var(--bg-card);
       border: 1px solid var(--line-2);
-      border-radius: 100px;
-      padding: 7px 28px 7px 13px;
       font-family: inherit;
       font-size: 12.5px;
       font-weight: 500;
       color: var(--ink);
-      outline: none;
       cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      white-space: nowrap;
+      position: relative;
+      user-select: none;
+    }
+
+    .mv4-filter-btn:hover { border-color: var(--ink-3); }
+
+    .mv4-filter-btn.open {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+
+    .mv4-filter-btn.has-value {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .mv4-filter-btn-caret {
+      font-size: 9px;
+      opacity: 0.5;
+      transition: transform 0.2s;
+    }
+
+    .mv4-filter-btn.open .mv4-filter-btn-caret { transform: rotate(180deg); }
+
+    .mv4-filter-clear {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .mv4-filter-btn.has-value .mv4-filter-clear { display: inline-flex; }
+
+    .mv4-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      z-index: 40;
+      width: 240px;
+      max-width: 82vw;
+      background: var(--bg-card);
+      border: 1px solid var(--line-2);
+      border-radius: 14px;
+      box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.14), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px) scale(0.98);
+      transform-origin: top left;
+      transition: opacity 0.18s, transform 0.18s;
+      padding: 10px 0 8px;
+    }
+
+    .mv4-popover.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: none;
+    }
+
+    .mv4-dd-search-wrap { padding: 0 10px 8px; }
+
+    .mv4-dd-search {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 12px;
+      border: 1px solid var(--line-2);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--bg-alt);
+      outline: none;
       transition: border-color 0.15s;
     }
 
-    .mv4-select:hover,
-    .mv4-select:focus {
-      border-color: var(--ink-3);
+    .mv4-dd-search:focus { border-color: var(--accent); }
+
+    .mv4-dd-list {
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-2) transparent;
+    }
+
+    .mv4-dd-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .mv4-dd-option:hover { background: var(--bg-alt); color: var(--ink); }
+
+    .mv4-dd-option.selected { color: var(--accent); font-weight: 600; }
+
+    .mv4-dd-option-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mv4-dd-checkbox {
+      width: 15px;
+      height: 15px;
+      border-radius: 4px;
+      border: 1.5px solid var(--line-2);
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .mv4-dd-option.selected .mv4-dd-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .mv4-dd-option.selected .mv4-dd-checkbox::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 4px;
+      height: 8px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .mv4-dd-check {
+      font-size: 11px;
+      color: var(--accent);
+      opacity: 0;
+    }
+
+    .mv4-dd-option.selected .mv4-dd-check { opacity: 1; }
+
+    .mv4-dd-empty {
+      padding: 18px 14px;
+      font-size: 13px;
+      color: var(--ink-4);
+      text-align: center;
     }
 
     .mv4-search-box {
@@ -483,6 +617,7 @@
       margin-bottom: 18px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -754,27 +889,62 @@
           <!-- Filter bar -->
           <div class="mv4-filter-bar">
             <div class="mv4-filters">
-              <div class="mv4-select-wrap">
-                <select class="mv4-select" id="filter-practice">
-                  <option value="All">All practices</option>
-                </select>
+
+              <div style="position:relative;" id="fd-practice-wrapper">
+                <button class="mv4-filter-btn" id="fd-practice-trigger" type="button">
+                  <span id="fd-practice-label">All practices</span>
+                  <span class="mv4-filter-btn-caret">▾</span>
+                  <span class="mv4-filter-clear" id="fd-practice-clear">✕</span>
+                </button>
+                <div class="mv4-popover" id="fd-practice-popover">
+                  <div class="mv4-dd-search-wrap">
+                    <input class="mv4-dd-search" id="fd-practice-search" placeholder="Search practices…" autocomplete="off">
+                  </div>
+                  <div class="mv4-dd-list" id="fd-practice-list"></div>
+                </div>
               </div>
-              <div class="mv4-select-wrap">
-                <select class="mv4-select" id="filter-region">
-                  <option value="All">All regions</option>
-                  <option value="Americas">Americas</option>
-                  <option value="EMEA">EMEA</option>
-                  <option value="APAC">APAC</option>
-                </select>
+
+              <div style="position:relative;" id="fd-country-wrapper">
+                <button class="mv4-filter-btn" id="fd-country-trigger" type="button">
+                  <span id="fd-country-label">All countries</span>
+                  <span class="mv4-filter-btn-caret">▾</span>
+                  <span class="mv4-filter-clear" id="fd-country-clear">✕</span>
+                </button>
+                <div class="mv4-popover" id="fd-country-popover">
+                  <div class="mv4-dd-search-wrap">
+                    <input class="mv4-dd-search" id="fd-country-search" placeholder="Search countries…" autocomplete="off">
+                  </div>
+                  <div class="mv4-dd-list" id="fd-country-list"></div>
+                </div>
               </div>
-              <div class="mv4-select-wrap">
-                <select class="mv4-select" id="filter-sort">
-                  <option value="featured">Featured</option>
-                  <option value="tenure">Most experienced</option>
-                  <option value="rate-asc">Rate: low → high</option>
-                  <option value="rate-desc">Rate: high → low</option>
-                </select>
+
+              <div style="position:relative;" id="fd-price-wrapper">
+                <button class="mv4-filter-btn" id="fd-price-trigger" type="button">
+                  <span id="fd-price-label">All prices</span>
+                  <span class="mv4-filter-btn-caret">▾</span>
+                  <span class="mv4-filter-clear" id="fd-price-clear">✕</span>
+                </button>
+                <div class="mv4-popover" id="fd-price-popover">
+                  <div class="mv4-dd-search-wrap">
+                    <input class="mv4-dd-search" id="fd-price-search" placeholder="Search price ranges…" autocomplete="off">
+                  </div>
+                  <div class="mv4-dd-list" id="fd-price-list"></div>
+                </div>
               </div>
+
+              <div style="position:relative;" id="fd-sort-wrapper">
+                <button class="mv4-filter-btn" id="fd-sort-trigger" type="button">
+                  <span id="fd-sort-label">Featured</span>
+                  <span class="mv4-filter-btn-caret">▾</span>
+                </button>
+                <div class="mv4-popover" id="fd-sort-popover">
+                  <div class="mv4-dd-search-wrap">
+                    <input class="mv4-dd-search" id="fd-sort-search" placeholder="Search sort options…" autocomplete="off">
+                  </div>
+                  <div class="mv4-dd-list" id="fd-sort-list"></div>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -889,9 +1059,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       const members = window.EXPERTLY_MEMBERS || [];
       const searchInput = document.getElementById('dir-search-input');
-      const practiceSelect = document.getElementById('filter-practice');
-      const regionSelect = document.getElementById('filter-region');
-      const sortSelect = document.getElementById('filter-sort');
       const listEl = document.getElementById('dir-members-grid');
       const emptyEl = document.getElementById('dir-empty-state');
       const resetBtn = document.getElementById('dir-reset-filters-btn');
@@ -904,20 +1071,220 @@
       let allFiltered = [];
       let currentPage = 0;
 
-      const regionMap = {
-        Americas: ['US', 'BR', 'MX', 'CA'],
-        EMEA: ['GB', 'FR', 'DE', 'ES', 'IT', 'AE', 'EG', 'LB', 'GH', 'NG'],
-        APAC: ['IN', 'SG', 'JP', 'CN', 'AU', 'HK']
-      };
+      /* Member "country" fields are inconsistent (mix of ISO codes and full
+         names) — the location string's last comma segment is clean and
+         consistent, so derive country from that instead. */
+      const countryOf = m => m.location.split(',').pop().trim();
+
+      /* Full list of the world's 195 countries, shown in the filter so
+         people can browse/search beyond wherever current members happen
+         to be based. */
+      const ALL_COUNTRIES = [
+        'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
+        'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados',
+        'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana',
+        'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon',
+        'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros',
+        'Congo, Democratic Republic of the', 'Congo, Republic of the', 'Costa Rica', 'Croatia', 'Cuba',
+        'Cyprus', 'Czechia', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt',
+        'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland',
+        'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala',
+        'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia',
+        'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan',
+        'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon',
+        'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi',
+        'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico',
+        'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar',
+        'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria',
+        'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama',
+        'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania',
+        'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines',
+        'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles',
+        'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa',
+        'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland',
+        'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga',
+        'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine',
+        'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu',
+        'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'
+      ];
+      const countries = ALL_COUNTRIES;
 
       const practices = [...new Set(members.map(m => m.practice))];
-      practiceSelect.innerHTML =
-        `<option value="All">All practices</option>` +
-        practices.map(p => `<option value="${p}">${p}</option>`).join('');
 
       const urlParams = new URLSearchParams(window.location.search);
       const ip = urlParams.get('practice');
-      if (ip && practices.includes(ip)) practiceSelect.value = ip;
+      const initialPractice = (ip && practices.includes(ip)) ? [ip] : [];
+
+      /* Rate strings look like "$420/hr" — strip everything but digits before parsing. */
+      const parseRate = m => parseInt(String(m.rate).replace(/[^0-9]/g, ''), 10) || 0;
+
+      const PRICE_RANGES = [
+        { value: '0-300', label: 'Under $300/hr' },
+        { value: '300-400', label: '$300 – $400/hr' },
+        { value: '400-500', label: '$400 – $500/hr' },
+        { value: '500-600', label: '$500 – $600/hr' },
+        { value: '600-999999', label: '$600/hr and up' }
+      ];
+
+      /* ── Reusable searchable filter dropdown (button + popover, same
+         pattern as the country picker on the events page). Supports
+         multi-select via checkboxes, or single-select (e.g. Sort). ── */
+      function createFilterDropdown(opts) {
+        const {
+          wrapperId, triggerId, popoverId, labelId, searchId, listId, clearId,
+          options, value, defaultLabel, multi = true,
+          onChange
+        } = opts;
+
+        const wrapper = document.getElementById(wrapperId);
+        const trigger = document.getElementById(triggerId);
+        const popover = document.getElementById(popoverId);
+        const labelEl = document.getElementById(labelId);
+        const searchEl = document.getElementById(searchId);
+        const listEl = document.getElementById(listId);
+        const clearEl = clearId ? document.getElementById(clearId) : null;
+
+        let items = options.map(o => (typeof o === 'string' ? { value: o, label: o } : o));
+        let current = value ? [...value] : [];
+        let open = false;
+        let autoCloseTimer = null;
+
+        const isSelected = v => current.includes(v);
+
+        const updateTrigger = () => {
+          if (current.length === 0) {
+            labelEl.textContent = defaultLabel;
+            trigger.classList.remove('has-value');
+          } else if (current.length === 1) {
+            const f = items.find(i => i.value === current[0]);
+            labelEl.textContent = f ? f.label : defaultLabel;
+            trigger.classList.add('has-value');
+          } else {
+            labelEl.textContent = `${current.length} selected`;
+            trigger.classList.add('has-value');
+          }
+        };
+
+        const buildList = (query = '') => {
+          const q = query.trim().toLowerCase();
+          const filtered = q ? items.filter(i => i.label.toLowerCase().includes(q)) : items;
+          listEl.innerHTML = filtered.length
+            ? filtered.map(i => `
+              <div class="mv4-dd-option${isSelected(i.value) ? ' selected' : ''}" data-value="${String(i.value).replace(/"/g, '&quot;')}">
+                <span class="mv4-dd-option-main">
+                  ${multi ? '<span class="mv4-dd-checkbox"></span>' : ''}
+                  <span>${i.label}</span>
+                </span>
+                ${!multi ? '<span class="mv4-dd-check">✓</span>' : ''}
+              </div>`).join('')
+            : `<div class="mv4-dd-empty">No matches</div>`;
+
+          listEl.querySelectorAll('.mv4-dd-option').forEach(el => {
+            el.addEventListener('click', () => {
+              const v = el.dataset.value;
+              if (multi) {
+                current = isSelected(v) ? current.filter(x => x !== v) : [...current, v];
+                clearTimeout(autoCloseTimer);
+                autoCloseTimer = setTimeout(closeDd, 3000);
+              } else {
+                current = [v];
+                closeDd();
+              }
+              updateTrigger();
+              buildList(searchEl.value);
+              if (onChange) onChange([...current]);
+            });
+          });
+        };
+
+        const closeDd = () => {
+          clearTimeout(autoCloseTimer);
+          open = false;
+          trigger.classList.remove('open');
+          popover.classList.remove('open');
+        };
+
+        const openDd = () => {
+          document.querySelectorAll('.mv4-popover.open').forEach(p => p.classList.remove('open'));
+          document.querySelectorAll('.mv4-filter-btn.open').forEach(b => b.classList.remove('open'));
+          clearTimeout(autoCloseTimer);
+          open = true;
+          trigger.classList.add('open');
+          popover.classList.add('open');
+          searchEl.value = '';
+          buildList();
+          setTimeout(() => searchEl.focus(), 50);
+        };
+
+        trigger.addEventListener('click', e => {
+          e.stopPropagation();
+          open ? closeDd() : openDd();
+        });
+        searchEl.addEventListener('input', () => {
+          clearTimeout(autoCloseTimer);
+          buildList(searchEl.value);
+        });
+        wrapper.addEventListener('click', e => e.stopPropagation());
+
+        if (clearEl) {
+          clearEl.addEventListener('click', e => {
+            e.stopPropagation();
+            current = [];
+            updateTrigger();
+            buildList(searchEl.value);
+            if (onChange) onChange([...current]);
+          });
+        }
+
+        updateTrigger();
+
+        return {
+          getValue: () => [...current],
+          setValue: v => { current = v ? [...v] : []; updateTrigger(); buildList(searchEl.value); }
+        };
+      }
+
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.mv4-popover.open').forEach(p => p.classList.remove('open'));
+        document.querySelectorAll('.mv4-filter-btn.open').forEach(b => b.classList.remove('open'));
+      });
+
+      const practiceDropdown = createFilterDropdown({
+        wrapperId: 'fd-practice-wrapper', triggerId: 'fd-practice-trigger', popoverId: 'fd-practice-popover',
+        labelId: 'fd-practice-label', searchId: 'fd-practice-search', listId: 'fd-practice-list', clearId: 'fd-practice-clear',
+        options: practices.map(p => ({ value: p, label: p })),
+        value: initialPractice, defaultLabel: 'All practices',
+        onChange: () => render()
+      });
+
+      const countryDropdown = createFilterDropdown({
+        wrapperId: 'fd-country-wrapper', triggerId: 'fd-country-trigger', popoverId: 'fd-country-popover',
+        labelId: 'fd-country-label', searchId: 'fd-country-search', listId: 'fd-country-list', clearId: 'fd-country-clear',
+        options: countries.map(c => ({ value: c, label: c })),
+        defaultLabel: 'All countries',
+        onChange: () => render()
+      });
+
+      const priceDropdown = createFilterDropdown({
+        wrapperId: 'fd-price-wrapper', triggerId: 'fd-price-trigger', popoverId: 'fd-price-popover',
+        labelId: 'fd-price-label', searchId: 'fd-price-search', listId: 'fd-price-list', clearId: 'fd-price-clear',
+        options: PRICE_RANGES,
+        defaultLabel: 'All prices',
+        onChange: () => render()
+      });
+
+      const sortDropdown = createFilterDropdown({
+        wrapperId: 'fd-sort-wrapper', triggerId: 'fd-sort-trigger', popoverId: 'fd-sort-popover',
+        labelId: 'fd-sort-label', searchId: 'fd-sort-search', listId: 'fd-sort-list', clearId: null,
+        options: [
+          { value: 'featured', label: 'Featured' },
+          { value: 'tenure', label: 'Most experienced' },
+          { value: 'rate-asc', label: 'Rate: low → high' },
+          { value: 'rate-desc', label: 'Rate: high → low' }
+        ],
+        value: ['featured'], defaultLabel: 'Featured', multi: false,
+        onChange: () => render()
+      });
 
       const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
       const pinSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
@@ -1022,18 +1389,28 @@
 
       const render = () => {
         const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
-        const pr = practiceSelect.value;
-        const rg = regionSelect.value;
-        const so = sortSelect.value;
+        const pr = practiceDropdown.getValue();
+        const ctry = countryDropdown.getValue();
+        const pc = priceDropdown.getValue();
+        const so = sortDropdown.getValue()[0] || 'featured';
 
         let filtered = [...members];
         if (q) filtered = filtered.filter(m =>
           [m.name, m.practice, m.location, m.firm, m.title].some(v => v.toLowerCase().includes(q))
         );
-        if (pr !== 'All') filtered = filtered.filter(m => m.practice === pr);
-        if (rg !== 'All') filtered = filtered.filter(m => (regionMap[rg] || []).includes(m.country));
-        if (so === 'rate-asc') filtered.sort((a, b) => parseInt(a.rate) - parseInt(b.rate));
-        if (so === 'rate-desc') filtered.sort((a, b) => parseInt(b.rate) - parseInt(a.rate));
+        if (pr.length) filtered = filtered.filter(m => pr.includes(m.practice));
+        if (ctry.length) filtered = filtered.filter(m => ctry.includes(countryOf(m)));
+        if (pc.length) {
+          filtered = filtered.filter(m => {
+            const rate = parseRate(m);
+            return pc.some(key => {
+              const [min, max] = key.split('-').map(Number);
+              return rate >= min && rate <= max;
+            });
+          });
+        }
+        if (so === 'rate-asc') filtered.sort((a, b) => parseRate(a) - parseRate(b));
+        if (so === 'rate-desc') filtered.sort((a, b) => parseRate(b) - parseRate(a));
         if (so === 'tenure') filtered.sort((a, b) => parseInt(b.tenure) - parseInt(a.tenure));
 
         allFiltered = filtered;
@@ -1055,14 +1432,12 @@
       if (sentinel) observer.observe(sentinel);
 
       if (searchInput) searchInput.addEventListener('input', render);
-      practiceSelect.addEventListener('change', render);
-      regionSelect.addEventListener('change', render);
-      sortSelect.addEventListener('change', render);
       resetBtn.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
-        practiceSelect.value = 'All';
-        regionSelect.value = 'All';
-        sortSelect.value = 'featured';
+        practiceDropdown.setValue([]);
+        countryDropdown.setValue([]);
+        priceDropdown.setValue([]);
+        sortDropdown.setValue(['featured']);
         render();
       });
       render();

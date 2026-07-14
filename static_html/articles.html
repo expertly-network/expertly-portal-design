@@ -96,37 +96,148 @@
       line-height: 1.1;
     }
 
-    /* ── Category filter tabs ─────────────────────── */
-    .anv-cats {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .anv-cat-btn {
-      padding: 7px 16px;
+    /* ── Category filter dropdown (button + searchable popover) ──
+       Deliberately styled to stand out — this is the primary way to
+       browse the grid, so it should draw the eye. ── */
+    .anv-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px 13px 19px;
       border-radius: 100px;
+      background: color-mix(in oklab, var(--accent) 9%, var(--bg-card));
+      border: 1.5px solid var(--accent);
       font-family: 'Archivo', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border: 1px solid var(--line-2);
-      background: var(--bg-card);
-      color: var(--ink-3);
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
-
-    .anv-cat-btn:hover {
-      border-color: var(--ink-3);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       color: var(--ink);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+      position: relative;
+      user-select: none;
+      box-shadow: 0 6px 20px -6px color-mix(in oklab, var(--accent) 45%, transparent);
     }
 
-    .anv-cat-btn.active {
-      background: var(--ink);
+    .anv-filter-btn-icon {
+      color: var(--accent);
+      flex-shrink: 0;
+      display: inline-flex;
+    }
+
+    .anv-filter-btn:hover {
+      border-color: var(--accent);
+      background: color-mix(in oklab, var(--accent) 16%, var(--bg-card));
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px -6px color-mix(in oklab, var(--accent) 55%, transparent);
+    }
+
+    .anv-filter-btn.open {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+    }
+
+    .anv-filter-btn.has-value {
+      background: var(--accent);
       color: #fff;
-      border-color: var(--ink);
+      border-color: var(--accent);
+    }
+
+    .anv-filter-btn.has-value .anv-filter-btn-icon { color: #fff; }
+
+    .anv-filter-btn-caret {
+      font-size: 10px;
+      opacity: 0.6;
+      transition: transform 0.2s;
+    }
+
+    .anv-filter-btn.open .anv-filter-btn-caret { transform: rotate(180deg); }
+
+    .anv-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      z-index: 40;
+      width: 250px;
+      max-width: 82vw;
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.14), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px) scale(0.98);
+      transform-origin: top left;
+      transition: opacity 0.18s, transform 0.18s;
+      padding: 10px 0 8px;
+    }
+
+    .anv-popover.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: none;
+    }
+
+    .anv-dd-search-wrap { padding: 0 10px 8px; }
+
+    .anv-dd-search {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 12px;
+      border: 1px solid var(--line-2);
+      border-radius: 8px;
+      font-family: 'Geist', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--bg-alt);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .anv-dd-search:focus { border-color: var(--accent); }
+
+    .anv-dd-list {
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-2) transparent;
+    }
+
+    .anv-dd-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 14px;
+      font-family: 'Geist', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: normal;
+      text-transform: none;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .anv-dd-option:hover { background: var(--bg-alt); color: var(--ink); }
+
+    .anv-dd-option.selected { color: var(--accent); font-weight: 600; }
+
+    .anv-dd-check {
+      font-size: 11px;
+      color: var(--accent);
+      opacity: 0;
+    }
+
+    .anv-dd-option.selected .anv-dd-check { opacity: 1; }
+
+    .anv-dd-empty {
+      padding: 18px 14px;
+      font-size: 13px;
+      color: var(--ink-4);
+      text-align: center;
     }
 
     /* ── Static featured section ──────────────────── */
@@ -245,6 +356,7 @@
       color: #fff;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -418,6 +530,7 @@
       color: var(--ink);
       display: -webkit-box;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
       flex: 1;
@@ -611,7 +724,19 @@
             <span class="anv-section-label">Browse</span>
             <h2 class="anv-section-title">All articles</h2>
           </div>
-          <div class="anv-cats" id="anv-cats"></div>
+          <div style="position:relative;" id="anv-cat-wrapper">
+            <button class="anv-filter-btn" id="anv-cat-trigger" type="button">
+              <svg class="anv-filter-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+              <span id="anv-cat-label">All categories</span>
+              <span class="anv-filter-btn-caret">▾</span>
+            </button>
+            <div class="anv-popover" id="anv-cat-popover">
+              <div class="anv-dd-search-wrap">
+                <input class="anv-dd-search" id="anv-cat-search" placeholder="Search categories…" autocomplete="off">
+              </div>
+              <div class="anv-dd-list" id="anv-cat-list"></div>
+            </div>
+          </div>
         </div>
         <div class="anv-grid-head">
           <span class="anv-grid-count mono" id="anv-count"></span>
@@ -676,7 +801,6 @@
       const featuredEl = document.getElementById('anv-featured');
       const spotlightEl = document.getElementById('anv-spotlight');
       const gridEl = document.getElementById('anv-grid');
-      const catsEl = document.getElementById('anv-cats');
       const countEl = document.getElementById('anv-count');
       const emptyEl = document.getElementById('anv-empty');
       const resetBtn = document.getElementById('anv-reset');
@@ -762,24 +886,69 @@
       </div>`;
       };
 
-      /* ── 3. Category tabs ── */
+      /* ── 3. Category dropdown (button + searchable popover) ── */
       const cats = ['All', ...new Set(articles.map(a => a.category))];
-      catsEl.innerHTML = cats.map(c =>
-        `<button class="anv-cat-btn ${c === 'All' ? 'active' : ''}" data-cat="${c}">${c}</button>`
-      ).join('');
 
-      catsEl.addEventListener('click', e => {
-        const btn = e.target.closest('.anv-cat-btn');
-        if (!btn) return;
-        catsEl.querySelectorAll('.anv-cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeCat = btn.dataset.cat;
-        renderGrid();
+      const catTrigger = document.getElementById('anv-cat-trigger');
+      const catPopover = document.getElementById('anv-cat-popover');
+      const catLabel = document.getElementById('anv-cat-label');
+      const catSearch = document.getElementById('anv-cat-search');
+      const catList = document.getElementById('anv-cat-list');
+      const catWrapper = document.getElementById('anv-cat-wrapper');
+      let catOpen = false;
+
+      const buildCatList = (query = '') => {
+        const q = query.trim().toLowerCase();
+        const filtered = q ? cats.filter(c => c.toLowerCase().includes(q)) : cats;
+        catList.innerHTML = filtered.length
+          ? filtered.map(c => `
+            <div class="anv-dd-option${c === activeCat ? ' selected' : ''}" data-cat="${c}">
+              <span>${c}</span>
+              <span class="anv-dd-check">✓</span>
+            </div>`).join('')
+          : `<div class="anv-dd-empty">No matches</div>`;
+
+        catList.querySelectorAll('.anv-dd-option').forEach(el => {
+          el.addEventListener('click', () => {
+            activeCat = el.dataset.cat;
+            catLabel.textContent = activeCat === 'All' ? 'All categories' : activeCat;
+            catTrigger.classList.toggle('has-value', activeCat !== 'All');
+            closeCatDd();
+            renderGrid();
+          });
+        });
+      };
+
+      const closeCatDd = () => {
+        catOpen = false;
+        catTrigger.classList.remove('open');
+        catPopover.classList.remove('open');
+      };
+
+      const openCatDd = () => {
+        catOpen = true;
+        catTrigger.classList.add('open');
+        catPopover.classList.add('open');
+        catSearch.value = '';
+        buildCatList();
+        setTimeout(() => catSearch.focus(), 50);
+      };
+
+      catTrigger.addEventListener('click', e => {
+        e.stopPropagation();
+        catOpen ? closeCatDd() : openCatDd();
       });
+      catSearch.addEventListener('input', () => buildCatList(catSearch.value));
+      catWrapper.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => { if (catOpen) closeCatDd(); });
+
+      buildCatList();
 
       resetBtn.addEventListener('click', () => {
         activeCat = 'All';
-        catsEl.querySelectorAll('.anv-cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'All'));
+        catLabel.textContent = 'All categories';
+        catTrigger.classList.remove('has-value');
+        buildCatList();
         renderGrid();
       });
 

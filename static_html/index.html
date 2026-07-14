@@ -129,10 +129,9 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
 .hero-stellar .hs-heading {
   font-size: clamp(38px, 4.2vw, 66px); font-weight: 600;
   line-height: 1.02; letter-spacing: -0.035em; color: #fff;
-  text-wrap: balance; min-height: 3.8em;
+  min-height: 3.8em;
 }
 .hero-stellar .hs-heading .part-accent { color: #00A582; }
-.hero-stellar .hs-heading .hs-heading-gap { display: block; content: ''; height: 14px; }
 .hs-tw-cursor {
   display: inline-block; width: 3px; height: 0.82em;
   background: #00A582; margin-left: 3px; vertical-align: middle;
@@ -143,7 +142,7 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
 
 .hero-stellar .hs-lede {
   font-size: 16.5px; line-height: 1.65; color: rgba(255,255,255,0.5);
-  margin-top: 28px; max-width: 460px; letter-spacing: -0.005em;
+  margin-top: 26px; max-width: 460px; letter-spacing: -0.005em;
   opacity: 0; animation: hs-fadeIn 0.7s ease 3.8s both;
 }
 .hero-stellar .hs-actions {
@@ -189,7 +188,7 @@ html[data-hero="orbit"] .hero-split     { display: none !important; }
   flex: 1; display: flex; align-items: center; justify-content: center;
   opacity: 0; animation: hs-scaleIn 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both;
 }
-.hero-stellar .hs-orbit-container { position: relative; width: 540px; height: 540px; flex-shrink: 0; }
+.hero-stellar .hs-orbit-container { position: relative; width: 540px; height: 540px; flex-shrink: 0; transform: translateX(40px); }
 
 .hero-stellar .hs-orbit-ring {
   position: absolute; top: 50%; left: 50%; border-radius: 50%; transform-origin: 50% 50%;
@@ -358,7 +357,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
           <div><b><span data-counter-value="20" data-counter-suffix="+">0</span></b><span>Verified experts</span></div>
           <div><b><span data-counter-value="20" data-counter-suffix="+">0</span></b><span>Countries</span></div>
           <div><b><span data-counter-value="12">0</span></b><span>Practice areas</span></div>
-          <div><b><span data-counter-value="100" data-counter-suffix="+">0</span></b><span>Consultations matched</span></div>
+          <div><b><span data-counter-value="100" data-counter-suffix="+">0</span></b><span>Consultations </span></div>
         </div>
 
       </div>
@@ -472,7 +471,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
           <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-experts">0</span>+</span><span class="hs-trust-label">Verified Experts</span></div>
           <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-juris">0</span>+</span><span class="hs-trust-label">Jurisdictions</span></div>
           <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-areas">0</span></span><span class="hs-trust-label">Practice Areas</span></div>
-          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-matched">0</span>+</span><span class="hs-trust-label">Matched</span></div>
+          <div class="hs-trust-item"><span class="hs-trust-num"><span id="hs-c-matched">0</span>+</span><span class="hs-trust-label">Consultations</span></div>
         </div>
       </div>
 
@@ -1060,20 +1059,11 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
           </div>
           <div class="faq-item">
             <button class="faq-q">
-              <span>What is the difference between a Budding and a Seasoned Professional?</span>
-              <span class="faq-toggle">+</span>
-            </button>
-            <div class="faq-a">
-              <p>A Budding Professional has more than 7 but fewer than 12 years of experience, whereas a Seasoned Professional has more than 12 years. Professionals with fewer than 7 years are not currently eligible.</p>
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">
               <span>What does membership cost?</span>
               <span class="faq-toggle">+</span>
             </button>
             <div class="faq-a">
-              <p>Annual membership is $499 for Budding Professionals and $699 for Seasoned Professionals. Occasionally, we offer promotional discount codes for new members - keep an eye on our website and social media channels for such offers.</p>
+              <p>Membership is a flat $499/year, with zero commission on any work you win. Occasionally, we offer promotional discount codes for new members - keep an eye on our website and social media channels for such offers.</p>
             </div>
           </div>
           <div class="faq-item">
@@ -1254,7 +1244,7 @@ html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover { background: rgba(0
   function renderTyped() {
     var p1 = FULL.slice(0, Math.min(typed, SPLIT)).replace(/\n/g, '<br>');
     var p2 = typed > SPLIT
-      ? '<br class="hs-heading-gap">' + '<span class="part-accent">' + FULL.slice(SPLIT + 1, typed).replace(/\n/g, '<br>') + '</span>'
+      ? '<span class="part-accent">' + FULL.slice(SPLIT, typed).replace(/\n/g, '<br>') + '</span>'
       : '';
     outEl.innerHTML = p1 + p2;
   }
