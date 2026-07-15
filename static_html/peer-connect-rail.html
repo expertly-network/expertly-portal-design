@@ -902,6 +902,12 @@
       color: var(--ink);
     }
 
+    .pcr-meeting-slot-sub {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 2px;
+    }
+
     .pcr-btn-primary {
       padding: 12px 20px;
       border-radius: 10px;
@@ -944,6 +950,144 @@
 
     .pcr-btn-outline:hover {
       border-color: var(--ink-3);
+    }
+
+    .pcr-reveal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pcr-reveal-actions .pcr-btn-primary,
+    .pcr-reveal-actions .pcr-btn-outline {
+      flex: 1;
+    }
+
+    .pcr-reschedule-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+    }
+
+    .pcr-reschedule-wrap .pcr-btn-outline {
+      width: 100%;
+    }
+
+    .pcr-reschedule-tip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      width: 220px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-align: left;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s, transform 0.15s;
+      z-index: 5;
+    }
+
+    .pcr-reschedule-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--ink);
+    }
+
+    .pcr-reschedule-wrap:hover .pcr-reschedule-tip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .pcr-reschedule-wrap:has(.pcr-reschedule-menu.open) .pcr-reschedule-tip {
+      opacity: 0;
+    }
+
+    .pcr-reschedule-menu {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      background: var(--bg-card);
+      border: 1px solid var(--line-2);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+      z-index: 6;
+      display: none;
+      text-align: left;
+    }
+
+    .pcr-reschedule-menu.open {
+      display: block;
+    }
+
+    .pcr-reschedule-menu-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      margin-bottom: 10px;
+    }
+
+    .pcr-reschedule-days {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pcr-reschedule-day {
+      flex: 1;
+      padding: 8px 2px;
+      border-radius: 8px;
+      border: 1.5px solid var(--line-2);
+      background: var(--bg);
+      color: var(--ink-2);
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+
+    .pcr-reschedule-day .dow {
+      display: block;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--ink-4);
+      margin-bottom: 2px;
+    }
+
+    .pcr-reschedule-day:hover {
+      border-color: var(--ink-3);
+    }
+
+    .pcr-reschedule-day.selected {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .pcr-reschedule-day.selected .dow {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .pcr-reschedule-note {
+      margin-top: 10px;
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--ink-3);
     }
 
     /* ── post meeting ── */
@@ -1829,6 +1973,62 @@
     let selectedCategory = PHASES[currentIndex].id;
     let prefFormOverride = false;
 
+    /* ── Reschedule: the meeting time (10:00–10:30 AM IST) is fixed —
+       only the day can move, and only within the same week as the
+       default second Tuesday (i.e. Monday through Friday of that week). ── */
+    const CYCLE_DATE = new Date(today.getFullYear(), today.getMonth() + cycleOffset, 1);
+    let meetingDayOffset = 0; // -1 = Mon, 0 = Tue (default), 1 = Wed, 2 = Thu, 3 = Fri
+    let rescheduleMenuOpen = false;
+
+    function getCycleSecondTuesday() {
+      const tueDay = getSecondTuesday(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth());
+      return new Date(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth(), tueDay);
+    }
+
+    function getMeetingWeekDates() {
+      const tue = getCycleSecondTuesday();
+      return [-1, 0, 1, 2, 3].map(offset => {
+        const d = new Date(tue);
+        d.setDate(tue.getDate() + offset);
+        return d;
+      });
+    }
+
+    function getSelectedMeetingDate() {
+      const tue = getCycleSecondTuesday();
+      const d = new Date(tue);
+      d.setDate(tue.getDate() + meetingDayOffset);
+      return d;
+    }
+
+    function formatMeetingDateLong(d) {
+      return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    }
+
+    function formatMeetingDateShort(d) {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function toggleRescheduleMenu(e) {
+      e.stopPropagation();
+      rescheduleMenuOpen = !rescheduleMenuOpen;
+      render();
+    }
+
+    function selectRescheduleDay(offset) {
+      meetingDayOffset = offset;
+      rescheduleMenuOpen = false;
+      render();
+      alert(`Meeting rescheduled to ${formatMeetingDateLong(getSelectedMeetingDate())}. Time stays fixed at 10:00 – 10:30 AM IST.`);
+    }
+
+    document.addEventListener('click', () => {
+      if (rescheduleMenuOpen) {
+        rescheduleMenuOpen = false;
+        render();
+      }
+    });
+
     function selectCategory(id) {
       selectedCategory = id;
       if (id === 'pref') prefFormOverride = false;
@@ -1918,8 +2118,18 @@
 
       else if (state === 'reveal') {
         label.textContent = 'Your peer for July 2026';
+        const selectedDate = getSelectedMeetingDate();
+        const weekDates = getMeetingWeekDates();
+        const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+        const dayButtonsHtml = weekDates.map((d, i) => {
+          const offset = i - 1;
+          const isSelected = offset === meetingDayOffset;
+          return `<button type="button" class="pcr-reschedule-day${isSelected ? ' selected' : ''}" onclick="event.stopPropagation(); selectRescheduleDay(${offset})">
+            <span class="dow">${dayLabels[i]}</span>${d.getDate()}
+          </button>`;
+        }).join('');
         body.innerHTML = `
-      <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Match confirmed · Meeting on Jul 14</div>
+      <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Match confirmed · Meeting on ${formatMeetingDateShort(selectedDate)}</div>
       <div class="pcr-match-profile">
         <div class="pcr-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
         <div>
@@ -1941,13 +2151,36 @@
         <div class="pcr-meeting-slot-left">
           <div class="pcr-meeting-slot-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
           <div id="meeting-slot-text">
-            <div class="pcr-meeting-slot-date" id="meeting-slot-date">Tuesday, July 14 · 10:00 – 10:30 AM IST</div>
+            <div class="pcr-meeting-slot-date" id="meeting-slot-date">${formatMeetingDateLong(selectedDate)} · 10:00 – 10:30 AM IST</div>
+            <div class="pcr-meeting-slot-sub">Meeting link will be shared a day before · Expertly AI will join to transcribe</div>
           </div>
         </div>
-        <button class="pcr-btn-primary">
+      </div>
+      <div class="pcr-reveal-actions">
+        ${selectedCategory === 'meeting' ? `<button class="pcr-btn-primary">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 10l5-3v10l-5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="6" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Join call
+        </button>` : ''}
+        <a href="member-profile.html" class="${selectedCategory === 'meeting' ? 'pcr-btn-outline' : 'pcr-btn-primary'}" target="_blank">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 2h5v5M14 2L8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          View full profile
+        </a>
+        <button class="pcr-btn-outline">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add to calendar
         </button>
+        <div class="pcr-reschedule-wrap">
+          <div class="pcr-reschedule-tip">The time slot is fixed — you can only move the date, and only to another day within this same week.</div>
+          <button class="pcr-btn-outline" onclick="toggleRescheduleMenu(event)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 109-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reschedule
+          </button>
+          <div class="pcr-reschedule-menu${rescheduleMenuOpen ? ' open' : ''}" onclick="event.stopPropagation()">
+            <div class="pcr-reschedule-menu-title">Choose a day this week</div>
+            <div class="pcr-reschedule-days">${dayButtonsHtml}</div>
+            <div class="pcr-reschedule-note">Time stays fixed at 10:00 – 10:30 AM IST. Pick whichever day works for both of you.</div>
+          </div>
+        </div>
       </div>
     `;
       }
