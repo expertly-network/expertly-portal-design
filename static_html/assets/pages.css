@@ -168,6 +168,46 @@
   .ev-row-loc, .ev-row-actions { grid-column: 1 / -1; padding-top: 8px; border-top: 1px dashed var(--line); }
   .ev-hero-stats { gap: 24px; flex-wrap: wrap; }
 }
+@media (max-width: 620px) {
+  .ev-hero { padding: 40px 0 32px; }
+  .ev-hero-stats { gap: 16px; }
+  .ev-hero-stats > div b { font-size: 24px; }
+  .ev-filter-tabs { gap: 6px; margin: 28px 0 16px; }
+  .ev-filter-tabs button { padding: 6px 12px; font-size: 12px; }
+  .ev-month-header h2 { font-size: 24px; }
+  .ev-row { grid-template-columns: 80px 1fr; gap: 14px; padding: 20px 0; }
+  .ev-row-date b { font-size: 15px; }
+  .ev-row-title h3 { font-size: 15px; }
+}
+
+/* ── Members directory ─────────────────────── */
+@media (max-width: 720px) {
+  .dir-hero { padding: 40px 0 24px; }
+  .dir-search { flex-direction: column; padding: 8px; }
+  .dir-search input { padding: 8px; font-size: 14px; }
+  .dir-toolbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .dir-filters { gap: 12px; flex-wrap: wrap; }
+  .dir-card-grid { grid-template-columns: 1fr; }
+  .dir-card-actions { flex-direction: column; }
+  .dir-card-actions .btn { justify-content: center; }
+}
+
+/* ── Articles page ─────────────────────────── */
+@media (max-width: 720px) {
+  .art-hero { padding: 40px 0 32px; }
+  .art-feat-grid { gap: 32px; margin-top: 32px; }
+  .art-feat-main h2 { font-size: clamp(22px, 5vw, 32px); }
+  .art-cats-bar { padding: 14px 0; }
+  .art-list { padding: 32px 0 80px; }
+  .art-grid { gap: 24px 16px; }
+  .art-card h3 { font-size: 16px; }
+}
+
+/* ── Page-level tabs ───────────────────────── */
+@media (max-width: 540px) {
+  .page-tab { padding: 14px 16px; font-size: 13px; }
+  .page-tabs { overflow-x: auto; }
+}
 
 /* ============ HOW IT WORKS & PRICING PAGES ============ */
 .hiw-hero { background: var(--bg-alt); }

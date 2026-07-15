@@ -233,6 +233,8 @@ function renderNav() {
     actionsHtml = `<a href="login.html" class="btn btn-primary">Log in</a>`;
   }
 
+  const hamburgerIcon = `<svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
   nav.innerHTML = `
     <div class="nav-inner">
       <a href="index.html">
@@ -244,12 +246,68 @@ function renderNav() {
         <a href="events.html">Events</a>
         <a href="membership.html">Membership</a>
       </div>
-      <div class="nav-actions">${actionsHtml}</div>
+      <div class="nav-actions">
+        ${actionsHtml}
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false">${hamburgerIcon}</button>
+      </div>
     </div>`;
+
+  // Mobile navigation panel
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  const mobileActionsHtml = session && session.email
+    ? `<a href="member-profile.html" class="btn btn-outline">My Profile</a><button id="nav-mobile-logout-btn" class="btn btn-primary">Log out</button>`
+    : `<a href="login.html" class="btn btn-outline">Log in</a><a href="apply.html" class="btn btn-primary">Apply for membership →</a>`;
+
+  const mobilePanel = document.createElement('div');
+  mobilePanel.className = 'nav-mobile-panel';
+  mobilePanel.id = 'nav-mobile-panel';
+  mobilePanel.setAttribute('aria-label', 'Mobile navigation');
+  mobilePanel.innerHTML = `
+    <div class="nav-mobile-header">
+      <a href="index.html" class="nav-mobile-logo">Expertly<span class="dot"></span></a>
+      <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close navigation menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="members.html" ${currentPath==='members.html'?'class="active"':''}>Members</a>
+      <a href="articles.html" ${currentPath==='articles.html'?'class="active"':''}>Articles</a>
+      <a href="events.html" ${currentPath==='events.html'?'class="active"':''}>Events</a>
+      <a href="membership.html" ${currentPath==='membership.html'?'class="active"':''}>Membership</a>
+    </div>
+    <div class="nav-mobile-divider"></div>
+    <div class="nav-mobile-actions">${mobileActionsHtml}</div>`;
+  document.body.appendChild(mobilePanel);
+
+  const hamburgerBtn = document.getElementById('nav-hamburger');
+  const mobilePanelEl = document.getElementById('nav-mobile-panel');
+  const mobileCloseBtn = document.getElementById('nav-mobile-close');
+
+  function openMobileNav() {
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    mobilePanelEl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    mobilePanelEl.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburgerBtn) hamburgerBtn.addEventListener('click', () => {
+    mobilePanelEl.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+  if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', closeMobileNav);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobileNav(); });
 
   const avatarBtn = document.getElementById('nav-avatar-btn');
   const avatarMenu = document.getElementById('nav-avatar-menu');
   const logoutBtn = document.getElementById('nav-logout-btn');
+  const mobileLogoutBtn = document.getElementById('nav-mobile-logout-btn');
 
   if (avatarBtn && avatarMenu) {
     avatarBtn.addEventListener('click', (e) => {
@@ -261,6 +319,12 @@ function renderNav() {
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('expertly_session');
+      window.location.href = 'index.html';
+    });
+  }
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener('click', () => {
       localStorage.removeItem('expertly_session');
       window.location.href = 'index.html';
     });
