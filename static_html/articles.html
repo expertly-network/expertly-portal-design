@@ -96,63 +96,78 @@
       line-height: 1.1;
     }
 
-    /* ── Category filter dropdown (button + searchable popover) ──
-       Deliberately styled to stand out — this is the primary way to
-       browse the grid, so it should draw the eye. ── */
+    /* ── Filter dropdowns (button + searchable popover) ──
+       Neutral styling to match the Members page filters. ── */
+    .anv-section-head-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .anv-filter-btn {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 13px 22px 13px 19px;
+      gap: 8px;
+      padding: 7px 13px;
       border-radius: 100px;
-      background: color-mix(in oklab, var(--accent) 9%, var(--bg-card));
-      border: 1.5px solid var(--accent);
-      font-family: 'Archivo', sans-serif;
-      font-size: 13.5px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      background: var(--bg-card);
+      border: 1px solid var(--line-2);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
       color: var(--ink);
       cursor: pointer;
-      transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
       white-space: nowrap;
       position: relative;
       user-select: none;
-      box-shadow: 0 6px 20px -6px color-mix(in oklab, var(--accent) 45%, transparent);
     }
 
     .anv-filter-btn-icon {
-      color: var(--accent);
+      color: var(--ink-3);
       flex-shrink: 0;
       display: inline-flex;
     }
 
     .anv-filter-btn:hover {
-      border-color: var(--accent);
-      background: color-mix(in oklab, var(--accent) 16%, var(--bg-card));
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px -6px color-mix(in oklab, var(--accent) 55%, transparent);
+      border-color: var(--ink-3);
     }
 
     .anv-filter-btn.open {
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
     }
 
     .anv-filter-btn.has-value {
-      background: var(--accent);
+      background: var(--ink);
       color: #fff;
-      border-color: var(--accent);
+      border-color: var(--ink);
     }
 
     .anv-filter-btn.has-value .anv-filter-btn-icon { color: #fff; }
 
     .anv-filter-btn-caret {
-      font-size: 10px;
-      opacity: 0.6;
+      font-size: 9px;
+      opacity: 0.5;
       transition: transform 0.2s;
     }
 
     .anv-filter-btn.open .anv-filter-btn-caret { transform: rotate(180deg); }
+
+    .anv-filter-clear {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .anv-filter-btn.has-value .anv-filter-clear { display: inline-flex; }
 
     .anv-popover {
       position: absolute;
@@ -162,7 +177,7 @@
       width: 250px;
       max-width: 82vw;
       background: var(--bg-card);
-      border: 1.5px solid var(--accent);
+      border: 1px solid var(--line-2);
       border-radius: 14px;
       box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.14), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
       opacity: 0;
@@ -724,17 +739,32 @@
             <span class="anv-section-label">Browse</span>
             <h2 class="anv-section-title">All articles</h2>
           </div>
-          <div style="position:relative;" id="anv-cat-wrapper">
-            <button class="anv-filter-btn" id="anv-cat-trigger" type="button">
-              <svg class="anv-filter-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
-              <span id="anv-cat-label">All categories</span>
-              <span class="anv-filter-btn-caret">▾</span>
-            </button>
-            <div class="anv-popover" id="anv-cat-popover">
-              <div class="anv-dd-search-wrap">
-                <input class="anv-dd-search" id="anv-cat-search" placeholder="Search categories…" autocomplete="off">
+          <div class="anv-section-head-right">
+            <div style="position:relative;" id="anv-country-wrapper">
+              <button class="anv-filter-btn" id="anv-country-trigger" type="button">
+                <span id="anv-country-label">All countries</span>
+                <span class="anv-filter-btn-caret">▾</span>
+                <span class="anv-filter-clear" id="anv-country-clear">✕</span>
+              </button>
+              <div class="anv-popover" id="anv-country-popover">
+                <div class="anv-dd-search-wrap">
+                  <input class="anv-dd-search" id="anv-country-search" placeholder="Search countries…" autocomplete="off">
+                </div>
+                <div class="anv-dd-list" id="anv-country-list"></div>
               </div>
-              <div class="anv-dd-list" id="anv-cat-list"></div>
+            </div>
+            <div style="position:relative;" id="anv-cat-wrapper">
+              <button class="anv-filter-btn" id="anv-cat-trigger" type="button">
+                <svg class="anv-filter-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+                <span id="anv-cat-label">All categories</span>
+                <span class="anv-filter-btn-caret">▾</span>
+              </button>
+              <div class="anv-popover" id="anv-cat-popover">
+                <div class="anv-dd-search-wrap">
+                  <input class="anv-dd-search" id="anv-cat-search" placeholder="Search categories…" autocomplete="off">
+                </div>
+                <div class="anv-dd-list" id="anv-cat-list"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -806,6 +836,7 @@
       const resetBtn = document.getElementById('anv-reset');
 
       let activeCat = 'All';
+      let activeCountry = 'All';
 
       const getAuthor = id => members.find(m => m.id === id)
         || { name: 'Expertly Counsel', initials: 'EC', img: '', title: 'Advisor', location: '' };
@@ -949,15 +980,126 @@
         catLabel.textContent = 'All categories';
         catTrigger.classList.remove('has-value');
         buildCatList();
+        activeCountry = 'All';
+        countryLabel.textContent = 'All countries';
+        countryTrigger.classList.remove('has-value');
+        buildCountryList();
         renderGrid();
       });
 
+      /* ── 3b. Country dropdown (button + searchable popover) ── */
+      const getCountry = a => {
+        const au = getAuthor(a.author);
+        return au.location ? au.location.split(', ').slice(-1)[0] : '';
+      };
+
+      /* Full list of the world's 195 countries, shown in the filter so
+         people can browse/search beyond wherever current authors happen
+         to be based — same list used on the Members page. */
+      const ALL_COUNTRIES = [
+        'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
+        'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados',
+        'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana',
+        'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon',
+        'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros',
+        'Congo, Democratic Republic of the', 'Congo, Republic of the', 'Costa Rica', 'Croatia', 'Cuba',
+        'Cyprus', 'Czechia', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt',
+        'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland',
+        'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala',
+        'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia',
+        'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan',
+        'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon',
+        'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi',
+        'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico',
+        'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar',
+        'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria',
+        'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama',
+        'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania',
+        'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines',
+        'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles',
+        'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa',
+        'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland',
+        'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga',
+        'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine',
+        'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu',
+        'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'
+      ];
+      const countries = ['All', ...ALL_COUNTRIES];
+
+      const countryTrigger = document.getElementById('anv-country-trigger');
+      const countryPopover = document.getElementById('anv-country-popover');
+      const countryLabel = document.getElementById('anv-country-label');
+      const countrySearch = document.getElementById('anv-country-search');
+      const countryList = document.getElementById('anv-country-list');
+      const countryWrapper = document.getElementById('anv-country-wrapper');
+      const countryClear = document.getElementById('anv-country-clear');
+      let countryOpen = false;
+
+      const buildCountryList = (query = '') => {
+        const q = query.trim().toLowerCase();
+        const filtered = q ? countries.filter(c => c.toLowerCase().includes(q)) : countries;
+        countryList.innerHTML = filtered.length
+          ? filtered.map(c => `
+            <div class="anv-dd-option${c === activeCountry ? ' selected' : ''}" data-country="${c}">
+              <span>${c === 'All' ? 'All countries' : c}</span>
+              <span class="anv-dd-check">✓</span>
+            </div>`).join('')
+          : `<div class="anv-dd-empty">No matches</div>`;
+
+        countryList.querySelectorAll('.anv-dd-option').forEach(el => {
+          el.addEventListener('click', () => {
+            activeCountry = el.dataset.country;
+            countryLabel.textContent = activeCountry === 'All' ? 'All countries' : activeCountry;
+            countryTrigger.classList.toggle('has-value', activeCountry !== 'All');
+            closeCountryDd();
+            renderGrid();
+          });
+        });
+      };
+
+      const closeCountryDd = () => {
+        countryOpen = false;
+        countryTrigger.classList.remove('open');
+        countryPopover.classList.remove('open');
+      };
+
+      const openCountryDd = () => {
+        countryOpen = true;
+        countryTrigger.classList.add('open');
+        countryPopover.classList.add('open');
+        countrySearch.value = '';
+        buildCountryList();
+        setTimeout(() => countrySearch.focus(), 50);
+      };
+
+      countryTrigger.addEventListener('click', e => {
+        e.stopPropagation();
+        countryOpen ? closeCountryDd() : openCountryDd();
+      });
+      countrySearch.addEventListener('input', () => buildCountryList(countrySearch.value));
+      countryWrapper.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => { if (countryOpen) closeCountryDd(); });
+      countryClear.addEventListener('click', e => {
+        e.stopPropagation();
+        activeCountry = 'All';
+        countryLabel.textContent = 'All countries';
+        countryTrigger.classList.remove('has-value');
+        buildCountryList();
+        renderGrid();
+      });
+
+      buildCountryList();
+
       /* ── 4. V3 bento grid (filtered) ── */
       const renderGrid = () => {
-        /* Default: articles[1–8] = 8 articles; Category: all matching */
-        const pool = activeCat === 'All'
+        /* Default: articles[1–8] = 8 articles; Category/country: all matching */
+        let pool = activeCat === 'All'
           ? articles.slice(1)
           : articles.filter(a => a.category === activeCat);
+
+        if (activeCountry !== 'All') {
+          pool = pool.filter(a => getCountry(a) === activeCountry);
+        }
 
         countEl.textContent = `${pool.length} article${pool.length !== 1 ? 's' : ''}`;
 
