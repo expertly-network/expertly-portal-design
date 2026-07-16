@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <style>
+
+    /* ── Hero image banner ─────────────────────────── */
+    .art-detail-hero {
+      position: relative;
+      height: 380px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+
+    .art-detail-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0.55;
+    }
+
+    .art-detail-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,11,12,0.82) 0%, rgba(11,11,12,0.2) 60%, transparent 100%);
+    }
+
+    .art-detail-hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 0 36px;
+    }
+
+    .art-detail-hero-content .container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .art-detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .art-detail-back:hover { color: #fff; }
+
+    .art-detail-cat {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neon);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    /* ── Two-column layout ─────────────────────────── */
+    .art-detail-page {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 48px 32px 100px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── LEFT COLUMN ───────────────────────────────── */
+    .art-detail-left {
+      min-width: 0;
+    }
+
+    /* Title */
+    .art-detail-title {
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--ink);
+    }
+
+    /* Meta row */
+    .art-detail-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .art-detail-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+
+    .art-detail-meta-item svg {
+      flex-shrink: 0;
+      color: var(--ink-4);
+    }
+
+    /* AI Summary block */
+    .art-ai-summary {
+      margin-top: 32px;
+      background: color-mix(in oklab, var(--accent) 6%, var(--bg-alt));
+      border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+      border-radius: 16px;
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .art-ai-summary::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in oklab, var(--accent) 14%, transparent) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .art-ai-summary-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .art-ai-summary-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .art-ai-summary-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .art-ai-summary-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-left: auto;
+      animation: pulse 2s infinite;
+    }
+
+    .art-ai-summary-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .art-ai-summary-points li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+
+    .art-ai-bullet {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: color-mix(in oklab, var(--accent) 18%, transparent);
+      border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    /* Article body */
+    .art-detail-body {
+      margin-top: 36px;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      letter-spacing: -0.003em;
+    }
+
+    .art-detail-body p {
+      margin-bottom: 22px;
+    }
+
+    .art-detail-body p:last-child { margin-bottom: 0; }
+
+    .art-detail-body h2 {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 36px 0 14px;
+      line-height: 1.2;
+    }
+
+    .art-detail-body h3 {
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .art-detail-body ul {
+      list-style: none;
+      margin: 0 0 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .art-detail-body ul li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .art-detail-body ul li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 9px;
+    }
+
+    .art-detail-body blockquote {
+      margin: 28px 0;
+      padding: 20px 24px;
+      border-left: 3px solid var(--accent);
+      background: var(--bg-alt);
+      border-radius: 0 10px 10px 0;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .art-detail-disclaimer {
+      margin-top: 40px;
+      padding: 16px 20px;
+      background: var(--bg-alt);
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--ink-4);
+      line-height: 1.6;
+    }
+
+    /* ── RIGHT COLUMN ──────────────────────────────── */
+    .art-detail-right {
+      position: sticky;
+      top: 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Sidebar card shell */
+    .art-sidebar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .art-sidebar-card-head {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--line);
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .art-sidebar-card-head svg { color: var(--ink-4); flex-shrink: 0; }
+
+    /* ── About the Author card ─────────────────────── */
+    .art-author-body {
+      padding: 20px;
+    }
+
+    .art-author-photo-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .art-author-photo {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      object-fit: cover;
+      object-position: center top;
+      flex-shrink: 0;
+      border: 1px solid var(--line);
+      background: var(--bg-alt);
+      display: block;
+    }
+
+    .art-author-photo-init {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--bg-alt), color-mix(in oklab, var(--neon) 30%, var(--bg-alt)));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink-2);
+      border: 1px solid var(--line);
+    }
+
+    .art-author-name-block {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .art-author-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .art-author-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: 'Archivo', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--ok);
+    }
+
+    .art-author-verified svg { width: 10px; height: 10px; }
+
+    .art-author-title {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .art-author-firm {
+      font-size: 11.5px;
+      color: var(--ink-3);
+      margin-top: 2px;
+    }
+
+    /* Stat rows inside author card */
+    .art-author-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 4px;
+    }
+
+    .art-author-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .art-author-stat:last-child { border-bottom: none; }
+
+    .art-author-stat-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--ink-4);
+      font-weight: 500;
+    }
+
+    .art-author-stat-val {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* Author bio */
+    .art-author-bio {
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-3);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .art-author-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    .art-author-practice {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .art-author-profile-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-2);
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line-2);
+      background: var(--bg);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    .art-author-profile-btn:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: var(--bg-alt);
+    }
+
+    /* ── Articles by this Author ───────────────────── */
+    .art-related-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .art-related-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+
+    .art-related-item:last-child { border-bottom: none; }
+
+    .art-related-item:hover { background: var(--bg-alt); }
+
+    .art-related-thumb {
+      width: 52px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--bg-alt);
+      display: block;
+    }
+
+    .art-related-thumb-init {
+      width: 52px;
+      height: 40px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: var(--bg-alt);
+      border: 1px solid var(--line);
+    }
+
+    .art-related-body { min-width: 0; flex: 1; }
+
+    .art-related-cat {
+      font-family: 'Archivo', sans-serif;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+
+    .art-related-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      color: var(--ink);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .art-related-item:hover .art-related-title { color: var(--accent); }
+
+    .art-related-meta {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      color: var(--ink-4);
+      margin-top: 4px;
+    }
+
+    /* ── Responsive ────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .art-detail-page {
+        grid-template-columns: 1fr 280px;
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .art-detail-page {
+        grid-template-columns: 1fr;
+        padding: 32px 20px 80px;
+      }
+      .art-detail-right {
+        position: static;
+      }
+      .art-detail-hero { height: 260px; }
+    }
+
+    @media (max-width: 540px) {
+      .art-detail-hero { height: 200px; }
+      .art-detail-page { padding: 24px 20px 64px; gap: 24px; }
+      .art-ai-summary { padding: 18px 20px; }
+      .art-detail-body { font-size: 15px; }
+    }
+
+  </style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation"></nav>
+
+<main id="main-content">
+
+  <!-- Hero image banner -->
+  <div class="art-detail-hero" id="art-hero">
+    <img class="art-detail-hero-img" id="art-hero-img" src="" alt="" />
+    <div class="art-detail-hero-overlay"></div>
+    <div class="art-detail-hero-content">
+      <div class="container">
+        <a href="articles.html" class="art-detail-back">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Articles
+        </a>
+        <span class="art-detail-cat" id="art-cat">Category</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-column layout -->
+  <div class="art-detail-page">
+
+    <!-- ── LEFT: Article content ── -->
+    <article class="art-detail-left">
+
+      <h1 class="art-detail-title" id="art-title">Loading…</h1>
+
+      <div class="art-detail-meta" id="art-meta"></div>
+
+      <!-- AI Summary -->
+      <div class="art-ai-summary" id="art-ai-summary">
+        <div class="art-ai-summary-head">
+          <div class="art-ai-summary-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <span class="art-ai-summary-label">AI Summary</span>
+          <span class="art-ai-summary-pulse" aria-hidden="true"></span>
+        </div>
+        <ul class="art-ai-summary-points" id="art-summary-points"></ul>
+      </div>
+
+      <!-- Article body -->
+      <div class="art-detail-body" id="art-body"></div>
+
+      <!-- Disclaimer -->
+      <p class="art-detail-disclaimer">
+        The views expressed in this article are those of the author and do not constitute legal, tax, or financial advice. This content is published for informational purposes only. Readers should seek independent professional advice before acting on any information contained herein.
+      </p>
+
+    </article>
+
+    <!-- ── RIGHT: Sidebar ── -->
+    <aside class="art-detail-right" id="art-sidebar">
+
+      <!-- About the Author -->
+      <div class="art-sidebar-card" id="art-author-card">
+        <div class="art-sidebar-card-head">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          About the Author
+        </div>
+        <div class="art-author-body" id="art-author-body"></div>
+      </div>
+
+      <!-- Articles by this Author -->
+      <div class="art-sidebar-card" id="art-related-card">
+        <div class="art-sidebar-card-head">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          <span id="art-related-label">More Articles</span>
+        </div>
+        <div class="art-related-list" id="art-related-list"></div>
+      </div>
+
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="footer--minimal" aria-label="Site footer"></footer>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const articles = window.EXPERTLY_ARTICLES || [];
+  const members  = window.EXPERTLY_MEMBERS  || [];
+
+  /* ── Read article id from URL ── */
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const article = articles.find(a => a.id === id) || articles[0];
+  const author  = members.find(m => m.id === article.author)
+    || { name: 'Expertly Counsel', initials: 'EC', img: '', title: 'Advisor', firm: '', location: '', practice: 'Finance & Law', tenure: 'N/A', rate: 'N/A', verified: false };
+
+  /* ── Page title ── */
+  document.title = `${article.title} — Expertly`;
+
+  /* ── Hero ── */
+  const heroImg = document.getElementById('art-hero-img');
+  heroImg.src = article.image;
+  heroImg.alt = article.title;
+  document.getElementById('art-cat').textContent = article.category;
+
+  /* ── Title ── */
+  document.getElementById('art-title').textContent = article.title;
+
+  /* ── Meta row ── */
+  document.getElementById('art-meta').innerHTML = `
+    <div class="art-detail-meta-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      ${article.date}
+    </div>
+    <div class="art-detail-meta-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ${article.readTime} read
+    </div>
+    <div class="art-detail-meta-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      ${author.name}
+    </div>
+  `;
+
+  /* ── AI Summary points ── */
+  const summaryMap = {
+    'Direct Tax':      ['Key regulatory changes affecting direct tax obligations for businesses operating in multiple jurisdictions.', 'Practical compliance steps practitioners should take before the next filing deadline.', 'How recent court rulings are reshaping the interpretation of key provisions.'],
+    'Indirect Tax':    ['Updated guidance on indirect tax treatment for cross-border transactions and digital services.', 'Common compliance pitfalls and how to avoid them in complex supply chains.', 'The impact of recent legislative amendments on existing contractual arrangements.'],
+    'Corporate Law':   ['Significant amendments to governance requirements that boards need to act on now.', 'How the changes affect reporting obligations, director duties, and minority shareholder rights.', 'Timeline for implementation and what companies need to prepare in advance.'],
+    'M&A':             ['Key regulatory and due diligence considerations that are reshaping cross-border deal structures.', 'Emerging risks in target jurisdictions that acquirers frequently overlook.', 'Practical steps to protect deal value during the regulatory approval process.'],
+    'IP & Tech':       ['How landmark rulings are redefining fair use and liability in the context of AI-generated content.', 'What in-house counsel must do immediately to review existing licensing agreements.', 'Steps organisations should take to protect their own IP from third-party AI training.'],
+    'Transfer Pricing': ['How Pillar Two changes the calculus on intercompany pricing strategies for multinational groups.', 'Documentation requirements that tax authorities are scrutinising most closely in 2026.', 'Jurisdictions where transfer pricing risk is highest and how to mitigate it proactively.'],
+  };
+  const points = summaryMap[article.category] || [
+    'Key developments in this area that practitioners need to be aware of for the current year.',
+    'Practical implications for businesses and individuals operating across multiple jurisdictions.',
+    'Steps to take now to ensure compliance and minimise exposure to regulatory risk.',
+  ];
+
+  document.getElementById('art-summary-points').innerHTML = points.map(p => `
+    <li>
+      <span class="art-ai-bullet" aria-hidden="true">✦</span>
+      <span>${p}</span>
+    </li>`).join('');
+
+  /* ── Article body ── */
+  const bodyMap = {
+    'stamp-duty-mergers': `
+      <p>${article.excerpt}</p>
+      <h2>Why Stamp Duty Deserves Early Attention in Restructuring</h2>
+      <p>When advisors plan mergers, demergers, or slump sales, stamp duty is often treated as an afterthought — a cost to be noted in the final transaction documentation rather than a factor that shapes the structure. This approach is costly. In India alone, stamp duty rates on instrument transfers vary from as little as 0.1% to over 5% depending on the state, the nature of the instrument, and the assets involved. On a ₹1,000 crore restructuring, that difference is not marginal.</p>
+      <h2>State-by-State Divergence: The Core Challenge</h2>
+      <p>India's federal structure means stamp duty on commercial instruments is a state subject. Each of the 28 states and 8 union territories maintains its own Stamp Act, its own rate schedules, and its own procedural requirements. Maharashtra, Karnataka, and Delhi are most frequently encountered in large corporate restructurings — and all three take meaningfully different approaches to key instruments.</p>
+      <ul>
+        <li>Maharashtra charges stamp duty on amalgamation orders at 10% of the market value of shares issued, subject to a cap that varies by instrument type.</li>
+        <li>Karnataka recently revised its approach to slump sales, treating them as conveyances of movable and immovable property separately.</li>
+        <li>Delhi continues to follow the Indian Stamp Act 1899 for many categories, with modernisation pending legislative action.</li>
+      </ul>
+      <h2>NCLT Schemes and the Exemption Landscape</h2>
+      <p>One of the most frequently misunderstood points is that stamp duty exemptions under amalgamation schemes approved by the National Company Law Tribunal (NCLT) are not automatic. While Section 394 of the Companies Act provides for transfer of property and liabilities in NCLT-sanctioned amalgamations, stamp duty treatment depends on state-specific provisions, the nature of the assets involved, and whether the scheme explicitly addresses the issue.</p>
+      <blockquote>"The absence of explicit stamp duty planning in NCLT petitions has resulted in significant unexpected liabilities being raised by state revenue authorities years after the transaction closes."</blockquote>
+      <h2>Practical Planning Steps</h2>
+      <p>Advisors structuring transactions across multiple states should build stamp duty analysis into the pre-structuring phase, not the documentation phase. A state-by-state mapping of assets, instruments, and applicable rates — cross-referenced against available exemptions and concessions — will often reveal structuring options that reduce overall stamp duty cost without altering the economic substance of the transaction.</p>
+      <p>Early engagement with state stamp authorities, particularly where novel instruments or cross-state property transfers are involved, is increasingly recommended. Several recent restructurings have benefited from advance rulings that provided certainty on stamp duty treatment, reducing the risk of post-transaction disputes.</p>
+    `,
+  };
+
+  /* Generic body builder for articles without custom content */
+  const genericBody = (art, au) => {
+    const paras = [
+      art.excerpt,
+      `The implications of this development extend well beyond the immediate filing cycle. Professionals advising clients in this area are increasingly being asked to advise not just on the technical position, but on the strategic response — how to structure arrangements, document decisions, and engage with regulators in a way that minimises exposure while preserving commercial flexibility.`,
+      `Recent guidance from the relevant regulatory bodies has clarified several previously ambiguous positions, though some practitioners argue that the clarifications have introduced new uncertainties of their own. The key question for most clients is not whether the rules apply to them, but how and when — and what the consequences of non-compliance look like in practice.`,
+      `<h2>Key Considerations for Practitioners</h2>`,
+      `Understanding the precise scope of the rules requires careful analysis of the relevant legislation, any subordinate instruments, and the growing body of case law and regulatory guidance. In jurisdictions where the rules are still evolving, monitoring developments closely — and maintaining open lines of communication with regulators — is becoming a core part of the advisory role.`,
+      `<ul>
+        <li>Review existing arrangements against the updated framework before the next reporting period.</li>
+        <li>Document the basis for any positions taken, particularly where the law is ambiguous or contested.</li>
+        <li>Engage early with counterparties and regulators where material uncertainty exists.</li>
+        <li>Consider the interaction with other regulatory regimes, particularly where cross-border transactions are involved.</li>
+      </ul>`,
+      `<h2>Looking Ahead</h2>`,
+      `The pace of regulatory change in this area shows no signs of slowing. Practitioners who invest in staying current — through structured continuing education, active participation in professional bodies, and engagement with published guidance — will be better placed to advise clients effectively and avoid the reputational and legal exposure that comes from being caught out by a development that was foreseeable.`,
+      `The most important thing clients can do right now is to ensure they have the right advisors in place, with the right depth of knowledge and the capacity to act quickly when circumstances require it.`,
+    ];
+    return paras.map(p => p.startsWith('<') ? p : `<p>${p}</p>`).join('\n');
+  };
+
+  document.getElementById('art-body').innerHTML =
+    bodyMap[article.id] || genericBody(article, author);
+
+  /* ── About the Author ── */
+  const photoHtml = author.img
+    ? `<img class="art-author-photo" src="${author.img}" alt="${author.name}" loading="lazy" />`
+    : `<div class="art-author-photo-init">${author.initials}</div>`;
+
+  const verifiedBadge = author.verified
+    ? `<span class="art-author-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified</span>`
+    : '';
+
+  const bios = {
+    'mukesh-kumar-m':   'Co-Founder of M2K Advisors with 18+ years advising on M&A tax, cross-border transactions, and restructuring across India and Southeast Asia.',
+    'shreyans-maloo':   'Independent transfer pricing specialist with 9 years of advisory experience, focused on intra-group financing and OECD BEPS compliance.',
+    'swetha-prasad':    'Partner at M2K Advisors specialising in corporate and M&A tax, with deep expertise in NCLT-sanctioned restructurings and group simplifications.',
+    'priya-venkatesh':  'GST and indirect tax director with 13 years guiding manufacturers and service companies through complex multi-state compliance frameworks.',
+    'marcus-chen':      'Senior tax advisor based in Singapore with 16 years advising MNCs on cross-border structuring, regional holding structures, and treaty applications.',
+    'amara-osei':       'Corporate counsel focused on West African jurisdictions, advising on governance, commercial contracts, and regulatory compliance across 8 countries.',
+    'fatima-al-hassan': 'Compliance director at Gulf Advisory Partners with 15 years building and reviewing compliance programmes for financial institutions in the UAE.',
+    'james-okafor':     'M&A partner with 19 years advising on pan-African transactions, having led due diligence and structuring on over 60 cross-border deals.',
+    'elena-volkova':    'IP and technology counsel at Volkova Law, London, advising on AI governance, data licensing, and technology M&A across European and US markets.',
+    'diego-martinez':   'Transfer pricing lead with 14 years at Big 4 and boutique firms, specialising in OECD BEPS 2.0 compliance and APA applications for MNC groups.',
+    'hiroshi-tanaka':   'Banking and finance partner in Tokyo with 22 years advising on project finance, syndicated lending, and structured products across the Asia-Pacific.',
+    'nadia-hassan':     'Arbitration counsel with 17 years representing parties in international commercial and investment treaty disputes across Cairo, Paris, and London.',
+    'oliver-schmidt':   'Capital markets partner in Frankfurt with 20 years on equity and debt issuances, prospectus liability, and securities regulation across EU markets.',
+    'isabella-rossi':   'Restructuring advisor with 16 years advising creditors and debtors through complex insolvency and debt-for-equity processes in Italy and across Europe.',
+    'rajiv-menon':      'Valuation expert and partner at Menon Partners, Mumbai, with 18 years providing independent valuations for M&A, litigation support, and tax purposes.',
+    'claire-dubois':    'Antitrust counsel in Paris with 13 years advising on merger filings, cartel investigations, and dominance cases before EU and national competition authorities.',
+    'ahmed-khoury':     'Private equity advisor with 15 years structuring and executing PE investments across MENA, with a focus on healthcare, education, and technology sectors.',
+    'sophie-anderson':  'Securities lawyer at Anderson Legal, New York, advising on SEC enforcement, public offerings, and securities litigation for US-listed issuers.',
+  };
+
+  const bio = bios[author.id] || `${author.name} is a verified practitioner on the Expertly network with ${author.tenure} of professional experience in ${author.practice}.`;
+
+  document.getElementById('art-author-body').innerHTML = `
+    <div class="art-author-photo-row">
+      ${photoHtml}
+      <div class="art-author-name-block">
+        <div class="art-author-name">
+          ${author.name}
+          ${verifiedBadge}
+        </div>
+        <div class="art-author-title">${author.title}${author.firm ? ` · ${author.firm}` : ''}</div>
+        <div class="art-author-firm">${author.location || ''}</div>
+      </div>
+    </div>
+    <div class="art-author-stats">
+      <div class="art-author-stat">
+        <span class="art-author-stat-label">Practice Area</span>
+        <span class="art-author-stat-val">${author.practice}</span>
+      </div>
+      <div class="art-author-stat">
+        <span class="art-author-stat-label">Experience</span>
+        <span class="art-author-stat-val">${author.tenure}</span>
+      </div>
+      <div class="art-author-stat">
+        <span class="art-author-stat-label">Consultation Rate</span>
+        <span class="art-author-stat-val">${author.rate}</span>
+      </div>
+    </div>
+    <p class="art-author-bio">${bio}</p>
+    <div class="art-author-cta">
+      <span class="art-author-practice">${article.category}</span>
+      <a href="member-profile.html?id=${author.id}" class="art-author-profile-btn">
+        View Profile
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  `;
+
+  /* ── Related articles (same category, exclude current) ── */
+  const related = articles
+    .filter(a => a.id !== article.id && a.category === article.category)
+    .slice(0, 4);
+
+  const fallback = articles
+    .filter(a => a.id !== article.id)
+    .slice(0, 4 - related.length);
+
+  const relatedArticles = [...related, ...fallback].slice(0, 4);
+
+  const relatedLabel = related.length
+    ? `More in ${article.category}`
+    : 'More Articles';
+  document.getElementById('art-related-label').textContent = relatedLabel;
+
+  document.getElementById('art-related-list').innerHTML = relatedArticles.map(a => {
+    const thumbHtml = a.image
+      ? `<img class="art-related-thumb" src="${a.image}" alt="${a.title}" loading="lazy" />`
+      : `<div class="art-related-thumb-init"></div>`;
+    return `
+      <a class="art-related-item" href="article.html?id=${a.id}">
+        ${thumbHtml}
+        <div class="art-related-body">
+          <div class="art-related-cat">${a.category}</div>
+          <div class="art-related-title">${a.title}</div>
+          <div class="art-related-meta">${a.date} · ${a.readTime}</div>
+        </div>
+      </a>`;
+  }).join('');
+});
+</script>
+
+</body>
+</html>
