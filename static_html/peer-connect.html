@@ -561,6 +561,7 @@
     <button class="pc-demo-btn" onclick="setDemoState('pref')">Jun 20–30 · Set Preferences</button>
     <button class="pc-demo-btn" onclick="setDemoState('matching')">Jul 1 · Matching</button>
     <button class="pc-demo-btn active" onclick="setDemoState('reveal')">Jul 2–13 · Match Revealed</button>
+    <button class="pc-demo-btn" onclick="setDemoState('meetingday')">Jul 14 · Meeting Day</button>
     <button class="pc-demo-btn" onclick="setDemoState('post')">Jul 14–19 · Post Meeting</button>
     <button class="pc-demo-btn" onclick="setDemoState('next')">Jul 20–31 · Next Cycle</button>
   </div>
@@ -952,7 +953,7 @@ const PHASES = [
   { label: 'Transcript & Feedback', date: 'Post-meeting' },
 ];
 
-const STATE_PHASE_IDX = { pref: 0, matching: 1, reveal: 2, post: 4, next: 0 };
+const STATE_PHASE_IDX = { pref: 0, matching: 1, reveal: 2, meetingday: 3, post: 4, next: 0 };
 
 function renderPhaseBar(state) {
   const activeIdx = STATE_PHASE_IDX[state] ?? 0;
@@ -1072,6 +1073,42 @@ function renderStateCard(state) {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           Add to calendar
         </button>
+      </div>
+    `;
+  }
+
+  else if (state === 'meetingday') {
+    label.textContent = 'Your peer for July 2026';
+    meta.innerHTML = `<div class="pc-reveal-eyebrow" style="margin-bottom:0;"><span class="pulse"></span> Meeting today</div>`;
+    body.innerHTML = `
+      <div class="pc-match-profile">
+        <div class="pc-match-avatar" style="overflow:hidden;padding:0;position:relative;">
+          <img src="https://i.pravatar.cc/80?u=ananyakrishnamurthy" alt="Ananya Krishnamurthy" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#8BFCD8;background:#033c2f;z-index:-1;">AK</span>
+        </div>
+        <div>
+          <div class="pc-match-name">Ananya Krishnamurthy</div>
+          <div class="pc-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
+          <div class="pc-match-tags">
+            <span class="pc-match-tag verified">✓ Expertly Verified</span>
+            <span class="pc-match-tag">M&amp;A Tax</span>
+            <span class="pc-match-tag">APAC</span>
+            <span class="pc-match-tag">18 yrs exp</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-meeting-slot">
+        <div class="pc-meeting-slot-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="pc-meeting-slot-date">Tuesday, July 14 · 10:00 – 10:30 AM IST</div>
+          <div class="pc-meeting-slot-sub">Meeting link ready · Expertly AI will transcribe</div>
+        </div>
+        <a href="#" class="pc-btn-primary" style="margin-left:auto;flex:none;padding:9px 16px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 10l5-3v10l-5-3M4 6h9a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Join call
+        </a>
       </div>
     `;
   }
@@ -1228,7 +1265,7 @@ function renderPrefCard(state) {
     `;
   }
 
-  else if (state === 'reveal' || state === 'post') {
+  else if (state === 'reveal' || state === 'meetingday' || state === 'post') {
     label.textContent = 'August Preferences';
     badge.innerHTML = `<span class="pc-pref-badge upcoming">Opens Jul 20</span>`;
     body.innerHTML = `
@@ -1321,7 +1358,7 @@ function renderPrefCard(state) {
 /* ═══════════════════════════════════════════════
    MAIN setState + demo helper
 ═══════════════════════════════════════════════ */
-const DEMO_BTN_IDX = { pref: 0, matching: 1, reveal: 2, post: 3, next: 4 };
+const DEMO_BTN_IDX = { pref: 0, matching: 1, reveal: 2, meetingday: 3, post: 4, next: 5 };
 
 function setState(state) {
   renderPhaseBar(state);

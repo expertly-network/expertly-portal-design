@@ -120,122 +120,193 @@
     .pcr-rail {
       position: sticky;
       top: 110px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .pcr-rail-step {
-      position: relative;
-      padding: 0 0 30px 26px;
-      border-left: 2px solid var(--line-2);
+    .pcr-mile-item {
+      display: block;
+      width: 100%;
+      margin: 0;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-card);
       cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      transition: box-shadow 0.15s, border-color 0.15s;
     }
 
-    .pcr-rail-step:last-child {
-      padding-bottom: 0;
-      border-left-color: transparent;
+    .pcr-mile-item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
-    .pcr-rail-step::before {
+    /* collapsed row (any status, not the open one) */
+    .pcr-mile-item.done,
+    .pcr-mile-item.active,
+    .pcr-mile-item.upcoming {
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pcr-mile-item.upcoming {
+      border-style: dashed;
+    }
+
+    /* expanded row — whichever category is currently open */
+    .pcr-mile-item.expanded {
+      padding: 18px 18px 20px;
+      display: block;
+      border-style: solid;
+      border-color: color-mix(in oklab, var(--accent) 45%, var(--line-2));
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 8px 24px -16px rgba(0, 0, 0, 0.10);
+      position: relative;
+    }
+
+    .pcr-mile-item.expanded::before {
       content: '';
       position: absolute;
-      left: -7px;
-      top: 0;
-      width: 12px;
-      height: 12px;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 3px;
+      border-radius: 3px;
+      background: var(--accent);
+    }
+
+    .pcr-mile-badge {
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: var(--bg-alt);
-      border: 2px solid var(--line-2);
-      transition: transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid var(--line-2);
+      color: #fff;
     }
 
-    .pcr-rail-step.done {
-      border-left-color: var(--accent);
-    }
-
-    .pcr-rail-step.done::before {
+    .pcr-mile-item.done .pcr-mile-badge {
       background: var(--accent);
       border-color: var(--accent);
     }
 
-    .pcr-rail-step.active::before {
+    .pcr-mile-item.upcoming .pcr-mile-badge {
+      background: transparent;
+    }
+
+    .pcr-mile-item.active .pcr-mile-badge {
       background: var(--ink);
       border-color: var(--ink);
-      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 20%, transparent);
+      position: relative;
     }
 
-    .pcr-rail-label {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.3;
+    .pcr-mile-item.active .pcr-mile-badge::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
     }
 
-    .pcr-rail-step.upcoming .pcr-rail-label {
-      color: var(--ink-4);
-    }
-
-    .pcr-rail-date {
+    .pcr-mile-item.expanded .pcr-mile-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 7px;
       font-family: 'Archivo', sans-serif;
       font-size: 10.5px;
-      letter-spacing: 0.05em;
-      color: var(--ink-4);
-      margin-top: 4px;
-    }
-
-    .pcr-rail-step.active .pcr-rail-date {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .pcr-mile-item.upcoming.expanded .pcr-mile-eyebrow {
+      color: var(--ink-4);
+    }
+
+    .pcr-mile-item.expanded .pcr-mile-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+    }
+
+    .pcr-mile-item.upcoming.expanded .pcr-mile-pulse {
+      background: var(--ink-4);
+      box-shadow: none;
+    }
+
+    .pcr-mile-item.expanded .pcr-mile-label {
+      font-size: 16px;
       font-weight: 600;
+      color: var(--ink);
     }
 
-    .pcr-rail-hit {
-      border-radius: 10px;
-      padding: 6px 10px;
-      margin: -6px 0 -6px -10px;
-      transition: background 0.15s;
+    .pcr-mile-item.expanded .pcr-mile-date {
+      margin-top: 5px;
+      font-size: 12.5px;
+      color: var(--ink-3);
     }
 
-    .pcr-rail-step:hover .pcr-rail-hit {
-      background: color-mix(in oklab, var(--ink) 5%, transparent);
+    .pcr-mile-item.expanded .pcr-mile-helper {
+      margin-top: 12px;
+      font-size: 12.5px;
+      color: var(--ink-3);
+      line-height: 1.55;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
     }
 
-    .pcr-rail-step:hover::before {
-      transform: scale(1.15);
+    /* collapsed labels/dates — :not(.expanded) keeps these from ever
+       out-cascading the expanded rules above for an item that carries
+       both a status class and .expanded */
+    .pcr-mile-item.done:not(.expanded) > .pcr-mile-label,
+    .pcr-mile-item.upcoming:not(.expanded) > .pcr-mile-label {
+      font-size: 13px;
+      font-weight: 500;
     }
 
-    .pcr-rail-step.selected .pcr-rail-hit {
-      background: var(--bg-alt);
-      box-shadow: inset 0 0 0 1px var(--line-2);
+    .pcr-mile-item.done:not(.expanded) > .pcr-mile-label {
+      color: var(--ink-3);
+    }
+
+    .pcr-mile-item.active:not(.expanded) > .pcr-mile-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .pcr-mile-item.upcoming:not(.expanded) > .pcr-mile-label {
+      color: var(--ink-4);
+    }
+
+    .pcr-mile-item.done:not(.expanded) > .pcr-mile-date,
+    .pcr-mile-item.active:not(.expanded) > .pcr-mile-date,
+    .pcr-mile-item.upcoming:not(.expanded) > .pcr-mile-date {
+      margin-left: auto;
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      color: var(--ink-4);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pcr-mile-item.active:not(.expanded) > .pcr-mile-date {
+      color: var(--accent);
+      font-weight: 700;
     }
 
     @media (max-width: 900px) {
       .pcr-rail {
         position: static;
-        display: flex;
-        gap: 4px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-      }
-
-      .pcr-rail-step {
-        flex: 1;
-        min-width: 130px;
-        padding: 0 0 0 20px;
-        border-left: none;
-        border-top: 2px solid var(--line-2);
-        padding-top: 14px;
-      }
-
-      .pcr-rail-step.done {
-        border-top-color: var(--accent);
-        border-left: none;
-      }
-
-      .pcr-rail-step::before {
-        left: -7px;
-        top: -7px;
-      }
-
-      .pcr-rail-hit {
-        margin: -6px -6px -6px 0;
       }
     }
 
@@ -2035,28 +2106,50 @@
       render();
     }
 
+    const PHASE_HELPERS = {
+      pref: 'Set your matching preferences before the 31st — we pair you for next cycle’s session.',
+      matching: 'We’re matching you with a peer now — your pairing lands within 24 hours.',
+      reveal: 'Your peer is set. Review their profile and confirm the meeting time.',
+      meeting: 'Your call is today. The join link unlocks 10 minutes before start.',
+      post: 'Catch up on the transcript, key actions, and leave feedback for your peer.',
+    };
+
+    const EYEBROW_BY_STATE = {
+      done: 'Completed',
+      active: 'Now',
+      upcoming: 'Upcoming',
+    };
+
     function renderRail() {
+      const checkIcon = `<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
       const html = PHASES.map((p, i) => {
-        let cls = 'upcoming';
-        if (i < currentIndex) cls = 'done';
-        if (i === currentIndex) cls = 'active';
-        if (p.id === selectedCategory) cls += ' selected';
+        let state = 'upcoming';
+        if (i < currentIndex) state = 'done';
+        if (i === currentIndex) state = 'active';
+        const isOpen = p.id === selectedCategory;
         const month = i === 0 ? PREF_MONTH : CYCLE_MONTH;
         const dateText = p.dateBase.replace('{month}', month);
-        return `<div class="pcr-rail-step ${cls}" onclick="selectCategory('${p.id}')">
-      <div class="pcr-rail-hit">
-        <div class="pcr-rail-label">${p.label}</div>
-        <div class="pcr-rail-date">${dateText}</div>
-      </div>
-    </div>`;
+
+        if (isOpen) {
+          return `<button class="pcr-mile-item ${state} expanded" onclick="selectCategory('${p.id}')">
+        <div class="pcr-mile-eyebrow"><span class="pcr-mile-pulse"></span>${EYEBROW_BY_STATE[state]}</div>
+        <div class="pcr-mile-label">${p.label}</div>
+        <div class="pcr-mile-date">${dateText}</div>
+        <div class="pcr-mile-helper">${PHASE_HELPERS[p.id]}</div>
+      </button>`;
+        }
+        return `<button class="pcr-mile-item ${state}" onclick="selectCategory('${p.id}')">
+        <span class="pcr-mile-badge">${state === 'done' ? checkIcon : ''}</span>
+        <span class="pcr-mile-label">${p.label}</span>
+        <span class="pcr-mile-date">${dateText}</span>
+      </button>`;
       }).join('');
       document.getElementById('rail').innerHTML = html;
     }
 
     function render() {
       renderRail();
-      // 'meeting' category previews the same reveal content as 'reveal'
-      const contentId = selectedCategory === 'meeting' ? 'reveal' : selectedCategory;
+      const contentId = selectedCategory;
       const state = (contentId === 'pref' && currentIndex === 0 && !prefFormOverride) ? 'next' : contentId;
       renderStateBody(state);
     }
@@ -2181,6 +2274,40 @@
             <div class="pcr-reschedule-note">Time stays fixed at 10:00 – 10:30 AM IST. Pick whichever day works for both of you.</div>
           </div>
         </div>
+      </div>
+    `;
+      }
+
+      else if (state === 'meeting') {
+        label.textContent = 'Your peer for July 2026';
+        const selectedDate = getSelectedMeetingDate();
+        body.innerHTML = `
+      <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Meeting today · ${formatMeetingDateShort(selectedDate)}</div>
+      <div class="pcr-match-profile">
+        <div class="pcr-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+        <div>
+          <div class="pcr-match-name">Ananya Krishnamurthy</div>
+          <div class="pcr-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
+          <div class="pcr-match-tags">
+            <span class="pcr-match-tag verified">✓ Expertly Verified</span>
+            <span class="pcr-match-tag">M&amp;A Tax</span>
+            <span class="pcr-match-tag">APAC</span>
+            <span class="pcr-match-tag">18 yrs experience</span>
+          </div>
+        </div>
+      </div>
+      <div class="pcr-meeting-slot">
+        <div class="pcr-meeting-slot-left">
+          <div class="pcr-meeting-slot-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div id="meeting-slot-text">
+            <div class="pcr-meeting-slot-date">${formatMeetingDateLong(selectedDate)} · 10:00 – 10:30 AM IST</div>
+            <div class="pcr-meeting-slot-sub">Meeting link ready · Expertly AI will join to transcribe</div>
+          </div>
+        </div>
+        <button class="pcr-btn-primary" style="flex:none;padding:9px 16px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 10l5-3v10l-5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="6" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Join call
+        </button>
       </div>
     `;
       }
