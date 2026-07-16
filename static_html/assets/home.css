@@ -1892,3 +1892,43 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   .faq-q { font-size: 14px; }
   .firms-head { margin-bottom: 32px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   ADDITIONAL RESPONSIVE & UX IMPROVEMENTS
+   ═══════════════════════════════════════════════════════ */
+
+/* Improve tap target size on interactive chips */
+.hero-search-hints button { min-height: 36px; }
+
+/* Prevent horizontal overflow from marquee on very small screens */
+.firms-marquee, .marquee { overflow: hidden; }
+
+/* Smooth gsearch transition */
+.gsearch { transition: opacity 0.2s ease, visibility 0.2s ease; }
+
+/* Floating search launcher transition */
+.floating-search { transition: opacity 0.25s ease, visibility 0.25s ease, bottom 0.2s ease; }
+
+/* Hover lift transition on event cards */
+.event-card { transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+
+/* Better testimonial tab interaction */
+.testimonial-tabs button { transition: background 0.18s, color 0.18s; }
+
+/* AI demo chips */
+.ai-chip { transition: background 0.15s, color 0.15s, border-color 0.15s; }
+
+/* Dual card list items — add icon alignment fix */
+.dual-card li { line-height: 1.5; }
+
+/* Ensure the search panel never overflows on very small screens */
+@media (max-width: 360px) {
+  .gsearch { padding-top: 4vh; }
+  .gsearch-panel { border-radius: 14px; }
+  .gsearch-input { font-size: 16px; }
+  .hero-toggle-wrapper { margin-top: 24px; }
+  .ai-section-grid { gap: 32px; }
+  .section-head-row { gap: 16px; }
+  .hcal-promo { padding: 24px 20px; }
+  .hcal-promo-title { font-size: 18px; }
+}

@@ -212,3 +212,53 @@
 /* ============ HOW IT WORKS & PRICING PAGES ============ */
 .hiw-hero { background: var(--bg-alt); }
 .pricing-hero { background: var(--bg-alt); }
+
+/* ═══════════════════════════════════════════════════════
+   ADDITIONAL RESPONSIVE IMPROVEMENTS
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Members directory ─── */
+.dir-card-rate { white-space: nowrap; }
+.dir-card-chips { min-width: 0; }
+
+/* ── Articles page ─── */
+.art-cats-bar { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.art-cats-bar::-webkit-scrollbar { display: none; }
+.art-cat { transition: background 0.15s, color 0.15s, border-color 0.15s; }
+
+/* ── Events page ─── */
+.ev-filter-tabs button { transition: background 0.15s, color 0.15s, border-color 0.15s; }
+.ev-row { transition: background 0.15s, padding 0.15s; }
+
+/* Better filter group select on mobile */
+.dir-filter-group select { min-height: 44px; padding: 0; }
+
+/* ── Toolbar scroll on mobile ─── */
+@media (max-width: 720px) {
+  .dir-toolbar-wrap { top: 64px; }
+  .dir-toolbar { padding: 12px 0; }
+  .dir-filters { overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; flex-wrap: nowrap; }
+  .dir-filters::-webkit-scrollbar { display: none; }
+  .dir-filter-group { flex-shrink: 0; }
+}
+
+/* ── Articles feature grid — tighter on medium screens ─── */
+@media (max-width: 520px) {
+  .art-hero { padding: 32px 0 24px; }
+  .art-card h3 { font-size: 15px; }
+  .art-card p { font-size: 13px; }
+}
+
+/* ── Events page — very small screens ─── */
+@media (max-width: 400px) {
+  .ev-hero-stats { flex-direction: column; gap: 12px; }
+  .ev-row { grid-template-columns: 64px 1fr; gap: 10px; }
+  .ev-row-title h3 { font-size: 14px; }
+  .ev-month-header { padding: 14px 0; }
+  .ev-month-header h2 { font-size: 20px; }
+}
+
+/* ── Page tabs — always scrollable ─── */
+.page-tabs { overflow-x: auto; scrollbar-width: none; }
+.page-tabs::-webkit-scrollbar { display: none; }
+.page-tab { flex-shrink: 0; transition: color 0.15s, border-color 0.15s; }

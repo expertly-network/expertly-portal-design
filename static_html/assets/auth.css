@@ -1389,3 +1389,87 @@
     padding: 28px 24px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   ADDITIONAL RESPONSIVE & UX IMPROVEMENTS
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Auth/login form transitions ─── */
+.auth-field input { transition: border-color 0.15s, box-shadow 0.15s; }
+.auth-field input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ink) 8%, transparent);
+}
+.auth-sso { transition: background 0.15s, border-color 0.15s; }
+.auth-role-grid button { transition: border-color 0.15s, background 0.15s; }
+
+/* ── Apply form field transitions ─── */
+.apply-field input,
+.apply-field select,
+.apply-field textarea { transition: border-color 0.15s, box-shadow 0.15s; }
+.apply-field input:focus,
+.apply-field select:focus,
+.apply-field textarea:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ink) 8%, transparent);
+}
+.apply-tier-grid button { transition: border-color 0.15s, background 0.15s; }
+
+/* ── Min touch target on auth buttons ─── */
+.auth-sso { min-height: 48px; }
+.auth-tabs button { min-height: 36px; }
+
+/* ── Make compare table scrollable on mobile ─── */
+.compare-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+}
+.compare-table-wrap .compare-table {
+  min-width: 540px;
+}
+
+/* ── Apply review row on very small screens ─── */
+@media (max-width: 480px) {
+  .apply-review-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .apply-review-row .mono {
+    margin-bottom: 2px;
+  }
+  .apply-form-wrap {
+    padding: 32px 16px;
+  }
+}
+
+/* ── Pricing on very small screens ─── */
+@media (max-width: 480px) {
+  .pricing-hero { padding: 48px 0 80px; }
+  .pricing-card { padding: 28px 24px; }
+  .pricing-amount .num { font-size: 44px; }
+  .billing-toggle { margin: 28px 0 32px; }
+  .pricing-trust { gap: 16px; }
+  .hiw-cta-card { flex-direction: column; gap: 24px; padding: 32px 24px; }
+}
+
+/* ── Auth grid collapsed — ensure single column fills viewport ─── */
+@media (max-width: 1000px) {
+  .auth-left {
+    min-height: unset;
+    padding: 40px 32px;
+  }
+  .auth-grid { min-height: auto; }
+}
+
+/* ── LinkedIn banner stacks on small screens ─── */
+@media (max-width: 540px) {
+  .linkedin-import-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .import-link-btn { align-self: stretch; justify-content: center; }
+  .apply-actions { flex-direction: column-reverse; gap: 10px; }
+  .apply-actions .btn { justify-content: center; }
+}

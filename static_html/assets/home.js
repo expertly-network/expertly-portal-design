@@ -349,17 +349,31 @@ function initFAQ() {
   if (!container) return;
 
   const items = container.querySelectorAll('.faq-item');
-  
+
+  // Seed ARIA attributes
+  items.forEach((item, i) => {
+    const qBtn = item.querySelector('.faq-q');
+    const answer = item.querySelector('.faq-a');
+    const answerId = `faq-answer-${i}`;
+    if (answer) answer.id = answerId;
+    if (qBtn) {
+      qBtn.setAttribute('aria-expanded', 'false');
+      if (answerId) qBtn.setAttribute('aria-controls', answerId);
+    }
+  });
+
   items.forEach(item => {
     const qBtn = item.querySelector('.faq-q');
     qBtn.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
-      
+
       // Close all other FAQs
       items.forEach(it => {
         it.classList.remove('open');
         const t = it.querySelector('.faq-toggle');
+        const b = it.querySelector('.faq-q');
         if (t) t.textContent = '+';
+        if (b) b.setAttribute('aria-expanded', 'false');
       });
 
       // Toggle this one
@@ -367,6 +381,7 @@ function initFAQ() {
         item.classList.add('open');
         const t = item.querySelector('.faq-toggle');
         if (t) t.textContent = '−';
+        qBtn.setAttribute('aria-expanded', 'true');
       }
     });
   });
