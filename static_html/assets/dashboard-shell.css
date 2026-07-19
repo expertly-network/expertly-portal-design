@@ -3,7 +3,7 @@
    Used by every portal page (dashboard, my-articles, my-events, …)
    so navigation and theme stay identical across the portal.
    ══════════════════════════════════════════════════════════════ */
-body { background: var(--bg-alt); }
+body { background: var(--bg); }
 
 /* ── Auth wall ─────────────────────────── */
 #dash-auth-wall {
@@ -60,12 +60,12 @@ body { background: var(--bg-alt); }
 .d1-logo {
   font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
   color: #fff; padding: 6px 10px 22px;
-  display: flex; align-items: center;
+  display: flex; align-items: flex-end; line-height: 1; gap: 0;
 }
-.d1-logo .dot { width: 6px; height: 6px; background: var(--accent-2); border-radius: 50%; margin-left: 3px; box-shadow: 0 0 8px color-mix(in oklab, var(--accent-2) 70%, transparent); }
+.d1-logo .dot { width: 6px; height: 6px; background: var(--accent-2); border-radius: 50%; flex-shrink: 0; margin-left: 1px; margin-bottom: 1px; }
 
 /* Sidebar tools row: portal-wide search trigger + notifications bell */
-.d1-sidebar-tools { display: flex; gap: 6px; padding: 0 2px 14px; position: relative; }
+.d1-sidebar-tools { display: flex; gap: 6px; padding: 0 2px 10px; position: relative; }
 .d1-search-trigger {
   flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0;
   padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.06);
@@ -179,19 +179,26 @@ body { background: var(--bg-alt); }
 .d1-gsearch-item-body span { display: block; font-size: 11.5px; color: var(--ink-3); }
 .d1-gsearch-empty { padding: 40px 20px; text-align: center; color: var(--ink-3); font-size: 13.5px; }
 
-.d1-nav-label {
-  font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: rgba(255,255,255,0.32);
-  padding: 14px 12px 8px;
+.d1-nav-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.d1-nav { display: flex; flex-direction: column; gap: 2px; }
+
+.d1-nav-label {
+  font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.32);
+  padding: 18px 12px 8px;
+}
+.d1-nav { display: flex; flex-direction: column; gap: 12px; }
 .d1-nav a {
-  display: flex; align-items: center; gap: 11px;
-  padding: 10px 12px; border-radius: 9px;
-  font-size: 14px; font-weight: 450; color: rgba(255,255,255,0.68);
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px; border-radius: 9px;
+  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.68);
   transition: background 0.15s, color 0.15s;
 }
-.d1-nav a svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+.d1-nav a svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.8; }
 .d1-nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
 .d1-nav a.active { background: color-mix(in oklab, var(--accent) 22%, transparent); color: #fff; }
 .d1-nav a .soon {
@@ -199,6 +206,24 @@ body { background: var(--bg-alt); }
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-2);
   background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 100px;
 }
+.nav-collapsed .d1-nav a .soon { display: none !important; }
+.nav-collapsed .d1-nav-label { display: none !important; }
+.nav-collapsed .d1-nav-divider { display: none !important; }
+
+/* Member-only nav items — hidden until JS adds .session-member to body */
+a[data-member-nav],
+.d1-nav-label[data-member-nav],
+.d1-nav-divider[data-member-nav] { display: none; }
+.session-member a[data-member-nav] { display: flex; }
+.session-member .d1-nav-label[data-member-nav],
+.session-member .d1-nav-divider[data-member-nav] { display: block; }
+
+/* Thin rule separating member-portal from public items */
+.d1-nav-divider { height: 1px; background: rgba(255,255,255,0.08); }
+
+/* Coming-soon nav items — non-interactive */
+.d1-nav a.nav-soon { opacity: 0.5; cursor: default; }
+.d1-nav a.nav-soon:hover { background: none; color: rgba(255,255,255,0.68); }
 .d1-sidebar-foot {
   margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);
   display: flex; align-items: center; gap: 10px; padding: 14px 10px 6px;
@@ -218,8 +243,32 @@ body { background: var(--bg-alt); }
 }
 .d1-logout-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
+/* Theme toggle button — same size as logout, always visible including in collapsed mode */
+.d1-theme-btn {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.45); background: none; border: none; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.d1-theme-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+
 /* Main base */
 .d1-main { padding: 28px 36px 80px; max-width: 1180px; }
+
+/* The position:fixed parallax footer is incompatible with the d1-shell CSS Grid
+   layout — stacking context interactions with the sticky sidebar make it
+   impossible to reliably hide the footer behind scrolling grid content.
+   Dashboard pages use a static in-flow footer instead: same visual design,
+   no fixed positioning. */
+body:has(.d1-shell) {
+  padding-bottom: 0 !important;
+}
+
+body:has(.d1-shell) .footer--minimal {
+  position: static !important;
+  height: auto !important;
+  padding: 80px 24px 60px;
+}
 
 /* Shared buttons */
 .d1-btn {
@@ -299,3 +348,4 @@ body { background: var(--bg-alt); }
   .d1-sidebar-foot { display: none; }
   .d1-main { padding: 22px 18px 60px; }
 }
+

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Member Portal — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
+  <style>
+
+    /* ── Shell ────────────────────────────────────────────────────────── */
+    .d1-shell { transition: grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1); }
+    .d1-shell.nav-collapsed { grid-template-columns: 56px 1fr; }
+    .d1-logo-row { display: flex; align-items: center; gap: 6px; padding: 6px 4px 22px 10px; }
+    .d1-logo-row .d1-logo { padding: 0; flex: 1; min-width: 0; overflow: hidden; text-decoration: none; }
+    .d1-logo-full { display: inline; white-space: nowrap; }
+    .d1-logo-short { display: none; }
+    .nav-collapsed .d1-logo-full { display: none; }
+    .nav-collapsed .d1-logo-short { display: inline; }
+    .nav-collapsed .d1-logo-row { flex-direction: column; align-items: center; padding: 6px 0 14px; gap: 8px; }
+    .d1-collapse-btn {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.22s; }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .nav-collapsed .d1-collapse-btn svg { transform: rotate(180deg); }
+    .nav-collapsed .d1-nav-lbl { display: none; }
+    .nav-collapsed .d1-nav a { justify-content: center; padding: 10px; gap: 0; }
+    .nav-collapsed .d1-nav-label { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-user-info { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-logout-btn { display: none; }
+    .nav-collapsed .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+    .v2-page-main { min-height: 100vh; overflow-x: clip; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .db-hero { background: var(--bg-alt); padding: 52px 0 44px; border-bottom: 1px solid var(--line); }
+    .db-eyebrow {
+      font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.14em;
+      text-transform: capitalize; color: var(--ink-3); font-weight: 500;
+      display: inline-flex; align-items: center; gap: 9px; margin-bottom: 14px;
+    }
+    .db-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .db-heading { font-size: clamp(28px, 3.4vw, 44px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink); }
+    .db-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
+    .db-sub { font-size: 15px; color: var(--ink-3); margin-top: 12px; max-width: 560px; line-height: 1.6; }
+
+    /* ── Two-column layout ────────────────────────────────────────────── */
+    .db-layout { display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: start; padding: 40px 0 100px; }
+    @media (max-width: 1000px) { .db-layout { grid-template-columns: 1fr 260px; gap: 36px; } }
+    @media (max-width: 760px) { .db-layout { grid-template-columns: 1fr; } }
+
+    /* ── Section header ───────────────────────────────────────────────── */
+    .db-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .db-section-head:not(:first-child) { margin-top: 36px; }
+    .db-section-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+    .db-section-link { font-size: 12.5px; color: var(--accent); font-weight: 500; text-decoration: none; transition: opacity 0.15s; }
+    .db-section-link:hover { opacity: 0.75; }
+
+    /* ── Peer Connect match card ──────────────────────────────────────── */
+    .db-match-card {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px;
+    }
+    .db-match-avatar { width: 54px; height: 54px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1px solid var(--line); }
+    .db-match-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .db-match-info { flex: 1; min-width: 180px; }
+    .db-match-name { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+    .db-match-role { font-size: 13px; color: var(--ink-3); margin-top: 3px; }
+    .db-match-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .db-match-tag { font-size: 11px; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 100px; padding: 3px 10px; }
+    .db-match-tag.verified { color: var(--ok); border-color: color-mix(in oklab, var(--ok) 35%, transparent); background: color-mix(in oklab, var(--ok) 10%, transparent); font-weight: 500; }
+
+    /* ── Feed list (events / articles) ───────────────────────────────── */
+    .db-feed { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .db-feed-row {
+      display: flex; align-items: center; gap: 14px; padding: 15px 20px;
+      border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+      transition: background 0.15s;
+    }
+    .db-feed-row:last-child { border-bottom: none; }
+    .db-feed-row:hover { background: var(--bg-alt); }
+    .db-feed-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; color: var(--ink-3);
+    }
+    .db-feed-icon svg { width: 17px; height: 17px; }
+    .db-feed-thumb { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; overflow: hidden; background: var(--bg-alt); }
+    .db-feed-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .db-feed-body { flex: 1; min-width: 0; }
+    .db-feed-title { font-size: 13.5px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .db-feed-meta { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; }
+    .db-feed-tag {
+      font-family: 'Archivo', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--ink-3); background: var(--bg-alt);
+      border: 1px solid var(--line); padding: 3px 9px; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
+    }
+    .db-feed-tag.accent { color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); border-color: color-mix(in oklab, var(--accent) 28%, transparent); }
+
+    /* ── Members marquee ──────────────────────────────────────────────── */
+    .db-marquee-wrap { padding: 0 0 100px; }
+    .db-marquee-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .db-marquee { overflow: hidden; position: relative; }
+    .db-marquee::before, .db-marquee::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 48px; z-index: 2; pointer-events: none;
+    }
+    .db-marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+    .db-marquee::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+    .db-marquee-track { display: flex; gap: 12px; width: max-content; animation: dbSlide 36s linear infinite; }
+    .db-marquee:hover .db-marquee-track { animation-play-state: paused; }
+    @keyframes dbSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .db-marquee-track { animation: none; } .db-marquee { overflow-x: auto; } }
+
+    .db-people-chip {
+      flex-shrink: 0; width: 180px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px;
+      display: flex; flex-direction: column; gap: 10px; transition: border-color 0.15s, transform 0.2s;
+    }
+    .db-people-chip:hover { border-color: var(--line-2); transform: translateY(-2px); }
+    .db-people-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; border: 1px solid var(--line); }
+    .db-people-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .db-people-name { font-size: 12.5px; font-weight: 500; color: var(--ink); }
+    .db-people-role { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+    .db-people-btn {
+      font-size: 11px; font-weight: 500; color: var(--ink-3); border: 1px solid var(--line);
+      border-radius: 8px; padding: 7px 10px; text-align: center; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; display: block;
+    }
+    .db-people-btn:hover { border-color: var(--ink-3); color: var(--ink); background: var(--bg-alt); }
+
+    /* ── Right rail ───────────────────────────────────────────────────── */
+    .db-rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .db-rail-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; }
+    .db-rail-title { font-size: 13.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 14px; }
+
+    .db-links { display: flex; flex-direction: column; gap: 2px; }
+    .db-link-row {
+      display: flex; align-items: center; gap: 11px; padding: 10px 8px; border-radius: 10px;
+      font-size: 13.5px; color: var(--ink-2); text-decoration: none; transition: background 0.15s, color 0.15s;
+    }
+    .db-link-row:hover { background: var(--bg-alt); color: var(--ink); }
+    .db-link-icon { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+    .db-link-icon svg { width: 15px; height: 15px; }
+    .db-link-arr { margin-left: auto; color: var(--ink-4); font-size: 13px; }
+
+    .db-benefit { display: flex; gap: 12px; align-items: flex-start; }
+    .db-benefit-icon { width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+    .db-benefit-icon svg { width: 15px; height: 15px; }
+    .db-benefit p { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+    .db-benefit p strong { color: var(--ink); font-weight: 500; }
+
+    .db-soon-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; background: color-mix(in oklab, var(--accent) 5%, var(--bg-alt)); border: 1px solid transparent; margin-bottom: 8px; transition: border-color 0.15s; }
+    .db-soon-item:hover { border-color: color-mix(in oklab, var(--accent) 22%, transparent); }
+    .db-soon-item:last-child { margin-bottom: 0; }
+    .db-soon-icon { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+    .db-soon-icon svg { width: 14px; height: 14px; }
+    .db-soon-body h4 { font-size: 12.5px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .db-soon-body p { font-size: 11.5px; color: var(--ink-3); line-height: 1.4; }
+    .db-soon-badge {
+      font-family: 'Archivo', sans-serif; font-size: 8.5px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, transparent);
+      padding: 2px 7px; border-radius: 100px; margin-top: 5px; display: inline-block;
+    }
+
+    @media (max-width: 760px) {
+      .d1-shell { grid-template-columns: 1fr; }
+      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .d1-nav { flex-direction: row; flex-wrap: wrap; }
+      .d1-nav-label { display: none; }
+      .d1-sidebar-foot { display: none; }
+      .d1-logo-row { padding-bottom: 8px; }
+      .db-rail { position: static; }
+    }
+  </style>
+</head>
+
+<body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="d1-shell" id="d1-shell">
+
+  <aside class="d1-sidebar">
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo">
+        <span class="d1-logo-full">Expertly</span>
+        <span class="d1-logo-short">E</span>
+        <span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="d1-nav-center">
+      <nav class="d1-nav">
+        <div class="d1-nav-label">Explore</div>
+        <a href="articles.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <span class="d1-nav-lbl">Articles</span>
+        </a>
+        <a href="events.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span class="d1-nav-lbl">Events</span>
+        </a>
+        <a href="members.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span class="d1-nav-lbl">Members</span>
+        </a>
+        <div class="d1-nav-divider" data-member-nav></div>
+        <div class="d1-nav-label" data-member-nav>Member Portal</div>
+        <a href="dashboard.html" class="active" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span class="d1-nav-lbl">Dashboard</span>
+        </a>
+        <a href="peer-connect.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span class="d1-nav-lbl">Peer Connect</span>
+        </a>
+        <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+          <span class="d1-nav-lbl">Products</span>
+          <span class="soon">Soon</span>
+        </a>
+        <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="d1-nav-lbl">Discussions</span>
+          <span class="soon">Soon</span>
+        </a>
+      </nav>
+    </div>
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info">
+        <b>Member</b>
+        <span>you@firm.com</span>
+      </div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log out" aria-label="Log out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main id="main-content" class="v2-page-main">
+
+    <section class="db-hero">
+      <div class="container-wide">
+        <span class="db-eyebrow">Member Portal</span>
+        <h1 class="db-heading">Welcome back, <em>Member.</em></h1>
+        <p class="db-sub">Everything included in your Expertly membership, in one place — publish, connect, and grow your practice.</p>
+      </div>
+    </section>
+
+    <div class="container-wide">
+      <div class="db-layout">
+
+        <!-- ── Left: main feed ── -->
+        <div>
+          <div class="db-section-head" style="margin-top:0;">
+            <h2 class="db-section-title">Your Peer Connect match</h2>
+            <a href="peer-connect.html" class="db-section-link">View full match →</a>
+          </div>
+          <div class="db-match-card">
+            <div class="db-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+            <div class="db-match-info">
+              <div class="db-match-name">Ananya Krishnamurthy</div>
+              <div class="db-match-role">Partner, Cross-Border Tax · Nishith Desai Associates · Bangalore, India</div>
+              <div class="db-match-tags">
+                <span class="db-match-tag verified">✓ Verified</span>
+                <span class="db-match-tag">M&amp;A Tax</span>
+                <span class="db-match-tag">APAC</span>
+              </div>
+            </div>
+            <a href="peer-connect.html" class="btn btn-primary" style="white-space:nowrap;flex-shrink:0;">View profile →</a>
+          </div>
+
+          <div class="db-section-head">
+            <h2 class="db-section-title">Upcoming events</h2>
+            <a href="events.html" class="db-section-link">View all →</a>
+          </div>
+          <div class="db-feed" id="db-events-feed"></div>
+
+          <div class="db-section-head">
+            <h2 class="db-section-title">Latest articles</h2>
+            <a href="articles.html" class="db-section-link">View all →</a>
+          </div>
+          <div class="db-feed" id="db-articles-feed"></div>
+        </div>
+
+        <!-- ── Right rail ── -->
+        <aside class="db-rail">
+
+          <div class="db-rail-card">
+            <div class="db-rail-title">Quick links</div>
+            <div class="db-links">
+              <a href="articles.html" class="db-link-row">
+                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+                Write an article<span class="db-link-arr">→</span>
+              </a>
+              <a href="events.html" class="db-link-row">
+                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+                View events<span class="db-link-arr">→</span>
+              </a>
+              <a href="peer-connect.html" class="db-link-row">
+                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+                Peer Connect<span class="db-link-arr">→</span>
+              </a>
+              <a href="members.html" class="db-link-row">
+                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+                Browse members<span class="db-link-arr">→</span>
+              </a>
+              <a href="member-profile.html" class="db-link-row">
+                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                View your profile<span class="db-link-arr">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="db-rail-card">
+            <div class="db-benefit">
+              <div class="db-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <p><strong>Zero commission, ever.</strong> Every client conversation you get through Expertly is yours to keep — we never take a cut of your fees.</p>
+            </div>
+          </div>
+
+          <div class="db-rail-card">
+            <div class="db-rail-title">More from your membership</div>
+            <div class="db-soon-item">
+              <div class="db-soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg></div>
+              <div class="db-soon-body"><h4>Member Deals</h4><p>Discounts on the tools you use.</p><span class="db-soon-badge">Coming soon</span></div>
+            </div>
+            <div class="db-soon-item">
+              <div class="db-soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <div class="db-soon-body"><h4>Discussion Groups</h4><p>Topic-based, across time zones.</p><span class="db-soon-badge">Coming soon</span></div>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+      <!-- Members marquee -->
+      <div class="db-marquee-wrap">
+        <div class="db-marquee-head">
+          <h2 class="db-section-title">Members on Expertly</h2>
+          <a href="members.html" class="db-section-link">Browse all →</a>
+        </div>
+        <div class="db-marquee">
+          <div class="db-marquee-track" id="db-members-strip"></div>
+        </div>
+      </div>
+    </div>
+
+      <footer class="footer--minimal" aria-label="Site footer"></footer>
+  </main>
+</div>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/sidebar-theme.js"></script>
+
+<script>
+  (function () {
+    const shell = document.getElementById('d1-shell');
+    const btn = document.getElementById('d1-collapse-btn');
+    const KEY = 'expertly_nav_collapsed';
+    if (localStorage.getItem(KEY) === '1') shell.classList.add('nav-collapsed');
+    btn.addEventListener('click', function () {
+      shell.classList.toggle('nav-collapsed');
+      localStorage.setItem(KEY, shell.classList.contains('nav-collapsed') ? '1' : '0');
+    });
+  })();
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const members = window.EXPERTLY_MEMBERS || [];
+    const events = window.EXPERTLY_EVENTS || [];
+    const articles = window.EXPERTLY_ARTICLES || [];
+    const getAuthor = id => members.find(m => m.id === id) || { name: 'Expertly Counsel' };
+
+    // Events preview
+    const eventsFeed = document.getElementById('db-events-feed');
+    if (eventsFeed) {
+      eventsFeed.innerHTML = events.slice(0, 3).map(e => {
+        const [mon, day] = e.start.split(' ');
+        return `
+        <a href="events.html" class="db-feed-row">
+          <div class="db-feed-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div class="db-feed-body">
+            <div class="db-feed-title">${e.title}</div>
+            <div class="db-feed-meta">${mon} ${day} · ${e.city}, ${e.country}</div>
+          </div>
+          <span class="db-feed-tag accent">${e.format}</span>
+        </a>`;
+      }).join('');
+    }
+
+    // Articles preview
+    const articlesFeed = document.getElementById('db-articles-feed');
+    if (articlesFeed) {
+      articlesFeed.innerHTML = articles.slice(0, 4).map(a => `
+        <a href="article.html?id=${a.id}" class="db-feed-row">
+          <div class="db-feed-thumb"><img src="${a.image}" alt="" loading="lazy"></div>
+          <div class="db-feed-body">
+            <div class="db-feed-title">${a.title}</div>
+            <div class="db-feed-meta">${getAuthor(a.author).name} · ${a.readTime} read</div>
+          </div>
+          <span class="db-feed-tag${a.featured ? ' accent' : ''}">${a.category}</span>
+        </a>`).join('');
+    }
+
+    // Members marquee (double for seamless loop)
+    const strip = document.getElementById('db-members-strip');
+    if (strip && members.length) {
+      const chip = m => `
+        <div class="db-people-chip">
+          <div class="db-people-avatar"><img src="${m.img || ''}" alt="${m.name}" onerror="this.style.display='none'"></div>
+          <div>
+            <div class="db-people-name">${m.name}</div>
+            <div class="db-people-role">${m.title} · ${m.location.split(',')[0]}</div>
+          </div>
+          <a href="member-profile.html?id=${m.id}" class="db-people-btn">View profile</a>
+        </div>`;
+      strip.innerHTML = members.map(chip).join('') + members.map(chip).join('');
+    }
+  });
+</script>
+</body>
+</html>

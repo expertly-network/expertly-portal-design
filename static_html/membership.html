@@ -14,7 +14,31 @@
   <link rel="stylesheet" href="assets/home.css">
   <link rel="stylesheet" href="assets/pages.css">
   <link rel="stylesheet" href="assets/auth.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
   <style>
+    .d1-shell { transition: grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1); }
+    .d1-shell.nav-collapsed { grid-template-columns: 56px 1fr; }
+    .d1-logo-row { display: flex; align-items: center; gap: 6px; padding: 6px 4px 22px 10px; }
+    .d1-logo-row .d1-logo { padding: 0; flex: 1; min-width: 0; overflow: hidden; text-decoration: none; }
+    .d1-logo-full { display: inline; white-space: nowrap; }
+    .d1-logo-short { display: none; }
+    .nav-collapsed .d1-logo-full { display: none; }
+    .nav-collapsed .d1-logo-short { display: inline; }
+    .nav-collapsed .d1-logo-row { flex-direction: column; align-items: center; padding: 6px 0 14px; gap: 8px; }
+    .d1-collapse-btn { flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.22s; }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .nav-collapsed .d1-collapse-btn svg { transform: rotate(180deg); }
+    .nav-collapsed .d1-nav-lbl { display: none; }
+    .nav-collapsed .d1-nav a .soon { display: none; }
+    .nav-collapsed .d1-nav a { justify-content: center; padding: 10px; gap: 0; }
+    .nav-collapsed .d1-nav-label { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-user-info { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-logout-btn { display: none; }
+    .nav-collapsed .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+    .v3-page-main { min-height: 100vh; overflow-x: hidden; }
+    @media (max-width: 760px) { .d1-shell { grid-template-columns: 1fr; } .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; } .d1-nav { flex-direction: row; flex-wrap: wrap; } .d1-nav-label { display: none; } .d1-sidebar-foot { display: none; } .d1-logo-row { padding-bottom: 8px; } }
     /* ══════════════════════════════════════════
    SECTION 1 - Hero (Style C)
    ══════════════════════════════════════════ */
@@ -2503,12 +2527,60 @@
 </head>
 
 <body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
 <a href="#main-content" class="skip-link">Skip to main content</a>
-<div class="page-body">
 
-  <nav class="nav" role="navigation" aria-label="Main navigation"></nav>
+<div class="d1-shell" id="d1-shell">
 
-  <main id="main-content">
+  <!-- ── Collapsible sidebar ── -->
+  <aside class="d1-sidebar">
+
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo">
+        <span class="d1-logo-full">Expertly</span>
+        <span class="d1-logo-short">E</span>
+        <span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="d1-nav-center">
+    <nav class="d1-nav">
+      <a href="articles.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span class="d1-nav-lbl">Articles</span>
+      </a>
+      <a href="events.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span class="d1-nav-lbl">Events</span>
+      </a>
+      <a href="members.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span class="d1-nav-lbl">Members</span>
+      </a>
+      <a href="peer-connect.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="d1-nav-lbl">Peer Connect</span>
+      </a>
+    </nav>
+
+    </div>
+
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info"><b>Member</b><span>you@firm.com</span></div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log in" aria-label="Log in">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ── Main membership content ── -->
+  <main id="main-content" class="v3-page-main">
 
     <!-- ════════════════════════════════════
        1. HERO - Style C
@@ -3069,14 +3141,28 @@
       </div>
     </section>
 
+      <footer class="footer--minimal" aria-label="Site footer"></footer>
   </main>
 
-</div><!-- /.page-body -->
-
-<footer class="footer--minimal" aria-label="Site footer"></footer>
+</div><!-- /.d1-shell -->
 
   <script src="assets/members.js"></script>
-  <script src="assets/shared.js"></script>
+<script>
+  (function () {
+    const shell = document.getElementById('d1-shell');
+    const btn = document.getElementById('d1-collapse-btn');
+    const KEY = 'expertly_nav_collapsed';
+    document.addEventListener('DOMContentLoaded', function () {
+      if (localStorage.getItem(KEY) === '1') shell.classList.add('nav-collapsed');
+      btn.addEventListener('click', function () {
+        shell.classList.toggle('nav-collapsed');
+        localStorage.setItem(KEY, shell.classList.contains('nav-collapsed') ? '1' : '0');
+      });
+    });
+  })();
+</script>
+<script src="assets/shared.js"></script>
+<script src="assets/sidebar-theme.js"></script>
 </body>
 
 </html>

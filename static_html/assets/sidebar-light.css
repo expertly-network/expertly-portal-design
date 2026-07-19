@@ -1,0 +1,101 @@
+/* ══════════════════════════════════════════════════════════════
+   Sidebar light variant — applies when <html class="sidebar-light">
+   Default (no class): dark sidebar from dashboard-shell.css
+   Toggle is handled by sidebar-theme.js
+   ══════════════════════════════════════════════════════════════ */
+
+/* Content area is always white on pages using this file,
+   regardless of which sidebar theme is active. */
+body { background: var(--bg) !important; }
+
+html.sidebar-light body { background: var(--bg) !important; }
+
+/* ── Sidebar base ───────────────────────────────────────── */
+html.sidebar-light .d1-sidebar {
+  background: #fff;
+  color: var(--ink-2);
+  border-right: 1px solid var(--line);
+  box-shadow: none;
+}
+
+/* ── Logo ───────────────────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-logo { color: var(--ink); }
+
+/* ── Search trigger ─────────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-search-trigger {
+  background: var(--bg-alt);
+  border-color: var(--line-2);
+  color: var(--ink-3);
+}
+html.sidebar-light .d1-sidebar .d1-search-trigger:hover {
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+  color: var(--ink);
+}
+html.sidebar-light .d1-sidebar .d1-search-trigger .d1-kbd {
+  color: var(--ink-4);
+  background: var(--bg-alt);
+}
+
+/* ── Notifications bell ─────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-notif-btn {
+  background: var(--bg-alt);
+  border-color: var(--line-2);
+  color: var(--ink-3);
+}
+html.sidebar-light .d1-sidebar .d1-notif-btn:hover {
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+  color: var(--ink);
+}
+html.sidebar-light .d1-sidebar .d1-notif-dot {
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* ── Nav section labels ─────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-nav-label { color: var(--ink-4); }
+
+/* ── Nav links ──────────────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-nav a { color: var(--ink-2); }
+html.sidebar-light .d1-sidebar .d1-nav a svg { opacity: 0.55; }
+html.sidebar-light .d1-sidebar .d1-nav a:hover { background: var(--bg-alt); color: var(--ink); }
+html.sidebar-light .d1-sidebar .d1-nav a:hover svg { opacity: 0.85; }
+html.sidebar-light .d1-sidebar .d1-nav a.active {
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  color: var(--accent);
+}
+html.sidebar-light .d1-sidebar .d1-nav a.active svg { opacity: 1; color: var(--accent); }
+html.sidebar-light .d1-sidebar .d1-nav a .soon {
+  color: var(--accent-2);
+  background: color-mix(in oklab, var(--accent-2) 12%, transparent);
+}
+
+/* ── Sidebar footer ─────────────────────────────────────── */
+html.sidebar-light .d1-sidebar .d1-sidebar-foot { border-top-color: var(--line); }
+html.sidebar-light .d1-sidebar .d1-user-avatar {
+  background: var(--bg-alt);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+html.sidebar-light .d1-sidebar .d1-user-info b { color: var(--ink); }
+html.sidebar-light .d1-sidebar .d1-user-info span { color: var(--ink-3); }
+html.sidebar-light .d1-sidebar .d1-logout-btn { color: var(--ink-3); }
+html.sidebar-light .d1-sidebar .d1-logout-btn:hover { background: var(--bg-alt); color: var(--ink); }
+
+/* ── Collapse button (overrides inline rgba-white styles) ── */
+html.sidebar-light .d1-collapse-btn {
+  background: var(--bg-alt) !important;
+  border-color: var(--line-2) !important;
+  color: var(--ink-3) !important;
+}
+html.sidebar-light .d1-collapse-btn:hover {
+  background: color-mix(in oklab, var(--ink) 7%, transparent) !important;
+  color: var(--ink) !important;
+}
+
+/* ── Theme toggle button ────────────────────────────────── */
+html.sidebar-light .d1-theme-btn { color: var(--ink-3); }
+html.sidebar-light .d1-theme-btn:hover { background: var(--bg-alt) !important; color: var(--ink) !important; }
+
+/* ── Mobile sidebar ─────────────────────────────────────── */
+@media (max-width: 760px) {
+  html.sidebar-light .d1-sidebar { border-right: none; border-bottom: 1px solid var(--line); }
+}

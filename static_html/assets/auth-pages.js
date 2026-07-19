@@ -86,6 +86,10 @@ function initLoginTabs() {
   const footText = document.getElementById('auth-foot-text');
   const memberInfo = document.getElementById('auth-member-info');
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const returnTo  = urlParams.get('returnTo') || 'index.html';
+  const modeParam = urlParams.get('mode');
+
   let currentAuthMode = 'user';
 
   const setAuthMode = (mode) => {
@@ -127,8 +131,8 @@ function initLoginTabs() {
   userTab.addEventListener('click', () => setAuthMode('user'));
   memberTab.addEventListener('click', () => setAuthMode('member'));
 
-  // Initialize with 'user' view by default
-  setAuthMode('user');
+  // Initialize with mode from URL param, defaulting to 'user'
+  setAuthMode(modeParam === 'member' ? 'member' : 'user');
 
   // Submit form trigger
   if (authForm) {
@@ -137,7 +141,7 @@ function initLoginTabs() {
       const emailInput = authForm.querySelector('input[type="email"]');
       const email = emailInput ? emailInput.value.trim() : 'user@expertly.com';
       localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
-      window.location.href = 'index.html';
+      window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
     });
   }
 
@@ -147,7 +151,7 @@ function initLoginTabs() {
       e.preventDefault();
       const email = currentAuthMode === 'member' ? 'member@linkedin.com' : 'user@linkedin.com';
       localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
-      window.location.href = 'index.html';
+      window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
     });
   }
 }

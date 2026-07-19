@@ -153,6 +153,18 @@ function getCheckIconHtml() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Inject favicon
+  (function() {
+    if (!document.querySelector('link[rel~="icon"]')) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="4" y="23" font-family="ui-sans-serif,system-ui,-apple-system,sans-serif" font-weight="600" font-size="20" fill="#FFFFFF" letter-spacing="-0.02em">E</text><circle cx="19" cy="23" r="3.5" fill="#00C99E"/></svg>`;
+      const link = document.createElement('link');
+      link.rel = 'icon';
+      link.type = 'image/svg+xml';
+      link.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+      document.head.appendChild(link);
+    }
+  })();
+
   // 0. Render shared navbar
   renderNav();
 
@@ -241,9 +253,9 @@ function renderNav() {
         <span class="nav-logo" style="font-size:23px;">Expertly<span class="dot"></span></span>
       </a>
       <div class="nav-links">
-        <a href="members.html">Members</a>
-        <a href="articles.html">Articles</a>
-        <a href="events.html">Events</a>
+        <a href="members-v3.html">Members</a>
+        <a href="articles-v3.html">Articles</a>
+        <a href="events-v3.html">Events</a>
         <a href="membership.html">Membership</a>
       </div>
       <div class="nav-actions">
@@ -270,9 +282,9 @@ function renderNav() {
       </button>
     </div>
     <div class="nav-mobile-links">
-      <a href="members.html" ${currentPath==='members.html'?'class="active"':''}>Members</a>
-      <a href="articles.html" ${currentPath==='articles.html'?'class="active"':''}>Articles</a>
-      <a href="events.html" ${currentPath==='events.html'?'class="active"':''}>Events</a>
+      <a href="members-v3.html" ${currentPath==='members-v3.html'?'class="active"':''}>Members</a>
+      <a href="articles-v3.html" ${currentPath==='articles-v3.html'?'class="active"':''}>Articles</a>
+      <a href="events-v3.html" ${currentPath==='events-v3.html'?'class="active"':''}>Events</a>
       <a href="membership.html" ${currentPath==='membership.html'?'class="active"':''}>Membership</a>
     </div>
     <div class="nav-mobile-divider"></div>

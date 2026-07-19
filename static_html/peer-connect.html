@@ -1,1433 +1,1141 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="">
+<html lang="en" data-theme="" data-hero="split" data-grid="1">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Peer Connect — Expertly</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/theme.css">
   <link rel="stylesheet" href="assets/home.css">
   <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
   <style>
-    body { background: #f5f5f5; }
-    .pc-page { max-width: 1520px; margin: 0 auto; padding: 36px 32px 80px; }
-    @media (max-width: 720px) { .pc-page { padding: 20px 20px 60px; } }
+    /* ── Shell ─────────────────────────────────────── */
+    .d1-shell { transition: grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1); }
+    .d1-shell.nav-collapsed { grid-template-columns: 56px 1fr; }
+    .d1-logo-row { display: flex; align-items: center; gap: 6px; padding: 6px 4px 22px 10px; }
+    .d1-logo-row .d1-logo { padding: 0; flex: 1; min-width: 0; overflow: hidden; text-decoration: none; }
+    .d1-logo-full { display: inline; white-space: nowrap; }
+    .d1-logo-short { display: none; }
+    .nav-collapsed .d1-logo-full { display: none; }
+    .nav-collapsed .d1-logo-short { display: inline; }
+    .nav-collapsed .d1-logo-row { flex-direction: column; align-items: center; padding: 6px 0 14px; gap: 8px; }
+    .d1-collapse-btn {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.22s; }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .nav-collapsed .d1-collapse-btn svg { transform: rotate(180deg); }
+    .nav-collapsed .d1-nav-lbl { display: none; }
+    .nav-collapsed .d1-nav a .soon { display: none; }
+    .nav-collapsed .d1-nav a { justify-content: center; padding: 10px; gap: 0; }
+    .nav-collapsed .d1-nav-label { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-user-info { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-logout-btn { display: none; }
+    .nav-collapsed .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+    .v3-page-main { min-height: 100vh; overflow-x: clip; }
 
-    /* ── Back ── */
-    .pc-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #6b7280; text-decoration: none; margin-bottom: 20px; transition: color 0.15s; }
-    .pc-back:hover { color: #111; }
+    /* ── Peer Connect hero ─────────────────────────── */
+    .pcr-hero { background: var(--bg-alt); padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+    .pcr-hero-heading { font-size: clamp(30px, 3.8vw, 50px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.04; color: var(--ink); margin-top: 18px; }
+    .pcr-hero-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
+    .pcr-hero-sub { font-size: 16px; color: var(--ink-3); margin-top: 14px; max-width: 580px; line-height: 1.55; }
+    .pcr-hero-meta { margin-top: 24px; display: flex; align-items: center; gap: 12px; }
+    .pcr-month-pill {
+      display: inline-flex; align-items: center; gap: 7px; background: var(--bg-card);
+      border: 1px solid var(--line-2); border-radius: 99px; padding: 7px 16px 7px 12px;
+      font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.06em; color: var(--ink-2); flex-shrink: 0;
+    }
+    .pcr-month-pill .live { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 20%, transparent); }
 
-    /* ── Hero ── */
-    .pc-hero {
-      background: #0B3A2D; border-radius: 20px;
-      padding: 28px 32px 30px; margin-bottom: 24px;
-      position: relative; overflow: hidden;
+    /* ── Peer Connect page styles ──────────────────── */
+    .pcr-page { max-width: 1520px; margin: 0 auto; padding: 28px 32px 80px; }
+
+    /* ── Layout: stage rail + content ─────────────── */
+    .pcr-layout { display: grid; grid-template-columns: 300px 1fr; gap: 48px; margin-top: 4px; align-items: start; }
+    @media (max-width: 860px) { .pcr-layout { grid-template-columns: 1fr; gap: 24px; } }
+
+    /* ── Stage rail ────────────────────────────────── */
+    .pcr-rail { position: sticky; top: 24px; }
+    @media (max-width: 860px) { .pcr-rail { position: static; } }
+
+    /* ── Single-card wrapper ───────────────────────── */
+    .pcr-rail-card {
+      background: var(--bg-card); border: 1px solid var(--line-2);
+      border-radius: 18px; overflow: hidden;
     }
-    .pc-hero::after {
-      content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 55%;
-      background: radial-gradient(ellipse at right center, rgba(139,252,216,0.09) 0%, transparent 65%);
-      pointer-events: none;
+
+    /* ── Timeline list ─────────────────────────────── */
+    .pcr-tl-list { padding: 6px 0 2px; }
+
+    /* ── Timeline item ─────────────────────────────── */
+    .pcr-tli {
+      display: flex; cursor: pointer; padding: 0 14px;
+      transition: background 0.12s;
     }
-    .pc-hero-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 24px; position: relative; z-index: 1;
+    .pcr-tli:not(.open):hover { background: color-mix(in oklab, var(--accent) 5%, transparent); }
+    .pcr-tli.open {
+      background: color-mix(in oklab, var(--accent) 9%, white);
     }
-    .pc-hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 6px;
+
+    /* Spine: dot + vertical connector */
+    .pcr-tli-spine {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0; width: 36px; padding-top: 12px;
+    }
+    .pcr-tli-dot {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid var(--line-2); color: #fff; background: transparent;
+    }
+    .pcr-tli.done .pcr-tli-dot { background: var(--accent); border-color: var(--accent); }
+    .pcr-tli.active .pcr-tli-dot {
+      background: var(--ink); border-color: var(--ink);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+    }
+    .pcr-tli.upcoming .pcr-tli-dot { border-style: dashed; }
+    .pcr-tli-pulse { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+
+    .pcr-tli-conn {
+      width: 2px; flex: 1; min-height: 14px;
+      background: var(--line-2); border-radius: 2px; margin: 4px 0;
+    }
+    .pcr-tli-conn.done { background: var(--accent); }
+
+    /* Body */
+    .pcr-tli-body { flex: 1; min-width: 0; padding: 10px 0 12px 10px; }
+
+    /* Collapsed row */
+    .pcr-tli-row { display: flex; align-items: center; gap: 6px; }
+    .pcr-tli-lbl { font-size: 13px; font-weight: 500; flex: 1; color: var(--ink-2); }
+    .pcr-tli.done:not(.open) .pcr-tli-lbl { color: var(--ink-3); }
+    .pcr-tli.active:not(.open) .pcr-tli-lbl { font-weight: 600; color: var(--ink); }
+    .pcr-tli.upcoming:not(.open) .pcr-tli-lbl { color: var(--ink-4); font-weight: 400; }
+    .pcr-tli-date-right {
+      font-family: 'Archivo', sans-serif; font-size: 10px;
+      color: var(--ink-4); font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    .pcr-tli.active:not(.open) .pcr-tli-date-right { color: var(--accent); font-weight: 700; }
+
+    /* Expanded content */
+    .pcr-tli-eyebrow {
+      display: flex; align-items: center; gap: 7px;
       font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase; color: #8BFCD8; margin-bottom: 10px;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
     }
-    .pc-hero-eyebrow .live {
-      width: 6px; height: 6px; border-radius: 50%; background: #8BFCD8;
-      animation: pulse-dot 1.8s ease-in-out infinite;
+    .pcr-tli.upcoming .pcr-tli-eyebrow { color: var(--ink-4); }
+    .pcr-tli-edot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent); flex-shrink: 0;
     }
-    .pc-hero-title {
-      font-size: clamp(24px, 3vw, 32px); font-weight: 600;
-      letter-spacing: -0.025em; color: #fff; margin-bottom: 8px; line-height: 1.1;
-    }
-    .pc-hero-sub {
-      font-size: 13.5px; color: rgba(255,255,255,0.48); line-height: 1.6; max-width: 400px;
-    }
-    .pc-hero-stats {
-      display: flex; flex-shrink: 0;
-      background: rgba(255,255,255,0.05); border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
-    }
-    .pc-hero-stat {
-      padding: 14px 22px; text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.07);
-    }
-    .pc-hero-stat:last-child { border-right: none; }
-    .pc-hero-stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1; }
-    .pc-hero-stat-lbl {
-      font-family: 'Archivo', sans-serif; font-size: 9.5px; color: rgba(255,255,255,0.38);
-      letter-spacing: 0.08em; text-transform: uppercase; margin-top: 5px;
-    }
-    @media (max-width: 640px) {
-      .pc-hero-inner { flex-direction: column; align-items: flex-start; }
-      .pc-hero-stats { width: 100%; }
+    .pcr-tli.upcoming .pcr-tli-edot { background: var(--ink-4); box-shadow: none; }
+    .pcr-tli-exp-label { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: 8px; }
+    .pcr-tli-exp-date { margin-top: 4px; font-size: 12.5px; color: var(--ink-3); }
+    .pcr-tli-exp-helper {
+      margin-top: 10px; font-size: 12.5px; color: var(--ink-3); line-height: 1.55;
+      padding-top: 10px; border-top: 1px solid color-mix(in oklab, var(--accent) 18%, var(--line));
     }
 
-    /* ── Demo switcher ── */
-    .pc-demo-bar {
-      background: #111; border-radius: 12px; padding: 10px 14px;
-      display: flex; align-items: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .pc-demo-label { font-size: 10.5px; font-family: 'Archivo', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
-    .pc-demo-btn {
-      padding: 5px 11px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.14);
-      background: transparent; color: rgba(255,255,255,0.55); font-family: inherit;
-      font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
-    }
-    .pc-demo-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
-    .pc-demo-btn.active { background: #fff; color: #111; border-color: #fff; font-weight: 600; }
-
-    /* ── Phase timeline ── */
-    .pc-phase-bar {
-      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
-      padding: 22px 28px; margin-bottom: 24px;
-      display: flex; align-items: flex-start; position: relative;
-    }
-    .pc-phase-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
-    .pc-phase-step + .pc-phase-step::before {
-      content: ''; position: absolute; top: 15px; right: 50%; left: -50%;
-      height: 2px; background: #e5e7eb; z-index: 0;
-    }
-    .pc-phase-step.done + .pc-phase-step::before,
-    .pc-phase-step.active + .pc-phase-step::before { background: #00A582; }
-    .pc-phase-icon {
-      width: 32px; height: 32px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 1; flex-shrink: 0;
-    }
-    .pc-phase-step.done .pc-phase-icon { background: #00A582; color: #fff; }
-    .pc-phase-step.active .pc-phase-icon { background: #111; color: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.08); }
-    .pc-phase-step.upcoming .pc-phase-icon { background: #f5f5f5; color: #d1d5db; border: 2px solid #e5e7eb; }
-    .pc-phase-label { font-size: 12px; font-weight: 600; color: #111; text-align: center; line-height: 1.3; }
-    .pc-phase-step.upcoming .pc-phase-label { color: #9ca3af; }
-    .pc-phase-date { font-family: 'Archivo', sans-serif; font-size: 10px; color: #9ca3af; letter-spacing: 0.03em; text-align: center; }
-    .pc-phase-step.active .pc-phase-date { color: #00A582; font-weight: 600; }
-
-    /* ── Three-column layout ── */
-    .pc-three-col { display: grid; grid-template-columns: 7fr 3fr; gap: 20px; align-items: start; }
-    .pc-col-left { display: flex; flex-direction: column; gap: 20px; }
-    .pc-col-right { display: flex; flex-direction: column; gap: 16px; }
-    @media (max-width: 960px) { .pc-three-col { grid-template-columns: 1fr; } }
-
-    /* ── Card shell ── */
-    .pc-card {
-      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;
-    }
-    .pc-card-head {
-      padding: 16px 22px; border-bottom: 1px solid #f0f0f0;
+    /* ── Inline stats block (inside the card) ──────── */
+    .pcr-rail-stats-block { border-top: 1px solid var(--line); }
+    .pcr-rsi-row {
       display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 18px; border-bottom: 1px solid var(--line);
     }
-    .pc-card-label { font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; }
-    .pc-card-body { padding: 22px; }
-
-    /* ══════════════════════════════════════
-       STATE A — Preference Setting (left top)
-    ══════════════════════════════════════ */
-    .pc-pref-intro { font-size: 13px; color: #6b7280; line-height: 1.6; margin-bottom: 20px; }
-    .pc-pref-intro strong { color: #111; }
-    .pc-pref-default-note {
-      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
-      padding: 10px 14px; font-size: 12px; color: #6b7280; line-height: 1.55;
-      margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;
-    }
-    .pc-pref-default-note svg { flex-shrink: 0; margin-top: 1px; color: #9ca3af; }
-    .pc-pref-section { margin-bottom: 20px; }
-    .pc-pref-field-label { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-    .pc-optional-tag { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9ca3af; background: #f5f5f5; border-radius: 99px; padding: 2px 7px; }
-    .pc-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-    .pc-chip {
-      padding: 7px 14px; border-radius: 99px;
-      border: 1.5px solid #e5e7eb; background: #fff;
-      font-size: 12.5px; color: #374151; cursor: pointer;
-      transition: all 0.15s; user-select: none;
-    }
-    .pc-chip:hover { border-color: #6b7280; }
-    .pc-chip.sel { border-color: #00A582; background: #f0fdf9; color: #00795f; font-weight: 500; }
-    .pc-select {
-      width: 100%; padding: 10px 12px; border-radius: 10px;
-      border: 1.5px solid #e5e7eb; font-family: inherit;
-      font-size: 13px; color: #111; outline: none; background: #fff;
-      transition: border-color 0.15s; cursor: pointer;
-    }
-    .pc-select:focus { border-color: #00A582; }
-    .pc-pref-save {
-      width: 100%; padding: 12px; border-radius: 10px;
-      background: #111; color: #fff; border: none;
-      font-family: inherit; font-size: 14px; font-weight: 600;
-      cursor: pointer; margin-top: 4px; transition: background 0.15s;
-    }
-    .pc-pref-save:hover { background: #00A582; }
-    .pc-pref-skip { display: block; text-align: center; font-size: 12px; color: #9ca3af; margin-top: 10px; cursor: pointer; }
-    .pc-pref-skip:hover { color: #374151; }
-
-    /* ══════════════════════════════════════
-       STATE B — Matching
-    ══════════════════════════════════════ */
-    .pc-matching-wrap { text-align: center; padding: 16px 8px; }
-    .pc-matching-icon {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: #f5f5f5; margin: 0 auto 20px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .pc-matching-spinner {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 3px solid #e5e7eb; border-top-color: #00A582;
-      animation: spin 0.9s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .pc-matching-title { font-size: 17px; font-weight: 600; color: #374151; margin-bottom: 8px; }
-    .pc-matching-sub { font-size: 13px; color: #9ca3af; line-height: 1.6; max-width: 340px; margin: 0 auto; }
-
-    .pc-pref-saved {
-      background: #f9fafb; border: 1px solid #f0f0f0; border-radius: 12px;
-      padding: 14px 16px; margin-top: 20px; opacity: 0.65;
-    }
-    .pc-pref-saved-label { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 10px; }
-    .pc-pref-saved-row { display: flex; gap: 6px; flex-wrap: wrap; }
-    .pc-pref-saved-tag { padding: 4px 10px; border-radius: 99px; background: #efefef; font-size: 12px; color: #6b7280; }
-
-    /* ══════════════════════════════════════
-       STATE C — Match Revealed
-    ══════════════════════════════════════ */
-    .pc-reveal-eyebrow {
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'Archivo', sans-serif; font-size: 11px;
-      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-      color: #00A582; margin-bottom: 20px;
-    }
-    .pc-reveal-eyebrow .pulse {
-      width: 8px; height: 8px; border-radius: 50%; background: #00A582;
-      animation: pulse-dot 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
-
-    .pc-match-profile { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 18px; }
-    .pc-match-avatar {
-      width: 68px; height: 68px; border-radius: 16px;
-      background: #033c2f; color: #8BFCD8;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 600; flex-shrink: 0; letter-spacing: -0.01em;
-    }
-    .pc-match-name { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: #111; margin-bottom: 3px; }
-    .pc-match-role { font-size: 13px; color: #6b7280; margin-bottom: 10px; line-height: 1.4; }
-    .pc-match-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-    .pc-match-tag {
-      padding: 4px 10px; border-radius: 99px;
-      border: 1px solid #e5e7eb; background: #f9fafb;
-      font-size: 12px; color: #374151;
-    }
-    .pc-match-tag.verified { border-color: #a7f3d0; background: #f0fdf4; color: #00795f; font-weight: 500; }
-
-    .pc-match-why {
-      background: #f9fafb; border-radius: 10px; padding: 14px 16px;
-      margin-bottom: 18px; font-size: 13px; color: #374151; line-height: 1.6;
-    }
-    .pc-match-why-lbl { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 6px; }
-
-    .pc-meeting-slot {
-      display: flex; align-items: center; gap: 12px;
-      background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px;
-      padding: 14px 16px; margin-bottom: 20px;
-    }
-    .pc-meeting-slot-icon { color: #00A582; flex-shrink: 0; }
-    .pc-meeting-slot-date { font-size: 14px; font-weight: 600; color: #111; }
-    .pc-meeting-slot-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
-
-    .pc-reveal-actions { display: flex; gap: 10px; }
-    .pc-btn-primary {
-      flex: 1; padding: 11px 16px; border-radius: 10px;
-      background: #111; color: #fff; border: none;
-      font-family: inherit; font-size: 13.5px; font-weight: 600;
-      cursor: pointer; transition: background 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;
-    }
-    .pc-btn-primary:hover { background: #00A582; }
-    .pc-btn-outline {
-      flex: 1; padding: 11px 16px; border-radius: 10px;
-      background: #fff; color: #374151; border: 1.5px solid #e5e7eb;
-      font-family: inherit; font-size: 13.5px; font-weight: 600;
-      cursor: pointer; transition: border-color 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;
-    }
-    .pc-btn-outline:hover { border-color: #6b7280; }
-
-    /* ══════════════════════════════════════
-       STATE D — Post-Meeting (left top)
-    ══════════════════════════════════════ */
-    .pc-post-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
-    .pc-post-eyebrow-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: #374151; background: #f5f5f5; border: 1px solid #e5e7eb;
-      border-radius: 99px; padding: 4px 10px;
-    }
-    .pc-post-with { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-    .pc-post-avatar {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: #033c2f; color: #8BFCD8;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 600; flex-shrink: 0;
-    }
-    .pc-post-name { font-size: 14px; font-weight: 600; color: #111; }
-    .pc-post-meta { font-size: 12px; color: #9ca3af; }
-
-    .pc-post-tabs { display: flex; border-bottom: 1px solid #f0f0f0; margin-bottom: 16px; }
-    .pc-post-tab {
-      padding: 10px 16px; font-size: 13px; font-weight: 500;
-      color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent;
-      transition: all 0.15s; margin-bottom: -1px;
-    }
-    .pc-post-tab.active { color: #111; border-color: #111; font-weight: 600; }
-    .pc-post-panel { display: none; }
-    .pc-post-panel.active { display: block; }
-
-    .pc-key-actions { list-style: none; padding: 0; margin: 0; }
-    .pc-key-actions li {
-      display: flex; gap: 10px; font-size: 13px; color: #374151;
-      margin-bottom: 10px; line-height: 1.5; align-items: flex-start;
-    }
-    .pc-key-actions li::before { content: '→'; color: #00A582; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
-    .pc-transcript-block {
-      background: #f9fafb; border-radius: 10px; padding: 14px 16px;
-      font-size: 13px; color: #4b5563; line-height: 1.7; font-style: italic;
+    .pcr-rsi-row:last-child { border-bottom: none; }
+    .pcr-rsi-row b { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+    .pcr-rsi-row span {
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase; color: #B08A4E;
     }
 
-    .pc-feedback-wrap { margin-top: 4px; }
-    .pc-feedback-label { font-size: 12.5px; font-weight: 600; color: #111; margin-bottom: 8px; }
-    .pc-stars-input { display: flex; gap: 6px; margin-bottom: 12px; }
-    .pc-star-btn { font-size: 24px; color: #e5e7eb; cursor: pointer; transition: color 0.15s; background: none; border: none; padding: 0; line-height: 1; }
-    .pc-star-btn.lit, .pc-star-btn:hover { color: #f59e0b; }
-    .pc-feedback-textarea {
-      width: 100%; padding: 10px 12px; border-radius: 10px;
-      border: 1.5px solid #e5e7eb; font-family: inherit;
-      font-size: 13px; color: #111; outline: none; resize: none;
-      line-height: 1.6; min-height: 80px; box-sizing: border-box; transition: border-color 0.15s;
-    }
-    .pc-feedback-textarea:focus { border-color: #00A582; }
-    .pc-feedback-submit {
-      width: 100%; padding: 11px; border-radius: 10px;
-      background: #111; color: #fff; border: none;
-      font-family: inherit; font-size: 13.5px; font-weight: 600;
-      cursor: pointer; margin-top: 8px; transition: background 0.15s;
-    }
-    .pc-feedback-submit:hover { background: #00A582; }
+    /* ── Content card ──────────────────────────────── */
+    .pcr-content { min-width: 0; }
+    .pcr-card { background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 14px; overflow: hidden; margin-bottom: 22px; }
+    .pcr-card-head { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+    .pcr-card-label { font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: -0.005em; color: var(--accent); }
+    .pcr-card-body { padding: 26px; }
 
-    /* ══════════════════════════════════════
-       STATE E — Next cycle (left top)
-    ══════════════════════════════════════ */
-    .pc-next-done-banner {
-      background: #f0fdf9; border: 1px solid #a7f3d0; border-radius: 12px;
-      padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
-    }
-    .pc-next-done-icon { flex-shrink: 0; color: #00A582; margin-top: 1px; }
-    .pc-next-done-text { font-size: 14px; color: #374151; line-height: 1.55; }
-    .pc-next-done-text strong { color: #111; font-size: 15px; display: block; margin-bottom: 2px; }
-    .pc-next-done-text small { font-size: 12px; color: #9ca3af; }
-    .pc-cycle-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .pc-cycle-stat { background: #f9fafb; border-radius: 10px; padding: 14px 16px; text-align: center; }
-    .pc-cycle-stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #111; }
-    .pc-cycle-stat-lbl { font-family: 'Archivo', sans-serif; font-size: 10px; color: #9ca3af; letter-spacing: 0.08em; margin-top: 4px; }
+    /* ── Preferences stage ─────────────────────────── */
+    .pcr-pref-intro { font-size: 14px; color: var(--ink-3); line-height: 1.65; margin-bottom: 24px; }
+    .pcr-pref-intro strong { color: var(--ink); }
+    .pcr-pref-field-label { font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .pcr-pref-save { padding: 12px 24px; border-radius: 10px; background: var(--ink); color: var(--bg); border: none; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.15s; }
+    .pcr-pref-save:hover { background: var(--accent); }
+    .pcr-pref-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .pcr-pref-top-row .pcr-pref-intro { margin-bottom: 0; flex: 1; }
+    .pcr-pref-skip-btn { flex-shrink: 0; padding: 8px 16px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid var(--line-2); font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+    .pcr-pref-skip-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+    .pcr-filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
 
-    /* ══════════════════════════════════════
-       RIGHT CARD — Preferences
-    ══════════════════════════════════════ */
-    .pc-pref-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      border-radius: 99px; padding: 4px 10px;
-    }
-    .pc-pref-badge.open { background: #f0fdf9; border: 1px solid #a7f3d0; color: #00795f; }
-    .pc-pref-badge.locked { background: #f5f5f5; border: 1px solid #e5e7eb; color: #9ca3af; }
-    .pc-pref-badge.upcoming { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; }
+    /* ── Preference dropdowns ──────────────────────── */
+    .pcr-dd { position: relative; }
+    .pcr-dd-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 100px; background: var(--bg-card); border: 1px solid var(--line-2); font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; white-space: nowrap; user-select: none; }
+    .pcr-dd-btn:hover { border-color: var(--ink-3); }
+    .pcr-dd.open .pcr-dd-btn { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+    .pcr-dd-btn.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .pcr-dd-caret { font-size: 9px; opacity: 0.55; transition: transform 0.2s; }
+    .pcr-dd.open .pcr-dd-caret { transform: rotate(180deg); }
+    .pcr-dd-pop { position: absolute; top: calc(100% + 8px); left: 0; z-index: 40; width: 240px; max-width: 82vw; background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: 0 16px 48px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.08); opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.98); transform-origin: top left; transition: opacity 0.18s, transform 0.18s; padding: 8px 0; }
+    .pcr-dd.open .pcr-dd-pop { opacity: 1; pointer-events: all; transform: none; }
+    .pcr-dd-search-wrap { padding: 0 10px 8px; }
+    .pcr-dd-search { width: 100%; box-sizing: border-box; padding: 7px 12px; border: 1px solid var(--line-2); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg-alt); outline: none; transition: border-color 0.15s; }
+    .pcr-dd-search:focus { border-color: var(--ink-3); }
+    .pcr-dd-empty { padding: 16px 14px; font-size: 13px; color: var(--ink-4); text-align: center; }
+    .pcr-dd-list { max-height: 240px; overflow-y: auto; }
+    .pcr-dd-option { display: flex; align-items: center; gap: 10px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .pcr-dd-option:hover { background: var(--bg-alt); color: var(--ink); }
+    .pcr-dd-option.selected { color: var(--accent); font-weight: 600; }
+    .pcr-dd-checkbox { width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid var(--line-2); flex-shrink: 0; position: relative; transition: background 0.12s, border-color 0.12s; }
+    .pcr-dd-option.selected .pcr-dd-checkbox { background: var(--accent); border-color: var(--accent); }
+    .pcr-dd-option.selected .pcr-dd-checkbox::after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 
-    .pc-pref-month-lbl {
-      font-size: 15px; font-weight: 600; letter-spacing: -0.015em; color: #111; margin-bottom: 4px;
-    }
-    .pc-pref-month-sub { font-size: 12px; color: #9ca3af; margin-bottom: 20px; line-height: 1.5; }
+    /* ── Timeline ──────────────────────────────────── */
+    .pcr-tl-block { margin-bottom: 24px; }
+    .pcr-tl-track-wrap { position: relative; height: 30px; margin: 6px 2px 2px; }
+    .pcr-tl-track { position: absolute; top: 50%; left: 0; right: 0; height: 6px; margin-top: -3px; background: var(--line-2); border-radius: 99px; }
+    .pcr-tl-fill { position: absolute; top: 50%; height: 6px; margin-top: -3px; background: var(--accent); border-radius: 99px; }
+    .pcr-tl-range { position: absolute; top: 0; left: 0; width: 100%; height: 30px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; pointer-events: none; }
+    .pcr-tl-range::-webkit-slider-runnable-track { background: transparent; }
+    .pcr-tl-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--ink); cursor: grab; box-shadow: 0 2px 6px rgba(0,0,0,0.18); margin-top: 5px; }
+    .pcr-tl-range::-moz-range-thumb { pointer-events: auto; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--ink); cursor: grab; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+    .pcr-tl-range-start { z-index: 2; }
+    .pcr-tl-range-end { z-index: 3; }
+    .pcr-tl-ticks { display: flex; justify-content: space-between; font-family: 'Archivo', sans-serif; font-size: 10px; color: var(--ink-4); padding: 0 1px; margin-top: 4px; }
+    .pcr-tl-labels { font-size: 13.5px; font-weight: 600; color: var(--ink); margin-top: 14px; }
+    .pcr-tl-labels .accent { color: var(--accent); }
+    .pcr-tl-note { margin-top: 12px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
+    .pcr-tl-note strong { color: var(--ink); }
+    .pcr-tl-warn { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line-2); color: #92400e; }
+    .pcr-tl-warn svg { flex-shrink: 0; margin-top: 1px; color: #b45309; }
 
-    .pc-pref-locked-chip-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
-    .pc-pref-locked-chip {
-      padding: 5px 11px; border-radius: 99px;
-      background: #f5f5f5; border: 1px solid #e5e7eb;
-      font-size: 12px; color: #6b7280;
-    }
+    /* ── Matching stage ────────────────────────────── */
+    .pcr-matching-wrap { text-align: left; padding: 8px 0; display: flex; align-items: center; gap: 20px; }
+    .pcr-matching-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pcr-matching-spinner { width: 24px; height: 24px; border-radius: 50%; border: 3px solid var(--line-2); border-top-color: var(--accent); animation: pcr-spin 0.9s linear infinite; }
+    @keyframes pcr-spin { to { transform: rotate(360deg); } }
+    .pcr-matching-title { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+    .pcr-matching-sub { font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 360px; }
+    .pcr-pref-saved { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 15px 18px; margin-top: 22px; }
+    .pcr-pref-saved-label { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--ink-4); margin-bottom: 10px; }
+    .pcr-pref-saved-row { display: flex; gap: 7px; flex-wrap: wrap; }
+    .pcr-pref-saved-tag { padding: 4px 11px; border-radius: 99px; background: var(--bg-card); border: 1px solid var(--line-2); font-size: 12px; color: var(--ink-2); }
 
-    .pc-pref-section-sm { margin-bottom: 16px; }
-    .pc-pref-field-label-sm { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
-    .pc-chips-sm { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pc-chip-sm {
-      padding: 5px 11px; border-radius: 99px;
-      border: 1.5px solid #e5e7eb; background: #fff;
-      font-size: 12px; color: #374151; cursor: pointer;
-      transition: all 0.15s; user-select: none;
-    }
-    .pc-chip-sm:hover { border-color: #6b7280; }
-    .pc-chip-sm.sel { border-color: #00A582; background: #f0fdf9; color: #00795f; font-weight: 500; }
-    .pc-select-sm {
-      width: 100%; padding: 9px 11px; border-radius: 9px;
-      border: 1.5px solid #e5e7eb; font-family: inherit;
-      font-size: 12.5px; color: #111; outline: none; background: #fff;
-      transition: border-color 0.15s; cursor: pointer;
-    }
-    .pc-select-sm:focus { border-color: #00A582; }
-    .pc-textarea-sm {
-      width: 100%; padding: 9px 11px; border-radius: 9px;
-      border: 1.5px solid #e5e7eb; font-family: inherit;
-      font-size: 12.5px; color: #111; outline: none; resize: none;
-      line-height: 1.6; min-height: 68px; box-sizing: border-box; transition: border-color 0.15s;
-    }
-    .pc-textarea-sm:focus { border-color: #00A582; }
-    .pc-pref-save-sm {
-      width: 100%; padding: 11px; border-radius: 9px;
-      background: #111; color: #fff; border: none;
-      font-family: inherit; font-size: 13px; font-weight: 600;
-      cursor: pointer; margin-top: 4px; transition: background 0.15s;
-    }
-    .pc-pref-save-sm:hover { background: #00A582; }
-    .pc-pref-skip-sm { display: block; text-align: center; font-size: 12px; color: #9ca3af; margin-top: 8px; cursor: pointer; }
-    .pc-pref-skip-sm:hover { color: #374151; }
-    .pc-pref-deadline-note {
-      background: #f9fafb; border-radius: 8px; padding: 8px 12px;
-      font-size: 11.5px; color: #6b7280; display: flex; align-items: center; gap: 6px;
-      margin-top: 14px; border: 1px solid #f0f0f0;
-    }
-    .pc-pref-upcoming-box {
-      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px;
-      padding: 16px; margin-top: 12px;
-    }
-    .pc-pref-upcoming-eyebrow {
-      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 8px;
-    }
-    .pc-pref-upcoming-fields { display: flex; flex-direction: column; gap: 10px; opacity: 0.45; }
-    .pc-pref-upcoming-field {
-      display: flex; align-items: center; gap: 8px;
-      background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px;
-    }
-    .pc-pref-upcoming-field-icon { color: #d1d5db; flex-shrink: 0; }
-    .pc-pref-upcoming-field-text { font-size: 12.5px; color: #9ca3af; }
+    /* ── Match reveal & meeting stages ────────────── */
+    .pcr-reveal-eyebrow { display: flex; align-items: center; gap: 8px; font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink); margin-bottom: 24px; }
+    .pcr-reveal-eyebrow .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pcr-pulse 1.8s ease-in-out infinite; }
+    @keyframes pcr-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
+    .pcr-match-profile { display: flex; gap: 22px; align-items: center; margin-bottom: 26px; }
+    .pcr-match-avatar { width: 84px; height: 84px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--bg-alt); }
+    .pcr-match-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pcr-match-name { font-size: 26px; font-weight: 550; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 5px; }
+    .pcr-match-role { font-size: 14px; color: var(--ink-3); margin-bottom: 12px; line-height: 1.5; }
+    .pcr-match-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pcr-match-tag { padding: 4px 11px; border-radius: 99px; border: 1px solid var(--line-2); background: var(--bg-alt); font-size: 12px; color: var(--ink-2); }
+    .pcr-match-tag.verified { border-color: color-mix(in oklab, var(--accent) 40%, transparent); background: color-mix(in oklab, var(--accent) 10%, var(--bg)); color: var(--accent); font-weight: 500; }
+    .pcr-match-why { border-left: 3px solid var(--accent); padding: 4px 0 4px 20px; margin-bottom: 24px; font-size: 15px; color: var(--ink-2); line-height: 1.65; }
+    .pcr-match-why-lbl { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--nav-green); margin-bottom: 8px; }
+    .pcr-meeting-slot { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 24px; flex-wrap: wrap; }
+    .pcr-meeting-slot-left { display: flex; align-items: center; gap: 14px; }
+    .pcr-meeting-slot-icon { color: var(--accent); flex-shrink: 0; }
+    .pcr-meeting-slot-date { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+    .pcr-meeting-slot-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+    .pcr-btn-primary { padding: 12px 20px; border-radius: 10px; background: var(--ink); color: var(--bg); border: none; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+    .pcr-btn-primary:hover { background: var(--accent); }
+    .pcr-btn-outline { padding: 12px 20px; border-radius: 10px; background: var(--bg-card); color: var(--ink-2); border: 1.5px solid var(--line-2); font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+    .pcr-btn-outline:hover { border-color: var(--ink-3); }
+    .pcr-reveal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pcr-reveal-actions .pcr-btn-primary, .pcr-reveal-actions .pcr-btn-outline { flex: 1; }
+    .pcr-reschedule-wrap { position: relative; flex: 1; display: flex; }
+    .pcr-reschedule-wrap .pcr-btn-outline { width: 100%; }
+    .pcr-reschedule-tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); width: 220px; background: var(--ink); color: var(--bg); font-size: 12px; font-weight: 500; line-height: 1.4; padding: 10px 12px; border-radius: 8px; text-align: left; opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s; z-index: 5; }
+    .pcr-reschedule-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--ink); }
+    .pcr-reschedule-wrap:hover .pcr-reschedule-tip { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .pcr-reschedule-wrap:has(.pcr-reschedule-menu.open) .pcr-reschedule-tip { opacity: 0; }
+    .pcr-reschedule-menu { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); width: 260px; background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px; box-shadow: 0 12px 28px rgba(0,0,0,0.14); z-index: 6; display: none; text-align: left; }
+    .pcr-reschedule-menu.open { display: block; }
+    .pcr-reschedule-menu-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin-bottom: 10px; }
+    .pcr-reschedule-days { display: flex; gap: 6px; }
+    .pcr-reschedule-day { flex: 1; padding: 8px 2px; border-radius: 8px; border: 1.5px solid var(--line-2); background: var(--bg); color: var(--ink-2); text-align: center; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 600; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+    .pcr-reschedule-day .dow { display: block; font-size: 9.5px; font-weight: 600; color: var(--ink-4); margin-bottom: 2px; }
+    .pcr-reschedule-day:hover { border-color: var(--ink-3); }
+    .pcr-reschedule-day.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .pcr-reschedule-day.selected .dow { color: rgba(255,255,255,0.8); }
+    .pcr-reschedule-note { margin-top: 10px; font-size: 11px; line-height: 1.4; color: var(--ink-3); }
 
-    /* ══════════════════════════════════════
-       SESSIONS ACCORDION (bottom left card)
-    ══════════════════════════════════════ */
-    .pc-sess-row {
-      display: flex; gap: 12px; align-items: center;
-      padding: 13px 20px; border-bottom: 1px solid #f5f5f5;
-      cursor: pointer; transition: background 0.15s;
-    }
-    .pc-sess-row:hover { background: #fafafa; }
-    .pc-sess-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      overflow: hidden; position: relative; flex-shrink: 0; background: #e5e7eb;
-    }
-    .pc-sess-avatar img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      position: relative; z-index: 1;
-    }
-    .pc-sess-avatar-init {
-      position: absolute; inset: 0; z-index: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.01em;
-    }
-    .pc-sess-info { flex: 1; min-width: 0; }
-    .pc-sess-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 3px; }
-    .pc-sess-name { font-size: 13.5px; font-weight: 600; color: #111; }
-    .pc-sess-profile-btn {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 10px; border-radius: 6px;
-      border: 1px solid #e5e7eb; background: #fff;
-      font-size: 11.5px; font-weight: 500; color: #374151;
-      text-decoration: none; transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
-    }
-    .pc-sess-profile-btn:hover { border-color: #9ca3af; color: #111; background: #f9fafb; }
-    .pc-sess-meta { font-size: 12px; color: #9ca3af; }
-    .pc-sess-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .pc-sess-stars { display: flex; gap: 1px; }
-    .pc-sess-star { font-size: 11px; color: #d1d5db; }
-    .pc-sess-star.on { color: #f59e0b; }
-    .pc-sess-chevron { color: #d1d5db; transition: transform 0.2s; flex-shrink: 0; }
-    .pc-sess-row.open .pc-sess-chevron { transform: rotate(180deg); }
+    /* ── Post-meeting stage ────────────────────────── */
+    .pcr-post-eyebrow-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 99px; padding: 5px 12px; margin-bottom: 20px; }
+    .pcr-post-with { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .pcr-post-avatar { width: 46px; height: 46px; border-radius: 12px; overflow: hidden; background: var(--nav-green); color: var(--neon); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; flex-shrink: 0; }
+    .pcr-post-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pcr-post-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .pcr-post-meta { font-size: 12.5px; color: var(--ink-4); }
+    .pcr-post-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+    .pcr-post-tab { padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--ink-4); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
+    .pcr-post-tab.active { color: var(--ink); border-color: var(--ink); font-weight: 600; }
+    .pcr-post-panel { display: none; }
+    .pcr-post-panel.active { display: block; }
+    .pcr-panel-head-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .pcr-panel-head-lbl { font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--ink-4); }
+    .pcr-edit-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 8px; border: 1.5px solid var(--line-2); background: var(--bg-card); font-family: inherit; font-size: 12px; font-weight: 600; color: var(--ink-2); cursor: pointer; transition: border-color 0.15s, color 0.15s; }
+    .pcr-edit-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+    .pcr-edit-btn.editing { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .pcr-key-actions { list-style: none; padding: 0; margin: 0; }
+    .pcr-key-actions li { display: flex; gap: 10px; font-size: 14px; color: var(--ink-2); margin-bottom: 12px; line-height: 1.55; align-items: flex-start; }
+    .pcr-key-actions li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .pcr-key-actions li .txt { flex: 1; outline: none; }
+    .pcr-key-actions.editing li .txt { background: var(--bg-alt); border-radius: 6px; padding: 4px 8px; margin: -4px -8px; }
+    .pcr-key-actions li .remove { display: none; flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: none; background: var(--bg-alt); color: var(--ink-4); font-size: 13px; line-height: 1; cursor: pointer; }
+    .pcr-key-actions.editing li .remove { display: inline-flex; align-items: center; justify-content: center; }
+    .pcr-key-actions li .remove:hover { background: var(--line-2); color: var(--ink); }
+    .pcr-add-action { display: none; font-size: 13px; font-weight: 600; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 14px; }
+    .pcr-add-action.show { display: inline-block; }
+    .pcr-notes-view .pcr-stars-display { color: #f59e0b; font-size: 16px; letter-spacing: 2px; margin-bottom: 8px; }
+    .pcr-notes-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.6; }
+    .pcr-transcript-block { background: var(--bg-alt); border-radius: 10px; padding: 16px 18px; font-size: 13.5px; color: var(--ink-3); line-height: 1.75; }
+    .pcr-feedback-label { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+    .pcr-stars-input { display: flex; gap: 7px; margin-bottom: 14px; }
+    .pcr-star-btn { font-size: 25px; color: var(--line-2); cursor: pointer; transition: color 0.15s; background: none; border: none; padding: 0; line-height: 1; }
+    .pcr-star-btn.lit, .pcr-star-btn:hover { color: #f59e0b; }
+    .pcr-feedback-textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--line-2); font-family: inherit; font-size: 13.5px; color: var(--ink); outline: none; resize: none; line-height: 1.6; min-height: 84px; box-sizing: border-box; transition: border-color 0.15s; }
+    .pcr-feedback-textarea:focus { border-color: var(--accent); }
+    .pcr-feedback-submit { padding: 11px 22px; border-radius: 10px; background: var(--ink); color: var(--bg); border: none; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: background 0.15s; }
+    .pcr-feedback-submit:hover { background: var(--accent); }
 
-    .pc-sess-expand { display: none; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
-    .pc-sess-expand.open { display: block; }
-    .pc-sess-expand-inner { padding: 0 20px 16px; }
+    /* ── Next-cycle banner ─────────────────────────── */
+    .pcr-next-pref-banner { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; }
+    .pcr-next-pref-icon { flex-shrink: 0; color: var(--ink-4); margin-top: 1px; }
+    .pcr-next-pref-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.6; }
+    .pcr-next-pref-text strong { color: var(--ink); }
+    .pcr-next-pref-btn { display: inline-block; margin-top: 10px; padding: 8px 16px; border-radius: 8px; background: var(--ink); color: var(--bg); border: none; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .pcr-next-pref-btn:hover { background: var(--accent); }
 
-    /* Session expand — tabs */
-    .pc-stabs {
-      display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; margin-bottom: 16px;
-    }
-    .pc-stab {
-      padding: 10px 14px; font-size: 12.5px; font-weight: 500;
-      color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent;
-      transition: all 0.15s; margin-bottom: -1px; white-space: nowrap;
-    }
-    .pc-stab.active { color: #111; border-color: #111; font-weight: 600; }
-    .pc-stab-panel { display: none; }
-    .pc-stab-panel.active { display: block; }
+    /* ── AI strip ──────────────────────────────────── */
+    .pcr-ai-strip { background: #0B0B0C; border-radius: 14px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px; margin: 24px 0; }
+    .pcr-ai-icon { flex-shrink: 0; }
+    .pcr-ai-text { font-size: 13.5px; color: #fff; line-height: 1.6; }
+    .pcr-ai-text strong { color: var(--accent); }
 
-    .pc-sess-takeaways { list-style: none; padding: 0; margin: 0; }
-    .pc-sess-takeaways li {
-      display: flex; gap: 8px; font-size: 13px; color: #374151;
-      margin-bottom: 8px; line-height: 1.5; align-items: flex-start;
-    }
-    .pc-sess-takeaways li::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%; background: #00A582;
-      flex-shrink: 0; margin-top: 5px;
-    }
-    .pc-sess-note-input {
-      width: 100%; padding: 10px 12px; border-radius: 9px;
-      border: 1.5px solid #e5e7eb; font-family: inherit;
-      font-size: 13px; color: #111; outline: none; resize: none;
-      line-height: 1.6; min-height: 72px; box-sizing: border-box;
-      background: #fff; transition: border-color 0.15s;
-    }
-    .pc-sess-note-input:focus { border-color: #00A582; }
-    .pc-sess-note-save {
-      padding: 7px 14px; border-radius: 8px;
-      background: #111; color: #fff; border: none;
-      font-family: inherit; font-size: 12.5px; font-weight: 500;
-      cursor: pointer; margin-top: 8px; transition: background 0.15s;
-    }
-    .pc-sess-note-save:hover { background: #00A582; }
+    /* ── Past sessions (CART) ──────────────────────── */
+    .pcr-index-head { display: flex; align-items: baseline; justify-content: space-between; margin: 40px 0 6px; padding-bottom: 14px; border-bottom: 1px solid var(--line-2); }
+    .pcr-index-title { font-size: clamp(22px, 2.6vw, 30px); font-weight: 550; letter-spacing: -0.02em; color: var(--ink); }
+    .pcr-index-title .accent { color: var(--accent); }
+    .pcr-index-count { font-size: 12.5px; color: var(--accent); font-weight: 600; font-family: 'Archivo', sans-serif; }
+    .pcr-session-row { display: flex; gap: 18px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid var(--line); transition: background 0.15s; cursor: pointer; }
+    .pcr-session-row.open { background: var(--bg-alt); border-radius: 8px; padding-left: 12px; padding-right: 12px; }
+    .pcr-session-num { font-family: 'Archivo', sans-serif; font-size: 13px; color: var(--ink-4); font-weight: 600; padding-top: 3px; width: 22px; flex-shrink: 0; }
+    .pcr-session-avatar { width: 42px; height: 42px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: var(--bg-alt); }
+    .pcr-session-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pcr-session-info { flex: 1; min-width: 0; }
+    .pcr-session-name { font-size: 16px; font-weight: 600; color: var(--ink); }
+    .pcr-session-meta { font-size: 12.5px; color: var(--accent); font-weight: 500; margin-top: 2px; }
+    .pcr-session-preview { font-size: 13px; color: var(--ink-3); margin-top: 8px; line-height: 1.5; max-width: 540px; }
+    .pcr-session-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+    .pcr-session-stars { display: flex; gap: 2px; }
+    .pcr-session-star { font-size: 16px; color: var(--line-2); }
+    .pcr-session-star.on { color: #f59e0b; }
+    .pcr-session-count { font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 99px; background: var(--bg-alt); color: var(--ink-3); }
+    .pcr-session-chevron { color: var(--line-2); transition: transform 0.2s; }
+    .pcr-session-row.open .pcr-session-chevron { transform: rotate(180deg); }
+    .pcr-session-detail { display: none; padding: 0 12px 22px 64px; border-bottom: 1px solid var(--line); }
+    .pcr-session-detail.open { display: block; }
+    .pcr-detail-tabs { display: flex; gap: 4px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .pcr-dtab { padding: 8px 14px; font-size: 12.5px; font-weight: 500; color: var(--ink-4); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; }
+    .pcr-dtab.active { color: var(--ink); border-color: var(--ink); font-weight: 600; }
+    .pcr-actions-list { list-style: none; padding: 0; margin: 0; }
+    .pcr-actions-list li { display: flex; gap: 8px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 9px; line-height: 1.55; align-items: flex-start; }
+    .pcr-actions-list li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .pcr-transcript-text { font-size: 13.5px; color: var(--ink-3); line-height: 1.75; }
+    .pcr-note-input { width: 100%; padding: 11px 13px; border-radius: 8px; border: 1.5px solid var(--line-2); font-family: inherit; font-size: 13.5px; color: var(--ink); outline: none; resize: none; line-height: 1.6; min-height: 76px; box-sizing: border-box; background: var(--bg-card); }
+    .pcr-note-input:focus { border-color: var(--accent); }
+    .pcr-note-save { padding: 8px 16px; border-radius: 8px; background: var(--ink); color: var(--bg); border: none; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 10px; transition: background 0.15s; }
+    .pcr-note-save:hover { background: var(--accent); }
 
-    /* ── Quick stats card ── */
-    .pc-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #f0f0f0; }
-    .pc-stat-cell { background: #fff; padding: 14px 16px; }
-    .pc-stat-cell:nth-child(3), .pc-stat-cell:nth-child(4) { }
-    .pc-stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #111; line-height: 1; }
-    .pc-stat-lbl { font-size: 11px; color: #9ca3af; margin-top: 4px; font-family: 'Archivo', sans-serif; letter-spacing: 0.03em; }
-
-    /* ── AI strip ── */
-    .pc-ai-strip {
-      background: #033c2f; border-radius: 14px; padding: 16px 18px;
-      display: flex; align-items: flex-start; gap: 12px;
+    @media (max-width: 760px) {
+      .d1-shell { grid-template-columns: 1fr; }
+      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .d1-nav { flex-direction: row; flex-wrap: wrap; }
+      .d1-nav-label { display: none; }
+      .d1-sidebar-foot { display: none; }
+      .d1-logo-row { padding-bottom: 8px; }
     }
-    .pc-ai-icon { flex-shrink: 0; margin-top: 1px; }
-    .pc-ai-text { font-size: 12.5px; color: rgba(255,255,255,0.7); line-height: 1.6; }
-    .pc-ai-text strong { color: #8BFCD8; }
   </style>
 </head>
+
 <body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
 <a href="#main-content" class="skip-link">Skip to main content</a>
-<nav class="nav" role="navigation" aria-label="Main navigation"></nav>
 
-<div class="pc-page" id="main-content">
+<div class="d1-shell" id="d1-shell">
 
-  <a href="member-profile.html" class="pc-back">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to Profile
-  </a>
+  <!-- ── Sidebar ── -->
+  <aside class="d1-sidebar">
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo">
+        <span class="d1-logo-full">Expertly</span>
+        <span class="d1-logo-short">E</span>
+        <span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="d1-nav-center">
+    <nav class="d1-nav">
+      <div class="d1-nav-label">Explore</div>
+      <a href="articles.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span class="d1-nav-lbl">Articles</span>
+      </a>
+      <a href="events.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span class="d1-nav-lbl">Events</span>
+      </a>
+      <a href="members.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span class="d1-nav-lbl">Members</span>
+      </a>
+      <div class="d1-nav-divider" data-member-nav></div>
+      <div class="d1-nav-label" data-member-nav>Member Portal</div>
+      <a href="dashboard.html" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="d1-nav-lbl">Dashboard</span>
+      </a>
+      <a href="peer-connect.html" class="active" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="d1-nav-lbl">Peer Connect</span>
+      </a>
+      <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+        <span class="d1-nav-lbl">Products</span>
+        <span class="soon">Soon</span>
+      </a>
+      <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span class="d1-nav-lbl">Discussions</span>
+        <span class="soon">Soon</span>
+      </a>
+    </nav>
+    </div>
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info"><b>Member</b><span>you@firm.com</span></div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log in">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
 
-  <!-- Hero -->
-  <div class="pc-hero">
-    <div class="pc-hero-inner">
-      <div>
-        <div class="pc-hero-eyebrow"><span class="live"></span> Member Feature</div>
-        <div class="pc-hero-title">Peer Connect</div>
-        <p class="pc-hero-sub">One curated peer session every month — matched, scheduled, and summarised by Expertly AI.</p>
-      </div>
-      <div class="pc-hero-stats">
-        <div class="pc-hero-stat">
-          <div class="pc-hero-stat-val">7</div>
-          <div class="pc-hero-stat-lbl">Sessions</div>
+  <!-- ── Main content ── -->
+  <main id="main-content" class="v3-page-main">
+
+    <!-- Members-only gate — shown to non-members, hides page content -->
+    <div id="pcr-gate" style="display:none; min-height:100vh; align-items:center; justify-content:center; padding:60px 24px;">
+      <div style="max-width:440px; width:100%; text-align:center;">
+        <div style="width:56px;height:56px;border-radius:50%;background:color-mix(in oklab,var(--accent) 12%,transparent);border:1px solid color-mix(in oklab,var(--accent) 30%,transparent);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         </div>
-        <div class="pc-hero-stat">
-          <div class="pc-hero-stat-val">5 🔥</div>
-          <div class="pc-hero-stat-lbl">Streak</div>
-        </div>
-        <div class="pc-hero-stat">
-          <div class="pc-hero-stat-val">Jul 14</div>
-          <div class="pc-hero-stat-lbl">Next session</div>
-        </div>
-        <div class="pc-hero-stat">
-          <div class="pc-hero-stat-val">4.8 ★</div>
-          <div class="pc-hero-stat-lbl">Avg rating</div>
+        <h2 style="font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);margin-bottom:10px;">Members Only</h2>
+        <p style="font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px;">Peer Connect is an exclusive feature for verified Expertly members. Join to get matched with a fellow practitioner every month.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <a href="apply.html" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:10px;background:var(--accent);color:#06251d;font-size:14px;font-weight:600;text-decoration:none;transition:background 0.15s;">Apply to Join</a>
+          <a href="login.html?returnTo=peer-connect.html&mode=member" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:10px;background:transparent;border:1.5px solid var(--ink-2);color:var(--ink);font-size:14px;font-weight:600;text-decoration:none;transition:background 0.15s,border-color 0.15s;">Sign In</a>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Demo state switcher (design reference only — not in production) -->
-  <div class="pc-demo-bar">
-    <span class="pc-demo-label">Preview state</span>
-    <button class="pc-demo-btn" onclick="setDemoState('pref')">Jun 20–30 · Set Preferences</button>
-    <button class="pc-demo-btn" onclick="setDemoState('matching')">Jul 1 · Matching</button>
-    <button class="pc-demo-btn active" onclick="setDemoState('reveal')">Jul 2–13 · Match Revealed</button>
-    <button class="pc-demo-btn" onclick="setDemoState('meetingday')">Jul 14 · Meeting Day</button>
-    <button class="pc-demo-btn" onclick="setDemoState('post')">Jul 14–19 · Post Meeting</button>
-    <button class="pc-demo-btn" onclick="setDemoState('next')">Jul 20–31 · Next Cycle</button>
-  </div>
+    <!-- Page content — hidden when gate is shown -->
+    <div id="pcr-member-content">
 
-  <!-- Phase bar -->
-  <div class="pc-phase-bar" id="phase-bar"></div>
-
-  <!-- ══ THREE-COLUMN LAYOUT ══ -->
-  <div class="pc-three-col">
-
-    <!-- ── LEFT COLUMN ── -->
-    <div class="pc-col-left">
-
-      <!-- Card 1: Current cycle state -->
-      <div class="pc-card" id="state-card">
-        <div class="pc-card-head">
-          <div class="pc-card-label" id="state-card-label">This month</div>
-          <div id="state-card-meta"></div>
-        </div>
-        <div class="pc-card-body" id="state-card-body">
-          <!-- JS injected -->
-        </div>
-      </div>
-
-      <!-- Card 2: Past sessions accordion -->
-      <div class="pc-card">
-        <div class="pc-card-head">
-          <div class="pc-card-label">Past sessions</div>
-          <span style="font-size:11.5px;color:#00A582;font-weight:600;font-family:'Archivo',sans-serif;">7 completed</span>
-        </div>
-
-        <!-- Session 1: Rohan Verma -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=rohanverma" alt="Rohan Verma" />
-            <span class="pc-sess-avatar-init" style="background:#033c2f;">RV</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Rohan Verma</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">June 2026 · Transfer Pricing · 28 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">An in-depth discussion on CBCR documentation challenges for Mauritius holdco structures and the grandfathering of pre-2017 investments. We then explored the LOB test interaction with Singapore-based SPVs under the India-Singapore treaty, covering principal purpose test applicability at entity vs. transaction level — a point that is still actively contested in AO practice.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>Substance-over-form framing is more persuasive than purely formal LOB arguments in current AO practice</li>
-                <li>Singapore SPVs with minimal staff face heightened scrutiny post-2021 treaty amendment</li>
-                <li>Grandfathering window for pre-2017 Mauritius investments requires specific documentary evidence — not just investment dates</li>
-                <li>OECD Pillar Two safe harbour rules may offer a cleaner path for some India-APAC structures</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input">Rohan's framing of substance-over-form tests was incredibly useful — applying to our Singapore client next week. Want to connect him with Priya for the BEPS working group.</textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 2: Sheila Tanaka -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=sheilatanaka" alt="Sheila Tanaka" />
-            <span class="pc-sess-avatar-init" style="background:#374151;">ST</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Sheila Tanaka</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">May 2026 · Corporate Compliance · 25 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Covered MAS ESG disclosure requirements for FPIs and practical compliance strategies for Indian-listed entities with Singapore subsidiaries. Sheila walked through how the Q4 2026 mandate cascades down to sub-entities and why a phased Scope 1 &amp; 2 approach is being accepted by MAS during the transition year.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>MAS Q4 2026 ESG mandate cascades disclosure requirements down to subsidiaries of Indian-listed FPIs</li>
-                <li>Phased compliance approach — starting with Scope 1 &amp; 2 emissions — is widely accepted by MAS in transition year</li>
-                <li>Early engagement with MAS on disclosure timelines materially reduces penalty risk for late filers</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input" placeholder="Add a private note about this session…"></textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 3: Pradeep Menon -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=pradeepmenon" alt="Pradeep Menon" />
-            <span class="pc-sess-avatar-init" style="background:#1e3a5f;">PM</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Pradeep Menon</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">April 2026 · M&amp;A Tax · 30 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Explored FEMA implications in cross-border PE acquisitions, with a deep focus on OCB restoration under the 2024 RBI Master Direction. Pradeep identified the Schedule 4 application window that most practitioners miss, and we discussed how SEBI FPI Category III classification adds a further documentation layer for Mauritius and Singapore feeder fund structures.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>OCB restoration pathway under the 2024 RBI Master Direction has a narrow application window buried in Schedule 4 — most clients miss it</li>
-                <li>PE deal structuring involving pre-2003 OCB status requires a contemporaneous legal opinion alongside the RBI application</li>
-                <li>SEBI FPI Category III circular creates additional documentation burden for structures with Singapore or Mauritius feeder funds</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input">Pradeep's FEMA checklist template would be very useful for the Chennai client deal. Loop him in as potential co-counsel.</textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 4: Kavya Rajan -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=kavyarajan" alt="Kavya Rajan" />
-            <span class="pc-sess-avatar-init" style="background:#4a1942;">KR</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Kavya Rajan</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">March 2026 · Cross-border Compliance · 22 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Focused on FEMA compounding post-2024 and ECB regulation amendments. Kavya noted that compounding applications are now faster to process but require more granular transaction-level evidence, and that new end-use restriction language in ECB guidelines now makes lender comfort letters effectively standard practice for infrastructure deals.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>FEMA compounding applications post-2024 are being processed faster but require more granular transaction-level disclosure</li>
-                <li>ECB regulation amendments tighten end-use restrictions for infrastructure projects — lender comfort letters now standard</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input" placeholder="Add a private note about this session…"></textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 5: Arun Krishnamurthy -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=arunkrishnamurthy" alt="Arun Krishnamurthy" />
-            <span class="pc-sess-avatar-init" style="background:#1c3d2e;">AK</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Arun Krishnamurthy</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">February 2026 · Capital Markets · 27 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Discussion centred on the SEBI LODR 2024 amendments and their governance implications for listed entities with foreign parent structures, followed by an overview of how SME IPO documentation standards are converging with mainboard requirements — making early preparation significantly more valuable for mid-market clients.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>SEBI LODR 2024 amendments require shareholder approval thresholds to be re-evaluated for listed subsidiaries with foreign parent structures</li>
-                <li>SME IPO documentation standards are converging with mainboard requirements — earlier preparation significantly reduces lead time</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input" placeholder="Add a private note about this session…"></textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 6: Meena Subramaniam -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=meenasubramaniam" alt="Meena Subramaniam" />
-            <span class="pc-sess-avatar-init" style="background:#2d3748;">MS</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Meena Subramaniam</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">January 2026 · Restructuring · 24 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star">★</span><span class="pc-sess-star">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Covered NCLT timelines across benches and the practical implications for restructuring deal timelines, with Meena noting significant variance between Mumbai and Hyderabad. We also discussed how the IBC 2024 pre-packaged insolvency framework creates a useful off-ramp for mid-size borrowers who want to avoid the public CIRP process.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>NCLT resolution timelines have improved in Mumbai bench but remain unpredictable in Hyderabad — build 6-month buffer into restructuring plans</li>
-                <li>IBC 2024 amendment introduces pre-packaged insolvency for mid-size borrowers; useful tool for clients wanting to avoid public CIRP</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input">Session was solid but Meena was less familiar with the cross-border angle. Would request a more international profile next time for restructuring.</textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session 7: Arjun Mehta -->
-        <div class="pc-sess-row" onclick="toggleSess(this)">
-          <div class="pc-sess-avatar">
-            <img src="https://i.pravatar.cc/80?u=arjunmehta" alt="Arjun Mehta" />
-            <span class="pc-sess-avatar-init" style="background:#1a2744;">AM</span>
-          </div>
-          <div class="pc-sess-info">
-            <div class="pc-sess-name-row">
-              <span class="pc-sess-name">Arjun Mehta</span>
-              <a href="member-profile.html" class="pc-sess-profile-btn" onclick="event.stopPropagation()">View profile</a>
-            </div>
-            <div class="pc-sess-meta">December 2025 · IP &amp; Technology · 20 min</div>
-          </div>
-          <div class="pc-sess-right">
-            <div class="pc-sess-stars"><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star on">★</span><span class="pc-sess-star">★</span></div>
-            <svg class="pc-sess-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="pc-sess-expand">
-          <div class="pc-sess-expand-inner">
-            <div class="pc-stabs">
-              <div class="pc-stab active" data-tab="summary" onclick="switchSessTab(this)">Summary</div>
-              <div class="pc-stab" data-tab="kt" onclick="switchSessTab(this)">Key Takeaways</div>
-              <div class="pc-stab" data-tab="notes" onclick="switchSessTab(this)">My Notes</div>
-            </div>
-            <div class="pc-stab-panel active" data-panel="summary">
-              <p style="font-size:13px;color:#374151;line-height:1.65;">Discussed how India's Digital Personal Data Protection Act is driving demand for IP licensing restructuring among SaaS clients, particularly those with India-based data processing entities. Arjun also flagged improvements in Indian Patent Office prosecution timelines post-2024 reforms — a meaningful change for clients with active filings.</p>
-            </div>
-            <div class="pc-stab-panel" data-panel="kt">
-              <ul class="pc-sess-takeaways">
-                <li>India's new Digital Personal Data Protection Act creates significant IP licensing restructuring needs for SaaS clients with India-based data processing</li>
-                <li>Patent prosecution timelines at Indian Patent Office have shortened post-2024 reforms — filing strategy should be revisited</li>
-              </ul>
-            </div>
-            <div class="pc-stab-panel" data-panel="notes">
-              <textarea class="pc-sess-note-input" placeholder="Add a private note about this session…"></textarea>
-              <button class="pc-sess-note-save">Save</button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /past sessions accordion -->
-
-    </div><!-- /col-left -->
-
-    <!-- ── RIGHT COLUMN ── -->
-    <div class="pc-col-right">
-
-      <!-- Preferences card -->
-      <div class="pc-card">
-        <div class="pc-card-head">
-          <div class="pc-card-label" id="pref-card-label">Preferences</div>
-          <div id="pref-card-badge"></div>
-        </div>
-        <div class="pc-card-body" id="pref-card-body">
-          <!-- JS injected -->
-        </div>
-      </div>
-
-      <!-- Quick stats -->
-      <div class="pc-card">
-        <div class="pc-card-head"><div class="pc-card-label">Your stats</div></div>
-        <div class="pc-stats-grid">
-          <div class="pc-stat-cell">
-            <div class="pc-stat-val">7</div>
-            <div class="pc-stat-lbl">Sessions done</div>
-          </div>
-          <div class="pc-stat-cell">
-            <div class="pc-stat-val">5 🔥</div>
-            <div class="pc-stat-lbl">Month streak</div>
-          </div>
-          <div class="pc-stat-cell" style="border-top:1px solid #f0f0f0;">
-            <div class="pc-stat-val">4.8</div>
-            <div class="pc-stat-lbl">Avg rating given</div>
-          </div>
-          <div class="pc-stat-cell" style="border-top:1px solid #f0f0f0;">
-            <div class="pc-stat-val">3</div>
-            <div class="pc-stat-lbl">Referrals made</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AI strip -->
-      <div class="pc-ai-strip">
-        <div class="pc-ai-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 7H20l-4.5 4 1.5 6L12 14l-5 3 1.5-6L4 7h5.5L12 2z" fill="#8BFCD8"/></svg>
-        </div>
-        <div class="pc-ai-text">
-          <strong>Expertly AI joins every call</strong> — silently transcribing, surfacing key actions, and delivering a full summary to both participants within minutes of the meeting ending.
-        </div>
-      </div>
-
-    </div><!-- /col-right -->
-  </div><!-- /three-col -->
-
-</div><!-- /pc-page -->
-
-<script src="assets/shared.js?v=11"></script>
-<script>
-/* ═══════════════════════════════════════════════
-   PHASE BAR
-═══════════════════════════════════════════════ */
-const PHASES = [
-  { label: 'Set Preferences', date: '20th–31st' },
-  { label: 'Matching', date: '1st of month' },
-  { label: 'Meet Your Peer', date: '2nd onwards' },
-  { label: 'Meeting Day', date: '2nd Tuesday' },
-  { label: 'Transcript & Feedback', date: 'Post-meeting' },
-];
-
-const STATE_PHASE_IDX = { pref: 0, matching: 1, reveal: 2, meetingday: 3, post: 4, next: 0 };
-
-function renderPhaseBar(state) {
-  const activeIdx = STATE_PHASE_IDX[state] ?? 0;
-  const html = PHASES.map((p, i) => {
-    let cls = 'upcoming';
-    if (i < activeIdx) cls = 'done';
-    if (i === activeIdx) cls = 'active';
-    const icon = cls === 'done'
-      ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-      : `<span style="width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;"></span>`;
-    return `<div class="pc-phase-step ${cls}">
-      <div class="pc-phase-icon">${icon}</div>
-      <div class="pc-phase-label">${p.label}</div>
-      <div class="pc-phase-date">${cls === 'active' ? '● Now · ' : ''}${p.date}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('phase-bar').innerHTML = html;
-}
-
-/* ═══════════════════════════════════════════════
-   STATE CARD (left top)
-═══════════════════════════════════════════════ */
-function renderStateCard(state) {
-  const label = document.getElementById('state-card-label');
-  const meta = document.getElementById('state-card-meta');
-  const body = document.getElementById('state-card-body');
-
-  if (state === 'pref') {
-    label.textContent = 'July 2026 cycle · Preferences open';
-    meta.innerHTML = `<span style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#c2410c;background:#fff7ed;border:1px solid #fed7aa;border-radius:99px;padding:4px 10px;">Due Jun 30</span>`;
-    body.innerHTML = `
-      <div class="pc-pref-intro">
-        Your preferences are now set in the <strong>right panel →</strong> — we'll use them to find your best peer for July. Once saved you'll be notified as soon as your match is confirmed on <strong>July 1st</strong>.
-      </div>
-      <div style="background:#f0fdf9;border:1px solid #a7f3d0;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;color:#00A582;"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:2px;">Meeting scheduled for Tuesday, July 14</div>
-          <div style="font-size:12px;color:#6b7280;line-height:1.5;">The second Tuesday of every month. Your peer will be revealed on July 1st — prepare with their profile before the call.</div>
-        </div>
-      </div>
-      <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div style="background:#f9fafb;border-radius:10px;padding:14px;text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#111;letter-spacing:-0.02em;">~2 wks</div>
-          <div style="font-size:11px;color:#9ca3af;font-family:'Archivo',sans-serif;margin-top:3px;">Until your match is revealed</div>
-        </div>
-        <div style="background:#f9fafb;border-radius:10px;padding:14px;text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#111;letter-spacing:-0.02em;">~4 wks</div>
-          <div style="font-size:11px;color:#9ca3af;font-family:'Archivo',sans-serif;margin-top:3px;">Until your July session</div>
-        </div>
-      </div>
-    `;
-  }
-
-  else if (state === 'matching') {
-    label.textContent = 'July 2026 · Matching in progress';
-    meta.innerHTML = `<span style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#9ca3af;background:#f5f5f5;border:1px solid #e5e7eb;border-radius:99px;padding:4px 10px;">Jul 1</span>`;
-    body.innerHTML = `
-      <div class="pc-matching-wrap">
-        <div class="pc-matching-icon">
-          <div class="pc-matching-spinner"></div>
-        </div>
-        <div class="pc-matching-title">Finding your peer for July</div>
-        <div class="pc-matching-sub">Our algorithm is running today. Your peer's profile will appear here once confirmed — usually within a few hours of July 1st.</div>
-      </div>
-      <div class="pc-pref-saved" style="margin-top:20px;">
-        <div class="pc-pref-saved-label">Preferences submitted</div>
-        <div class="pc-pref-saved-row">
-          <span class="pc-pref-saved-tag">M&amp;A Tax</span>
-          <span class="pc-pref-saved-tag">Transfer Pricing</span>
-          <span class="pc-pref-saved-tag">India</span>
-          <span class="pc-pref-saved-tag">Morning</span>
-        </div>
-      </div>
-    `;
-  }
-
-  else if (state === 'reveal') {
-    label.textContent = 'Your peer for July 2026';
-    meta.innerHTML = `<div class="pc-reveal-eyebrow" style="margin-bottom:0;"><span class="pulse"></span> Match confirmed</div>`;
-    body.innerHTML = `
-      <div class="pc-match-profile">
-        <div class="pc-match-avatar" style="overflow:hidden;padding:0;position:relative;">
-          <img src="https://i.pravatar.cc/80?u=ananyakrishnamurthy" alt="Ananya Krishnamurthy" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#8BFCD8;background:#033c2f;z-index:-1;">AK</span>
-        </div>
-        <div>
-          <div class="pc-match-name">Ananya Krishnamurthy</div>
-          <div class="pc-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
-          <div class="pc-match-tags">
-            <span class="pc-match-tag verified">✓ Expertly Verified</span>
-            <span class="pc-match-tag">M&amp;A Tax</span>
-            <span class="pc-match-tag">APAC</span>
-            <span class="pc-match-tag">18 yrs exp</span>
-          </div>
-        </div>
-      </div>
-      <div class="pc-match-why">
-        <div class="pc-match-why-lbl">Why we matched you</div>
-        Both of you specialise in cross-border M&amp;A tax across APAC jurisdictions. Ananya's expertise in India–Singapore treaty positions and GAAR complements your current practice focus — she has also indicated openness to discussing PE fund structuring.
-      </div>
-      <div class="pc-meeting-slot">
-        <div class="pc-meeting-slot-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </div>
-        <div>
-          <div class="pc-meeting-slot-date">Tuesday, July 14 · 10:00 – 10:30 AM IST</div>
-          <div class="pc-meeting-slot-sub">Meeting link sent to both participants · Expertly AI will transcribe</div>
-        </div>
-      </div>
-      <div class="pc-reveal-actions">
-        <a href="member-profile.html" class="pc-btn-primary" target="_blank">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M6 20v-1a6 6 0 0112 0v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          View full profile
-        </a>
-        <button class="pc-btn-outline">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          Add to calendar
-        </button>
-      </div>
-    `;
-  }
-
-  else if (state === 'meetingday') {
-    label.textContent = 'Your peer for July 2026';
-    meta.innerHTML = `<div class="pc-reveal-eyebrow" style="margin-bottom:0;"><span class="pulse"></span> Meeting today</div>`;
-    body.innerHTML = `
-      <div class="pc-match-profile">
-        <div class="pc-match-avatar" style="overflow:hidden;padding:0;position:relative;">
-          <img src="https://i.pravatar.cc/80?u=ananyakrishnamurthy" alt="Ananya Krishnamurthy" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#8BFCD8;background:#033c2f;z-index:-1;">AK</span>
-        </div>
-        <div>
-          <div class="pc-match-name">Ananya Krishnamurthy</div>
-          <div class="pc-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
-          <div class="pc-match-tags">
-            <span class="pc-match-tag verified">✓ Expertly Verified</span>
-            <span class="pc-match-tag">M&amp;A Tax</span>
-            <span class="pc-match-tag">APAC</span>
-            <span class="pc-match-tag">18 yrs exp</span>
-          </div>
-        </div>
-      </div>
-      <div class="pc-meeting-slot">
-        <div class="pc-meeting-slot-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </div>
-        <div>
-          <div class="pc-meeting-slot-date">Tuesday, July 14 · 10:00 – 10:30 AM IST</div>
-          <div class="pc-meeting-slot-sub">Meeting link ready · Expertly AI will transcribe</div>
-        </div>
-        <a href="#" class="pc-btn-primary" style="margin-left:auto;flex:none;padding:9px 16px;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 10l5-3v10l-5-3M4 6h9a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Join call
-        </a>
-      </div>
-    `;
-  }
-
-  else if (state === 'post') {
-    label.textContent = 'Meeting summary · Jul 14';
-    meta.innerHTML = `<div class="pc-post-eyebrow-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Meeting completed</div>`;
-    body.innerHTML = `
-      <div class="pc-post-with">
-        <div class="pc-post-avatar" style="overflow:hidden;padding:0;">
-          <img src="https://i.pravatar.cc/80?u=ananyakrishnamurthy" alt="Ananya Krishnamurthy" style="width:100%;height:100%;object-fit:cover;display:block;" />
-        </div>
-        <div>
-          <div class="pc-post-name">Ananya Krishnamurthy</div>
-          <div class="pc-post-meta">Jul 14, 2026 · 28 min · M&amp;A Tax / Cross-Border</div>
-        </div>
-      </div>
-      <div class="pc-post-tabs">
-        <div class="pc-post-tab active" onclick="switchPostTab(this,'pt-actions')">Key Actions</div>
-        <div class="pc-post-tab" onclick="switchPostTab(this,'pt-transcript')">Transcript</div>
-        <div class="pc-post-tab" onclick="switchPostTab(this,'pt-feedback')">My Feedback</div>
-      </div>
-      <div class="pc-post-panel active" id="pt-actions">
-        <ul class="pc-key-actions">
-          <li>Share India–Singapore treaty position memo on LOB test application to Singapore SPVs</li>
-          <li>Ananya to introduce her contact at Drew &amp; Napier for Singapore TP documentation</li>
-          <li>Follow up on GAAR applicability to the Chennai client restructuring — by Jul 31</li>
-        </ul>
-      </div>
-      <div class="pc-post-panel" id="pt-transcript">
-        <div class="pc-transcript-block">"The LOB test under the India-Singapore treaty is where most practitioners get tripped up. Ananya walked through how MAS guidance on 'economic substance' interacts with the principal purpose test — and we discussed whether a Singapore intermediate holding company with minimal staff would qualify for treaty benefits post the 2021 amendment…"</div>
-      </div>
-      <div class="pc-post-panel" id="pt-feedback">
-        <div class="pc-feedback-wrap">
-          <div class="pc-feedback-label">How was this session?</div>
-          <div class="pc-stars-input">
-            <button class="pc-star-btn lit">★</button>
-            <button class="pc-star-btn lit">★</button>
-            <button class="pc-star-btn lit">★</button>
-            <button class="pc-star-btn lit">★</button>
-            <button class="pc-star-btn lit">★</button>
-          </div>
-          <textarea class="pc-feedback-textarea" placeholder="What did you take away? What would you improve?">Ananya's depth on Singapore treaty interpretation was exactly what I needed. The introduction to Drew &amp; Napier is a bonus. Would have liked 5 more minutes on the GAAR question — suggest future sessions run to 35 min.</textarea>
-          <button class="pc-feedback-submit">Save feedback</button>
-        </div>
-      </div>
-    `;
-    attachStarRating();
-  }
-
-  else if (state === 'next') {
-    label.textContent = 'July 2026 · Complete';
-    meta.innerHTML = `<div class="pc-post-eyebrow-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Session archived</div>`;
-    body.innerHTML = `
-      <div class="pc-next-done-banner">
-        <div class="pc-next-done-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="pc-next-done-text">
-          <strong>July session complete</strong>
-          With Ananya Krishnamurthy · Jul 14 · 28 min · Rated 5 ★
-          <small>3 action items logged · Summary archived below</small>
-        </div>
-      </div>
-      <div class="pc-cycle-stats">
-        <div class="pc-cycle-stat">
-          <div class="pc-cycle-stat-val">28</div>
-          <div class="pc-cycle-stat-lbl">Minutes</div>
-        </div>
-        <div class="pc-cycle-stat">
-          <div class="pc-cycle-stat-val">3</div>
-          <div class="pc-cycle-stat-lbl">Actions logged</div>
-        </div>
-        <div class="pc-cycle-stat">
-          <div class="pc-cycle-stat-val">5★</div>
-          <div class="pc-cycle-stat-lbl">Your rating</div>
-        </div>
-      </div>
-    `;
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   PREFERENCES CARD (right)
-═══════════════════════════════════════════════ */
-function renderPrefCard(state) {
-  const label = document.getElementById('pref-card-label');
-  const badge = document.getElementById('pref-card-badge');
-  const body = document.getElementById('pref-card-body');
-
-  if (state === 'pref') {
-    label.textContent = 'July Preferences';
-    badge.innerHTML = `<span class="pc-pref-badge open">● Open</span>`;
-    body.innerHTML = `
-      <div class="pc-pref-month-lbl">July 2026 session</div>
-      <div class="pc-pref-month-sub">Optional — skip to use your profile defaults: <strong style="color:#111;">M&amp;A Tax · India</strong>.</div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Practice area <span class="pc-optional-tag">Optional</span></div>
-        <div class="pc-chips-sm">
-          <div class="pc-chip-sm sel" onclick="this.classList.toggle('sel')">M&amp;A Tax</div>
-          <div class="pc-chip-sm sel" onclick="this.classList.toggle('sel')">Transfer Pricing</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Corporate Law</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Compliance</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Capital Markets</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">IP &amp; Tech</div>
-        </div>
-      </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Peer country <span class="pc-optional-tag">Optional</span></div>
-        <select class="pc-select-sm">
-          <option>India (default)</option>
-          <option>Singapore</option>
-          <option>UAE</option>
-          <option>United Kingdom</option>
-          <option>United States</option>
-          <option>Any country</option>
-        </select>
-      </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Preferred meeting time <span class="pc-optional-tag">Optional</span></div>
-        <div class="pc-chips-sm">
-          <div class="pc-chip-sm sel" onclick="selectOne(this)">Morning</div>
-          <div class="pc-chip-sm" onclick="selectOne(this)">Afternoon</div>
-          <div class="pc-chip-sm" onclick="selectOne(this)">Evening</div>
-        </div>
-      </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Topics to discuss <span class="pc-optional-tag">Optional</span></div>
-        <textarea class="pc-textarea-sm" placeholder="e.g. GAAR applicability to PE funds, cross-border TP documentation…"></textarea>
-      </div>
-      <button class="pc-pref-save-sm" onclick="setDemoState('matching')">Save preferences</button>
-      <span class="pc-pref-skip-sm" onclick="setDemoState('matching')">Skip — use profile defaults</span>
-      <div class="pc-pref-deadline-note">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Preferences lock at midnight Jun 30
-      </div>
-    `;
-  }
-
-  else if (state === 'matching') {
-    label.textContent = 'July Preferences';
-    badge.innerHTML = `<span class="pc-pref-badge locked">Locked</span>`;
-    body.innerHTML = `
-      <div class="pc-pref-month-lbl">July 2026 session</div>
-      <div class="pc-pref-month-sub">Submitted — matching is running now.</div>
-      <div class="pc-pref-locked-chip-row">
-        <span class="pc-pref-locked-chip">M&amp;A Tax</span>
-        <span class="pc-pref-locked-chip">Transfer Pricing</span>
-        <span class="pc-pref-locked-chip">India</span>
-        <span class="pc-pref-locked-chip">Morning</span>
-      </div>
-      <div style="height:1px;background:#f0f0f0;margin:18px 0;"></div>
-      <div class="pc-pref-month-lbl" style="color:#9ca3af;font-size:13px;font-weight:400;">August preferences open from <strong style="color:#111;">Jul 20</strong>.</div>
-    `;
-  }
-
-  else if (state === 'reveal' || state === 'meetingday' || state === 'post') {
-    label.textContent = 'August Preferences';
-    badge.innerHTML = `<span class="pc-pref-badge upcoming">Opens Jul 20</span>`;
-    body.innerHTML = `
-      <div class="pc-pref-month-lbl">August 2026 session</div>
-      <div class="pc-pref-month-sub">Preference window opens in <strong style="color:#111;">7 days</strong>. Here's what you'll be able to set:</div>
-      <div class="pc-pref-upcoming-box">
-        <div class="pc-pref-upcoming-eyebrow">Available from Jul 20</div>
-        <div class="pc-pref-upcoming-fields">
-          <div class="pc-pref-upcoming-field">
-            <svg class="pc-pref-upcoming-field-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 7H20l-4.5 4 1.5 6L12 14l-5 3 1.5-6L4 7h5.5L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="pc-pref-upcoming-field-text">Practice area / category</span>
-          </div>
-          <div class="pc-pref-upcoming-field">
-            <svg class="pc-pref-upcoming-field-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" stroke-width="1.6"/></svg>
-            <span class="pc-pref-upcoming-field-text">Peer country / region</span>
-          </div>
-          <div class="pc-pref-upcoming-field">
-            <svg class="pc-pref-upcoming-field-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            <span class="pc-pref-upcoming-field-text">Preferred meeting time</span>
-          </div>
-          <div class="pc-pref-upcoming-field">
-            <svg class="pc-pref-upcoming-field-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="pc-pref-upcoming-field-text">Topics to discuss</span>
-          </div>
-        </div>
-      </div>
-      <div style="height:1px;background:#f0f0f0;margin:18px 0;"></div>
-      <div style="font-size:11.5px;color:#9ca3af;font-family:'Archivo',sans-serif;letter-spacing:0.03em;">
-        <strong style="color:#374151;font-weight:600;">July preferences (locked)</strong><br>
-        <span style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;">
-          <span class="pc-pref-locked-chip">M&amp;A Tax</span>
-          <span class="pc-pref-locked-chip">Transfer Pricing</span>
-          <span class="pc-pref-locked-chip">India</span>
-          <span class="pc-pref-locked-chip">Morning</span>
+    <!-- Hero -->
+    <section class="pcr-hero">
+      <div class="container-wide">
+        <span class="eyebrow" style="display:inline-flex;align-items:center;gap:9px;">
+          <span style="width:22px;height:2px;background:var(--accent);border-radius:2px;display:inline-block;"></span>
+          Member feature
         </span>
-      </div>
-    `;
-  }
-
-  else if (state === 'next') {
-    label.textContent = 'August Preferences';
-    badge.innerHTML = `<span class="pc-pref-badge open">● Open</span>`;
-    body.innerHTML = `
-      <div class="pc-pref-month-lbl">August 2026 session</div>
-      <div class="pc-pref-month-sub">Your July preferences are copied as defaults — update anything before Jul 31.</div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Practice area <span class="pc-optional-tag">Optional</span></div>
-        <div class="pc-chips-sm">
-          <div class="pc-chip-sm sel" onclick="this.classList.toggle('sel')">M&amp;A Tax</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Transfer Pricing</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Corporate Law</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Compliance</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Capital Markets</div>
-          <div class="pc-chip-sm" onclick="this.classList.toggle('sel')">Restructuring</div>
+        <h1 class="pcr-hero-heading">Peer <em>Connect.</em></h1>
+        <p class="pcr-hero-sub">Every month, we pair you with one fellow member for a focused 1:1 conversation matched by practice area and your preferences, scheduled automatically, and followed up with a summary and action items so nothing gets lost.</p>
+        <div class="pcr-hero-meta">
+          <span class="pcr-month-pill"><span class="live"></span>July 2026</span>
         </div>
       </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Peer country <span class="pc-optional-tag">Optional</span></div>
-        <select class="pc-select-sm">
-          <option>India (default)</option>
-          <option>Singapore</option>
-          <option>UAE</option>
-          <option>United Kingdom</option>
-          <option>United States</option>
-          <option>Any country</option>
-        </select>
-      </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Preferred meeting time <span class="pc-optional-tag">Optional</span></div>
-        <div class="pc-chips-sm">
-          <div class="pc-chip-sm sel" onclick="selectOne(this)">Morning</div>
-          <div class="pc-chip-sm" onclick="selectOne(this)">Afternoon</div>
-          <div class="pc-chip-sm" onclick="selectOne(this)">Evening</div>
+    </section>
+
+  <div class="pcr-page">
+
+    <!-- Stage rail + content -->
+    <div class="pcr-layout">
+      <div class="pcr-rail" id="rail"></div>
+
+      <div class="pcr-content">
+        <div class="pcr-card" id="state-card">
+          <div class="pcr-card-head">
+            <div class="pcr-card-label" id="state-card-label">This month</div>
+          </div>
+          <div class="pcr-card-body" id="state-card-body"></div>
         </div>
-      </div>
-      <div class="pc-pref-section-sm">
-        <div class="pc-pref-field-label-sm">Topics to discuss <span class="pc-optional-tag">Optional</span></div>
-        <textarea class="pc-textarea-sm" placeholder="e.g. BEPS 2.0 implementation, India PE exit structuring…"></textarea>
-      </div>
-      <button class="pc-pref-save-sm">Save preferences</button>
-      <span class="pc-pref-skip-sm">Skip — keep July defaults</span>
-      <div class="pc-pref-deadline-note">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Preferences lock at midnight Jul 31
-      </div>
-    `;
-  }
-}
 
-/* ═══════════════════════════════════════════════
-   MAIN setState + demo helper
-═══════════════════════════════════════════════ */
-const DEMO_BTN_IDX = { pref: 0, matching: 1, reveal: 2, meetingday: 3, post: 4, next: 5 };
+        <!-- AI strip -->
+        <div class="pcr-ai-strip">
+          <div class="pcr-ai-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 7H20l-4.5 4 1.5 6L12 14l-5 3 1.5-6L4 7h5.5L12 2z" fill="#8BFCD8"/></svg>
+          </div>
+          <div class="pcr-ai-text"><strong>Expertly AI joins every call</strong> — silently transcribing the conversation, surfacing key actions, and delivering a full summary to both participants within minutes of the meeting ending.</div>
+        </div>
 
-function setState(state) {
-  renderPhaseBar(state);
-  renderStateCard(state);
-  renderPrefCard(state);
-}
+        <!-- Past sessions (CART) -->
+        <div class="pcr-index-head">
+          <div class="pcr-index-title"><span class="accent">Past</span> sessions</div>
+          <div class="pcr-index-count">7 completed</div>
+        </div>
 
-function setDemoState(state) {
-  document.querySelectorAll('.pc-demo-btn').forEach(b => b.classList.remove('active'));
-  const btns = document.querySelectorAll('.pc-demo-btn');
-  const idx = DEMO_BTN_IDX[state];
-  if (idx !== undefined && btns[idx]) btns[idx].classList.add('active');
-  setState(state);
-}
+        <div id="past-sessions">
 
-/* ═══════════════════════════════════════════════
-   TAB HELPERS
-═══════════════════════════════════════════════ */
-function switchPostTab(tab, contentId) {
-  const card = document.getElementById('state-card-body');
-  card.querySelectorAll('.pc-post-tab').forEach(t => t.classList.remove('active'));
-  tab.classList.add('active');
-  card.querySelectorAll('.pc-post-panel').forEach(p => p.classList.remove('active'));
-  const el = document.getElementById(contentId);
-  if (el) el.classList.add('active');
-}
+          <!-- Session 01 -->
+          <div class="pcr-session-group">
+            <div class="pcr-session-row" onclick="toggleSession('s1')">
+              <div class="pcr-session-num">01</div>
+              <div class="pcr-session-avatar"><img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Rohan Verma"></div>
+              <div class="pcr-session-info">
+                <div class="pcr-session-name">Rohan Verma</div>
+                <div class="pcr-session-meta">10th June 2026 · 28 mins</div>
+                <div class="pcr-session-preview">"The challenge with CBCR documentation for Mauritius holdco structures is the grandfathering…"</div>
+              </div>
+              <div class="pcr-session-right">
+                <div class="pcr-session-stars"><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span></div>
+                <span class="pcr-session-count">3 Actions</span>
+                <svg class="pcr-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="pcr-session-detail" id="s1">
+              <div class="pcr-detail-tabs">
+                <div class="pcr-dtab active" onclick="switchDTab(this,'s1-actions')">Key Actions</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s1-transcript')">Transcript</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s1-note')">My Note</div>
+              </div>
+              <div id="s1-actions"><ul class="pcr-actions-list">
+                <li>Share CBCR documentation template for Mauritius holdco structure — by Aug 1</li>
+                <li>Intro to Priya Nair at KPMG Singapore for BEPS 2.0 pillar two guidance</li>
+                <li>Review OECD Pillar Two safe harbour rules and follow up end of July</li>
+              </ul></div>
+              <div id="s1-transcript" style="display:none;"><div class="pcr-transcript-text">"The challenge we're seeing with India-Mauritius treaty renegotiation is that clients don't always understand the grandfathering provisions. Rohan walked through a structure that effectively isolates pre-2017 investments, and then we discussed how the LOB tests interact with Singapore-based SPVs…"</div></div>
+              <div id="s1-note" style="display:none;"><textarea class="pcr-note-input">Rohan's framing of substance-over-form tests was incredibly useful — applying to our Singapore client next week.</textarea><button class="pcr-note-save">Save note</button></div>
+            </div>
+          </div>
 
-function toggleSess(row) {
-  const expand = row.nextElementSibling;
-  if (!expand || !expand.classList.contains('pc-sess-expand')) return;
-  const isOpen = row.classList.contains('open');
-  document.querySelectorAll('.pc-sess-expand.open').forEach(e => e.classList.remove('open'));
-  document.querySelectorAll('.pc-sess-row.open').forEach(r => r.classList.remove('open'));
-  if (!isOpen) {
-    expand.classList.add('open');
-    row.classList.add('open');
-  }
-}
+          <!-- Session 02 -->
+          <div class="pcr-session-group">
+            <div class="pcr-session-row" onclick="toggleSession('s2')">
+              <div class="pcr-session-num">02</div>
+              <div class="pcr-session-avatar"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Sheila Tanaka"></div>
+              <div class="pcr-session-info">
+                <div class="pcr-session-name">Sheila Tanaka</div>
+                <div class="pcr-session-meta">12th May 2026 · 25 mins</div>
+                <div class="pcr-session-preview">"MAS ESG disclosure requirements for FPIs — the Q4 2026 mandate compresses timelines significantly…"</div>
+              </div>
+              <div class="pcr-session-right">
+                <div class="pcr-session-stars"><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star">★</span></div>
+                <span class="pcr-session-count">2 Actions</span>
+                <svg class="pcr-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="pcr-session-detail" id="s2">
+              <div class="pcr-detail-tabs">
+                <div class="pcr-dtab active" onclick="switchDTab(this,'s2-actions')">Key Actions</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s2-transcript')">Transcript</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s2-note')">My Note</div>
+              </div>
+              <div id="s2-actions"><ul class="pcr-actions-list">
+                <li>Review MAS circular on ESG reporting for Indian-listed subsidiaries by end of June</li>
+                <li>Connect Sheila with our Singapore compliance contact for fund structuring guidance</li>
+              </ul></div>
+              <div id="s2-transcript" style="display:none;"><div class="pcr-transcript-text">"The Q4 2026 ESG mandate from MAS is quite different from what most Indian FPIs are used to. Sheila explained how the disclosure requirements cascade down to subsidiaries…"</div></div>
+              <div id="s2-note" style="display:none;"><textarea class="pcr-note-input" placeholder="Add a private note about this session…"></textarea><button class="pcr-note-save">Save note</button></div>
+            </div>
+          </div>
 
-function switchSessTab(tabEl) {
-  const inner = tabEl.closest('.pc-sess-expand-inner');
-  inner.querySelectorAll('.pc-stab').forEach(t => t.classList.remove('active'));
-  tabEl.classList.add('active');
-  inner.querySelectorAll('.pc-stab-panel').forEach(p => p.classList.remove('active'));
-  inner.querySelector(`.pc-stab-panel[data-panel="${tabEl.dataset.tab}"]`).classList.add('active');
-}
+          <!-- Session 03 -->
+          <div class="pcr-session-group">
+            <div class="pcr-session-row" onclick="toggleSession('s3')">
+              <div class="pcr-session-num">03</div>
+              <div class="pcr-session-avatar"><img src="https://randomuser.me/api/portraits/men/61.jpg" alt="Pradeep Menon"></div>
+              <div class="pcr-session-info">
+                <div class="pcr-session-name">Pradeep Menon</div>
+                <div class="pcr-session-meta">8th April 2026 · 30 mins</div>
+                <div class="pcr-session-preview">"FEMA implications in cross-border PE acquisitions — OCB restoration under RBI Master Direction 2024…"</div>
+              </div>
+              <div class="pcr-session-right">
+                <div class="pcr-session-stars"><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span><span class="pcr-session-star on">★</span></div>
+                <span class="pcr-session-count">4 Actions</span>
+                <svg class="pcr-session-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="pcr-session-detail" id="s3">
+              <div class="pcr-detail-tabs">
+                <div class="pcr-dtab active" onclick="switchDTab(this,'s3-actions')">Key Actions</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s3-transcript')">Transcript</div>
+                <div class="pcr-dtab" onclick="switchDTab(this,'s3-note')">My Note</div>
+              </div>
+              <div id="s3-actions"><ul class="pcr-actions-list">
+                <li>Share Pradeep's FEMA checklist template for cross-border PE deal structuring</li>
+                <li>Review OCB restoration framework under new RBI circular — file by May 15</li>
+                <li>Loop in Pradeep on upcoming Chennai client deal — potential co-counsel opportunity</li>
+                <li>Read SEBI FPI category III circular and compare with Pradeep's interpretation</li>
+              </ul></div>
+              <div id="s3-transcript" style="display:none;"><div class="pcr-transcript-text">"The 2024 RBI Master Direction has introduced some nuances around OCB restoration that most practitioners are still catching up with. Pradeep walked through a specific PE acquisition where the foreign entity had OCB status pre-2003…"</div></div>
+              <div id="s3-note" style="display:none;"><textarea class="pcr-note-input" placeholder="Add a private note about this session…"></textarea><button class="pcr-note-save">Save note</button></div>
+            </div>
+          </div>
 
-function selectOne(el) {
-  el.closest('.pc-chips-sm').querySelectorAll('.pc-chip-sm').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-}
+        </div><!-- /past-sessions -->
+      </div><!-- /pcr-content -->
+    </div><!-- /pcr-layout -->
+  </div><!-- /pcr-page -->
+      <footer class="footer--minimal" aria-label="Site footer"></footer>
+    </div><!-- /pcr-member-content -->
+  </main>
+</div><!-- /d1-shell -->
 
-/* ═══════════════════════════════════════════════
-   STAR RATING
-═══════════════════════════════════════════════ */
-function attachStarRating() {
-  const stars = document.querySelectorAll('.pc-stars-input .pc-star-btn');
-  stars.forEach((star, idx) => {
-    star.addEventListener('mouseover', () => stars.forEach((s, i) => s.classList.toggle('lit', i <= idx)));
-    star.addEventListener('click', () => stars.forEach((s, i) => s.classList.toggle('lit', i <= idx)));
+<script src="assets/members.js"></script>
+
+<script>
+  /* ── Sidebar collapse ── */
+  document.addEventListener('DOMContentLoaded', function () {
+    const shell = document.getElementById('d1-shell');
+    const btn = document.getElementById('d1-collapse-btn');
+    const KEY = 'expertly_nav_collapsed';
+    if (localStorage.getItem(KEY) === '1') shell.classList.add('nav-collapsed');
+    btn.addEventListener('click', () => {
+      shell.classList.toggle('nav-collapsed');
+      localStorage.setItem(KEY, shell.classList.contains('nav-collapsed') ? '1' : '0');
+    });
   });
-}
 
-/* ═══════════════════════════════════════════════
-   INIT — default to 'reveal' state
-═══════════════════════════════════════════════ */
-setDemoState('reveal');
+  /* ── Stage / phase logic ── */
+  const PHASES = [
+    { label: 'Set Preferences',       dateBase: '20th–31st of {month}',       id: 'pref' },
+    { label: 'Matching',              dateBase: '1st of {month}',              id: 'matching' },
+    { label: 'Meet Your Peer',        dateBase: '2nd of {month} onwards',      id: 'reveal' },
+    { label: 'Meeting Day',           dateBase: '2nd Tuesday of {month}',      id: 'meeting' },
+    { label: 'Transcript & Feedback', dateBase: 'Post-meeting · {month}',      id: 'post' },
+  ];
+
+  function getSecondTuesday(year, monthIndex) {
+    const first = new Date(year, monthIndex, 1);
+    const dow = first.getDay();
+    const firstTuesday = 1 + ((2 - dow + 7) % 7);
+    return firstTuesday + 7;
+  }
+
+  function computeCurrentIndex(today) {
+    const day = today.getDate();
+    const secondTue = getSecondTuesday(today.getFullYear(), today.getMonth());
+    if (day >= 20) return 0;
+    if (day === 1)  return 1;
+    if (day < secondTue) return 2;
+    if (day === secondTue) return 3;
+    return 4;
+  }
+
+  function monthName(baseDate, offset) {
+    const d = new Date(baseDate.getFullYear(), baseDate.getMonth() + offset, 1);
+    return d.toLocaleString('en-US', { month: 'long' });
+  }
+
+  const today = new Date();
+  const currentIndex = computeCurrentIndex(today);
+  const cycleOffset = today.getDate() >= 20 ? 1 : 0;
+  const CYCLE_MONTH = monthName(today, cycleOffset);
+  const PREF_MONTH  = monthName(today, cycleOffset - 1);
+  let selectedCategory = PHASES[currentIndex].id;
+  let prefFormOverride = false;
+
+  const CYCLE_DATE = new Date(today.getFullYear(), today.getMonth() + cycleOffset, 1);
+  let meetingDayOffset = 0;
+  let rescheduleMenuOpen = false;
+
+  function getCycleSecondTuesday() {
+    const tueDay = getSecondTuesday(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth());
+    return new Date(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth(), tueDay);
+  }
+  function getMeetingWeekDates() {
+    const tue = getCycleSecondTuesday();
+    return [-1,0,1,2,3].map(offset => { const d = new Date(tue); d.setDate(tue.getDate() + offset); return d; });
+  }
+  function getSelectedMeetingDate() {
+    const tue = getCycleSecondTuesday();
+    const d = new Date(tue);
+    d.setDate(tue.getDate() + meetingDayOffset);
+    return d;
+  }
+  function formatMeetingDateLong(d) { return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }); }
+  function formatMeetingDateShort(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+
+  function toggleRescheduleMenu(e) { e.stopPropagation(); rescheduleMenuOpen = !rescheduleMenuOpen; render(); }
+  function selectRescheduleDay(offset) {
+    meetingDayOffset = offset; rescheduleMenuOpen = false; render();
+    alert(`Meeting rescheduled to ${formatMeetingDateLong(getSelectedMeetingDate())}. Time stays fixed at 10:00 – 10:30 AM IST.`);
+  }
+  document.addEventListener('click', () => { if (rescheduleMenuOpen) { rescheduleMenuOpen = false; render(); } });
+
+  function selectCategory(id) { selectedCategory = id; if (id === 'pref') prefFormOverride = false; render(); }
+
+  const PHASE_HELPERS = {
+    pref:     'Set your matching preferences before the 31st — we pair you for next cycle\'s session.',
+    matching: "We're matching you with a peer now — your pairing lands within 24 hours.",
+    reveal:   'Your peer is set. Review their profile and confirm the meeting time.',
+    meeting:  'Your call is today. The join link unlocks 10 minutes before start.',
+    post:     'Catch up on the transcript, key actions, and leave feedback for your peer.',
+  };
+  const EYEBROW_BY_STATE = { done: 'Completed', active: 'Now', upcoming: 'Upcoming' };
+
+  function renderRail() {
+    const checkIcon = `<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const itemsHtml = PHASES.map((p, i) => {
+      const state = i < currentIndex ? 'done' : i === currentIndex ? 'active' : 'upcoming';
+      const isOpen = p.id === selectedCategory;
+      const month = i === 0 ? PREF_MONTH : CYCLE_MONTH;
+      const dateText = p.dateBase.replace('{month}', month);
+      const isLast = i === PHASES.length - 1;
+      const connDone = i < currentIndex;
+
+      let dotInner = '';
+      if (state === 'done') dotInner = checkIcon;
+      else if (state === 'active') dotInner = `<span class="pcr-tli-pulse"></span>`;
+
+      const bodyHtml = isOpen
+        ? `<div class="pcr-tli-eyebrow"><span class="pcr-tli-edot"></span>${EYEBROW_BY_STATE[state]}</div>
+           <div class="pcr-tli-exp-label">${p.label}</div>
+           <div class="pcr-tli-exp-date">${dateText}</div>
+           <div class="pcr-tli-exp-helper">${PHASE_HELPERS[p.id]}</div>`
+        : `<div class="pcr-tli-row">
+             <span class="pcr-tli-lbl">${p.label}</span>
+             <span class="pcr-tli-date-right">${dateText}</span>
+           </div>`;
+
+      return `<div class="pcr-tli ${state}${isOpen ? ' open' : ''}" onclick="selectCategory('${p.id}')">
+        <div class="pcr-tli-spine">
+          <div class="pcr-tli-dot">${dotInner}</div>
+          ${!isLast ? `<div class="pcr-tli-conn${connDone ? ' done' : ''}"></div>` : ''}
+        </div>
+        <div class="pcr-tli-body">${bodyHtml}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('rail').innerHTML = `
+      <div class="pcr-rail-card">
+        <div class="pcr-tl-list">${itemsHtml}</div>
+        <div class="pcr-rail-stats-block">
+          <div class="pcr-rsi-row"><b>7</b><span>Sessions done</span></div>
+          <div class="pcr-rsi-row"><b>5🔥</b><span>Month streak</span></div>
+          <div class="pcr-rsi-row"><b>4.8</b><span>Avg rating given</span></div>
+        </div>
+      </div>`;
+  }
+
+  function render() {
+    renderRail();
+    const state = (selectedCategory === 'pref' && currentIndex === 0 && !prefFormOverride) ? 'next' : selectedCategory;
+    renderStateBody(state);
+  }
+
+  function renderStateBody(state) {
+    const label = document.getElementById('state-card-label');
+    const body  = document.getElementById('state-card-body');
+
+    if (state === 'pref') {
+      label.textContent = 'Set your preferences · Due Jun 30';
+      body.innerHTML = `
+        <div class="pcr-pref-top-row">
+          <p class="pcr-pref-intro">Help us find your ideal peer for ${CYCLE_MONTH}. <strong>Completely optional</strong> — set your preferences below to guide the match. Skip and we'll automatch you based on your profile, practice area and default time slot.</p>
+          <button class="pcr-pref-skip-btn" onclick="selectCategory('matching')">Skip</button>
+        </div>
+        <div class="pcr-pref-field-label">Preferences</div>
+        <div class="pcr-filter-row" id="pref-filters"></div>
+        <div class="pcr-tl-block">
+          <div class="pcr-pref-field-label">Preferred meeting hours</div>
+          <div class="pcr-tl-track-wrap">
+            <div class="pcr-tl-track"></div>
+            <div class="pcr-tl-fill" id="tl-fill"></div>
+            <input type="range" min="0" max="24" step="0.5" value="9" class="pcr-tl-range pcr-tl-range-start" id="tl-start" oninput="onTimelineInput('start', this.value)">
+            <input type="range" min="0" max="24" step="0.5" value="19" class="pcr-tl-range pcr-tl-range-end" id="tl-end" oninput="onTimelineInput('end', this.value)">
+          </div>
+          <div class="pcr-tl-ticks"><span>12 AM</span><span>3 AM</span><span>6 AM</span><span>9 AM</span><span>12 PM</span><span>3 PM</span><span>6 PM</span><span>9 PM</span><span>12 AM</span></div>
+          <div class="pcr-tl-labels"><span class="accent" id="tl-start-label"></span> – <span class="accent" id="tl-end-label"></span> <span style="color:var(--ink-4);font-weight:500;">IST</span></div>
+          <div class="pcr-tl-note" id="tl-note"></div>
+        </div>
+        <button class="pcr-pref-save" onclick="selectCategory('matching')">Save preferences</button>`;
+      renderPrefFilters(); initTimeline();
+    }
+
+    else if (state === 'matching') {
+      label.textContent = `Matching in progress · ${CYCLE_MONTH} 1`;
+      body.innerHTML = `
+        <div class="pcr-matching-wrap">
+          <div class="pcr-matching-icon"><div class="pcr-matching-spinner"></div></div>
+          <div><div class="pcr-matching-title">Finding your peer for ${CYCLE_MONTH}</div>
+          <div class="pcr-matching-sub">Our matching algorithm is running today. Your peer's profile will appear here once confirmed — usually within a few hours.</div></div>
+        </div>
+        <div class="pcr-pref-saved">
+          <div class="pcr-pref-saved-label">Your saved preferences</div>
+          <div class="pcr-pref-saved-row"><span class="pcr-pref-saved-tag">M&amp;A Tax</span><span class="pcr-pref-saved-tag">Transfer Pricing</span><span class="pcr-pref-saved-tag">India</span></div>
+        </div>`;
+    }
+
+    else if (state === 'reveal') {
+      label.textContent = `Your peer for ${CYCLE_MONTH} 2026`;
+      const selectedDate = getSelectedMeetingDate();
+      const weekDates = getMeetingWeekDates();
+      const dayLabels = ['Mon','Tue','Wed','Thu','Fri'];
+      const dayButtonsHtml = weekDates.map((d, i) => {
+        const offset = i - 1;
+        const isSel = offset === meetingDayOffset;
+        return `<button type="button" class="pcr-reschedule-day${isSel ? ' selected' : ''}" onclick="event.stopPropagation();selectRescheduleDay(${offset})">
+          <span class="dow">${dayLabels[i]}</span>${d.getDate()}</button>`;
+      }).join('');
+      body.innerHTML = `
+        <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Match confirmed · Meeting on ${formatMeetingDateShort(selectedDate)}</div>
+        <div class="pcr-match-profile">
+          <div class="pcr-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+          <div>
+            <div class="pcr-match-name">Ananya Krishnamurthy</div>
+            <div class="pcr-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
+            <div class="pcr-match-tags">
+              <span class="pcr-match-tag verified">✓ Expertly Verified</span>
+              <span class="pcr-match-tag">M&amp;A Tax</span><span class="pcr-match-tag">APAC</span><span class="pcr-match-tag">18 yrs experience</span>
+            </div>
+          </div>
+        </div>
+        <div class="pcr-match-why">
+          <div class="pcr-match-why-lbl">Why we matched you</div>
+          Both of you specialise in cross-border M&amp;A tax across APAC jurisdictions. Ananya's expertise in India–Singapore treaty positions and GAAR complements your current practice focus — and she has indicated openness to discussing PE fund structuring.
+        </div>
+        <div class="pcr-meeting-slot">
+          <div class="pcr-meeting-slot-left">
+            <div class="pcr-meeting-slot-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div><div class="pcr-meeting-slot-date">${formatMeetingDateLong(selectedDate)} · 10:00 – 10:30 AM IST</div>
+            <div class="pcr-meeting-slot-sub">Meeting link will be shared a day before · Expertly AI will join to transcribe</div></div>
+          </div>
+        </div>
+        <div class="pcr-reveal-actions">
+          <a href="member-profile.html" class="pcr-btn-primary" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 2h5v5M14 2L8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            View full profile
+          </a>
+          <button class="pcr-btn-outline">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Add to calendar
+          </button>
+          <div class="pcr-reschedule-wrap">
+            <div class="pcr-reschedule-tip">The time slot is fixed — you can only move the date within this same week.</div>
+            <button class="pcr-btn-outline" onclick="toggleRescheduleMenu(event)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 109-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Reschedule
+            </button>
+            <div class="pcr-reschedule-menu${rescheduleMenuOpen ? ' open' : ''}" onclick="event.stopPropagation()">
+              <div class="pcr-reschedule-menu-title">Choose a day this week</div>
+              <div class="pcr-reschedule-days">${dayButtonsHtml}</div>
+              <div class="pcr-reschedule-note">Time stays fixed at 10:00 – 10:30 AM IST.</div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    else if (state === 'meeting') {
+      label.textContent = `Your peer for ${CYCLE_MONTH} 2026`;
+      const selectedDate = getSelectedMeetingDate();
+      body.innerHTML = `
+        <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Meeting today · ${formatMeetingDateShort(selectedDate)}</div>
+        <div class="pcr-match-profile">
+          <div class="pcr-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+          <div>
+            <div class="pcr-match-name">Ananya Krishnamurthy</div>
+            <div class="pcr-match-role">Partner, Cross-Border Tax<br>Nishith Desai Associates · Bangalore, India</div>
+            <div class="pcr-match-tags">
+              <span class="pcr-match-tag verified">✓ Expertly Verified</span>
+              <span class="pcr-match-tag">M&amp;A Tax</span><span class="pcr-match-tag">APAC</span><span class="pcr-match-tag">18 yrs experience</span>
+            </div>
+          </div>
+        </div>
+        <div class="pcr-meeting-slot">
+          <div class="pcr-meeting-slot-left">
+            <div class="pcr-meeting-slot-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div><div class="pcr-meeting-slot-date">${formatMeetingDateLong(selectedDate)} · 10:00 – 10:30 AM IST</div>
+            <div class="pcr-meeting-slot-sub">Meeting link ready · Expertly AI will join to transcribe</div></div>
+          </div>
+          <button class="pcr-btn-primary" style="flex:none;padding:9px 16px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 10l5-3v10l-5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="6" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Join call
+          </button>
+        </div>`;
+    }
+
+    else if (state === 'post') {
+      label.textContent = 'Meeting summary · Jul 14';
+      body.innerHTML = `
+        <div class="pcr-post-eyebrow-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Meeting completed</div>
+        <div class="pcr-post-with">
+          <div class="pcr-post-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+          <div><div class="pcr-post-name">Ananya Krishnamurthy</div><div class="pcr-post-meta">Jul 14, 2026 · 28 min · M&amp;A Tax / Cross-Border</div></div>
+        </div>
+        <div class="pcr-post-tabs">
+          <div class="pcr-post-tab active" onclick="switchPostTab(this,'pt-actions')">Key Actions</div>
+          <div class="pcr-post-tab" onclick="switchPostTab(this,'pt-transcript')">Transcript</div>
+          <div class="pcr-post-tab" onclick="switchPostTab(this,'pt-notes')">My Notes</div>
+        </div>
+        <div class="pcr-post-panel active" id="pt-actions">
+          <div class="pcr-panel-head-row">
+            <div class="pcr-panel-head-lbl">3 actions logged</div>
+            <button class="pcr-edit-btn" id="actions-edit-btn" onclick="toggleActionsEdit()">✎ Edit</button>
+          </div>
+          <ul class="pcr-key-actions" id="key-actions-list">
+            <li><span class="txt" contenteditable="false">Share India–Singapore treaty position memo on LOB test application to Singapore SPVs</span><button class="remove" onclick="this.closest('li').remove()">×</button></li>
+            <li><span class="txt" contenteditable="false">Ananya to introduce her contact at Drew &amp; Napier for Singapore TP documentation</span><button class="remove" onclick="this.closest('li').remove()">×</button></li>
+            <li><span class="txt" contenteditable="false">Follow up on GAAR applicability to the Chennai client restructuring — by Jul 31</span><button class="remove" onclick="this.closest('li').remove()">×</button></li>
+          </ul>
+          <button class="pcr-add-action" id="add-action-btn" onclick="addAction()">+ Add action</button>
+        </div>
+        <div class="pcr-post-panel" id="pt-transcript">
+          <div class="pcr-transcript-block">"The LOB test under the India-Singapore treaty is where most practitioners get tripped up. Ananya walked through how MAS guidance on 'economic substance' interacts with the principal purpose test…"</div>
+        </div>
+        <div class="pcr-post-panel" id="pt-notes">
+          <div class="pcr-panel-head-row">
+            <div class="pcr-panel-head-lbl">My notes</div>
+            <button class="pcr-edit-btn" id="notes-edit-btn" onclick="toggleNotesEdit()">✎ Edit</button>
+          </div>
+          <div class="pcr-notes-view" id="notes-view">
+            <div class="pcr-stars-display" id="notes-stars-display">★★★★★</div>
+            <p class="pcr-notes-text" id="notes-text-display">Ananya's depth on Singapore treaty interpretation was exactly what I needed. Would have liked 5 more minutes on the GAAR question.</p>
+          </div>
+          <div id="notes-edit-form" style="display:none;">
+            <div class="pcr-feedback-label">How was this session?</div>
+            <div class="pcr-stars-input">
+              <button class="pcr-star-btn lit">★</button><button class="pcr-star-btn lit">★</button>
+              <button class="pcr-star-btn lit">★</button><button class="pcr-star-btn lit">★</button>
+              <button class="pcr-star-btn lit">★</button>
+            </div>
+            <textarea class="pcr-feedback-textarea" id="notes-textarea">Ananya's depth on Singapore treaty interpretation was exactly what I needed. Would have liked 5 more minutes on the GAAR question.</textarea>
+            <button class="pcr-feedback-submit" onclick="saveNotesEdit()">Save notes</button>
+          </div>
+        </div>`;
+      attachStarRating();
+    }
+
+    else if (state === 'next') {
+      label.textContent = 'July complete · Set preferences for August';
+      body.innerHTML = `
+        <div class="pcr-post-eyebrow-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> July session complete</div>
+        <div class="pcr-post-with" style="margin-bottom:22px;">
+          <div class="pcr-post-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
+          <div><div class="pcr-post-name">Ananya Krishnamurthy</div><div class="pcr-post-meta">Jul 14, 2026 · 28 min · Rated 5★ · 3 actions logged</div></div>
+        </div>
+        <div class="pcr-next-pref-banner">
+          <div class="pcr-next-pref-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="pcr-next-pref-text"><strong>August preferences open</strong> — set your preferred practice area and peer location before Aug 31 to guide your next match. Optional.<br>
+            <button class="pcr-next-pref-btn" onclick="prefFormOverride = true; render();">Set August preferences</button>
+          </div>
+        </div>`;
+    }
+  }
+
+  /* ── Actions edit ── */
+  function toggleActionsEdit() {
+    const list = document.getElementById('key-actions-list');
+    const btn = document.getElementById('actions-edit-btn');
+    const addBtn = document.getElementById('add-action-btn');
+    const editing = list.classList.toggle('editing');
+    list.querySelectorAll('.txt').forEach(t => t.setAttribute('contenteditable', editing ? 'true' : 'false'));
+    btn.classList.toggle('editing', editing);
+    btn.textContent = editing ? 'Done' : '✎ Edit';
+    addBtn.classList.toggle('show', editing);
+  }
+  function addAction() {
+    const list = document.getElementById('key-actions-list');
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="txt" contenteditable="true"></span><button class="remove" onclick="this.closest('li').remove()">×</button>`;
+    list.appendChild(li);
+    li.querySelector('.txt').focus();
+  }
+
+  /* ── Notes edit ── */
+  function toggleNotesEdit() {
+    const view = document.getElementById('notes-view');
+    const form = document.getElementById('notes-edit-form');
+    const btn = document.getElementById('notes-edit-btn');
+    const editing = form.style.display === 'none';
+    view.style.display = editing ? 'none' : 'block';
+    form.style.display = editing ? 'block' : 'none';
+    btn.classList.toggle('editing', editing);
+    btn.textContent = editing ? 'Done' : '✎ Edit';
+  }
+  function saveNotesEdit() {
+    const litCount = document.querySelectorAll('#notes-edit-form .pcr-star-btn.lit').length || 5;
+    document.getElementById('notes-stars-display').textContent = '★'.repeat(litCount) + '☆'.repeat(5 - litCount);
+    document.getElementById('notes-text-display').textContent = document.getElementById('notes-textarea').value;
+    toggleNotesEdit();
+  }
+  function attachStarRating() {
+    const stars = document.querySelectorAll('.pcr-stars-input .pcr-star-btn');
+    stars.forEach((star, idx) => {
+      star.addEventListener('mouseover', () => stars.forEach((s, i) => s.classList.toggle('lit', i <= idx)));
+      star.addEventListener('click', () => stars.forEach((s, i) => s.classList.toggle('lit', i <= idx)));
+    });
+  }
+
+  /* ── Tab switching ── */
+  function switchPostTab(tab, contentId) {
+    const card = document.getElementById('state-card-body');
+    card.querySelectorAll('.pcr-post-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    card.querySelectorAll('.pcr-post-panel').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById(contentId);
+    if (el) el.classList.add('active');
+  }
+
+  /* ── Past sessions accordion ── */
+  function toggleSession(id) {
+    const detail = document.getElementById(id);
+    if (!detail) return;
+    const isOpen = detail.classList.toggle('open');
+    detail.previousElementSibling.classList.toggle('open', isOpen);
+  }
+  function switchDTab(tab, contentId) {
+    const detail = tab.closest('.pcr-session-detail');
+    detail.querySelectorAll('.pcr-dtab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    detail.querySelectorAll('[id]').forEach(c => { if (c.id.match(/-(actions|transcript|note)$/)) c.style.display = 'none'; });
+    const el = document.getElementById(contentId);
+    if (el) el.style.display = 'block';
+  }
+
+  /* ── Preference dropdowns ── */
+  const DD_FIELDS = [
+    { id: 'practice', label: 'Practice area', multi: true, placeholder: 'Practice area', search: '', options: ['M&A Tax','Transfer Pricing','Corporate Law','Compliance','Capital Markets','IP & Tech','Restructuring'], selected: [] },
+    { id: 'location', label: 'Peer location', multi: true, placeholder: 'Peer location', search: '', options: ['India','Singapore','UAE','United Kingdom','United States','Hong Kong','Any country'], selected: [] },
+  ];
+  let openDD = null;
+
+  function renderPrefFilters() {
+    const row = document.getElementById('pref-filters');
+    if (!row) return;
+    row.innerHTML = DD_FIELDS.map(f => `
+      <div class="pcr-dd${openDD === f.id ? ' open' : ''}" id="dd-${f.id}">
+        <button type="button" class="pcr-dd-btn${f.selected.length ? ' has-value' : ''}" onclick="toggleDD('${f.id}')">
+          <span id="dd-${f.id}-label">${ddLabel(f)}</span><span class="pcr-dd-caret">▾</span>
+        </button>
+        <div class="pcr-dd-pop">
+          <div class="pcr-dd-search-wrap"><input type="text" class="pcr-dd-search" placeholder="Search…" value="${f.search.replace(/"/g,'&quot;')}" oninput="onDDSearch('${f.id}',this.value)"></div>
+          <div class="pcr-dd-list" id="dd-${f.id}-list">${ddOptionsHtml(f)}</div>
+        </div>
+      </div>`).join('');
+  }
+  function ddOptionsHtml(f) {
+    const filtered = f.options.filter(o => o.toLowerCase().includes(f.search.toLowerCase()));
+    if (!filtered.length) return `<div class="pcr-dd-empty">No matches</div>`;
+    return filtered.map(o => `<div class="pcr-dd-option${f.selected.includes(o)?' selected':''}" onclick="selectDDOption('${f.id}',${JSON.stringify(o).replace(/"/g,'&quot;')})">
+      <span class="${f.multi?'pcr-dd-checkbox':'pcr-dd-radio'}"></span>${o}</div>`).join('');
+  }
+  function ddLabel(f) { if (!f.selected.length) return f.placeholder; return f.multi ? (f.selected.length===1 ? f.selected[0] : `${f.selected.length} selected`) : f.selected[0]; }
+  function toggleDD(id) { openDD = openDD === id ? null : id; renderPrefFilters(); }
+  function selectDDOption(id, value) {
+    const field = DD_FIELDS.find(f => f.id === id);
+    if (field.multi) { const i = field.selected.indexOf(value); if (i>-1) field.selected.splice(i,1); else field.selected.push(value); }
+    else { field.selected = [value]; openDD = null; }
+    renderPrefFilters();
+  }
+  function onDDSearch(id, value) {
+    const field = DD_FIELDS.find(f => f.id === id);
+    field.search = value;
+    const list = document.getElementById(`dd-${id}-list`);
+    if (list) list.innerHTML = ddOptionsHtml(field);
+  }
+  document.addEventListener('click', (e) => { if (!e.target.closest('.pcr-dd') && openDD) { openDD = null; renderPrefFilters(); } });
+
+  /* ── 24-hour timeline ── */
+  const MEMBER_AVAILABILITY = [
+    { country: 'India',          members: 340, startIST: 9,    endIST: 18,   critical: false },
+    { country: 'Singapore',      members: 85,  startIST: 6.5,  endIST: 15.5, critical: false },
+    { country: 'UAE',            members: 60,  startIST: 10.5, endIST: 19.5, critical: false },
+    { country: 'United Kingdom', members: 45,  startIST: 13.5, endIST: 22.5, critical: true  },
+    { country: 'United States',  members: 70,  startIST: 18.5, endIST: 27.5, critical: true  },
+  ];
+  let tlStart = 9, tlEnd = 19;
+
+  function overlapHours(startA, endA, startB, endB) {
+    const norm = (s, e) => { s=((s%24)+24)%24; e=((e%24)+24)%24; return e<=s?[[s,24],[0,e]]:[[s,e]]; };
+    let total = 0;
+    norm(startA,endA).forEach(([as,ae]) => norm(startB,endB).forEach(([bs,be]) => { const s=Math.max(as,bs),e2=Math.min(ae,be); if(e2>s) total+=e2-s; }));
+    return total;
+  }
+  function hourLabel(h) {
+    h=((h%24)+24)%24; const hh=Math.floor(h),mm=Math.round((h-hh)*60),period=hh<12?'AM':'PM';
+    let h12=hh%12; if(!h12) h12=12;
+    return `${h12}:${mm.toString().padStart(2,'0')} ${period}`;
+  }
+  function computeAvailability(start, end) {
+    let totalAvailable=0, countriesCovered=0; const missing=[];
+    MEMBER_AVAILABILITY.forEach(c => {
+      const dur=((c.endIST-c.startIST)+24)%24||24;
+      const overlap=overlapHours(start,end,c.startIST,c.endIST);
+      const frac=Math.min(1,overlap/dur);
+      const avail=Math.round(c.members*frac);
+      totalAvailable+=avail; if(avail>0) countriesCovered++;
+      if(c.critical&&frac<0.15) missing.push(c.country);
+    });
+    return { totalAvailable, countriesCovered, missing };
+  }
+  function initTimeline() {
+    document.getElementById('tl-start').value = tlStart;
+    document.getElementById('tl-end').value   = tlEnd;
+    renderTimelineUI();
+  }
+  function onTimelineInput(which, value) {
+    value = parseFloat(value);
+    if (which==='start') { tlStart=Math.min(value,tlEnd-0.5); document.getElementById('tl-start').value=tlStart; }
+    else { tlEnd=Math.max(value,tlStart+0.5); document.getElementById('tl-end').value=tlEnd; }
+    renderTimelineUI();
+  }
+  function renderTimelineUI() {
+    const fill = document.getElementById('tl-fill');
+    if (!fill) return;
+    fill.style.left  = (tlStart/24*100)+'%';
+    fill.style.width = ((tlEnd-tlStart)/24*100)+'%';
+    document.getElementById('tl-start-label').textContent = hourLabel(tlStart);
+    document.getElementById('tl-end-label').textContent   = hourLabel(tlEnd);
+    const { totalAvailable, countriesCovered, missing } = computeAvailability(tlStart, tlEnd);
+    let html = `<strong>~${totalAvailable} members</strong> across <strong>${countriesCovered} countries</strong> are typically available in this window.`;
+    if (missing.length) html += `<div class="pcr-tl-warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 16.5h.01M10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Members from <strong>${missing.join(' and ')}</strong> are generally not available in this window.</span></div>`;
+    document.getElementById('tl-note').innerHTML = html;
+  }
+
+  document.addEventListener('DOMContentLoaded', render);
+</script>
+<script src="assets/shared.js"></script>
+<script src="assets/sidebar-theme.js"></script>
+<script>
+  /* ── Auth gate: check session ── */
+  (function () {
+    var session = null;
+    try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
+    var isMember = session && session.role === 'member';
+    var gate    = document.getElementById('pcr-gate');
+    var content = document.getElementById('pcr-member-content');
+    if (!isMember) {
+      gate.style.display    = 'flex';
+      content.style.display = 'none';
+    }
+  })();
+
+  /* Sidebar footer auth is handled by sidebar-theme.js */
 </script>
 </body>
 </html>

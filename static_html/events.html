@@ -13,1076 +13,293 @@
   <link rel="stylesheet" href="assets/theme.css">
   <link rel="stylesheet" href="assets/home.css">
   <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
   <style>
+
+    /* ── Shell layout ─────────────────────────────────────────────── */
+    .d1-shell { transition: grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1); }
+    .d1-shell.nav-collapsed { grid-template-columns: 56px 1fr; }
+
+    /* ── Logo row ──────────────────────────────────────────────────── */
+    .d1-logo-row {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 4px 22px 10px;
+    }
+    .d1-logo-row .d1-logo { padding: 0; flex: 1; min-width: 0; overflow: hidden; text-decoration: none; }
+    .d1-logo-full { display: inline; white-space: nowrap; }
+    .d1-logo-short { display: none; }
+    .nav-collapsed .d1-logo-full { display: none; }
+    .nav-collapsed .d1-logo-short { display: inline; }
+    .nav-collapsed .d1-logo-row {
+      flex-direction: column; align-items: center;
+      padding: 6px 0 14px; gap: 8px;
+    }
+
+    /* ── Collapse toggle button ────────────────────────────────────── */
+    .d1-collapse-btn {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.22s; }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .nav-collapsed .d1-collapse-btn svg { transform: rotate(180deg); }
+
+    /* ── Collapsed nav overrides ───────────────────────────────────── */
+    .nav-collapsed .d1-nav-lbl { display: none; }
+    .nav-collapsed .d1-nav a .soon { display: none; }
+    .nav-collapsed .d1-nav a { justify-content: center; padding: 10px; gap: 0; }
+    .nav-collapsed .d1-nav-label { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-user-info { display: none; }
+    .nav-collapsed .d1-sidebar-foot .d1-logout-btn { display: none; }
+    .nav-collapsed .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+
+    /* ── Main page area ────────────────────────────────────────────── */
+    .v2-page-main { min-height: 100vh; overflow-x: clip; }
+
     /* ═══════════════════════════════════════════════
-   Events page
-   ═══════════════════════════════════════════════ */
-
-    /* ── Hero ─────────────────────────────────────── */
-    .env-hero {
-      background: var(--bg-alt);
-      padding: 56px 0 48px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .env-hero-heading {
-      font-size: clamp(30px, 3.8vw, 50px);
-      font-weight: 500;
-      letter-spacing: -0.03em;
-      line-height: 1.04;
-      color: var(--ink);
-      margin-top: 18px;
-    }
-
-    .env-hero-heading em {
-      font-style: normal;
-      font-weight: 400;
-      color: var(--accent);
-    }
-
-    .env-hero-sub {
-      font-size: 16px;
-      color: var(--ink-3);
-      margin-top: 14px;
-      max-width: 580px;
-      line-height: 1.55;
-    }
-
-    /* ── Section header ───────────────────────────── */
-    .env-section-head {
-      margin-top: 32px;
-    }
-
-    .env-section-top {
-      padding-bottom: 20px;
-    }
-
-    .env-section-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: capitalize;
-      color: var(--ink-3);
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .env-section-label::before {
-      content: '';
-      width: 22px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    .env-section-title {
-      font-size: clamp(22px, 2.4vw, 32px);
-      font-weight: 500;
-      letter-spacing: -.02em;
-      color: var(--ink);
-      line-height: 1.1;
-    }
-
-    /* ── Page grid: main + sidebar ─────────────────── */
-    .ev-page {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 28px;
-      align-items: start;
-      padding: 0 0 120px;
-    }
-
-    /* ════════════════════════════════════════════════
-   FILTER BAR
-   ════════════════════════════════════════════════ */
-    .env-filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      padding: 14px 0 18px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .env-filter-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border-radius: 100px;
-      background: #fff;
-      border: 1.5px solid var(--line-2);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-      cursor: pointer;
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s;
-      white-space: nowrap;
-      position: relative;
-      user-select: none;
-    }
-
-    .env-filter-btn:hover {
-      border-color: var(--ink-3);
-      color: var(--ink);
-    }
-
-    .env-filter-btn.open {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
-    }
-
-    .env-filter-btn.has-value {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
-    }
-
-    .env-filter-btn.has-value:hover {
-      background: color-mix(in oklab, var(--ink) 88%, var(--accent));
-    }
-
-    .env-filter-btn-icon {
-      opacity: 0.55;
-      flex-shrink: 0;
-    }
-
-    .env-filter-btn.has-value .env-filter-btn-icon {
-      opacity: 0.7;
-    }
-
-    .env-filter-btn-caret {
-      font-size: 9px;
-      opacity: 0.45;
-      margin-left: 2px;
-      transition: transform 0.2s;
-    }
-
-    .env-filter-btn.open .env-filter-btn-caret {
-      transform: rotate(180deg);
-    }
-
-    .env-filter-clear {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      font-size: 10px;
-      line-height: 1;
-      margin-left: -2px;
-    }
-
-    .env-filter-btn.has-value .env-filter-clear {
-      display: inline-flex;
-    }
-
-    .env-format-bar {
-      display: flex;
-      gap: 6px;
-    }
-
-    .env-fmt-pill {
-      padding: 8px 14px;
-      border-radius: 100px;
-      font-family: 'Archivo', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border: 1.5px solid var(--line-2);
-      background: #fff;
-      color: var(--ink-3);
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .env-fmt-pill::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--line-2);
-      transition: background 0.15s;
-    }
-
-    .env-fmt-pill:hover {
-      border-color: var(--ink-3);
-      color: var(--ink);
-    }
-
-    .env-fmt-pill.active-ip {
-      background: color-mix(in oklab, var(--ok) 10%, #fff);
-      color: color-mix(in oklab, var(--ok) 80%, #000);
-      border-color: color-mix(in oklab, var(--ok) 35%, transparent);
-    }
-
-    .env-fmt-pill.active-ip::before {
-      background: var(--ok);
-    }
-
-    .env-fmt-pill.active-hy {
-      background: color-mix(in oklab, var(--accent) 10%, #fff);
-      color: var(--accent);
-      border-color: color-mix(in oklab, var(--accent) 30%, transparent);
-    }
-
-    .env-fmt-pill.active-hy::before {
-      background: var(--accent);
-    }
-
-    /* ── Country dropdown ──────────────────────────── */
-    .env-popover {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      z-index: 200;
-      background: #fff;
-      border: 1.5px solid var(--line);
-      border-radius: 16px;
-      box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.14), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-6px) scale(0.98);
-      transform-origin: top left;
-      transition: opacity 0.18s, transform 0.18s;
-    }
-
-    .env-popover.open {
-      opacity: 1;
-      pointer-events: all;
-      transform: none;
-    }
-
-    .ctr-popover {
-      width: 280px;
-      padding: 12px 0 8px;
-    }
-
-    .ctr-search-wrap {
-      padding: 0 12px 10px;
-      position: relative;
-    }
-
-    .ctr-search-wrap::after {
-      content: '⌕';
-      position: absolute;
-      left: 22px;
-      top: 50%;
-      transform: translateY(-52%);
-      color: var(--ink-4);
-      font-size: 15px;
-      pointer-events: none;
-    }
-
-    .ctr-search {
-      width: 100%;
-      padding: 8px 12px 8px 32px;
-      border: 1px solid var(--line-2);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 13px;
-      color: var(--ink);
-      background: var(--bg-alt);
-      outline: none;
-      transition: border-color 0.15s;
-      box-sizing: border-box;
-    }
-
-    .ctr-search:focus {
-      border-color: var(--accent);
-    }
-
-    .ctr-list {
-      max-height: 260px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--line-2) transparent;
-    }
-
-    .ctr-group-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      padding: 10px 16px 4px;
-    }
-
-    .ctr-option {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-      cursor: pointer;
-      transition: background 0.1s, color 0.1s;
-    }
-
-    .ctr-option:hover {
-      background: var(--bg-alt);
-      color: var(--ink);
-    }
-
-    .ctr-option.selected {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .ctr-option-check {
-      font-size: 11px;
-      color: var(--accent);
-      opacity: 0;
-    }
-
-    .ctr-option.selected .ctr-option-check {
-      opacity: 1;
-    }
-
-    .ctr-event-count {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 2px 7px;
-      border-radius: 100px;
-      background: color-mix(in oklab, var(--accent) 10%, transparent);
-      color: var(--accent);
-    }
-
-    .ctr-no-results {
-      padding: 20px 16px;
-      font-size: 13px;
-      color: var(--ink-4);
-      text-align: center;
-    }
-
-    .env-city-wrap {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .env-city-wrap::after {
-      content: '▾';
-      position: absolute;
-      right: 12px;
-      font-size: 9px;
-      color: var(--ink-3);
-      pointer-events: none;
-    }
-
-    .env-city-select {
-      appearance: none;
-      -webkit-appearance: none;
-      background: #fff;
-      border: 1.5px solid var(--line-2);
-      border-radius: 100px;
-      padding: 9px 30px 9px 14px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-      outline: none;
-      cursor: pointer;
-      transition: border-color 0.15s;
-      white-space: nowrap;
-    }
-
-    .env-city-select:hover {
-      border-color: var(--ink-3);
-    }
-
-    .env-city-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 12%, transparent);
-    }
-
-    .env-city-select.has-value {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
-    }
-
-    .env-city-wrap:has(.has-value)::after {
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    /* ── Date Range Picker ─────────────────────────── */
-    .drp-popover {
-      width: 600px;
-      padding: 20px;
-      left: 0;
-    }
-
-    .drp-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .drp-header-label {
-      font-size: 13px;
-      color: var(--ink-3);
-      font-family: 'Archivo', sans-serif;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
-    .drp-header-label b {
-      color: var(--accent);
-    }
-
-    .drp-months-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .drp-month-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .drp-month-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-
-    .drp-nav-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--bg-alt);
-      border: 1px solid var(--line-2);
-      font-size: 13px;
-      color: var(--ink-3);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .drp-nav-btn:hover {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
-    }
-
-    .drp-nav-btn:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-
-    .drp-nav-btn:disabled:hover {
-      background: var(--bg-alt);
-      color: var(--ink-3);
-      border-color: var(--line-2);
-    }
-
-    .drp-weekdays {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      margin-bottom: 4px;
-    }
-
-    .drp-wd {
-      text-align: center;
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--ink-4);
-      padding: 4px 0;
-    }
-
-    .drp-days {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 2px;
-    }
-
-    .drp-day {
-      aspect-ratio: 1;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-      cursor: pointer;
-      position: relative;
-      transition: background 0.12s, color 0.12s;
-      user-select: none;
-    }
-
-    .drp-day:hover {
-      background: var(--bg-alt);
-      color: var(--ink);
-    }
-
-    .drp-day.empty {
-      cursor: default;
-    }
-
-    .drp-day.empty:hover {
-      background: transparent;
-    }
-
-    .drp-day.other-month {
-      color: var(--ink-4);
-    }
-
-    .drp-day.has-event::after {
-      content: '';
-      position: absolute;
-      bottom: 3px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    .drp-day.in-range {
-      background: color-mix(in oklab, var(--accent) 10%, transparent);
-      color: var(--ink);
-      border-radius: 0;
-    }
-
-    .drp-day.range-start,
-    .drp-day.range-end {
-      background: var(--accent) !important;
-      color: #fff !important;
-      border-radius: 8px !important;
-      font-weight: 700;
-    }
-
-    .drp-day.range-start.in-range {
-      border-radius: 8px 0 0 8px !important;
-    }
-
-    .drp-day.range-end.in-range {
-      border-radius: 0 8px 8px 0 !important;
-    }
-
-    .drp-day.range-start.range-end {
-      border-radius: 8px !important;
-    }
-
-    .drp-day.range-preview {
-      background: color-mix(in oklab, var(--accent) 8%, transparent);
-      color: var(--ink);
-      border-radius: 0;
-    }
-
-    .drp-day.today {
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .drp-day.today.range-start,
-    .drp-day.today.range-end {
-      color: #fff;
-    }
-
-    .drp-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--line);
-    }
-
-    .drp-footer-hint {
-      font-size: 12px;
-      color: var(--ink-4);
-      font-family: 'Archivo', sans-serif;
-    }
-
-    .drp-footer-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .drp-clear-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1.5px solid var(--line-2);
-      background: #fff;
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--ink-3);
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .drp-clear-btn:hover {
-      border-color: var(--ink-3);
-      color: var(--ink);
-    }
-
-    /* ── List meta row ─────────────────────────────── */
-    .env-list-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      padding: 16px 0 0;
-    }
-
-    .env-list-count {
-      font-family: 'Archivo', sans-serif;
-      font-size: 11px;
-      letter-spacing: .1em;
-      color: var(--ink-4);
-    }
-
-    .env-reset-btn {
-      font-family: 'Archivo', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent);
-      background: none;
-      border: none;
-      cursor: pointer;
-      letter-spacing: .05em;
-      padding: 0;
-      display: none;
-    }
-
-    .env-reset-btn.visible {
-      display: inline;
-    }
-
-    /* ── Event list ────────────────────────────────── */
-    .env-list-wrap {
-      padding: 0;
-    }
-
-    /* Month group */
-    .ev-month-group {
-      margin-top: 52px;
-    }
-
-    .ev-month-group:first-child {
-      margin-top: 20px;
-    }
-
-    .ev-month-header {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .ev-month-name {
-      font-size: clamp(26px, 3vw, 36px);
-      font-weight: 500;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-    }
-
-    .ev-month-count {
-      font-family: 'Archivo', sans-serif;
-      font-size: 12px;
-      color: var(--ink-4);
-      letter-spacing: 0.04em;
-    }
-
-    .ev-month-divider {
-      height: 1px;
-      background: var(--line);
-    }
-
-    /* Event row */
-    .ev-row {
-      display: grid;
-      grid-template-columns: 140px 1fr 180px auto;
-      gap: 0 36px;
-      align-items: center;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--line);
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.15s;
-    }
-
-    /* First event of each month gets a light teal highlight */
-    .ev-row.ev-month-first {
-      background: color-mix(in oklab, var(--accent) 6%, #fff);
-      border-radius: 12px;
-      border-bottom: none;
-      padding: 28px 20px;
-      margin: 8px -20px;
-    }
-
-    .ev-date-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .ev-date-text {
-      font-size: 17px;
-      font-weight: 500;
-      letter-spacing: -.02em;
-      color: var(--ink);
-      line-height: 1.2;
-    }
-
-    .ev-body {
-      min-width: 0;
-    }
-
-    .ev-chips {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 9px;
-      flex-wrap: wrap;
-    }
-
-    .ev-title {
-      font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
-      font-feature-settings: 'ss01', 'cv11';
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -.018em;
-      line-height: 1.25;
-      color: var(--ink);
-      margin-bottom: 5px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .ev-desc {
-      font-size: 13px;
-      color: var(--ink-3);
-      line-height: 1.5;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .ev-loc {}
-
-    .ev-loc-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .ev-loc-city {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-    }
-
-    .ev-loc-country {
-      font-family: 'Archivo', sans-serif;
-      font-size: 11px;
-      color: var(--ink-4);
-      margin-top: 2px;
-      letter-spacing: .04em;
-    }
-
-    .env-fmt-chip {
-      font-family: 'Archivo', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .05em;
-      padding: 4px 10px;
-      border-radius: 100px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .env-fmt-chip::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-
-    .env-fmt-chip-ip {
-      background: color-mix(in oklab, var(--ok) 10%, transparent);
-      color: color-mix(in oklab, var(--ok) 85%, var(--ink));
-      border: 1px solid color-mix(in oklab, var(--ok) 24%, transparent);
-    }
-
-    .env-fmt-chip-ip::before {
-      background: var(--ok);
-    }
-
-    .env-fmt-chip-hy {
-      background: color-mix(in oklab, var(--accent) 10%, transparent);
-      color: var(--accent);
-      border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent);
-    }
-
-    .env-fmt-chip-hy::before {
-      background: var(--accent);
-    }
-
-    .env-empty {
-      padding: 64px 0;
-      text-align: center;
-    }
-
-    .env-empty h3 {
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -.02em;
-      margin: 10px 0 20px;
-    }
-
-    /* ── Sidebar ───────────────────────────────────── */
-    .ev-sidebar {
-      position: sticky;
-      top: calc(84px + 24px);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding-top: 32px;
-    }
-
-    .ev-sidebar-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 28px;
-    }
-
-    .ev-sidebar-eyebrow {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      font-weight: 600;
-      margin-bottom: 14px;
-    }
-
-    .ev-sidebar-headline {
-      font-size: 20px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      color: var(--ink);
-      margin-bottom: 12px;
-    }
-
-    .ev-sidebar-body {
-      font-size: 14px;
-      color: var(--ink-3);
-      line-height: 1.6;
-      margin-bottom: 4px;
-    }
-
-    .ev-sidebar-stat {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .ev-sidebar-stat-num {
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--accent);
-      line-height: 1;
-      flex-shrink: 0;
-      width: 56px;
-    }
-
-    .ev-sidebar-stat-text {
-      font-size: 13px;
-      color: var(--ink-3);
-      line-height: 1.45;
-    }
-
-    .ev-sidebar-stat-text b {
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .ev-sidebar-cta {
-      background: var(--ink);
-      border-radius: 16px;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ev-sidebar-cta::before {
-      content: '';
-      position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      background: color-mix(in oklab, var(--accent) 18%, transparent);
-      pointer-events: none;
-    }
-
-    .ev-sidebar-cta-eyebrow {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.4);
-      margin-bottom: 12px;
-    }
-
-    .ev-sidebar-cta-headline {
-      font-size: 20px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      color: #fff;
-      margin-bottom: 10px;
-      position: relative;
-    }
-
-    .ev-sidebar-cta-body {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.55);
-      line-height: 1.55;
-      margin-bottom: 22px;
-      position: relative;
-    }
-
-    .ev-sidebar-cta .btn {
-      width: 100%;
-      justify-content: center;
-      background: #fff;
-      color: var(--ink);
-      position: relative;
-    }
-
-    .ev-sidebar-cta .btn:hover {
-      background: var(--accent-2);
-      color: var(--ink);
-    }
-
-    /* ── Responsive ────────────────────────────────── */
-    @media (max-width: 1100px) {
-      .ev-page {
-        grid-template-columns: 1fr 280px;
-        gap: 20px;
-      }
-
-      .ev-row {
-        grid-template-columns: 120px 1fr 150px auto;
-        gap: 0 24px;
-      }
-
-      .ev-row.ev-month-first {
-        margin: 8px -12px;
-        padding: 28px 12px;
-      }
-    }
-
-    @media (max-width: 860px) {
-      .ev-page {
-        grid-template-columns: 1fr;
-      }
-
-      .ev-sidebar {
-        position: static;
-        padding-top: 0;
-      }
-
-      .ev-sidebar-cta {
-        display: none;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .ev-row {
-        grid-template-columns: 110px 1fr;
-        gap: 0 16px;
-      }
-
-      .ev-row.ev-month-first {
-        margin: 8px -12px;
-        padding: 24px 12px;
-      }
-
-      .ev-loc,
-      .ev-row>.btn {
-        display: none;
-      }
-
-      .drp-popover {
-        width: 320px;
-      }
-
-      .drp-months-wrap {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @keyframes envIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px)
-      }
-
-      to {
-        opacity: 1;
-        transform: none
-      }
-    }
+       Events page styles (unchanged from v1)
+       ═══════════════════════════════════════════════ */
+
+    .env-hero { background: var(--bg-alt); padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+    .env-hero-heading { font-size: clamp(30px, 3.8vw, 50px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.04; color: var(--ink); margin-top: 18px; }
+    .env-hero-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
+    .env-hero-sub { font-size: 16px; color: var(--ink-3); margin-top: 14px; max-width: 580px; line-height: 1.55; }
+
+    .env-section-head { margin-top: 32px; }
+    .env-section-top { padding-bottom: 20px; }
+    .env-section-label { font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: capitalize; color: var(--ink-3); font-weight: 500; display: inline-flex; align-items: center; gap: 9px; }
+    .env-section-label::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .env-section-title { font-size: clamp(22px, 2.4vw, 32px); font-weight: 500; letter-spacing: -.02em; color: var(--ink); line-height: 1.1; }
+
+    .ev-page { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: start; padding: 0 0 120px; }
+
+    .env-filter-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 0 18px; border-bottom: 1px solid var(--line); }
+    .env-filter-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 100px; background: #fff; border: 1.5px solid var(--line-2); font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s; white-space: nowrap; position: relative; user-select: none; }
+    .env-filter-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+    .env-filter-btn.open { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+    .env-filter-btn.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .env-filter-btn.has-value:hover { background: color-mix(in oklab, var(--ink) 88%, var(--accent)); }
+    .env-filter-btn-icon { opacity: 0.55; flex-shrink: 0; }
+    .env-filter-btn.has-value .env-filter-btn-icon { opacity: 0.7; }
+    .env-filter-btn-caret { font-size: 9px; opacity: 0.45; margin-left: 2px; transition: transform 0.2s; }
+    .env-filter-btn.open .env-filter-btn-caret { transform: rotate(180deg); }
+    .env-filter-clear { display: none; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.2); font-size: 10px; line-height: 1; margin-left: -2px; }
+    .env-filter-btn.has-value .env-filter-clear { display: inline-flex; }
+
+    .env-format-bar { display: flex; gap: 6px; }
+    .env-fmt-pill { padding: 8px 14px; border-radius: 100px; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; border: 1.5px solid var(--line-2); background: #fff; color: var(--ink-3); cursor: pointer; transition: all 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+    .env-fmt-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--line-2); transition: background 0.15s; }
+    .env-fmt-pill:hover { border-color: var(--ink-3); color: var(--ink); }
+    .env-fmt-pill.active-ip { background: color-mix(in oklab, var(--ok) 10%, #fff); color: color-mix(in oklab, var(--ok) 80%, #000); border-color: color-mix(in oklab, var(--ok) 35%, transparent); }
+    .env-fmt-pill.active-ip::before { background: var(--ok); }
+    .env-fmt-pill.active-hy { background: color-mix(in oklab, var(--accent) 10%, #fff); color: var(--accent); border-color: color-mix(in oklab, var(--accent) 30%, transparent); }
+    .env-fmt-pill.active-hy::before { background: var(--accent); }
+
+    .env-popover { position: absolute; top: calc(100% + 8px); left: 0; z-index: 200; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; box-shadow: 0 16px 48px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.08); opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.98); transform-origin: top left; transition: opacity 0.18s, transform 0.18s; }
+    .env-popover.open { opacity: 1; pointer-events: all; transform: none; }
+    .ctr-popover { width: 280px; padding: 12px 0 8px; }
+    .ctr-search-wrap { padding: 0 12px 10px; position: relative; }
+    .ctr-search-wrap::after { content: '⌕'; position: absolute; left: 22px; top: 50%; transform: translateY(-52%); color: var(--ink-4); font-size: 15px; pointer-events: none; }
+    .ctr-search { width: 100%; padding: 8px 12px 8px 32px; border: 1px solid var(--line-2); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg-alt); outline: none; transition: border-color 0.15s; box-sizing: border-box; }
+    .ctr-search:focus { border-color: var(--accent); }
+    .ctr-list { max-height: 260px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+    .ctr-group-label { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); padding: 10px 16px 4px; }
+    .ctr-option { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .ctr-option:hover { background: var(--bg-alt); color: var(--ink); }
+    .ctr-option.selected { color: var(--accent); font-weight: 600; }
+    .ctr-option-check { font-size: 11px; color: var(--accent); opacity: 0; }
+    .ctr-option.selected .ctr-option-check { opacity: 1; }
+    .ctr-event-count { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 100px; background: color-mix(in oklab, var(--accent) 10%, transparent); color: var(--accent); }
+    .ctr-no-results { padding: 20px 16px; font-size: 13px; color: var(--ink-4); text-align: center; }
+
+    .env-city-wrap { position: relative; display: inline-flex; align-items: center; }
+    .env-city-wrap::after { content: '▾'; position: absolute; right: 12px; font-size: 9px; color: var(--ink-3); pointer-events: none; }
+    .env-city-select { appearance: none; -webkit-appearance: none; background: #fff; border: 1.5px solid var(--line-2); border-radius: 100px; padding: 9px 30px 9px 14px; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-2); outline: none; cursor: pointer; transition: border-color 0.15s; white-space: nowrap; }
+    .env-city-select:hover { border-color: var(--ink-3); }
+    .env-city-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 12%, transparent); }
+    .env-city-select.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .env-city-wrap:has(.has-value)::after { color: rgba(255,255,255,0.5); }
+
+    .drp-popover { width: 600px; padding: 20px; left: 0; }
+    .drp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .drp-header-label { font-size: 13px; color: var(--ink-3); font-family: 'Archivo', sans-serif; font-weight: 500; letter-spacing: 0.02em; }
+    .drp-header-label b { color: var(--accent); }
+    .drp-months-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .drp-month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .drp-month-title { font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+    .drp-nav-btn { width: 28px; height: 28px; border-radius: 8px; background: var(--bg-alt); border: 1px solid var(--line-2); font-size: 13px; color: var(--ink-3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; }
+    .drp-nav-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .drp-nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .drp-nav-btn:disabled:hover { background: var(--bg-alt); color: var(--ink-3); border-color: var(--line-2); }
+    .drp-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+    .drp-wd { text-align: center; font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink-4); padding: 4px 0; }
+    .drp-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .drp-day { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; position: relative; transition: background 0.12s, color 0.12s; user-select: none; }
+    .drp-day:hover { background: var(--bg-alt); color: var(--ink); }
+    .drp-day.empty { cursor: default; }
+    .drp-day.empty:hover { background: transparent; }
+    .drp-day.other-month { color: var(--ink-4); }
+    .drp-day.has-event::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+    .drp-day.in-range { background: color-mix(in oklab, var(--accent) 10%, transparent); color: var(--ink); border-radius: 0; }
+    .drp-day.range-start, .drp-day.range-end { background: var(--accent) !important; color: #fff !important; border-radius: 8px !important; font-weight: 700; }
+    .drp-day.range-start.in-range { border-radius: 8px 0 0 8px !important; }
+    .drp-day.range-end.in-range { border-radius: 0 8px 8px 0 !important; }
+    .drp-day.range-start.range-end { border-radius: 8px !important; }
+    .drp-day.range-preview { background: color-mix(in oklab, var(--accent) 8%, transparent); color: var(--ink); border-radius: 0; }
+    .drp-day.today { font-weight: 700; color: var(--accent); }
+    .drp-day.today.range-start, .drp-day.today.range-end { color: #fff; }
+    .drp-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .drp-footer-hint { font-size: 12px; color: var(--ink-4); font-family: 'Archivo', sans-serif; }
+    .drp-footer-actions { display: flex; gap: 8px; }
+    .drp-clear-btn { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--line-2); background: #fff; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-3); cursor: pointer; transition: border-color 0.15s, color 0.15s; }
+    .drp-clear-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+
+    .env-list-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 16px 0 0; }
+    .env-list-count { font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .1em; color: var(--ink-4); }
+    .env-reset-btn { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 600; color: var(--accent); background: none; border: none; cursor: pointer; letter-spacing: .05em; padding: 0; display: none; }
+    .env-reset-btn.visible { display: inline; }
+    .env-list-wrap { padding: 0; }
+
+    .ev-month-group { margin-top: 52px; }
+    .ev-month-group:first-child { margin-top: 20px; }
+    .ev-month-group:first-child .ev-month-divider { display: none; }
+    .ev-month-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+    .ev-month-name { font-size: clamp(26px, 3vw, 36px); font-weight: 500; letter-spacing: -0.03em; color: var(--ink); }
+    .ev-month-count { font-family: 'Archivo', sans-serif; font-size: 12px; color: var(--ink-4); letter-spacing: 0.04em; }
+    .ev-month-divider { height: 1px; background: var(--line); }
+
+    .ev-row { display: grid; grid-template-columns: 140px 1fr 180px auto; gap: 0 36px; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; transition: background 0.15s; }
+    .ev-row.ev-month-first { background: color-mix(in oklab, var(--accent) 6%, #fff); border-radius: 12px; border-bottom: none; padding: 28px 20px; margin: 8px -20px; }
+    .ev-date-label { font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-4); display: block; margin-bottom: 5px; }
+    .ev-date-text { font-size: 17px; font-weight: 500; letter-spacing: -.02em; color: var(--ink); line-height: 1.2; }
+    .ev-body { min-width: 0; }
+    .ev-chips { display: flex; gap: 6px; margin-bottom: 9px; flex-wrap: wrap; }
+    .ev-title { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-feature-settings: 'ss01','cv11'; font-size: 17px; font-weight: 600; letter-spacing: -.018em; line-height: 1.25; color: var(--ink); margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ev-desc { font-size: 13px; color: var(--ink-3); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .ev-loc-label { font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-4); display: block; margin-bottom: 5px; }
+    .ev-loc-city { font-size: 13px; font-weight: 500; color: var(--ink-2); }
+    .ev-loc-country { font-family: 'Archivo', sans-serif; font-size: 11px; color: var(--ink-4); margin-top: 2px; letter-spacing: .04em; }
+    .env-fmt-chip { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .05em; padding: 4px 10px; border-radius: 100px; display: inline-flex; align-items: center; gap: 5px; }
+    .env-fmt-chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .env-fmt-chip-ip { background: color-mix(in oklab, var(--ok) 10%, transparent); color: color-mix(in oklab, var(--ok) 85%, var(--ink)); border: 1px solid color-mix(in oklab, var(--ok) 24%, transparent); }
+    .env-fmt-chip-ip::before { background: var(--ok); }
+    .env-fmt-chip-hy { background: color-mix(in oklab, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent); }
+    .env-fmt-chip-hy::before { background: var(--accent); }
+    .env-empty { padding: 64px 0; text-align: center; }
+    .env-empty h3 { font-size: 22px; font-weight: 500; letter-spacing: -.02em; margin: 10px 0 20px; }
+
+    .ev-sidebar { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 16px; padding-top: 32px; }
+    .ev-sidebar-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+    .ev-sidebar-eyebrow { font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-4); font-weight: 600; margin-bottom: 14px; }
+    .ev-sidebar-headline { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; color: var(--ink); margin-bottom: 12px; }
+    .ev-sidebar-body { font-size: 14px; color: var(--ink-3); line-height: 1.6; margin-bottom: 4px; }
+    .ev-sidebar-stat { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .ev-sidebar-stat-num { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; color: var(--accent); line-height: 1; flex-shrink: 0; width: 56px; }
+    .ev-sidebar-stat-text { font-size: 13px; color: var(--ink-3); line-height: 1.45; }
+    .ev-sidebar-stat-text b { color: var(--ink); font-weight: 500; }
+    .ev-sidebar-cta { background: var(--ink); border-radius: 16px; padding: 28px; position: relative; overflow: hidden; }
+    .ev-sidebar-cta::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: color-mix(in oklab, var(--accent) 18%, transparent); pointer-events: none; }
+    .ev-sidebar-cta-eyebrow { font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+    .ev-sidebar-cta-headline { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; color: #fff; margin-bottom: 10px; position: relative; }
+    .ev-sidebar-cta-body { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.55; margin-bottom: 22px; position: relative; }
+    .ev-sidebar-cta .btn { width: 100%; justify-content: center; background: #fff; color: var(--ink); position: relative; }
+    .ev-sidebar-cta .btn:hover { background: var(--accent-2); color: var(--ink); }
+
+    @media (max-width: 1100px) { .ev-page { grid-template-columns: 1fr 280px; gap: 36px; } .ev-row { grid-template-columns: 120px 1fr 150px auto; gap: 0 24px; } .ev-row.ev-month-first { margin: 8px -12px; padding: 28px 12px; } }
+    @media (max-width: 860px) { .ev-page { grid-template-columns: 1fr; } .ev-sidebar { position: static; padding-top: 0; } .ev-sidebar-cta { display: none; } }
+    @media (max-width: 760px) {
+      .d1-shell { grid-template-columns: 1fr; }
+      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .d1-nav { flex-direction: row; flex-wrap: wrap; }
+      .d1-nav-label { display: none; }
+      .d1-sidebar-foot { display: none; }
+      .d1-logo-row { padding-bottom: 8px; }
+    }
+    @media (max-width: 680px) { .ev-row { grid-template-columns: 110px 1fr; gap: 0 16px; } .ev-row.ev-month-first { margin: 8px -12px; padding: 24px 12px; } .ev-loc, .ev-row > .btn { display: none; } .drp-popover { width: 320px; } .drp-months-wrap { grid-template-columns: 1fr; } }
+
+    @keyframes envIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
   </style>
 </head>
 
 <body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
 <a href="#main-content" class="skip-link">Skip to main content</a>
-<div class="page-body">
 
-  <nav class="nav" role="navigation" aria-label="Main navigation"></nav>
+<div class="d1-shell" id="d1-shell">
 
-  <main id="main-content">
+  <!-- ── Collapsible sidebar ── -->
+  <aside class="d1-sidebar">
+
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo">
+        <span class="d1-logo-full">Expertly</span>
+        <span class="d1-logo-short">E</span>
+        <span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="d1-nav-center">
+    <nav class="d1-nav">
+      <div class="d1-nav-label">Explore</div>
+      <a href="articles.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span class="d1-nav-lbl">Articles</span>
+      </a>
+      <a href="events.html" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span class="d1-nav-lbl">Events</span>
+      </a>
+      <a href="members.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span class="d1-nav-lbl">Members</span>
+      </a>
+      <div class="d1-nav-divider" data-member-nav></div>
+      <div class="d1-nav-label" data-member-nav>Member Portal</div>
+      <a href="dashboard.html" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="d1-nav-lbl">Dashboard</span>
+      </a>
+      <a href="peer-connect.html" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="d1-nav-lbl">Peer Connect</span>
+      </a>
+      <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+        <span class="d1-nav-lbl">Products</span>
+        <span class="soon">Soon</span>
+      </a>
+      <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span class="d1-nav-lbl">Discussions</span>
+        <span class="soon">Soon</span>
+      </a>
+    </nav>
+
+    </div>
+
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info">
+        <b>Member</b>
+        <span>you@firm.com</span>
+      </div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log in" aria-label="Log in">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ── Main page content ── -->
+  <main id="main-content" class="v2-page-main">
 
     <!-- ── Hero ── -->
     <section class="env-hero">
@@ -1093,8 +310,7 @@
         </span>
         <h1 class="env-hero-heading">Be part of what's <em>next.</em></h1>
         <p class="env-hero-sub">
-          Conferences, summits, and professional meetings curated for the Expertly network: in person, hybrid, or
-          on-demand.
+          Conferences, summits, and professional meetings curated for the Expertly network: in person, hybrid, or on-demand.
         </p>
         <div class="hero-search" style="margin-top:36px;max-width:680px;">
           <div class="hero-search-input">
@@ -1114,22 +330,15 @@
     <div class="container-wide">
       <div class="ev-page">
 
-        <!-- ── Left: filter + list ── -->
+        <!-- Left: filter + list -->
         <div class="ev-main">
           <div class="env-section-head">
-            <!-- ── Filter bar ── -->
             <div class="env-filter-bar">
 
               <!-- Date range picker -->
               <div style="position:relative;" id="drp-wrapper">
                 <button class="env-filter-btn" id="drp-trigger">
-                  <svg class="env-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
+                  <svg class="env-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                   <span id="drp-label">Date range</span>
                   <span class="env-filter-btn-caret">▾</span>
                   <span class="env-filter-clear" id="drp-clear-x">✕</span>
@@ -1158,13 +367,7 @@
               <!-- Country picker -->
               <div style="position:relative;" id="ctr-wrapper">
                 <button class="env-filter-btn" id="ctr-trigger">
-                  <svg class="env-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="2" y1="12" x2="22" y2="12" />
-                    <path
-                      d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                  </svg>
+                  <svg class="env-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                   <span id="ctr-label">Country</span>
                   <span class="env-filter-btn-caret">▾</span>
                   <span class="env-filter-clear" id="ctr-clear-x">✕</span>
@@ -1177,20 +380,20 @@
                 </div>
               </div>
 
-              <!-- City (auto-updates with country) -->
+              <!-- City -->
               <div class="env-city-wrap" id="city-wrap" style="display:none;">
                 <select class="env-city-select" id="env-city">
                   <option value="">All cities</option>
                 </select>
               </div>
 
-              <!-- Format inline pills -->
+              <!-- Format pills -->
               <div class="env-format-bar" id="env-format-bar">
                 <button class="env-fmt-pill" data-fmt="In Person">In Person</button>
                 <button class="env-fmt-pill" data-fmt="Hybrid">Hybrid</button>
               </div>
 
-            </div><!-- /filter-bar -->
+            </div>
           </div>
 
           <div class="env-list-head">
@@ -1207,55 +410,59 @@
           <div class="env-list-wrap" id="env-list"></div>
         </div>
 
-        <!-- ── Right: sidebar ── -->
+        <!-- Right: sidebar -->
         <aside class="ev-sidebar">
-
           <div class="ev-sidebar-card">
             <div class="ev-sidebar-eyebrow">Curated calendar</div>
             <div class="ev-sidebar-headline">Events worth your time.</div>
-            <div class="ev-sidebar-body">
-              Only conferences and summits relevant to finance and legal professionals make the list, personally
-              reviewed by the Expertly team.
-            </div>
+            <div class="ev-sidebar-body">Only conferences and summits relevant to finance and legal professionals make the list, personally reviewed by the Expertly team.</div>
             <div class="ev-sidebar-stat">
               <div class="ev-sidebar-stat-num">50+</div>
-              <div class="ev-sidebar-stat-text"><b>Events per year</b> across tax, law, M&A, compliance, and capital
-                markets.</div>
+              <div class="ev-sidebar-stat-text"><b>Events per year</b> across tax, law, M&A, compliance, and capital markets.</div>
             </div>
             <div class="ev-sidebar-stat">
               <div class="ev-sidebar-stat-num">20+</div>
-              <div class="ev-sidebar-stat-text"><b>Countries</b>, from New York and London to Singapore and Dubai.
-              </div>
+              <div class="ev-sidebar-stat-text"><b>Countries</b>, from New York and London to Singapore and Dubai.</div>
             </div>
             <div class="ev-sidebar-stat">
               <div class="ev-sidebar-stat-num">2</div>
-              <div class="ev-sidebar-stat-text"><b>Formats</b>, in person and hybrid, to suit your schedule and
-                location.</div>
+              <div class="ev-sidebar-stat-text"><b>Formats</b>, in person and hybrid, to suit your schedule and location.</div>
             </div>
           </div>
-
           <div class="ev-sidebar-cta">
             <div class="ev-sidebar-cta-eyebrow">For members</div>
             <div class="ev-sidebar-cta-headline">Get early access to events.</div>
-            <div class="ev-sidebar-cta-body">
-              Expertly members receive early-bird notifications and introductions to event organisers.
-            </div>
+            <div class="ev-sidebar-cta-body">Expertly members receive early-bird notifications and introductions to event organisers.</div>
             <a href="apply.html" class="btn btn-lg">Apply for membership <span class="arr">→</span></a>
           </div>
-
         </aside>
 
       </div>
     </div>
 
+      <footer class="footer--minimal" aria-label="Site footer"></footer>
   </main>
 
-</div><!-- /.page-body -->
-
-<footer class="footer--minimal" aria-label="Site footer"></footer>
+</div>
 
   <script src="assets/members.js"></script>
   <script src="assets/shared.js"></script>
+
+  <!-- ── Sidebar collapse toggle ── -->
+  <script>
+    (function () {
+      const shell = document.getElementById('d1-shell');
+      const btn = document.getElementById('d1-collapse-btn');
+      const STORAGE_KEY = 'expertly_nav_collapsed';
+      if (localStorage.getItem(STORAGE_KEY) === '1') {
+        shell.classList.add('nav-collapsed');
+      }
+      btn.addEventListener('click', function () {
+        shell.classList.toggle('nav-collapsed');
+        localStorage.setItem(STORAGE_KEY, shell.classList.contains('nav-collapsed') ? '1' : '0');
+      });
+    })();
+  </script>
 
   <!-- AI search phrases -->
   <script>
@@ -1271,7 +478,7 @@
     })();
   </script>
 
-  <!-- Events logic -->
+  <!-- Events logic (unchanged from v1) -->
   <script>
     const MARKETS = {
       Americas: ['Brazil', 'Canada', 'Mexico', 'United States'],
@@ -1279,27 +486,13 @@
       APAC: ['Australia', 'China', 'India', 'Japan', 'Singapore', 'South Korea'],
     };
     const CITIES = {
-      Australia: ['Brisbane', 'Melbourne', 'Perth', 'Sydney'],
-      Brazil: ['Rio de Janeiro', 'São Paulo'],
-      Canada: ['Montreal', 'Toronto', 'Vancouver'],
-      China: ['Beijing', 'Hong Kong', 'Shanghai', 'Shenzhen'],
-      Egypt: ['Alexandria', 'Cairo'],
-      France: ['Lyon', 'Paris'],
-      Germany: ['Berlin', 'Frankfurt', 'Hamburg', 'Munich'],
-      Ghana: ['Accra'],
-      India: ['Bangalore', 'Chennai', 'Delhi', 'Hyderabad', 'Mumbai', 'Pune'],
-      Italy: ['Milan', 'Rome'],
-      Japan: ['Osaka', 'Tokyo'],
-      Lebanon: ['Beirut'],
-      Mexico: ['Mexico City', 'Monterrey'],
-      Netherlands: ['Amsterdam', 'Rotterdam'],
-      Nigeria: ['Abuja', 'Lagos'],
-      Singapore: ['Singapore'],
-      'South Africa': ['Cape Town', 'Johannesburg'],
-      'South Korea': ['Seoul'],
-      Spain: ['Barcelona', 'Madrid'],
-      Switzerland: ['Geneva', 'Zurich'],
-      'United Arab Emirates': ['Abu Dhabi', 'Dubai'],
+      Australia: ['Brisbane', 'Melbourne', 'Perth', 'Sydney'], Brazil: ['Rio de Janeiro', 'São Paulo'], Canada: ['Montreal', 'Toronto', 'Vancouver'],
+      China: ['Beijing', 'Hong Kong', 'Shanghai', 'Shenzhen'], Egypt: ['Alexandria', 'Cairo'], France: ['Lyon', 'Paris'],
+      Germany: ['Berlin', 'Frankfurt', 'Hamburg', 'Munich'], Ghana: ['Accra'], India: ['Bangalore', 'Chennai', 'Delhi', 'Hyderabad', 'Mumbai', 'Pune'],
+      Italy: ['Milan', 'Rome'], Japan: ['Osaka', 'Tokyo'], Lebanon: ['Beirut'], Mexico: ['Mexico City', 'Monterrey'],
+      Netherlands: ['Amsterdam', 'Rotterdam'], Nigeria: ['Abuja', 'Lagos'], Singapore: ['Singapore'],
+      'South Africa': ['Cape Town', 'Johannesburg'], 'South Korea': ['Seoul'], Spain: ['Barcelona', 'Madrid'],
+      Switzerland: ['Geneva', 'Zurich'], 'United Arab Emirates': ['Abu Dhabi', 'Dubai'],
       'United Kingdom': ['Birmingham', 'Edinburgh', 'London', 'Manchester'],
       'United States': ['Atlanta, GA', 'Chicago, IL', 'Houston, TX', 'Los Angeles, CA', 'Miami, FL', 'New York, NY', 'San Francisco, CA', 'Washington, DC'],
     };
@@ -1308,33 +501,17 @@
     const MONTH_NAME = { 1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December' };
     const MONTH_SHORT = Object.fromEntries(Object.entries(MONTH_CODE).map(([k, v]) => [v, k]));
 
-    const parseEventDate = str => {
-      const [mc, d] = str.split(' ');
-      return new Date(2026, MONTH_CODE[mc] - 1, parseInt(d));
-    };
+    const parseEventDate = str => { const [mc, d] = str.split(' '); return new Date(2026, MONTH_CODE[mc] - 1, parseInt(d)); };
     const dateToNum = d => d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
     const numToDate = n => new Date(Math.floor(n / 10000), Math.floor((n % 10000) / 100) - 1, n % 100);
 
     document.addEventListener('DOMContentLoaded', () => {
       const events = window.EXPERTLY_EVENTS || [];
-
       const eventDateNums = new Set();
-      events.forEach(e => {
-        const start = parseEventDate(e.start);
-        const end = e.end ? parseEventDate(e.end) : start;
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          eventDateNums.add(dateToNum(new Date(d)));
-        }
-      });
+      events.forEach(e => { const start = parseEventDate(e.start); const end = e.end ? parseEventDate(e.end) : start; for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) { eventDateNums.add(dateToNum(new Date(d))); } });
 
-      /* ═══════════════════════════════════════════
-         DATE RANGE PICKER
-         ═══════════════════════════════════════════ */
       let drpOpen = false, drpStart = null, drpEnd = null, drpHover = null;
-      const firstEventMonth = (() => {
-        const mc = events[0]?.start.split(' ')[0];
-        return mc ? { y: 2026, m: MONTH_CODE[mc] - 1 } : { y: 2026, m: 3 };
-      })();
+      const firstEventMonth = (() => { const mc = events[0]?.start.split(' ')[0]; return mc ? { y: 2026, m: MONTH_CODE[mc] - 1 } : { y: 2026, m: 3 }; })();
       let calOffset = 0;
 
       const drpTrigger = document.getElementById('drp-trigger');
@@ -1346,289 +523,88 @@
       const drpPrev = document.getElementById('drp-prev');
       const drpNext = document.getElementById('drp-next');
 
-      const getCalMonths = () => {
-        const base = new Date(2026, firstEventMonth.m + calOffset, 1);
-        return [
-          { y: base.getFullYear(), m: base.getMonth() },
-          { y: base.getFullYear() + (base.getMonth() === 11 ? 1 : 0), m: (base.getMonth() + 1) % 12 },
-        ];
-      };
-
-      const renderCals = () => {
-        const [m0, m1] = getCalMonths();
-        document.getElementById('drp-cal-0').innerHTML = buildCal(m0.y, m0.m);
-        document.getElementById('drp-cal-1').innerHTML = buildCal(m1.y, m1.m);
-        updateDrpHint();
-        attachDayListeners();
-      };
-
+      const getCalMonths = () => { const base = new Date(2026, firstEventMonth.m + calOffset, 1); return [{ y: base.getFullYear(), m: base.getMonth() }, { y: base.getFullYear() + (base.getMonth() === 11 ? 1 : 0), m: (base.getMonth() + 1) % 12 }]; };
+      const renderCals = () => { const [m0, m1] = getCalMonths(); document.getElementById('drp-cal-0').innerHTML = buildCal(m0.y, m0.m); document.getElementById('drp-cal-1').innerHTML = buildCal(m1.y, m1.m); updateDrpHint(); attachDayListeners(); };
       const buildCal = (year, month) => {
-        const mName = MONTH_NAME[month + 1];
-        const firstDay = new Date(year, month, 1).getDay();
-        const startOffset = (firstDay + 6) % 7;
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-
-        let html = `<div class="drp-month-nav">
-      <span class="drp-month-title">${mName} ${year}</span>
-    </div>
-    <div class="drp-weekdays">
-      ${['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => `<div class="drp-wd">${d}</div>`).join('')}
-    </div>
-    <div class="drp-days">`;
-
+        const mName = MONTH_NAME[month + 1]; const firstDay = new Date(year, month, 1).getDay(); const startOffset = (firstDay + 6) % 7; const daysInMonth = new Date(year, month + 1, 0).getDate(); const today = new Date();
+        let html = `<div class="drp-month-nav"><span class="drp-month-title">${mName} ${year}</span></div><div class="drp-weekdays">${['Mo','Tu','We','Th','Fr','Sa','Su'].map(d => `<div class="drp-wd">${d}</div>`).join('')}</div><div class="drp-days">`;
         for (let i = 0; i < startOffset; i++) html += `<div class="drp-day empty"></div>`;
-
         for (let day = 1; day <= daysInMonth; day++) {
-          const date = new Date(year, month, day);
-          const num = dateToNum(date);
-          const isToday = date.toDateString() === today.toDateString();
-          const hasEv = eventDateNums.has(num);
-
-          let cls = 'drp-day';
-          if (isToday) cls += ' today';
-          if (hasEv) cls += ' has-event';
-
-          if (drpStart && drpEnd) {
-            const sn = dateToNum(drpStart), en = dateToNum(drpEnd);
-            if (num === sn) cls += ' range-start in-range';
-            else if (num === en) cls += ' range-end in-range';
-            else if (num > sn && num < en) cls += ' in-range';
-          } else if (drpStart && !drpEnd) {
-            const sn = dateToNum(drpStart);
-            if (num === sn) cls += ' range-start';
-            if (drpHover) {
-              const hn = dateToNum(drpHover);
-              if (num > sn && num <= hn) cls += ' range-preview';
-              if (num === hn && num > sn) cls += ' range-end';
-            }
-          }
+          const date = new Date(year, month, day); const num = dateToNum(date); const isToday = date.toDateString() === today.toDateString(); const hasEv = eventDateNums.has(num);
+          let cls = 'drp-day'; if (isToday) cls += ' today'; if (hasEv) cls += ' has-event';
+          if (drpStart && drpEnd) { const sn = dateToNum(drpStart), en = dateToNum(drpEnd); if (num === sn) cls += ' range-start in-range'; else if (num === en) cls += ' range-end in-range'; else if (num > sn && num < en) cls += ' in-range'; }
+          else if (drpStart && !drpEnd) { const sn = dateToNum(drpStart); if (num === sn) cls += ' range-start'; if (drpHover) { const hn = dateToNum(drpHover); if (num > sn && num <= hn) cls += ' range-preview'; if (num === hn && num > sn) cls += ' range-end'; } }
           html += `<div class="${cls}" data-num="${num}" data-y="${year}" data-m="${month}" data-d="${day}">${day}</div>`;
         }
-        html += '</div>';
-        return html;
+        html += '</div>'; return html;
       };
-
       const applyRangeClasses = () => {
-        const sn = drpStart ? dateToNum(drpStart) : null;
-        const en = drpEnd ? dateToNum(drpEnd) : null;
-        const hn = (!drpEnd && drpHover) ? dateToNum(drpHover) : null;
+        const sn = drpStart ? dateToNum(drpStart) : null; const en = drpEnd ? dateToNum(drpEnd) : null; const hn = (!drpEnd && drpHover) ? dateToNum(drpHover) : null;
         document.querySelectorAll('#drp-popover .drp-day:not(.empty)').forEach(el => {
-          const num = parseInt(el.dataset.num);
-          el.classList.remove('range-start', 'range-end', 'in-range', 'range-preview');
-          if (sn && en) {
-            if (num === sn) el.classList.add('range-start', 'in-range');
-            else if (num === en) el.classList.add('range-end', 'in-range');
-            else if (num > sn && num < en) el.classList.add('in-range');
-          } else if (sn && !en) {
-            if (num === sn) el.classList.add('range-start');
-            if (hn) {
-              if (num > sn && num < hn) el.classList.add('range-preview');
-              if (num === hn) el.classList.add('range-end', 'range-preview');
-            }
-          }
-        });
-        updateDrpHint();
+          const num = parseInt(el.dataset.num); el.classList.remove('range-start','range-end','in-range','range-preview');
+          if (sn && en) { if (num === sn) el.classList.add('range-start','in-range'); else if (num === en) el.classList.add('range-end','in-range'); else if (num > sn && num < en) el.classList.add('in-range'); }
+          else if (sn && !en) { if (num === sn) el.classList.add('range-start'); if (hn) { if (num > sn && num < hn) el.classList.add('range-preview'); if (num === hn) el.classList.add('range-end','range-preview'); } }
+        }); updateDrpHint();
       };
-
       const attachDayListeners = () => {
         document.querySelectorAll('#drp-popover .drp-day:not(.empty)').forEach(el => {
-          el.addEventListener('click', () => {
-            const num = parseInt(el.dataset.num);
-            const date = numToDate(num);
-            if (!drpStart || (drpStart && drpEnd)) {
-              drpStart = date; drpEnd = null; drpHover = null;
-            } else {
-              if (num < dateToNum(drpStart)) { drpStart = date; drpEnd = null; }
-              else { drpEnd = date; }
-            }
-            renderCals(); renderList(); updateDrpButton();
-          });
-          el.addEventListener('mouseenter', () => {
-            if (drpStart && !drpEnd) {
-              drpHover = numToDate(parseInt(el.dataset.num));
-              applyRangeClasses();
-            }
-          });
+          el.addEventListener('click', () => { const num = parseInt(el.dataset.num); const date = numToDate(num); if (!drpStart || (drpStart && drpEnd)) { drpStart = date; drpEnd = null; drpHover = null; } else { if (num < dateToNum(drpStart)) { drpStart = date; drpEnd = null; } else { drpEnd = date; } } renderCals(); renderList(); updateDrpButton(); });
+          el.addEventListener('mouseenter', () => { if (drpStart && !drpEnd) { drpHover = numToDate(parseInt(el.dataset.num)); applyRangeClasses(); } });
         });
       };
-
-      document.getElementById('drp-popover').addEventListener('mouseleave', () => {
-        if (drpStart && !drpEnd) { drpHover = null; applyRangeClasses(); }
-      });
-
-      const updateDrpHint = () => {
-        if (!drpStart && !drpEnd) { drpHintEl.innerHTML = 'Click a <b>start date</b>'; }
-        else if (drpStart && !drpEnd) { drpHintEl.innerHTML = 'Now click an <b>end date</b>'; }
-        else {
-          const fmt = d => `${d.getDate()} ${MONTH_SHORT[d.getMonth() + 1]}`;
-          drpHintEl.innerHTML = `<b>${fmt(drpStart)}</b> → <b>${fmt(drpEnd)}</b>`;
-        }
-      };
-
-      const updateDrpButton = () => {
-        const hasVal = drpStart && drpEnd;
-        drpTrigger.classList.toggle('has-value', !!hasVal);
-        if (hasVal) {
-          const fmt = d => `${d.getDate()} ${MONTH_SHORT[d.getMonth() + 1]}`;
-          drpLabel.textContent = `${fmt(drpStart)} – ${fmt(drpEnd)}`;
-        } else {
-          drpLabel.textContent = 'Date range';
-        }
-      };
-
+      document.getElementById('drp-popover').addEventListener('mouseleave', () => { if (drpStart && !drpEnd) { drpHover = null; applyRangeClasses(); } });
+      const updateDrpHint = () => { if (!drpStart && !drpEnd) { drpHintEl.innerHTML = 'Click a <b>start date</b>'; } else if (drpStart && !drpEnd) { drpHintEl.innerHTML = 'Now click an <b>end date</b>'; } else { const fmt = d => `${d.getDate()} ${MONTH_SHORT[d.getMonth() + 1]}`; drpHintEl.innerHTML = `<b>${fmt(drpStart)}</b> → <b>${fmt(drpEnd)}</b>`; } };
+      const updateDrpButton = () => { const hasVal = drpStart && drpEnd; drpTrigger.classList.toggle('has-value', !!hasVal); if (hasVal) { const fmt = d => `${d.getDate()} ${MONTH_SHORT[d.getMonth() + 1]}`; drpLabel.textContent = `${fmt(drpStart)} – ${fmt(drpEnd)}`; } else { drpLabel.textContent = 'Date range'; } };
       drpPrev.addEventListener('click', () => { calOffset--; renderCals(); });
       drpNext.addEventListener('click', () => { calOffset++; renderCals(); });
+      const clearDrp = e => { if (e) e.stopPropagation(); drpStart = null; drpEnd = null; drpHover = null; updateDrpButton(); renderCals(); renderList(); };
+      drpClearX.addEventListener('click', clearDrp); drpClearBtn.addEventListener('click', clearDrp);
+      drpTrigger.addEventListener('click', e => { e.stopPropagation(); if (!drpOpen) { renderCals(); } drpOpen = !drpOpen; drpTrigger.classList.toggle('open', drpOpen); drpPopover.classList.toggle('open', drpOpen); });
 
-      const clearDrp = (e) => {
-        if (e) e.stopPropagation();
-        drpStart = null; drpEnd = null; drpHover = null;
-        updateDrpButton(); renderCals(); renderList();
-      };
-      drpClearX.addEventListener('click', clearDrp);
-      drpClearBtn.addEventListener('click', clearDrp);
-
-      drpTrigger.addEventListener('click', e => {
-        e.stopPropagation();
-        if (!drpOpen) { renderCals(); }
-        drpOpen = !drpOpen;
-        drpTrigger.classList.toggle('open', drpOpen);
-        drpPopover.classList.toggle('open', drpOpen);
-      });
-
-      /* ═══════════════════════════════════════════
-         COUNTRY PICKER
-         ═══════════════════════════════════════════ */
       let ctrOpen = false, selectedCountry = '';
-
-      const ctrTrigger = document.getElementById('ctr-trigger');
-      const ctrPopover = document.getElementById('ctr-popover');
-      const ctrLabel = document.getElementById('ctr-label');
-      const ctrClearX = document.getElementById('ctr-clear-x');
-      const ctrSearch = document.getElementById('ctr-search');
-      const ctrList = document.getElementById('ctr-list');
-
+      const ctrTrigger = document.getElementById('ctr-trigger'); const ctrPopover = document.getElementById('ctr-popover'); const ctrLabel = document.getElementById('ctr-label'); const ctrClearX = document.getElementById('ctr-clear-x'); const ctrSearch = document.getElementById('ctr-search'); const ctrList = document.getElementById('ctr-list');
       const eventsByCountry = {};
       events.forEach(e => { eventsByCountry[e.country] = (eventsByCountry[e.country] || 0) + 1; });
-
       const buildCtrList = (query = '') => {
-        const q = query.toLowerCase();
-        let html = '';
+        const q = query.toLowerCase(); let html = '';
         for (const [region, countries] of Object.entries(MARKETS)) {
-          const filtered = countries.filter(c => c.toLowerCase().includes(q));
-          if (!filtered.length) continue;
+          const filtered = countries.filter(c => c.toLowerCase().includes(q)); if (!filtered.length) continue;
           html += `<div class="ctr-group-label">${region}</div>`;
-          filtered.forEach(c => {
-            const evCount = eventsByCountry[c];
-            const isSel = c === selectedCountry;
-            html += `
-          <div class="ctr-option${isSel ? ' selected' : ''}" data-country="${c}">
-            <span>${c}</span>
-            <span style="display:flex;align-items:center;gap:8px;">
-              ${evCount ? `<span class="ctr-event-count">${evCount}</span>` : ''}
-              <span class="ctr-option-check">✓</span>
-            </span>
-          </div>`;
-          });
+          filtered.forEach(c => { const evCount = eventsByCountry[c]; const isSel = c === selectedCountry; html += `<div class="ctr-option${isSel ? ' selected' : ''}" data-country="${c}"><span>${c}</span><span style="display:flex;align-items:center;gap:8px;">${evCount ? `<span class="ctr-event-count">${evCount}</span>` : ''}<span class="ctr-option-check">✓</span></span></div>`; });
         }
         if (!html) html = '<div class="ctr-no-results">No countries found</div>';
         ctrList.innerHTML = html;
-        ctrList.querySelectorAll('.ctr-option').forEach(el => {
-          el.addEventListener('click', () => {
-            selectedCountry = el.dataset.country === selectedCountry ? '' : el.dataset.country;
-            ctrLabel.textContent = selectedCountry || 'Country';
-            ctrTrigger.classList.toggle('has-value', !!selectedCountry);
-            rebuildCities(selectedCountry);
-            buildCtrList(ctrSearch.value);
-            renderList();
-          });
-        });
+        ctrList.querySelectorAll('.ctr-option').forEach(el => { el.addEventListener('click', () => { selectedCountry = el.dataset.country === selectedCountry ? '' : el.dataset.country; ctrLabel.textContent = selectedCountry || 'Country'; ctrTrigger.classList.toggle('has-value', !!selectedCountry); rebuildCities(selectedCountry); buildCtrList(ctrSearch.value); renderList(); }); });
       };
-
       ctrSearch.addEventListener('input', () => buildCtrList(ctrSearch.value));
+      ctrTrigger.addEventListener('click', e => { e.stopPropagation(); ctrOpen = !ctrOpen; ctrTrigger.classList.toggle('open', ctrOpen); ctrPopover.classList.toggle('open', ctrOpen); if (ctrOpen) { setTimeout(() => ctrSearch.focus(), 50); buildCtrList(); } });
+      ctrClearX.addEventListener('click', e => { e.stopPropagation(); selectedCountry = ''; ctrLabel.textContent = 'Country'; ctrTrigger.classList.remove('has-value'); rebuildCities(''); buildCtrList(); renderList(); });
 
-      ctrTrigger.addEventListener('click', e => {
-        e.stopPropagation();
-        ctrOpen = !ctrOpen;
-        ctrTrigger.classList.toggle('open', ctrOpen);
-        ctrPopover.classList.toggle('open', ctrOpen);
-        if (ctrOpen) { setTimeout(() => ctrSearch.focus(), 50); buildCtrList(); }
-      });
-
-      ctrClearX.addEventListener('click', e => {
-        e.stopPropagation();
-        selectedCountry = '';
-        ctrLabel.textContent = 'Country';
-        ctrTrigger.classList.remove('has-value');
-        rebuildCities('');
-        buildCtrList();
-        renderList();
-      });
-
-      const cityWrap = document.getElementById('city-wrap');
-      const citySelect = document.getElementById('env-city');
-
-      const rebuildCities = (country) => {
-        const cities = country ? (CITIES[country] || []) : [];
-        citySelect.innerHTML = `<option value="">All cities</option>`;
-        cities.forEach(c => {
-          const o = document.createElement('option');
-          o.value = c; o.textContent = c; citySelect.appendChild(o);
-        });
-        citySelect.value = '';
-        citySelect.classList.remove('has-value');
-        cityWrap.style.display = cities.length ? '' : 'none';
-      };
-
-      citySelect.addEventListener('change', () => {
-        citySelect.classList.toggle('has-value', !!citySelect.value);
-        renderList();
-      });
+      const cityWrap = document.getElementById('city-wrap'); const citySelect = document.getElementById('env-city');
+      const rebuildCities = country => { const cities = country ? (CITIES[country] || []) : []; citySelect.innerHTML = `<option value="">All cities</option>`; cities.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; citySelect.appendChild(o); }); citySelect.value = ''; citySelect.classList.remove('has-value'); cityWrap.style.display = cities.length ? '' : 'none'; };
+      citySelect.addEventListener('change', () => { citySelect.classList.toggle('has-value', !!citySelect.value); renderList(); });
 
       let activeFormat = '';
-      document.querySelectorAll('.env-fmt-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const fmt = btn.dataset.fmt;
-          if (activeFormat === fmt) { activeFormat = ''; btn.classList.remove('active-ip', 'active-hy'); }
-          else {
-            document.querySelectorAll('.env-fmt-pill').forEach(b => b.classList.remove('active-ip', 'active-hy'));
-            activeFormat = fmt;
-            btn.classList.add(fmt === 'In Person' ? 'active-ip' : 'active-hy');
-          }
-          renderList();
-        });
-      });
+      document.querySelectorAll('.env-fmt-pill').forEach(btn => { btn.addEventListener('click', () => { const fmt = btn.dataset.fmt; if (activeFormat === fmt) { activeFormat = ''; btn.classList.remove('active-ip','active-hy'); } else { document.querySelectorAll('.env-fmt-pill').forEach(b => b.classList.remove('active-ip','active-hy')); activeFormat = fmt; btn.classList.add(fmt === 'In Person' ? 'active-ip' : 'active-hy'); } renderList(); }); });
 
-      document.addEventListener('click', () => {
-        if (drpOpen) { drpOpen = false; drpTrigger.classList.remove('open'); drpPopover.classList.remove('open'); }
-        if (ctrOpen) { ctrOpen = false; ctrTrigger.classList.remove('open'); ctrPopover.classList.remove('open'); }
-      });
+      document.addEventListener('click', () => { if (drpOpen) { drpOpen = false; drpTrigger.classList.remove('open'); drpPopover.classList.remove('open'); } if (ctrOpen) { ctrOpen = false; ctrTrigger.classList.remove('open'); ctrPopover.classList.remove('open'); } });
       document.getElementById('drp-wrapper').addEventListener('click', e => e.stopPropagation());
       document.getElementById('ctr-wrapper').addEventListener('click', e => e.stopPropagation());
 
       const resetAll = () => {
-        drpStart = null; drpEnd = null; drpHover = null;
-        selectedCountry = ''; activeFormat = '';
+        drpStart = null; drpEnd = null; drpHover = null; selectedCountry = ''; activeFormat = '';
         drpLabel.textContent = 'Date range'; ctrLabel.textContent = 'Country';
-        drpTrigger.classList.remove('has-value', 'open'); ctrTrigger.classList.remove('has-value', 'open');
+        drpTrigger.classList.remove('has-value','open'); ctrTrigger.classList.remove('has-value','open');
         drpPopover.classList.remove('open'); ctrPopover.classList.remove('open');
-        drpOpen = false; ctrOpen = false;
-        rebuildCities('');
-        document.querySelectorAll('.env-fmt-pill').forEach(b => b.classList.remove('active-ip', 'active-hy'));
+        drpOpen = false; ctrOpen = false; rebuildCities('');
+        document.querySelectorAll('.env-fmt-pill').forEach(b => b.classList.remove('active-ip','active-hy'));
         renderList();
       };
       document.getElementById('env-reset').addEventListener('click', resetAll);
       document.getElementById('env-reset-empty').addEventListener('click', resetAll);
 
-      /* ═══════════════════════════════════════════
-         RENDER LIST
-         ═══════════════════════════════════════════ */
       const hasFilters = () => (drpStart && drpEnd) || selectedCountry || activeFormat || citySelect.value;
-
-      const fmtChip = f => {
-        const cls = f === 'In Person' ? 'env-fmt-chip-ip' : 'env-fmt-chip-hy';
-        return `<span class="env-fmt-chip ${cls}">${f}</span>`;
-      };
+      const fmtChip = f => { const cls = f === 'In Person' ? 'env-fmt-chip-ip' : 'env-fmt-chip-hy'; return `<span class="env-fmt-chip ${cls}">${f}</span>`; };
 
       const renderList = () => {
         const city = citySelect.value;
@@ -1636,73 +612,32 @@
           if (selectedCountry && e.country !== selectedCountry) return false;
           if (city && !e.city.startsWith(city.split(',')[0])) return false;
           if (activeFormat && e.format !== activeFormat) return false;
-          if (drpStart && drpEnd) {
-            const eStart = parseEventDate(e.start);
-            const eEnd = e.end ? parseEventDate(e.end) : eStart;
-            if (eEnd < drpStart || eStart > drpEnd) return false;
-          }
+          if (drpStart && drpEnd) { const eStart = parseEventDate(e.start); const eEnd = e.end ? parseEventDate(e.end) : eStart; if (eEnd < drpStart || eStart > drpEnd) return false; }
           return true;
         });
-
         document.getElementById('env-count').textContent = `${pool.length} event${pool.length !== 1 ? 's' : ''}`;
         document.getElementById('env-reset').classList.toggle('visible', !!hasFilters());
-
-        const listEl = document.getElementById('env-list');
-        const emptyEl = document.getElementById('env-empty');
-
+        const listEl = document.getElementById('env-list'); const emptyEl = document.getElementById('env-empty');
         if (!pool.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
         emptyEl.style.display = 'none';
-
         const groups = {};
         pool.forEach(e => { const k = e.start.split(' ')[0]; if (!groups[k]) groups[k] = []; groups[k].push(e); });
-
         listEl.innerHTML = Object.entries(groups).map(([mc, items]) => {
           const monthFull = MONTH_NAME[MONTH_CODE[mc]];
           const rows = items.map((e, i) => {
-            const [m, d] = e.start.split(' ');
-            const endD = e.end ? e.end.split(' ')[1] : null;
-            const mFull = MONTH_NAME[MONTH_CODE[m]];
-            const dateText = endD
-              ? `${mFull} ${parseInt(d)}–${parseInt(endD)}`
-              : `${mFull} ${parseInt(d)}`;
+            const [m, d] = e.start.split(' '); const endD = e.end ? e.end.split(' ')[1] : null; const mFull = MONTH_NAME[MONTH_CODE[m]];
+            const dateText = endD ? `${mFull} ${parseInt(d)}–${parseInt(endD)}` : `${mFull} ${parseInt(d)}`;
             const isFirst = i === 0;
-            return `
-          <a class="ev-row${isFirst ? ' ev-month-first' : ''}" href="events.html#${e.id}"
-             style="animation:envIn 0.4s cubic-bezier(0.22,1,0.36,1) ${Math.min(i * 50, 300)}ms both;">
-            <div class="ev-date">
-              <span class="ev-date-label">Date</span>
-              <span class="ev-date-text">${dateText}</span>
-            </div>
-            <div class="ev-body">
-              <div class="ev-chips">
-                <span class="chip">${e.category}</span>${fmtChip(e.format)}
-              </div>
-              <div class="ev-title">${e.title}</div>
-              <div class="ev-desc">${e.desc}</div>
-            </div>
-            <div class="ev-loc">
-              <span class="ev-loc-label">Location</span>
-              <div class="ev-loc-city">${e.city}</div>
-              <div class="ev-loc-country">${e.country}</div>
-            </div>
-            <button class="btn btn-outline" style="font-size:12px;padding:8px 18px;white-space:nowrap;flex-shrink:0;"
-              onclick="event.preventDefault();event.stopPropagation()">Register →</button>
-          </a>`;
+            return `<a class="ev-row${isFirst ? ' ev-month-first' : ''}" href="events.html#${e.id}" style="animation:envIn 0.4s cubic-bezier(0.22,1,0.36,1) ${Math.min(i * 50, 300)}ms both;"><div class="ev-date"><span class="ev-date-label">Date</span><span class="ev-date-text">${dateText}</span></div><div class="ev-body"><div class="ev-chips"><span class="chip">${e.category}</span>${fmtChip(e.format)}</div><div class="ev-title">${e.title}</div><div class="ev-desc">${e.desc}</div></div><div class="ev-loc"><span class="ev-loc-label">Location</span><div class="ev-loc-city">${e.city}</div><div class="ev-loc-country">${e.country}</div></div><button class="btn btn-outline" style="font-size:12px;padding:8px 18px;white-space:nowrap;flex-shrink:0;" onclick="event.preventDefault();event.stopPropagation()">Register →</button></a>`;
           }).join('');
-          return `
-        <div class="ev-month-group">
-          <div class="ev-month-header">
-            <span class="ev-month-name">${monthFull} 2026</span>
-          </div>
-          <div class="ev-month-divider"></div>
-          ${rows}
-        </div>`;
+          return `<div class="ev-month-group"><div class="ev-month-header"><span class="ev-month-name">${monthFull} 2026</span></div><div class="ev-month-divider"></div>${rows}</div>`;
         }).join('');
       };
 
       renderList();
     });
   </script>
+<script src="assets/sidebar-theme.js"></script>
 </body>
 
 </html>

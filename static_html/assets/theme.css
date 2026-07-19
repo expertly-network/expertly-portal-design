@@ -200,12 +200,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   font-weight: 600;
   font-size: 23px;
   letter-spacing: -0.02em;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0;
+  display: inline;
   color: var(--nav-green);
 }
-.nav-logo .dot { width: 7px; height: 7px; background: var(--accent-2); border-radius: 50%; display: inline-block; margin-left: 2px; box-shadow: 0 0 8px color-mix(in oklab, var(--accent-2) 70%, transparent); }
+.nav-logo .dot { width: 7px; height: 7px; background: var(--accent-2); border-radius: 50%; display: inline-block; margin-left: 1px; vertical-align: -3px; }
 .nav-links { display: flex; gap: 6px; }
 .nav-links a {
   padding: 10px 16px;
@@ -300,12 +298,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .nav-mobile-logo {
   font-weight: 600; font-size: 21px;
   letter-spacing: -0.02em; color: var(--nav-green);
-  display: inline-flex; align-items: center;
+  display: flex; align-items: flex-end; line-height: 1; gap: 0;
 }
 .nav-mobile-logo .dot {
   width: 6px; height: 6px; background: var(--accent-2);
-  border-radius: 50%; display: inline-block; margin-left: 2px;
-  box-shadow: 0 0 7px color-mix(in oklab, var(--accent-2) 70%, transparent);
+  border-radius: 50%; flex-shrink: 0; margin-left: 1px; margin-bottom: 1px;
 }
 .nav-mobile-close {
   width: 40px; height: 40px;
@@ -507,8 +504,7 @@ body:has(.footer--minimal) {
   font-weight: 600;
   letter-spacing: -0.03em;
   color: #fff;
-  display: inline-flex;
-  align-items: center;
+  display: inline;
   line-height: 1;
 }
 
@@ -518,10 +514,8 @@ body:has(.footer--minimal) {
   background: var(--accent-2);
   border-radius: 50%;
   display: inline-block;
-  margin-left: 4px;
-  align-self: center;
-  flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(0,201,158,0.55);
+  margin-left: 2px;
+  vertical-align: -4px;
 }
 
 .footer-min-links {
