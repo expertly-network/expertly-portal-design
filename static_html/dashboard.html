@@ -223,6 +223,8 @@
       display: flex; flex-direction: column; gap: 12px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
     .db-people-chip:hover { transform: translateY(-3px); border-color: var(--line-2); box-shadow: 0 16px 34px -16px rgba(0,0,0,0.16); }
+    .db-people-chip-rail { width: 100%; }
+    .db-people-chip-rail:hover { transform: none; }
     .db-people-top { display: flex; align-items: center; gap: 10px; }
     .db-people-avatar { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--line-2); flex-shrink: 0; }
     .db-people-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -471,6 +473,8 @@
         <!-- ── Right rail ── -->
         <aside class="db-rail">
 
+          <div class="db-people-chip db-people-chip-rail" id="db-my-profile-card"></div>
+
           <div class="db-rail-card">
             <div class="db-rail-title">Quick links</div>
             <div class="db-links">
@@ -677,31 +681,40 @@
         </a>`).join('');
     }
 
-    // Members marquee (double for seamless loop)
+    // Shared member card template (used by "My profile" and the marquee below)
     const NEW_MEMBER_IDS = ['priya-venkatesh', 'james-okafor', 'isabella-rossi'];
     const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const chip = m => `
+      <div class="db-people-chip">
+        <div class="db-people-top">
+          <div class="db-people-avatar"><img src="${m.img || ''}" alt="${m.name}" onerror="this.style.display='none'"></div>
+          ${NEW_MEMBER_IDS.includes(m.id) ? '<span class="db-people-new">New</span>' : ''}
+        </div>
+        <div>
+          <div class="db-people-name-row">
+            <span class="db-people-name">${m.name}</span>
+            ${m.verified ? `<span class="db-people-verified-circle">${checkSvg}</span>` : ''}
+          </div>
+          <div class="db-people-role">${m.title}${m.firm ? ' · ' + m.firm : ''}</div>
+        </div>
+        <span class="db-people-practice">${m.practice}</span>
+        <div class="db-people-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${m.location}</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>${m.tenure} experience · ${m.rate}</span>
+        </div>
+        <a href="member-profile.html?id=${m.id}" class="db-people-btn">View profile →</a>
+      </div>`;
+
+    // "My profile" card in the right rail
+    const myProfileCard = document.getElementById('db-my-profile-card');
+    if (myProfileCard) {
+      const me = members.find(m => m.id === 'amara-osei') || members[0];
+      if (me) myProfileCard.outerHTML = chip(me).replace('class="db-people-chip"', 'class="db-people-chip db-people-chip-rail"');
+    }
+
+    // Members marquee (double for seamless loop)
     const strip = document.getElementById('db-members-strip');
     if (strip && members.length) {
-      const chip = m => `
-        <div class="db-people-chip">
-          <div class="db-people-top">
-            <div class="db-people-avatar"><img src="${m.img || ''}" alt="${m.name}" onerror="this.style.display='none'"></div>
-            ${NEW_MEMBER_IDS.includes(m.id) ? '<span class="db-people-new">New</span>' : ''}
-          </div>
-          <div>
-            <div class="db-people-name-row">
-              <span class="db-people-name">${m.name}</span>
-              ${m.verified ? `<span class="db-people-verified-circle">${checkSvg}</span>` : ''}
-            </div>
-            <div class="db-people-role">${m.title}${m.firm ? ' · ' + m.firm : ''}</div>
-          </div>
-          <span class="db-people-practice">${m.practice}</span>
-          <div class="db-people-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${m.location}</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>${m.tenure} experience · ${m.rate}</span>
-          </div>
-          <a href="member-profile.html?id=${m.id}" class="db-people-btn">View profile →</a>
-        </div>`;
       strip.innerHTML = members.map(chip).join('') + members.map(chip).join('');
     }
   });
