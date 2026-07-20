@@ -218,6 +218,9 @@ a[data-member-nav],
 .session-member .d1-nav-label[data-member-nav],
 .session-member .d1-nav-divider[data-member-nav] { display: block; }
 
+/* Guest-only nav items — visible to everyone until they're a signed-in member */
+.session-member a[data-guest-nav] { display: none !important; }
+
 /* Thin rule separating member-portal from public items */
 .d1-nav-divider { height: 1px; background: rgba(255,255,255,0.08); }
 

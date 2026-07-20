@@ -574,17 +574,21 @@ function injectDynamicElements() {
   `;
   document.body.appendChild(searchOverlay);
 
-  // Inject Floating Search Button
-  const floatBtn = document.createElement('button');
-  floatBtn.className = 'floating-search';
-  floatBtn.id = 'floating-search-btn';
-  floatBtn.setAttribute('aria-label', 'Search Expertly');
-  floatBtn.innerHTML = `
-    <span class="floating-search-spark">✦</span>
-    <span class="floating-search-text">Search experts, articles & events</span>
-    <span class="floating-search-kbd mono">⌘K</span>
-  `;
-  document.body.appendChild(floatBtn);
+  // Inject Floating Search Button — homepage only
+  const pageFile = window.location.pathname.split('/').pop();
+  const isHomepage = pageFile === '' || pageFile.toLowerCase() === 'index.html';
+  if (isHomepage) {
+    const floatBtn = document.createElement('button');
+    floatBtn.className = 'floating-search';
+    floatBtn.id = 'floating-search-btn';
+    floatBtn.setAttribute('aria-label', 'Search Expertly');
+    floatBtn.innerHTML = `
+      <span class="floating-search-spark">✦</span>
+      <span class="floating-search-text">Search experts, articles & events</span>
+      <span class="floating-search-kbd mono">⌘K</span>
+    `;
+    document.body.appendChild(floatBtn);
+  }
 
   // Inject Tweaks Panel
   const tweaksContainer = document.createElement('div');

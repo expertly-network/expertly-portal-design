@@ -21,12 +21,25 @@
       background: var(--bg-alt) !important;
     }
 
-    /* ── Icon-rail hero state → full sidebar on scroll ─────────── */
+    /* ── Icon-rail → floats open on hover (Instagram-style) ──────
+       The grid column stays a fixed 56px gutter at all times so the
+       main content never shifts. The sidebar stays in normal grid
+       flow (still sticky) but widens beyond its 56px track on hover —
+       grid tracks don't clip by default, so it visually overlays the
+       page instead of pushing it. */
     .d1-shell {
       grid-template-columns: 56px 1fr;
-      transition: grid-template-columns 0.48s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .d1-shell.revealed { grid-template-columns: 248px 1fr; }
+    @media (min-width: 761px) {
+      .d1-sidebar {
+        width: 56px;
+        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
+      }
+      .d1-shell.revealed .d1-sidebar {
+        width: 248px;
+        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
+      }
+    }
 
     /* Logo row: centred in narrow rail, left-aligned when revealed */
     .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
@@ -34,7 +47,7 @@
     .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
 
     /* Logo text + dot: hidden in rail, fade in when revealed */
-    .d1-logo-full, .d1-logo .dot {
+    .d1-logo-full {
       opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
       transition: opacity 0.2s, max-width 0s;
     }
@@ -130,30 +143,6 @@
       transition: background 0.15s, color 0.15s;
     }
     .sb-btn-ghost:hover { background: rgba(255,255,255,0.11); color: #fff; }
-
-    /* ── Hero-only wordmark: fixed top-left, fades out when sidebar reveals ── */
-    .hero-brand {
-      position: fixed;
-      top: 36px;
-      left: 72px;
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: #fff;
-      display: inline-block;
-      z-index: 200;
-      text-decoration: none;
-      transition: opacity 0.25s;
-    }
-    .hero-brand .dot {
-      width: 6px; height: 6px;
-      background: #00C99E;
-      border-radius: 50%;
-      display: inline-block;
-      margin-left: 1px;
-      vertical-align: -2px;
-    }
-    .d1-shell.revealed ~ .hero-brand { opacity: 0; pointer-events: none; }
 
     /* ── Main content area ───────────────────────────────────────── */
     .v3-home-main { min-height: 100vh; overflow-x: hidden; }
@@ -987,9 +976,8 @@
     <aside class="d1-sidebar">
 
       <div class="d1-logo-row">
-        <a href="index.html" class="d1-logo">
-          <span class="d1-logo-full">Expertly</span>
-          <span class="dot"></span>
+        <a href="index.html" class="d1-logo" aria-label="Expertly home">
+          <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
         </a>
       </div>
 
@@ -1020,6 +1008,10 @@
             </svg>
             <span class="d1-nav-lbl">Members</span>
           </a>
+          <a href="membership.html" data-guest-nav>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+            <span class="d1-nav-lbl">Why join Expertly</span>
+          </a>
           <div class="d1-nav-divider" data-member-nav></div>
           <div class="d1-nav-label" data-member-nav>Member Portal</div>
           <a href="dashboard.html" data-member-nav>
@@ -1035,10 +1027,17 @@
             </svg>
             <span class="d1-nav-lbl">Peer Connect</span>
           </a>
-          <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+          <a href="learnings.html" data-member-nav>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
+            <span class="d1-nav-lbl">Learnings</span>
+          </a>
+          <a href="templates.html" data-member-nav>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg>
+            <span class="d1-nav-lbl">Templates</span>
+          </a>
+          <a href="perks.html" data-member-nav>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
-            <span class="d1-nav-lbl">Products</span>
-            <span class="soon">Soon</span>
+            <span class="d1-nav-lbl">Perks &amp; Products</span>
           </a>
           <a href="#" onclick="return false" class="nav-soon" data-member-nav>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -2176,11 +2175,6 @@
 
   </div><!-- /.d1-shell -->
 
-  <!-- Fixed wordmark visible during hero only — hidden via CSS sibling selector once sidebar reveals -->
-  <a href="index.html" class="hero-brand" id="hero-brand" aria-label="Expertly home">
-    Expertly<span class="dot"></span>
-  </a>
-
   <script src="assets/members.js?v=11"></script>
   <script src="assets/shared.js?v=11"></script>
   <script src="assets/home.js?v=11"></script>
@@ -2664,36 +2658,28 @@
     })();
   </script>
 
-  <!-- ── Sidebar: scroll-reveal + manual toggle ── -->
+  <!-- ── Sidebar: hover-to-float (Instagram-style) + pin toggle ── -->
   <script>
     (function () {
       const shell = document.getElementById('d1-shell');
-      const hero  = document.querySelector('.hero-stellar');
-      let manualCollapsed = false;
+      const sidebar = document.querySelector('.d1-sidebar');
+      let pinned = false;
 
-      function toggle() {
-        if (shell.classList.contains('revealed')) {
-          shell.classList.remove('revealed');
-          manualCollapsed = true;
-        } else {
-          shell.classList.add('revealed');
-          manualCollapsed = false;
-        }
+      function togglePin() {
+        pinned = !pinned;
+        shell.classList.toggle('revealed', pinned);
       }
       document.querySelectorAll('.d1-collapse-btn, .d1-collapse-clone').forEach(function(btn) {
-        btn.addEventListener('click', toggle);
+        btn.addEventListener('click', togglePin);
       });
 
-      if (hero) {
-        new IntersectionObserver(function (entries) {
-          const heroVisible = entries[0].isIntersecting;
-          if (heroVisible) {
-            shell.classList.remove('revealed');
-            manualCollapsed = false;
-          } else if (!manualCollapsed) {
-            shell.classList.add('revealed');
-          }
-        }, { threshold: 0 }).observe(hero);
+      if (sidebar) {
+        sidebar.addEventListener('mouseenter', function () {
+          shell.classList.add('revealed');
+        });
+        sidebar.addEventListener('mouseleave', function () {
+          if (!pinned) shell.classList.remove('revealed');
+        });
       }
     })();
   </script>

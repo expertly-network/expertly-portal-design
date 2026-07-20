@@ -14,32 +14,118 @@
   <link rel="stylesheet" href="assets/sidebar-light.css">
   <style>
     /* ── Shell ─────────────────────────────────────── */
-    .d1-shell { transition: grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1); }
-    .d1-shell.nav-collapsed { grid-template-columns: 56px 1fr; }
-    .d1-logo-row { display: flex; align-items: center; gap: 6px; padding: 6px 4px 22px 10px; }
-    .d1-logo-row .d1-logo { padding: 0; flex: 1; min-width: 0; overflow: hidden; text-decoration: none; }
-    .d1-logo-full { display: inline; white-space: nowrap; }
-    .d1-logo-short { display: none; }
-    .nav-collapsed .d1-logo-full { display: none; }
-    .nav-collapsed .d1-logo-short { display: inline; }
-    .nav-collapsed .d1-logo-row { flex-direction: column; align-items: center; padding: 6px 0 14px; gap: 8px; }
+    /* ── Shell: icon-rail → floats open on hover (same as index.html) ────
+       The grid column stays a fixed 56px gutter at all times so the main
+       content never shifts. The sidebar stays in normal grid flow (still
+       sticky) but widens beyond its 56px track on hover/pin — grid tracks
+       don't clip by default, so it visually overlays the page instead of
+       pushing it. */
+    .d1-shell { grid-template-columns: 56px 1fr; }
+    @media (min-width: 761px) {
+      .d1-sidebar {
+        width: 56px;
+        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
+      }
+      .d1-shell.revealed .d1-sidebar {
+        width: 248px;
+        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
+      }
+    }
+
+    /* Logo row: centred in narrow rail, left-aligned when revealed */
+    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
+    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
+    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
+
+    /* Logo text + dot: hidden in rail, fade in when revealed */
+    .d1-logo-full {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
+    .d1-shell.revealed .d1-logo-full {
+      display: inline; max-width: 160px;
+      opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+    .d1-shell.revealed .d1-logo .dot {
+      opacity: 1; transition: opacity 0.22s 0.35s;
+    }
+
+    /* Shared collapse button style */
     .d1-collapse-btn {
-      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
+      display: flex !important;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.4);
+      align-items: center; justify-content: center; flex-shrink: 0;
       cursor: pointer; transition: background 0.15s, color 0.15s;
     }
-    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.22s; }
-    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .nav-collapsed .d1-collapse-btn svg { transform: rotate(180deg); }
-    .nav-collapsed .d1-nav-lbl { display: none; }
-    .nav-collapsed .d1-nav a .soon { display: none; }
-    .nav-collapsed .d1-nav a { justify-content: center; padding: 10px; gap: 0; }
-    .nav-collapsed .d1-nav-label { display: none; }
-    .nav-collapsed .d1-sidebar-foot .d1-user-info { display: none; }
-    .nav-collapsed .d1-sidebar-foot .d1-logout-btn { display: none; }
-    .nav-collapsed .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
-    .v3-page-main { min-height: 100vh; overflow-x: clip; }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .sb-rail-icons { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .sb-utility-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .sb-utility-row .d1-collapse-btn svg { transform: rotate(0deg); }
+
+    /* Nav items: icons centred in rail, label + row layout when revealed */
+    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
+    .d1-nav-lbl {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
+    .d1-shell.revealed .d1-nav-lbl {
+      opacity: 1; max-width: 160px;
+      transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+
+    /* Section labels, dividers, soon badges: hidden in rail, revealed when expanded */
+    .d1-nav-label { display: none !important; }
+    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
+    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
+    .d1-nav-divider { display: none !important; }
+    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
+    .d1-nav a .soon { display: none !important; }
+    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
+
+    /* Sidebar foot: icon-rail stacked, centred */
+    .d1-sidebar-foot {
+      flex-direction: column; align-items: center;
+      padding: 12px 0; gap: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .sb-signin-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      color: rgba(255,255,255,0.4); text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sb-signin-icon:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .sb-cta-group { display: none; }
+    .d1-shell.revealed .d1-sidebar-foot {
+      flex-direction: column; align-items: stretch;
+      padding: 14px 12px 12px; gap: 8px;
+    }
+    .d1-shell.revealed .sb-rail-icons { display: none; }
+    .d1-shell.revealed .sb-cta-group { display: flex; flex-direction: column; gap: 8px; }
+    .sb-btn-primary {
+      display: block; text-align: center; text-decoration: none;
+      padding: 9px 14px; border-radius: 9px;
+      background: #00C99E; color: #06251d;
+      font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+      transition: background 0.15s;
+    }
+    .sb-btn-primary:hover { background: #00b38a; }
+    .sb-btn-ghost {
+      display: block; text-align: center; text-decoration: none;
+      padding: 9px 14px; border-radius: 9px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.75);
+      font-size: 13px; font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sb-btn-ghost:hover { background: rgba(255,255,255,0.11); color: #fff; }
+    .v3-page-main { min-height: 100vh; overflow-x: clip; position: relative; z-index: 1; background: var(--bg); }
 
     /* ── Peer Connect hero ─────────────────────────── */
     .pcr-hero { background: var(--bg-alt); padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
@@ -269,6 +355,29 @@
     .pcr-reschedule-day.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
     .pcr-reschedule-day.selected .dow { color: rgba(255,255,255,0.8); }
     .pcr-reschedule-note { margin-top: 10px; font-size: 11px; line-height: 1.4; color: var(--ink-3); }
+    .pcr-reschedule-send { width: 100%; margin-top: 10px; padding: 9px 10px; border-radius: 8px; border: none; background: var(--ink); color: var(--bg); font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: background 0.15s, opacity 0.15s; }
+    .pcr-reschedule-send:hover:not(:disabled) { background: var(--accent); }
+    .pcr-reschedule-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* ── Reschedule request banner (top of Meet Your Peer card) ── */
+    .pcr-reschedule-banner { display: flex; align-items: flex-start; gap: 14px; border-radius: 12px; padding: 16px 18px; margin-bottom: 24px; position: relative; }
+    .pcr-reschedule-banner.pending { background: var(--bg-alt); border: 1px solid var(--line-2); }
+    .pcr-reschedule-banner.incoming { background: color-mix(in oklab, #f59e0b 12%, var(--bg-card)); border: 1px solid color-mix(in oklab, #f59e0b 40%, transparent); }
+    .pcr-reschedule-banner.confirmed { background: color-mix(in oklab, var(--accent) 12%, var(--bg-card)); border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent); }
+    .pcr-rb-icon { font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+    .pcr-rb-body { flex: 1; min-width: 0; }
+    .pcr-rb-title { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .pcr-rb-sub { font-size: 12.5px; color: var(--ink-3); line-height: 1.55; }
+    .pcr-rb-sub strong { color: var(--ink-2); }
+    .pcr-rb-actions { display: flex; gap: 16px; margin-top: 10px; }
+    .pcr-rb-link { background: none; border: none; padding: 0; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); text-decoration: underline; cursor: pointer; }
+    .pcr-rb-link:hover { color: var(--ink); }
+    .pcr-rb-day-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .pcr-rb-day-btn { padding: 8px 14px; border-radius: 8px; border: 1.5px solid color-mix(in oklab, #f59e0b 45%, transparent); background: var(--bg-card); color: var(--ink); font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .pcr-rb-day-btn:hover { background: #f59e0b; color: #1a1206; border-color: #f59e0b; }
+    .pcr-rb-close { position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; border-radius: 50%; border: none; background: rgba(0,0,0,0.06); color: var(--ink-3); font-size: 14px; cursor: pointer; line-height: 1; }
+    .pcr-rb-close:hover { background: rgba(0,0,0,0.12); color: var(--ink); }
+    .pcr-tli-exp-date .pcr-tli-pending-tag { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 99px; background: color-mix(in oklab, #f59e0b 18%, transparent); color: #92400e; font-size: 10.5px; font-weight: 700; }
 
     /* ── Post-meeting stage ────────────────────────── */
     .pcr-post-eyebrow-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 99px; padding: 5px 12px; margin-bottom: 20px; }
@@ -378,14 +487,9 @@
   <!-- ── Sidebar ── -->
   <aside class="d1-sidebar">
     <div class="d1-logo-row">
-      <a href="index.html" class="d1-logo">
-        <span class="d1-logo-full">Expertly</span>
-        <span class="d1-logo-short">E</span>
-        <span class="dot"></span>
+      <a href="index.html" class="d1-logo" aria-label="Expertly home">
+        <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
       </a>
-      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
     <div class="d1-nav-center">
     <nav class="d1-nav">
@@ -402,6 +506,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <span class="d1-nav-lbl">Members</span>
       </a>
+      <a href="membership.html" data-guest-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+        <span class="d1-nav-lbl">Why join Expertly</span>
+      </a>
       <div class="d1-nav-divider" data-member-nav></div>
       <div class="d1-nav-label" data-member-nav>Member Portal</div>
       <a href="dashboard.html" data-member-nav>
@@ -412,10 +520,17 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         <span class="d1-nav-lbl">Peer Connect</span>
       </a>
-      <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+      <a href="learnings.html" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
+        <span class="d1-nav-lbl">Learnings</span>
+      </a>
+      <a href="templates.html" data-member-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg>
+        <span class="d1-nav-lbl">Templates</span>
+      </a>
+      <a href="perks.html" data-member-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
-        <span class="d1-nav-lbl">Products</span>
-        <span class="soon">Soon</span>
+        <span class="d1-nav-lbl">Perks &amp; Products</span>
       </a>
       <a href="#" onclick="return false" class="nav-soon" data-member-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -425,12 +540,24 @@
     </nav>
     </div>
     <div class="d1-sidebar-foot">
-      <div class="d1-user-avatar">M</div>
-      <div class="d1-user-info"><b>Member</b><span>you@firm.com</span></div>
-      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
-      <a href="login.html" class="d1-logout-btn" title="Log in">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      </a>
+      <div class="sb-rail-icons">
+        <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <a href="login.html" class="sb-signin-icon" title="Sign in" aria-label="Sign in">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </a>
+      </div>
+      <div class="sb-cta-group">
+        <div class="sb-utility-row">
+          <button class="d1-collapse-clone d1-collapse-btn" aria-label="Toggle sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="d1-theme-btn" title="Toggle appearance" aria-label="Toggle sidebar color"></button>
+        </div>
+        <a href="apply.html" class="sb-btn-primary">Apply Now</a>
+        <a href="login.html" class="sb-btn-ghost">Sign In</a>
+      </div>
     </div>
   </aside>
 
@@ -600,24 +727,33 @@
       </div><!-- /pcr-content -->
     </div><!-- /pcr-layout -->
   </div><!-- /pcr-page -->
-      <footer class="footer--minimal" aria-label="Site footer"></footer>
     </div><!-- /pcr-member-content -->
   </main>
 </div><!-- /d1-shell -->
 
+<footer class="footer--minimal" aria-label="Site footer"></footer>
+
 <script src="assets/members.js"></script>
 
 <script>
-  /* ── Sidebar collapse ── */
+  /* ── Sidebar hover-reveal ── */
   document.addEventListener('DOMContentLoaded', function () {
     const shell = document.getElementById('d1-shell');
-    const btn = document.getElementById('d1-collapse-btn');
-    const KEY = 'expertly_nav_collapsed';
-    if (localStorage.getItem(KEY) === '1') shell.classList.add('nav-collapsed');
-    btn.addEventListener('click', () => {
-      shell.classList.toggle('nav-collapsed');
-      localStorage.setItem(KEY, shell.classList.contains('nav-collapsed') ? '1' : '0');
+    const sidebar = document.querySelector('.d1-sidebar');
+    let pinned = false;
+
+    function togglePin() {
+      pinned = !pinned;
+      shell.classList.toggle('revealed', pinned);
+    }
+    document.querySelectorAll('.d1-collapse-btn, .d1-collapse-clone').forEach(function (btn) {
+      btn.addEventListener('click', togglePin);
     });
+
+    if (sidebar) {
+      sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
+      sidebar.addEventListener('mouseleave', function () { if (!pinned) shell.classList.remove('revealed'); });
+    }
   });
 
   /* ── Stage / phase logic ── */
@@ -663,6 +799,11 @@
   let meetingDayOffset = 0;
   let rescheduleMenuOpen = false;
 
+  /* reschedule: { status: 'none'|'pending'|'confirmed', proposedOffsets: number[], confirmedOffset: number|null } */
+  let reschedule = { status: 'none', proposedOffsets: [], confirmedOffset: null };
+  let rescheduleDraftOffsets = [];
+  let viewAsPeer = false;
+
   function getCycleSecondTuesday() {
     const tueDay = getSecondTuesday(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth());
     return new Date(CYCLE_DATE.getFullYear(), CYCLE_DATE.getMonth(), tueDay);
@@ -671,20 +812,106 @@
     const tue = getCycleSecondTuesday();
     return [-1,0,1,2,3].map(offset => { const d = new Date(tue); d.setDate(tue.getDate() + offset); return d; });
   }
-  function getSelectedMeetingDate() {
+  function getDateForOffset(offset) {
     const tue = getCycleSecondTuesday();
     const d = new Date(tue);
-    d.setDate(tue.getDate() + meetingDayOffset);
+    d.setDate(tue.getDate() + offset);
     return d;
   }
+  function getSelectedMeetingDate() { return getDateForOffset(meetingDayOffset); }
   function formatMeetingDateLong(d) { return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }); }
   function formatMeetingDateShort(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+  function formatMeetingDateRail(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
 
-  function toggleRescheduleMenu(e) { e.stopPropagation(); rescheduleMenuOpen = !rescheduleMenuOpen; render(); }
-  function selectRescheduleDay(offset) {
-    meetingDayOffset = offset; rescheduleMenuOpen = false; render();
-    alert(`Meeting rescheduled to ${formatMeetingDateLong(getSelectedMeetingDate())}. Time stays fixed at 10:00 – 10:30 AM IST.`);
+  /* ── Reschedule: propose → other party accepts → both notified ── */
+  function toggleRescheduleMenu(e) {
+    e.stopPropagation();
+    rescheduleMenuOpen = !rescheduleMenuOpen;
+    if (rescheduleMenuOpen) rescheduleDraftOffsets = [];
+    render();
   }
+  function toggleDraftDay(offset) {
+    const i = rescheduleDraftOffsets.indexOf(offset);
+    if (i > -1) rescheduleDraftOffsets.splice(i, 1);
+    else if (rescheduleDraftOffsets.length < 3) rescheduleDraftOffsets.push(offset);
+    render();
+  }
+  function sendRescheduleRequest(e) {
+    e.stopPropagation();
+    if (!rescheduleDraftOffsets.length) return;
+    reschedule = { status: 'pending', proposedOffsets: [...rescheduleDraftOffsets].sort((a, b) => a - b), confirmedOffset: null };
+    rescheduleMenuOpen = false;
+    viewAsPeer = false;
+    render();
+  }
+  function cancelRescheduleRequest() {
+    reschedule = { status: 'none', proposedOffsets: [], confirmedOffset: null };
+    viewAsPeer = false;
+    render();
+  }
+  function toggleViewAsPeer() { viewAsPeer = !viewAsPeer; render(); }
+  function acceptRescheduleOffset(offset) {
+    meetingDayOffset = offset;
+    reschedule = { status: 'confirmed', proposedOffsets: reschedule.proposedOffsets, confirmedOffset: offset };
+    viewAsPeer = false;
+    render();
+  }
+  function declineReschedule() {
+    reschedule = { status: 'none', proposedOffsets: [], confirmedOffset: null };
+    viewAsPeer = false;
+    render();
+  }
+  function dismissRescheduleBanner() {
+    reschedule = { status: 'none', proposedOffsets: [], confirmedOffset: null };
+    render();
+  }
+
+  function renderRescheduleBanner() {
+    if (reschedule.status === 'pending' && !viewAsPeer) {
+      const dateList = reschedule.proposedOffsets.map(o => formatMeetingDateShort(getDateForOffset(o))).join(', ');
+      return `<div class="pcr-reschedule-banner pending">
+        <div class="pcr-rb-icon">⏳</div>
+        <div class="pcr-rb-body">
+          <div class="pcr-rb-title">Your meeting is requested for rescheduling</div>
+          <div class="pcr-rb-sub">You proposed <strong>${dateList}</strong> — waiting for Ananya to accept a new time. Time stays fixed at 10:00 – 10:30 AM IST. You'll both be notified as soon as she confirms.</div>
+          <div class="pcr-rb-actions">
+            <button class="pcr-rb-link" onclick="cancelRescheduleRequest()">Cancel request</button>
+            <button class="pcr-rb-link" onclick="toggleViewAsPeer()">Preview Ananya's view →</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    if (reschedule.status === 'pending' && viewAsPeer) {
+      const dayBtns = reschedule.proposedOffsets.map(o =>
+        `<button type="button" class="pcr-rb-day-btn" onclick="acceptRescheduleOffset(${o})">${formatMeetingDateShort(getDateForOffset(o))}</button>`
+      ).join('');
+      return `<div class="pcr-reschedule-banner incoming">
+        <div class="pcr-rb-icon">📅</div>
+        <div class="pcr-rb-body">
+          <div class="pcr-rb-title">Ananya has requested to reschedule this meeting — accept a new time</div>
+          <div class="pcr-rb-sub">Pick whichever day works for you. Time stays fixed at 10:00 – 10:30 AM IST.</div>
+          <div class="pcr-rb-day-row">${dayBtns}</div>
+          <div class="pcr-rb-actions">
+            <button class="pcr-rb-link" onclick="declineReschedule()">Decline</button>
+            <button class="pcr-rb-link" onclick="toggleViewAsPeer()">← Back to your view</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    if (reschedule.status === 'confirmed') {
+      const d = getDateForOffset(reschedule.confirmedOffset);
+      return `<div class="pcr-reschedule-banner confirmed">
+        <div class="pcr-rb-icon">✅</div>
+        <div class="pcr-rb-body">
+          <div class="pcr-rb-title">Meeting rescheduled to ${formatMeetingDateLong(d)}</div>
+          <div class="pcr-rb-sub">Time stays fixed at 10:00 – 10:30 AM IST. Both you and Ananya have been notified of the revised time.</div>
+        </div>
+        <button class="pcr-rb-close" onclick="dismissRescheduleBanner()" aria-label="Dismiss">×</button>
+      </div>`;
+    }
+    return '';
+  }
+
   document.addEventListener('click', () => { if (rescheduleMenuOpen) { rescheduleMenuOpen = false; render(); } });
 
   function selectCategory(id) { selectedCategory = id; if (id === 'pref') prefFormOverride = false; render(); }
@@ -704,7 +931,8 @@
       const state = i < currentIndex ? 'done' : i === currentIndex ? 'active' : 'upcoming';
       const isOpen = p.id === selectedCategory;
       const month = i === 0 ? PREF_MONTH : CYCLE_MONTH;
-      const dateText = p.dateBase.replace('{month}', month);
+      let dateText = p.id === 'meeting' ? formatMeetingDateRail(getSelectedMeetingDate()) : p.dateBase.replace('{month}', month);
+      if (p.id === 'meeting' && reschedule.status === 'pending') dateText += `<span class="pcr-tli-pending-tag">Reschedule pending</span>`;
       const isLast = i === PHASES.length - 1;
       const connDone = i < currentIndex;
 
@@ -796,13 +1024,28 @@
       const selectedDate = getSelectedMeetingDate();
       const weekDates = getMeetingWeekDates();
       const dayLabels = ['Mon','Tue','Wed','Thu','Fri'];
-      const dayButtonsHtml = weekDates.map((d, i) => {
+      const draftDayButtonsHtml = weekDates.map((d, i) => {
         const offset = i - 1;
-        const isSel = offset === meetingDayOffset;
-        return `<button type="button" class="pcr-reschedule-day${isSel ? ' selected' : ''}" onclick="event.stopPropagation();selectRescheduleDay(${offset})">
+        const isSel = rescheduleDraftOffsets.includes(offset);
+        return `<button type="button" class="pcr-reschedule-day${isSel ? ' selected' : ''}" onclick="event.stopPropagation();toggleDraftDay(${offset})">
           <span class="dow">${dayLabels[i]}</span>${d.getDate()}</button>`;
       }).join('');
+      const rescheduleControlHtml = reschedule.status === 'none' ? `
+          <div class="pcr-reschedule-wrap">
+            <div class="pcr-reschedule-tip">Pick up to 3 alternate days this week and send a request — Ananya confirms one.</div>
+            <button class="pcr-btn-outline" onclick="toggleRescheduleMenu(event)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 109-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Reschedule
+            </button>
+            <div class="pcr-reschedule-menu${rescheduleMenuOpen ? ' open' : ''}" onclick="event.stopPropagation()">
+              <div class="pcr-reschedule-menu-title">Propose new day(s) this week</div>
+              <div class="pcr-reschedule-days">${draftDayButtonsHtml}</div>
+              <div class="pcr-reschedule-note">Select up to 3 days · time stays fixed at 10:00 – 10:30 AM IST.</div>
+              <button class="pcr-reschedule-send" onclick="sendRescheduleRequest(event)"${rescheduleDraftOffsets.length ? '' : ' disabled'}>Send request${rescheduleDraftOffsets.length ? ' (' + rescheduleDraftOffsets.length + ')' : ''}</button>
+            </div>
+          </div>` : '';
       body.innerHTML = `
+        ${renderRescheduleBanner()}
         <div class="pcr-reveal-eyebrow"><span class="pulse"></span>Match confirmed · Meeting on ${formatMeetingDateShort(selectedDate)}</div>
         <div class="pcr-match-profile">
           <div class="pcr-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
@@ -835,18 +1078,7 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             Add to calendar
           </button>
-          <div class="pcr-reschedule-wrap">
-            <div class="pcr-reschedule-tip">The time slot is fixed — you can only move the date within this same week.</div>
-            <button class="pcr-btn-outline" onclick="toggleRescheduleMenu(event)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 109-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Reschedule
-            </button>
-            <div class="pcr-reschedule-menu${rescheduleMenuOpen ? ' open' : ''}" onclick="event.stopPropagation()">
-              <div class="pcr-reschedule-menu-title">Choose a day this week</div>
-              <div class="pcr-reschedule-days">${dayButtonsHtml}</div>
-              <div class="pcr-reschedule-note">Time stays fixed at 10:00 – 10:30 AM IST.</div>
-            </div>
-          </div>
+          ${rescheduleControlHtml}
         </div>`;
     }
 
@@ -890,7 +1122,7 @@
         <div class="pcr-post-tabs">
           <div class="pcr-post-tab active" onclick="switchPostTab(this,'pt-actions')">Key Actions</div>
           <div class="pcr-post-tab" onclick="switchPostTab(this,'pt-transcript')">Transcript</div>
-          <div class="pcr-post-tab" onclick="switchPostTab(this,'pt-notes')">My Notes</div>
+          <div class="pcr-post-tab" onclick="switchPostTab(this,'pt-notes')">My Feedback</div>
         </div>
         <div class="pcr-post-panel active" id="pt-actions">
           <div class="pcr-panel-head-row">
@@ -903,13 +1135,24 @@
             <li><span class="txt" contenteditable="false">Follow up on GAAR applicability to the Chennai client restructuring — by Jul 31</span><button class="remove" onclick="this.closest('li').remove()">×</button></li>
           </ul>
           <button class="pcr-add-action" id="add-action-btn" onclick="addAction()">+ Add action</button>
+          <div class="pcr-panel-head-row" style="margin-top:22px;">
+            <div class="pcr-panel-head-lbl">Notes</div>
+            <button class="pcr-edit-btn" id="ka-notes-edit-btn" onclick="toggleKeyActionNotesEdit()">✎ Edit</button>
+          </div>
+          <div class="pcr-notes-view" id="ka-notes-view">
+            <p class="pcr-notes-text" id="ka-notes-text-display">Add any additional notes about this session here.</p>
+          </div>
+          <div id="ka-notes-edit-form" style="display:none;">
+            <textarea class="pcr-feedback-textarea" id="ka-notes-textarea">Add any additional notes about this session here.</textarea>
+            <button class="pcr-feedback-submit" onclick="saveKeyActionNotes()">Save notes</button>
+          </div>
         </div>
         <div class="pcr-post-panel" id="pt-transcript">
           <div class="pcr-transcript-block">"The LOB test under the India-Singapore treaty is where most practitioners get tripped up. Ananya walked through how MAS guidance on 'economic substance' interacts with the principal purpose test…"</div>
         </div>
         <div class="pcr-post-panel" id="pt-notes">
           <div class="pcr-panel-head-row">
-            <div class="pcr-panel-head-lbl">My notes</div>
+            <div class="pcr-panel-head-lbl">My feedback</div>
             <button class="pcr-edit-btn" id="notes-edit-btn" onclick="toggleNotesEdit()">✎ Edit</button>
           </div>
           <div class="pcr-notes-view" id="notes-view">
@@ -964,6 +1207,22 @@
     li.innerHTML = `<span class="txt" contenteditable="true"></span><button class="remove" onclick="this.closest('li').remove()">×</button>`;
     list.appendChild(li);
     li.querySelector('.txt').focus();
+  }
+
+  /* ── Key Actions notes edit ── */
+  function toggleKeyActionNotesEdit() {
+    const view = document.getElementById('ka-notes-view');
+    const form = document.getElementById('ka-notes-edit-form');
+    const btn = document.getElementById('ka-notes-edit-btn');
+    const editing = form.style.display === 'none';
+    view.style.display = editing ? 'none' : 'block';
+    form.style.display = editing ? 'block' : 'none';
+    btn.classList.toggle('editing', editing);
+    btn.textContent = editing ? 'Done' : '✎ Edit';
+  }
+  function saveKeyActionNotes() {
+    document.getElementById('ka-notes-text-display').textContent = document.getElementById('ka-notes-textarea').value;
+    toggleKeyActionNotesEdit();
   }
 
   /* ── Notes edit ── */

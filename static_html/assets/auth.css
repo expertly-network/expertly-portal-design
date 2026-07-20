@@ -2,13 +2,13 @@
 
 /* ============ LOGIN ============ */
 .auth-main {
-  min-height: calc(100vh - 84px);
+  min-height: 100vh;
 }
 
 .auth-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 84px);
+  min-height: 100vh;
 }
 
 .auth-left {
@@ -809,13 +809,13 @@
 /* ============ APPLY ============ */
 .apply-main {
   background: var(--bg);
-  min-height: calc(100vh - 84px);
+  min-height: 100vh;
 }
 
 .apply-grid {
   display: grid;
   grid-template-columns: 360px 1fr;
-  min-height: calc(100vh - 84px);
+  min-height: 100vh;
 }
 
 .apply-aside {

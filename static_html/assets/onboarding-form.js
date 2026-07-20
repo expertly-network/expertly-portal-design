@@ -901,7 +901,6 @@ function initNavigationStepper() {
     sessionStorage.removeItem('expertly_linkedin_connected');
 
     document.getElementById('onboarding-main-wizard').style.display = 'none';
-    document.getElementById('onboarding-nav').style.display = 'block';
     document.getElementById('onboarding-success-view').style.display = 'flex';
   });
 }

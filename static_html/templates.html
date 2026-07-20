@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Templates — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
+  <style>
+
+    /* ── Shell ────────────────────────────────────────────────────────── */
+    /* ── Shell: icon-rail → floats open on hover (same as index.html) ────
+       The grid column stays a fixed 56px gutter at all times so the main
+       content never shifts. The sidebar stays in normal grid flow (still
+       sticky) but widens beyond its 56px track on hover/pin — grid tracks
+       don't clip by default, so it visually overlays the page instead of
+       pushing it. */
+    .d1-shell { grid-template-columns: 56px 1fr; }
+    @media (min-width: 761px) {
+      .d1-sidebar {
+        width: 56px;
+        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
+      }
+      .d1-shell.revealed .d1-sidebar {
+        width: 248px;
+        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
+      }
+    }
+
+    /* Logo row: centred in narrow rail, left-aligned when revealed */
+    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
+    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
+    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
+
+    /* Logo text + dot: hidden in rail, fade in when revealed */
+    .d1-logo-full {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
+    .d1-shell.revealed .d1-logo-full {
+      display: inline; max-width: 160px;
+      opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+    .d1-shell.revealed .d1-logo .dot {
+      opacity: 1; transition: opacity 0.22s 0.35s;
+    }
+
+    .d1-collapse-btn {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .d1-shell.revealed .d1-collapse-btn svg { transform: rotate(180deg); }
+
+    /* Nav items: icons centred in rail, label + row layout when revealed */
+    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
+    .d1-nav-lbl {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
+    .d1-shell.revealed .d1-nav-lbl {
+      opacity: 1; max-width: 160px;
+      transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+
+    /* Section labels, dividers, soon badges: hidden in rail, revealed when expanded */
+    .d1-nav-label { display: none !important; }
+    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
+    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
+    .d1-nav-divider { display: none !important; }
+    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
+    .d1-nav a .soon { display: none !important; }
+    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
+
+    /* Sidebar foot: just the avatar in rail, full row (info/theme/logout) when revealed */
+    @media (min-width: 761px) {
+      .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+      .d1-sidebar-foot .d1-user-info,
+      .d1-sidebar-foot .d1-theme-btn,
+      .d1-sidebar-foot .d1-logout-btn { display: none; }
+      .d1-shell.revealed .d1-sidebar-foot { justify-content: flex-start; padding-left: 10px; padding-right: 10px; }
+      .d1-shell.revealed .d1-sidebar-foot .d1-user-info { display: block; }
+      .d1-shell.revealed .d1-sidebar-foot .d1-theme-btn,
+      .d1-shell.revealed .d1-sidebar-foot .d1-logout-btn { display: flex; }
+    }
+    .v2-page-main { min-height: 100vh; overflow-x: clip; position: relative; z-index: 1; background: var(--bg); }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .db-hero { background: var(--bg-alt); padding: 52px 0 44px; border-bottom: 1px solid var(--line); }
+    .db-eyebrow {
+      font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.14em;
+      text-transform: capitalize; color: var(--ink-3); font-weight: 500;
+      display: inline-flex; align-items: center; gap: 9px; margin-bottom: 14px;
+    }
+    .db-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .db-heading { font-size: clamp(28px, 3.4vw, 44px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink); }
+    .db-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
+    .db-sub { font-size: 15px; color: var(--ink-3); margin-top: 12px; max-width: 560px; line-height: 1.6; }
+
+    /* ── Category tabs ────────────────────────────────────────────────── */
+    .tpl-tabs { display: flex; gap: 6px; padding: 32px 0 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .tpl-tab {
+      padding: 10px 18px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--ink-3);
+      background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tpl-tab.active { color: var(--ink); border-color: var(--ink); font-weight: 600; }
+    .tpl-count { font-size: 12.5px; color: var(--ink-4); font-family: 'Archivo', sans-serif; font-weight: 500; }
+
+    /* ── Right-side filter dropdowns ─────────────────────────────────── */
+    .flt-row { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; padding: 10px 0 0; }
+    .flt-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 100px;
+      background: var(--bg-card); border: 1px solid var(--line-2); font-family: inherit;
+      font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s; white-space: nowrap; position: relative; user-select: none;
+    }
+    .flt-btn:hover { border-color: var(--ink-3); }
+    .flt-btn.open { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+    .flt-btn.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .flt-caret { font-size: 9px; opacity: 0.5; transition: transform 0.2s; }
+    .flt-btn.open .flt-caret { transform: rotate(180deg); }
+    .flt-popover {
+      position: absolute; top: calc(100% + 8px); right: 0; z-index: 40; width: 190px;
+      background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 14px;
+      box-shadow: 0 16px 48px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.98);
+      transform-origin: top right; transition: opacity 0.18s, transform 0.18s; padding: 6px 0;
+    }
+    .flt-popover.open { opacity: 1; pointer-events: all; transform: none; }
+    .flt-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .flt-option:hover { background: var(--bg-alt); color: var(--ink); }
+    .flt-option.selected { color: var(--accent); font-weight: 600; }
+    .flt-check { font-size: 11px; color: var(--accent); opacity: 0; }
+    .flt-option.selected .flt-check { opacity: 1; }
+
+    /* ── Template grid ────────────────────────────────────────────────── */
+    .tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 24px 0 100px; }
+    @media (max-width: 980px) { .tpl-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .tpl-grid { grid-template-columns: 1fr; } }
+
+    .tpl-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+      display: flex; align-items: flex-start; gap: 14px; transition: border-color 0.15s, transform 0.2s;
+    }
+    .tpl-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+    .tpl-filetype {
+      width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; color: #fff;
+    }
+    .tpl-filetype.doc { background: #2b579a; }
+    .tpl-filetype.xls { background: #1d6f42; }
+    .tpl-filetype.ppt { background: #b7472a; }
+    .tpl-body { flex: 1; min-width: 0; }
+    .tpl-cat-tag {
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+    }
+    .tpl-title { font-size: 14.5px; font-weight: 600; color: var(--ink); line-height: 1.35; margin-bottom: 4px; }
+    .tpl-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.55; margin-bottom: 12px; }
+    .tpl-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .tpl-format { font-size: 11px; color: var(--ink-4); font-weight: 500; }
+    .tpl-download {
+      display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border-radius: 8px;
+      background: var(--bg-alt); border: 1px solid var(--line-2); font-family: inherit; font-size: 12px;
+      font-weight: 600; color: var(--ink-2); cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .tpl-download svg { width: 12px; height: 12px; }
+    .tpl-download:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+    @media (max-width: 760px) {
+      .d1-shell { grid-template-columns: 1fr; }
+      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .d1-nav { flex-direction: row; flex-wrap: wrap; }
+      .d1-nav-label { display: none; }
+      .d1-sidebar-foot { display: none; }
+      .d1-logo-row { padding-bottom: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="d1-shell" id="d1-shell">
+
+  <aside class="d1-sidebar">
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo" aria-label="Expertly home">
+        <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="d1-nav-center">
+      <nav class="d1-nav">
+        <div class="d1-nav-label">Explore</div>
+        <a href="articles.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <span class="d1-nav-lbl">Articles</span>
+        </a>
+        <a href="events.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span class="d1-nav-lbl">Events</span>
+        </a>
+        <a href="members.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span class="d1-nav-lbl">Members</span>
+        </a>
+        <a href="membership.html" data-guest-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+          <span class="d1-nav-lbl">Why join Expertly</span>
+        </a>
+        <div class="d1-nav-divider" data-member-nav></div>
+        <div class="d1-nav-label" data-member-nav>Member Portal</div>
+        <a href="dashboard.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span class="d1-nav-lbl">Dashboard</span>
+        </a>
+        <a href="peer-connect.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span class="d1-nav-lbl">Peer Connect</span>
+        </a>
+        <a href="learnings.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
+          <span class="d1-nav-lbl">Learnings</span>
+        </a>
+        <a href="templates.html" class="active" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg>
+          <span class="d1-nav-lbl">Templates</span>
+        </a>
+        <a href="perks.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+          <span class="d1-nav-lbl">Perks &amp; Products</span>
+        </a>
+        <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="d1-nav-lbl">Discussions</span>
+          <span class="soon">Soon</span>
+        </a>
+      </nav>
+    </div>
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info">
+        <b>Member</b>
+        <span>you@firm.com</span>
+      </div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log out" aria-label="Log out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main id="main-content" class="v2-page-main">
+
+    <section class="db-hero">
+      <div class="container-wide">
+        <span class="db-eyebrow">Member Portal</span>
+        <h1 class="db-heading">Standard templates, <em>ready to use.</em></h1>
+        <p class="db-sub">Review-ready templates for audit, tax and legal engagements — drafted by practitioners so you're not starting from a blank page.</p>
+
+        <div class="hero-search" style="margin-top:36px; max-width:680px;">
+          <div class="hero-search-input">
+            <div class="hero-search-prefix">
+              <span class="ai-pulse small"></span>
+            </div>
+            <div class="hero-typebox" role="textbox" aria-label="Search templates">
+              <span class="hero-phrase">Audit planning memorandum template</span>
+            </div>
+            <button class="btn btn-primary hero-find-btn">
+              <span class="hero-find-label">Find</span>
+              <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container-wide">
+      <div class="tpl-tabs" id="tpl-tabs">
+        <button class="tpl-tab active" data-cat="all">All templates</button>
+        <button class="tpl-tab" data-cat="audit">Audit</button>
+        <button class="tpl-tab" data-cat="tax">Tax</button>
+        <button class="tpl-tab" data-cat="legal">Legal</button>
+        <div class="flt-row">
+          <div style="position:relative;" id="flt-format-wrapper">
+            <button class="flt-btn" id="flt-format-trigger" type="button">
+              <span id="flt-format-label">All formats</span><span class="flt-caret">▾</span>
+            </button>
+            <div class="flt-popover" id="flt-format-popover">
+              <div class="flt-option selected" data-value="all"><span>All formats</span><span class="flt-check">✓</span></div>
+              <div class="flt-option" data-value="doc"><span>Word (.docx)</span><span class="flt-check">✓</span></div>
+              <div class="flt-option" data-value="xls"><span>Excel (.xlsx)</span><span class="flt-check">✓</span></div>
+              <div class="flt-option" data-value="ppt"><span>PowerPoint (.pptx)</span><span class="flt-check">✓</span></div>
+            </div>
+          </div>
+          <span class="tpl-count" id="tpl-count"></span>
+        </div>
+      </div>
+
+      <div class="tpl-grid" id="tpl-grid"></div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer--minimal" aria-label="Site footer"></footer>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/sidebar-theme.js"></script>
+
+  <script>
+    (function () {
+      const shell = document.getElementById('d1-shell');
+      const sidebar = document.querySelector('.d1-sidebar');
+      const btn = document.getElementById('d1-collapse-btn');
+      let pinned = false;
+
+      function togglePin() {
+        pinned = !pinned;
+        shell.classList.toggle('revealed', pinned);
+      }
+      btn.addEventListener('click', togglePin);
+
+      if (sidebar) {
+        sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
+        sidebar.addEventListener('mouseleave', function () { if (!pinned) shell.classList.remove('revealed'); });
+      }
+    })();
+  </script>
+
+<script>
+  const TPL_ITEMS = [
+    { cat: 'audit', catLabel: 'Audit', title: 'Audit Planning Memorandum', desc: 'Scope, risk assessment and engagement timeline in a standard planning format.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Internal Controls Checklist', desc: 'Walkthrough checklist covering entity-level and process-level controls.', type: 'xls', format: 'Excel · .xlsx' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Audit Report — Standard Format', desc: 'A clean, review-ready structure for opinions, findings and management letters.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Sampling & Materiality Workbook', desc: 'Pre-built formulas for sample size, materiality thresholds and error projection.', type: 'xls', format: 'Excel · .xlsx' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Tax Due Diligence Checklist', desc: 'A structured checklist for M&A and transaction tax due diligence reviews.', type: 'xls', format: 'Excel · .xlsx' },
+    { cat: 'tax', catLabel: 'Tax', title: 'GST Reconciliation Workbook', desc: 'Reconcile GSTR filings against books with pre-built variance formulas.', type: 'xls', format: 'Excel · .xlsx' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Transfer Pricing Documentation Template', desc: 'Local file structure covering functional analysis, benchmarking and conclusions.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Tax Position Memo', desc: 'A concise format for documenting and defending technical tax positions.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Engagement Letter Template', desc: 'Standard client engagement letter with scope, fees and liability clauses.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'legal', catLabel: 'Legal', title: 'NDA — Mutual', desc: 'A balanced mutual non-disclosure agreement for early-stage client discussions.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Board Resolution Template', desc: 'Common board resolution formats for approvals, appointments and authorisations.', type: 'doc', format: 'Word · .docx' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Client Pitch Deck — Legal Services', desc: 'A ready-to-brand deck structure for pitching legal engagements to new clients.', type: 'ppt', format: 'PowerPoint · .pptx' },
+  ];
+
+  function tplBadge(type) {
+    const label = type === 'doc' ? 'DOC' : type === 'xls' ? 'XLS' : 'PPT';
+    return `<div class="tpl-filetype ${type}">${label}</div>`;
+  }
+
+  let activeTplCat = 'all', activeFormat = 'all';
+
+  function createFlt(triggerId, popoverId, labelId, wrapperId, defaultLabel, onChange) {
+    const trigger = document.getElementById(triggerId);
+    const popover = document.getElementById(popoverId);
+    const labelEl = document.getElementById(labelId);
+    const wrapper = document.getElementById(wrapperId);
+    let open = false;
+    const close = () => { open = false; trigger.classList.remove('open'); popover.classList.remove('open'); };
+    const toggle = () => {
+      document.querySelectorAll('.flt-popover.open').forEach(p => { if (p !== popover) p.classList.remove('open'); });
+      document.querySelectorAll('.flt-btn.open').forEach(b => { if (b !== trigger) b.classList.remove('open'); });
+      open = !open; trigger.classList.toggle('open', open); popover.classList.toggle('open', open);
+    };
+    trigger.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+    wrapper.addEventListener('click', e => e.stopPropagation());
+    popover.querySelectorAll('.flt-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        popover.querySelectorAll('.flt-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const value = opt.dataset.value;
+        labelEl.textContent = value === 'all' ? defaultLabel : opt.querySelector('span').textContent;
+        trigger.classList.toggle('has-value', value !== 'all');
+        close();
+        onChange(value);
+      });
+    });
+    document.addEventListener('click', close);
+  }
+
+  function renderTemplates() {
+    const grid = document.getElementById('tpl-grid');
+    const countEl = document.getElementById('tpl-count');
+    const list = TPL_ITEMS.filter(t =>
+      (activeTplCat === 'all' || t.cat === activeTplCat) &&
+      (activeFormat === 'all' || t.type === activeFormat)
+    );
+    if (countEl) countEl.textContent = `${list.length} template${list.length === 1 ? '' : 's'}`;
+    if (!list.length) { grid.innerHTML = '<p style="color:var(--ink-3);font-size:14px;padding:24px 0;">No templates match these filters.</p>'; return; }
+    grid.innerHTML = list.map(t => `
+      <div class="tpl-card">
+        ${tplBadge(t.type)}
+        <div class="tpl-body">
+          <div class="tpl-cat-tag">${t.catLabel}</div>
+          <div class="tpl-title">${t.title}</div>
+          <div class="tpl-desc">${t.desc}</div>
+          <div class="tpl-row">
+            <span class="tpl-format">${t.format}</span>
+            <a href="#" class="tpl-download" onclick="return false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5"/><path d="M4 21h16"/></svg>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  (function () {
+    const phrases = [
+      'Audit planning memorandum template',
+      'GST reconciliation workbook',
+      'Engagement letter template',
+      'Transfer pricing documentation template'
+    ];
+    let idx = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+      const heroSearch = document.querySelector('.hero-search');
+      const typebox = document.querySelector('.hero-typebox');
+      if (typebox) {
+        setInterval(() => {
+          idx = (idx + 1) % phrases.length;
+          typebox.innerHTML = `<span class="hero-phrase" style="animation:heroPhraseIn 0.45s cubic-bezier(0.22,1,0.36,1);">${phrases[idx]}</span>`;
+        }, 3200);
+      }
+      if (heroSearch) {
+        heroSearch.addEventListener('click', () => {
+          window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
+        });
+      }
+    });
+  })();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTemplates();
+    document.getElementById('tpl-tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('.tpl-tab');
+      if (!btn) return;
+      document.querySelectorAll('.tpl-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTplCat = btn.dataset.cat;
+      renderTemplates();
+    });
+    createFlt('flt-format-trigger', 'flt-format-popover', 'flt-format-label', 'flt-format-wrapper', 'All formats', v => { activeFormat = v; renderTemplates(); });
+  });
+</script>
+</body>
+</html>

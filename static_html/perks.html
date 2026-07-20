@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perks & Products — Expertly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/sidebar-light.css">
+  <style>
+
+    /* ── Shell ────────────────────────────────────────────────────────── */
+    /* ── Shell: icon-rail → floats open on hover (same as index.html) ────
+       The grid column stays a fixed 56px gutter at all times so the main
+       content never shifts. The sidebar stays in normal grid flow (still
+       sticky) but widens beyond its 56px track on hover/pin — grid tracks
+       don't clip by default, so it visually overlays the page instead of
+       pushing it. */
+    .d1-shell { grid-template-columns: 56px 1fr; }
+    @media (min-width: 761px) {
+      .d1-sidebar {
+        width: 56px;
+        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
+      }
+      .d1-shell.revealed .d1-sidebar {
+        width: 248px;
+        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
+      }
+    }
+
+    /* Logo row: centred in narrow rail, left-aligned when revealed */
+    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
+    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
+    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
+
+    /* Logo text + dot: hidden in rail, fade in when revealed */
+    .d1-logo-full {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
+    .d1-shell.revealed .d1-logo-full {
+      display: inline; max-width: 160px;
+      opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+    .d1-shell.revealed .d1-logo .dot {
+      opacity: 1; transition: opacity 0.22s 0.35s;
+    }
+
+    .d1-collapse-btn {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
+    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .d1-shell.revealed .d1-collapse-btn svg { transform: rotate(180deg); }
+
+    /* Nav items: icons centred in rail, label + row layout when revealed */
+    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
+    .d1-nav-lbl {
+      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
+      transition: opacity 0.2s, max-width 0s;
+    }
+    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
+    .d1-shell.revealed .d1-nav-lbl {
+      opacity: 1; max-width: 160px;
+      transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
+    }
+
+    /* Section labels, dividers, soon badges: hidden in rail, revealed when expanded */
+    .d1-nav-label { display: none !important; }
+    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
+    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
+    .d1-nav-divider { display: none !important; }
+    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
+    .d1-nav a .soon { display: none !important; }
+    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
+
+    /* Sidebar foot: just the avatar in rail, full row (info/theme/logout) when revealed */
+    @media (min-width: 761px) {
+      .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
+      .d1-sidebar-foot .d1-user-info,
+      .d1-sidebar-foot .d1-theme-btn,
+      .d1-sidebar-foot .d1-logout-btn { display: none; }
+      .d1-shell.revealed .d1-sidebar-foot { justify-content: flex-start; padding-left: 10px; padding-right: 10px; }
+      .d1-shell.revealed .d1-sidebar-foot .d1-user-info { display: block; }
+      .d1-shell.revealed .d1-sidebar-foot .d1-theme-btn,
+      .d1-shell.revealed .d1-sidebar-foot .d1-logout-btn { display: flex; }
+    }
+    .v2-page-main { min-height: 100vh; overflow-x: clip; position: relative; z-index: 1; background: var(--bg); }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .db-hero { background: var(--bg-alt); padding: 52px 0 44px; border-bottom: 1px solid var(--line); }
+    .db-eyebrow {
+      font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.14em;
+      text-transform: capitalize; color: var(--ink-3); font-weight: 500;
+      display: inline-flex; align-items: center; gap: 9px; margin-bottom: 14px;
+    }
+    .db-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .db-heading { font-size: clamp(28px, 3.4vw, 44px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink); }
+    .db-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
+    .db-sub { font-size: 15px; color: var(--ink-3); margin-top: 12px; max-width: 580px; line-height: 1.6; }
+
+    /* ── Category tabs ────────────────────────────────────────────────── */
+    .prk-tabs { display: flex; gap: 6px; padding: 32px 0 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .prk-tab {
+      padding: 10px 18px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--ink-3);
+      background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .prk-tab.active { color: var(--ink); border-color: var(--ink); font-weight: 600; }
+    .prk-count { font-size: 12.5px; color: var(--ink-4); font-family: 'Archivo', sans-serif; font-weight: 500; }
+
+    /* ── Right-side filter dropdowns ─────────────────────────────────── */
+    .flt-row { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; padding: 10px 0 0; }
+    .flt-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 100px;
+      background: var(--bg-card); border: 1px solid var(--line-2); font-family: inherit;
+      font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s; white-space: nowrap; position: relative; user-select: none;
+    }
+    .flt-btn:hover { border-color: var(--ink-3); }
+    .flt-btn.open { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+    .flt-btn.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .flt-caret { font-size: 9px; opacity: 0.5; transition: transform 0.2s; }
+    .flt-btn.open .flt-caret { transform: rotate(180deg); }
+    .flt-popover {
+      position: absolute; top: calc(100% + 8px); right: 0; z-index: 40; width: 190px;
+      background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 14px;
+      box-shadow: 0 16px 48px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.98);
+      transform-origin: top right; transition: opacity 0.18s, transform 0.18s; padding: 6px 0;
+    }
+    .flt-popover.open { opacity: 1; pointer-events: all; transform: none; }
+    .flt-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .flt-option:hover { background: var(--bg-alt); color: var(--ink); }
+    .flt-option.selected { color: var(--accent); font-weight: 600; }
+    .flt-check { font-size: 11px; color: var(--accent); opacity: 0; }
+    .flt-option.selected .flt-check { opacity: 1; }
+
+    /* ── Perk logo wall ───────────────────────────────────────────────── */
+    .prk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px 0 100px; }
+    @media (max-width: 980px) { .prk-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .prk-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .prk-card {
+      position: relative; background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      padding: 26px 18px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 8px; overflow: hidden; min-height: 168px; transition: border-color 0.15s, transform 0.2s, box-shadow 0.2s;
+    }
+    .prk-card:hover, .prk-card:focus-within { border-color: var(--line-2); transform: translateY(-2px); box-shadow: 0 10px 28px -12px rgba(0,0,0,0.16); }
+    .prk-logo {
+      width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; color: #fff;
+      transition: transform 0.25s;
+    }
+    .prk-card:hover .prk-logo, .prk-card:focus-within .prk-logo { transform: translateY(-4px) scale(0.9); }
+    .prk-name { font-size: 13.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
+    .prk-cat-tag { font-size: 11px; color: var(--ink-4); }
+
+    /* Reveal panel: hidden by default, slides up over the card on hover/focus */
+    .prk-reveal {
+      position: absolute; left: 0; right: 0; bottom: 0; top: 100%;
+      background: #fff; border-top: 1px solid var(--line); border-radius: 16px;
+      padding: 16px 16px 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
+      transition: top 0.22s cubic-bezier(0.22,1,0.36,1);
+    }
+    .prk-card:hover .prk-reveal, .prk-card:focus-within .prk-reveal { top: 0; }
+    .prk-discount {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: 100px; background: color-mix(in oklab, var(--accent) 12%, transparent);
+      color: var(--accent); font-size: 11.5px; font-weight: 700;
+    }
+    .prk-desc { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+    .prk-claim {
+      margin-top: auto; padding: 8px 16px; border-radius: 8px; background: var(--ink); color: var(--bg); border: none;
+      font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center;
+      text-decoration: none; transition: background 0.15s; width: 100%;
+    }
+    .prk-claim:hover { background: var(--accent); }
+
+    /* ── Intro strip ──────────────────────────────────────────────────── */
+    .prk-intro-strip {
+      display: flex; align-items: flex-start; gap: 14px; background: var(--bg-alt); border: 1px solid var(--line);
+      border-radius: 14px; padding: 18px 22px; margin-top: 26px;
+    }
+    .prk-intro-icon { flex-shrink: 0; color: var(--ink-3); margin-top: 1px; }
+    .prk-intro-strip p { font-size: 13.5px; color: var(--ink-2); line-height: 1.6; }
+    .prk-intro-strip p strong { color: var(--ink); }
+
+    @media (max-width: 760px) {
+      .d1-shell { grid-template-columns: 1fr; }
+      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .d1-nav { flex-direction: row; flex-wrap: wrap; }
+      .d1-nav-label { display: none; }
+      .d1-sidebar-foot { display: none; }
+      .d1-logo-row { padding-bottom: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="d1-shell" id="d1-shell">
+
+  <aside class="d1-sidebar">
+    <div class="d1-logo-row">
+      <a href="index.html" class="d1-logo" aria-label="Expertly home">
+        <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
+      </a>
+      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="d1-nav-center">
+      <nav class="d1-nav">
+        <div class="d1-nav-label">Explore</div>
+        <a href="articles.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <span class="d1-nav-lbl">Articles</span>
+        </a>
+        <a href="events.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span class="d1-nav-lbl">Events</span>
+        </a>
+        <a href="members.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span class="d1-nav-lbl">Members</span>
+        </a>
+        <a href="membership.html" data-guest-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+          <span class="d1-nav-lbl">Why join Expertly</span>
+        </a>
+        <div class="d1-nav-divider" data-member-nav></div>
+        <div class="d1-nav-label" data-member-nav>Member Portal</div>
+        <a href="dashboard.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span class="d1-nav-lbl">Dashboard</span>
+        </a>
+        <a href="peer-connect.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span class="d1-nav-lbl">Peer Connect</span>
+        </a>
+        <a href="learnings.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
+          <span class="d1-nav-lbl">Learnings</span>
+        </a>
+        <a href="templates.html" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg>
+          <span class="d1-nav-lbl">Templates</span>
+        </a>
+        <a href="perks.html" class="active" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+          <span class="d1-nav-lbl">Perks &amp; Products</span>
+        </a>
+        <a href="#" onclick="return false" class="nav-soon" data-member-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="d1-nav-lbl">Discussions</span>
+          <span class="soon">Soon</span>
+        </a>
+      </nav>
+    </div>
+    <div class="d1-sidebar-foot">
+      <div class="d1-user-avatar">M</div>
+      <div class="d1-user-info">
+        <b>Member</b>
+        <span>you@firm.com</span>
+      </div>
+      <button class="d1-theme-btn" title="Toggle sidebar color" aria-label="Toggle sidebar color"></button>
+      <a href="login.html" class="d1-logout-btn" title="Log out" aria-label="Log out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main id="main-content" class="v2-page-main">
+
+    <section class="db-hero">
+      <div class="container-wide">
+        <span class="db-eyebrow">Member Portal</span>
+        <h1 class="db-heading">Member perks, <em>negotiated for you.</em></h1>
+        <p class="db-sub">We've partnered with the tax, legal, AI and productivity tools practitioners already use — and negotiated member-only discounts on all of them.</p>
+
+        <div class="hero-search" style="margin-top:36px; max-width:680px;">
+          <div class="hero-search-input">
+            <div class="hero-search-prefix">
+              <span class="ai-pulse small"></span>
+            </div>
+            <div class="hero-typebox" role="textbox" aria-label="Search perks and products">
+              <span class="hero-phrase">AI drafting tools with a member discount</span>
+            </div>
+            <button class="btn btn-primary hero-find-btn">
+              <span class="hero-find-label">Find</span>
+              <span class="arr">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container-wide">
+      <div class="prk-tabs" id="prk-tabs">
+        <button class="prk-tab active" data-cat="all">All perks</button>
+        <button class="prk-tab" data-cat="tax">Tax &amp; Compliance</button>
+        <button class="prk-tab" data-cat="legal">Legal Tools</button>
+        <button class="prk-tab" data-cat="ai">AI Tools</button>
+        <button class="prk-tab" data-cat="productivity">Productivity</button>
+        <div class="flt-row">
+          <div style="position:relative;" id="flt-offer-wrapper">
+            <button class="flt-btn" id="flt-offer-trigger" type="button">
+              <span id="flt-offer-label">All offers</span><span class="flt-caret">▾</span>
+            </button>
+            <div class="flt-popover" id="flt-offer-popover">
+              <div class="flt-option selected" data-value="all"><span>All offers</span><span class="flt-check">✓</span></div>
+              <div class="flt-option" data-value="percent"><span>% off plans</span><span class="flt-check">✓</span></div>
+              <div class="flt-option" data-value="free"><span>Free trial / months</span><span class="flt-check">✓</span></div>
+            </div>
+          </div>
+          <span class="prk-count" id="prk-count"></span>
+        </div>
+      </div>
+
+      <div class="prk-grid" id="prk-grid"></div>
+
+      <div class="prk-intro-strip">
+        <div class="prk-intro-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+        <p><strong>New partners added regularly.</strong> Have a tool your firm relies on that isn't listed here? Let us know and we'll reach out to negotiate a member discount.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer--minimal" aria-label="Site footer"></footer>
+
+<script src="assets/members.js"></script>
+<script src="assets/shared.js"></script>
+<script src="assets/sidebar-theme.js"></script>
+
+  <script>
+    (function () {
+      const shell = document.getElementById('d1-shell');
+      const sidebar = document.querySelector('.d1-sidebar');
+      const btn = document.getElementById('d1-collapse-btn');
+      let pinned = false;
+
+      function togglePin() {
+        pinned = !pinned;
+        shell.classList.toggle('revealed', pinned);
+      }
+      btn.addEventListener('click', togglePin);
+
+      if (sidebar) {
+        sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
+        sidebar.addEventListener('mouseleave', function () { if (!pinned) shell.classList.remove('revealed'); });
+      }
+    })();
+  </script>
+
+<script>
+  const PRK_PARTNERS = [
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ClearFile Tax Suite', initials: 'CF', color: '#0f766e', discount: '20% off annual plan', desc: 'Return filing, GST reconciliation and compliance tracking for tax practices of every size.' },
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ComplyIQ', initials: 'CQ', color: '#1d4ed8', discount: '3 months free', desc: 'Automated regulatory tracking and compliance calendars across jurisdictions.' },
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'AuditFlow', initials: 'AF', color: '#7c3aed', discount: '15% off first year', desc: 'Workpaper management and review workflows built for audit teams.' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'CaseVault', initials: 'CV', color: '#b91c1c', discount: '25% off annual plan', desc: 'Secure case and matter management with client-facing portals.' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'LawDesk Research', initials: 'LD', color: '#0369a1', discount: '2 months free', desc: 'Case law and statute research platform with AI-assisted search.' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'ContractPilot', initials: 'CP', color: '#166534', discount: '20% off annual plan', desc: 'Contract lifecycle management — drafting, redlining and e-signature in one place.' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'DraftGenie AI', initials: 'DG', color: '#9333ea', discount: '30% off Pro plan', desc: 'AI drafting assistant trained on legal and tax document formats.' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'SummarEase', initials: 'SE', color: '#c2410c', discount: '1 month free', desc: 'Summarise long contracts, judgments and filings in seconds.' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'InsightIQ Analytics', initials: 'IQ', color: '#0f766e', discount: '20% off annual plan', desc: 'AI-powered financial statement analysis and anomaly detection.' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'SheetSmart', initials: 'SS', color: '#15803d', discount: '15% off annual plan', desc: 'Excel add-ins for financial modelling, reconciliation and reporting.' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'PitchDeck Studio', initials: 'PD', color: '#b45309', discount: '25% off annual plan', desc: 'Presentation design tool with ready-made templates for client decks.' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'FocusFlow', initials: 'FF', color: '#4338ca', discount: '2 months free', desc: 'Time tracking and billing built for professional services firms.' },
+  ];
+
+  let activePrkCat = 'all', activeOffer = 'all';
+
+  function createFlt(triggerId, popoverId, labelId, wrapperId, defaultLabel, onChange) {
+    const trigger = document.getElementById(triggerId);
+    const popover = document.getElementById(popoverId);
+    const labelEl = document.getElementById(labelId);
+    const wrapper = document.getElementById(wrapperId);
+    let open = false;
+    const close = () => { open = false; trigger.classList.remove('open'); popover.classList.remove('open'); };
+    const toggle = () => {
+      document.querySelectorAll('.flt-popover.open').forEach(p => { if (p !== popover) p.classList.remove('open'); });
+      document.querySelectorAll('.flt-btn.open').forEach(b => { if (b !== trigger) b.classList.remove('open'); });
+      open = !open; trigger.classList.toggle('open', open); popover.classList.toggle('open', open);
+    };
+    trigger.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+    wrapper.addEventListener('click', e => e.stopPropagation());
+    popover.querySelectorAll('.flt-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        popover.querySelectorAll('.flt-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const value = opt.dataset.value;
+        labelEl.textContent = value === 'all' ? defaultLabel : opt.querySelector('span').textContent;
+        trigger.classList.toggle('has-value', value !== 'all');
+        close();
+        onChange(value);
+      });
+    });
+    document.addEventListener('click', close);
+  }
+
+  const matchesOffer = (p, type) => {
+    if (type === 'all') return true;
+    const d = p.discount.toLowerCase();
+    if (type === 'percent') return d.includes('off');
+    if (type === 'free') return d.includes('free');
+    return true;
+  };
+
+  function renderPerks() {
+    const grid = document.getElementById('prk-grid');
+    const countEl = document.getElementById('prk-count');
+    const list = PRK_PARTNERS.filter(p =>
+      (activePrkCat === 'all' || p.cat === activePrkCat) && matchesOffer(p, activeOffer)
+    );
+    if (countEl) countEl.textContent = `${list.length} partner${list.length === 1 ? '' : 's'}`;
+    if (!list.length) { grid.innerHTML = '<p style="color:var(--ink-3);font-size:14px;padding:24px 0;grid-column:1/-1;">No perks match these filters.</p>'; return; }
+    grid.innerHTML = list.map(p => `
+      <div class="prk-card">
+        <div class="prk-logo" style="background:${p.color};">${p.initials}</div>
+        <div class="prk-name">${p.name}</div>
+        <div class="prk-cat-tag">${p.catLabel}</div>
+        <div class="prk-reveal">
+          <span class="prk-discount">${p.discount}</span>
+          <p class="prk-desc">${p.desc}</p>
+          <a href="#" class="prk-claim" onclick="return false">Claim discount</a>
+        </div>
+      </div>`).join('');
+  }
+
+  (function () {
+    const phrases = [
+      'AI drafting tools with a member discount',
+      'Contract lifecycle management tools',
+      'GST reconciliation software discounts',
+      'Presentation design tool for client decks'
+    ];
+    let idx = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+      const heroSearch = document.querySelector('.hero-search');
+      const typebox = document.querySelector('.hero-typebox');
+      if (typebox) {
+        setInterval(() => {
+          idx = (idx + 1) % phrases.length;
+          typebox.innerHTML = `<span class="hero-phrase" style="animation:heroPhraseIn 0.45s cubic-bezier(0.22,1,0.36,1);">${phrases[idx]}</span>`;
+        }, 3200);
+      }
+      if (heroSearch) {
+        heroSearch.addEventListener('click', () => {
+          window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
+        });
+      }
+    });
+  })();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderPerks();
+    document.getElementById('prk-tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('.prk-tab');
+      if (!btn) return;
+      document.querySelectorAll('.prk-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activePrkCat = btn.dataset.cat;
+      renderPerks();
+    });
+    createFlt('flt-offer-trigger', 'flt-offer-popover', 'flt-offer-label', 'flt-offer-wrapper', 'All offers', v => { activeOffer = v; renderPerks(); });
+  });
+</script>
+</body>
+</html>
