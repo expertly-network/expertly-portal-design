@@ -1369,7 +1369,12 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   border-radius: 20px;
   display: flex; flex-direction: column;
 }
-.dual-card-dark { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dual-card-dark { background: var(--ink); color: var(--bg); border-color: var(--ink); position: relative; overflow: hidden; }
+.dual-card-dark::before {
+  content: ''; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px;
+  border-radius: 50%; background: color-mix(in oklab, var(--accent) 18%, transparent); pointer-events: none;
+}
+.dual-card-dark > * { position: relative; z-index: 1; }
 .dual-card-dark h3, .dual-card-dark .dual-label { color: var(--bg); }
 .dual-label { font-size: 11px; letter-spacing: 0.14em; color: var(--ink-3); margin-bottom: 24px; }
 .dual-card-dark .dual-label { color: rgba(255,255,255,0.55); }

@@ -1,42 +1,12 @@
 /* ══════════════════════════════════════════════════════════════
-   Sidebar theme toggle — dark ↔ light
+   Sidebar: always dark (the light/dark toggle was removed).
    + Auth-aware sidebar footer (reads expertly_session)
-   Default: dark. Persists to localStorage under 'expertly_sidebar_theme'.
-   Include after dashboard-shell.css + sidebar-light.css.
    ══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  var THEME_KEY = 'expertly_sidebar_theme';
-
-  var DARK_ICON  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg>';
-  var LIGHT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18" fill="currentColor" stroke="none"/></svg>';
   var LOGOUT_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
   var LOGIN_SVG  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
-
-  /* ── Theme toggle ───────────────────────────────────────────── */
-
-  function getTheme() {
-    return localStorage.getItem(THEME_KEY) || 'dark';
-  }
-
-  function applyTheme(theme) {
-    document.documentElement.classList.toggle('sidebar-light', theme === 'light');
-    localStorage.setItem(THEME_KEY, theme);
-    updateThemeButtons(theme);
-  }
-
-  function updateThemeButtons(theme) {
-    document.querySelectorAll('.d1-theme-btn').forEach(function (btn) {
-      btn.innerHTML = theme === 'dark' ? DARK_ICON : LIGHT_ICON;
-      btn.title = theme === 'dark' ? 'Switch to light sidebar' : 'Switch to dark sidebar';
-      btn.setAttribute('aria-label', btn.title);
-    });
-  }
-
-  function handleToggle() {
-    applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
-  }
 
   /* ── Auth-aware sidebar footer ──────────────────────────────── */
 
@@ -113,9 +83,10 @@
     if (session && session.email) {
       var initial = session.email.charAt(0).toUpperCase();
 
+      /* Dashboard access now lives on the logo click (see initLogoLink),
+         so the separate "My Dashboard" button is redundant once signed in. */
       if (primaryBtn) {
-        primaryBtn.href        = 'dashboard.html';
-        primaryBtn.textContent = 'My Dashboard';
+        primaryBtn.style.display = 'none';
       }
       if (ghostBtn) {
         ghostBtn.removeAttribute('href');
@@ -144,15 +115,19 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.d1-theme-btn').forEach(function (btn) {
-      btn.addEventListener('click', handleToggle);
-    });
-    updateThemeButtons(getTheme());
+  /* Logo click: members go straight to their dashboard, everyone else
+     (guests, non-member applicants) goes to the marketing homepage. */
+  function initLogoLink(session) {
+    var logo = document.querySelector('.d1-logo');
+    if (!logo) return;
+    logo.setAttribute('href', (session && session.role === 'member') ? 'dashboard.html' : 'index.html');
+  }
 
+  document.addEventListener('DOMContentLoaded', function () {
     var session = getSession();
     initStandardFooter(session);
     initHomepageFooter(session);
     initNavAuth(session);
+    initLogoLink(session);
   });
 })();

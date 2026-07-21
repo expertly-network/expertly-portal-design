@@ -397,6 +397,9 @@ function injectDynamicElements() {
       box-shadow: 0 12px 32px rgba(0,0,0,0.18);
       border-color: var(--accent-2);
     }
+    .theme-cust-fab.near-footer {
+      opacity: 0; pointer-events: none; transform: scale(0.9) translateY(6px);
+    }
     .theme-cust-fab svg {
       width: 20px; height: 20px;
       transition: transform 0.4s ease;
@@ -574,9 +577,10 @@ function injectDynamicElements() {
   `;
   document.body.appendChild(searchOverlay);
 
-  // Inject Floating Search Button — homepage only
+  // Inject Floating Search Button — homepage + membership (why-join) page
   const pageFile = window.location.pathname.split('/').pop();
-  const isHomepage = pageFile === '' || pageFile.toLowerCase() === 'index.html';
+  const floatingSearchPages = ['', 'index.html', 'membership.html'];
+  const isHomepage = floatingSearchPages.includes(pageFile.toLowerCase());
   if (isHomepage) {
     const floatBtn = document.createElement('button');
     floatBtn.className = 'floating-search';
@@ -955,20 +959,39 @@ function initGlobalSearch() {
    ========================================================================== */
 function initFloatingSearch() {
   const btn = document.getElementById('floating-search-btn');
-  if (!btn) return;
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
+    });
+  }
+  initFooterAwareFloatingUI();
+}
+
+/* Both the floating search launcher and the theme-customizer FAB are
+   fixed to the viewport, so they'd otherwise sit on top of the footer
+   once a visitor scrolls all the way down. Fade both out as soon as the
+   footer comes into view, regardless of which page/pages show them. */
+function initFooterAwareFloatingUI() {
+  const searchBtn = document.getElementById('floating-search-btn');
+  const themeFab = document.getElementById('theme-cust-fab-btn');
+  const themePanel = document.getElementById('theme-cust-settings-panel');
+  const footer = document.querySelector('.footer--minimal');
+  if (!searchBtn && !themeFab) return;
+
   const onScroll = () => {
-    if (window.scrollY > 620) {
-      btn.classList.add('show');
-    } else {
-      btn.classList.remove('show');
+    const nearFooter = !!footer && footer.getBoundingClientRect().top < window.innerHeight - 16;
+
+    if (searchBtn) {
+      searchBtn.classList.toggle('show', window.scrollY > 620 && !nearFooter);
+    }
+    if (themeFab) {
+      themeFab.classList.toggle('near-footer', nearFooter);
+      if (nearFooter && themePanel) themePanel.classList.remove('open');
     }
   };
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
   onScroll();
-
-  btn.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('expertly:search', { detail: { q: '' } }));
-  });
 }
 
 /* ==========================================================================

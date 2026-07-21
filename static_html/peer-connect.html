@@ -3,6 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    /* Members-only page: redirect before anything renders, so a
+       non-member never sees so much as a flash of this page. */
+    (function () {
+      var session = null;
+      try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
+      if (!(session && session.role === 'member')) {
+        window.location.replace('membership.html');
+      }
+    })();
+  </script>
   <title>Peer Connect — Expertly</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +74,7 @@
     .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
     .d1-collapse-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .sb-rail-icons { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .sb-utility-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .sb-utility-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px; }
     .sb-utility-row .d1-collapse-btn svg { transform: rotate(0deg); }
 
     /* Nav items: icons centred in rail, label + row layout when revealed */
@@ -156,50 +167,86 @@
     .pcr-rail-card {
       background: var(--bg-card); border: 1px solid var(--line-2);
       border-radius: 18px; overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 16px 40px -20px rgba(0,0,0,0.16);
     }
 
+    /* ── Rail header + progress ─────────────────────── */
+    .pcr-rail-head {
+      padding: 16px 18px 14px; border-bottom: 1px solid var(--line);
+    }
+    .pcr-rail-head-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .pcr-rail-head-lbl {
+      font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+    }
+    .pcr-rail-head-cycle {
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600;
+      color: var(--ink-4);
+    }
+    .pcr-rail-progress-track { height: 8px; border-radius: 99px; background: color-mix(in oklab, var(--ink-4) 22%, transparent); overflow: hidden; }
+    .pcr-rail-progress-fill { height: 100%; min-width: 8px; border-radius: 99px; background: var(--accent); transition: width 0.3s; }
+    .pcr-rail-head-step { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+    .pcr-rail-head-step b { color: var(--ink); font-weight: 700; }
+
     /* ── Timeline list ─────────────────────────────── */
-    .pcr-tl-list { padding: 6px 0 2px; }
+    .pcr-tl-list { padding: 10px 10px 6px; }
 
     /* ── Timeline item ─────────────────────────────── */
     .pcr-tli {
-      display: flex; cursor: pointer; padding: 0 14px;
-      transition: background 0.12s;
+      display: flex; cursor: pointer; padding: 0 10px; border-radius: 10px;
+      transition: background 0.15s;
     }
-    .pcr-tli:not(.open):hover { background: color-mix(in oklab, var(--accent) 5%, transparent); }
+    .pcr-tli:not(.open):hover { background: var(--bg-alt); }
     .pcr-tli.open {
-      background: color-mix(in oklab, var(--accent) 9%, white);
+      background: var(--bg-alt);
+      margin: 2px 0;
     }
 
     /* Spine: dot + vertical connector */
     .pcr-tli-spine {
       display: flex; flex-direction: column; align-items: center;
-      flex-shrink: 0; width: 36px; padding-top: 12px;
+      flex-shrink: 0; width: 34px; padding-top: 14px;
     }
     .pcr-tli-dot {
-      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      border: 1.5px solid var(--line-2); color: #fff; background: transparent;
+      border: 1.5px solid var(--line-2); color: var(--ink-4); background: var(--bg-card);
+      font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
+      transition: box-shadow 0.15s;
     }
-    .pcr-tli.done .pcr-tli-dot { background: var(--accent); border-color: var(--accent); }
+    .pcr-tli.done .pcr-tli-dot {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+      box-shadow: 0 0 8px 1px color-mix(in oklab, var(--accent) 45%, transparent);
+    }
     .pcr-tli.active .pcr-tli-dot {
-      background: var(--ink); border-color: var(--ink);
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+      background: var(--accent); border-color: var(--accent); color: #fff;
+      animation: pcr-dot-ring 1.8s ease-out infinite;
+    }
+    @keyframes pcr-dot-ring {
+      0%   { box-shadow: 0 0 12px 2px color-mix(in oklab, var(--accent) 55%, transparent), 0 0 0 0 color-mix(in oklab, var(--accent) 45%, transparent); }
+      70%  { box-shadow: 0 0 12px 2px color-mix(in oklab, var(--accent) 55%, transparent), 0 0 0 8px color-mix(in oklab, var(--accent) 0%, transparent); }
+      100% { box-shadow: 0 0 12px 2px color-mix(in oklab, var(--accent) 55%, transparent), 0 0 0 0 color-mix(in oklab, var(--accent) 0%, transparent); }
     }
     .pcr-tli.upcoming .pcr-tli-dot { border-style: dashed; }
-    .pcr-tli-pulse { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
 
+    /* Glowing process line running from step to step */
     .pcr-tli-conn {
-      width: 2px; flex: 1; min-height: 14px;
-      background: var(--line-2); border-radius: 2px; margin: 4px 0;
+      width: 3px; flex: 1; min-height: 16px; margin: 3px 0;
+      border-radius: 3px;
+      background: color-mix(in oklab, var(--accent) 20%, var(--line-2));
+      box-shadow: 0 0 5px color-mix(in oklab, var(--accent) 25%, transparent);
+      transition: background 0.3s, box-shadow 0.3s;
     }
-    .pcr-tli-conn.done { background: var(--accent); }
+    .pcr-tli-conn.done {
+      background: linear-gradient(var(--accent), color-mix(in oklab, var(--accent) 80%, #6EE7C8));
+      box-shadow: 0 0 10px 1px color-mix(in oklab, var(--accent) 65%, transparent), 0 0 3px color-mix(in oklab, var(--accent) 90%, transparent);
+    }
 
     /* Body */
-    .pcr-tli-body { flex: 1; min-width: 0; padding: 10px 0 12px 10px; }
+    .pcr-tli-body { flex: 1; min-width: 0; padding: 12px 4px 14px 12px; }
 
     /* Collapsed row */
-    .pcr-tli-row { display: flex; align-items: center; gap: 6px; }
+    .pcr-tli-row { display: flex; align-items: center; gap: 8px; }
     .pcr-tli-lbl { font-size: 13px; font-weight: 500; flex: 1; color: var(--ink-2); }
     .pcr-tli.done:not(.open) .pcr-tli-lbl { color: var(--ink-3); }
     .pcr-tli.active:not(.open) .pcr-tli-lbl { font-weight: 600; color: var(--ink); }
@@ -212,35 +259,52 @@
 
     /* Expanded content */
     .pcr-tli-eyebrow {
-      display: flex; align-items: center; gap: 7px;
-      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent);
+      background: color-mix(in oklab, var(--accent) 14%, transparent);
+      border-radius: 99px; padding: 3px 10px 3px 8px;
     }
-    .pcr-tli.upcoming .pcr-tli-eyebrow { color: var(--ink-4); }
+    .pcr-tli.upcoming .pcr-tli-eyebrow, .pcr-tli.done .pcr-tli-eyebrow {
+      color: var(--ink-3); background: var(--bg-alt);
+    }
     .pcr-tli-edot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent); flex-shrink: 0;
+      width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+      flex-shrink: 0;
     }
-    .pcr-tli.upcoming .pcr-tli-edot { background: var(--ink-4); box-shadow: none; }
-    .pcr-tli-exp-label { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: 8px; }
+    .pcr-tli-exp-label { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); margin-top: 10px; }
     .pcr-tli-exp-date { margin-top: 4px; font-size: 12.5px; color: var(--ink-3); }
     .pcr-tli-exp-helper {
-      margin-top: 10px; font-size: 12.5px; color: var(--ink-3); line-height: 1.55;
-      padding-top: 10px; border-top: 1px solid color-mix(in oklab, var(--accent) 18%, var(--line));
+      margin-top: 11px; font-size: 12.5px; color: var(--ink-3); line-height: 1.55;
+      padding-top: 11px; border-top: 1px solid var(--line);
     }
 
-    /* ── Inline stats block (inside the card) ──────── */
-    .pcr-rail-stats-block { border-top: 1px solid var(--line); }
+    /* ── Stats card (separate, dark) ───────────────── */
+    .pcr-rail-stats-block {
+      position: relative; overflow: hidden;
+      margin-top: 16px; border-radius: 18px;
+      background: #0B0B0C; border: 1px solid #0B0B0C;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 16px 40px -20px rgba(0,0,0,0.4);
+    }
+    .pcr-rail-stats-block::before {
+      content: ''; position: absolute; top: -40%; right: -18%; width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(0,201,158,0.22) 0%, transparent 65%); pointer-events: none;
+    }
+    .pcr-rail-stats-block::after {
+      content: ''; position: absolute; bottom: -35%; left: -12%; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,201,158,0.1) 0%, transparent 65%); pointer-events: none;
+    }
     .pcr-rsi-row {
+      position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 13px 18px; border-bottom: 1px solid var(--line);
+      padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .pcr-rsi-row:last-child { border-bottom: none; }
-    .pcr-rsi-row b { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
     .pcr-rsi-row span {
-      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600;
-      letter-spacing: 0.07em; text-transform: uppercase; color: #B08A4E;
+      font-size: 14px; font-weight: 500;
+      color: #fff;
     }
+    .pcr-rsi-row b { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
 
     /* ── Content card ──────────────────────────────── */
     .pcr-content { min-width: 0; }
@@ -479,7 +543,6 @@
 </head>
 
 <body>
-<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="d1-shell" id="d1-shell">
@@ -549,12 +612,6 @@
         </a>
       </div>
       <div class="sb-cta-group">
-        <div class="sb-utility-row">
-          <button class="d1-collapse-clone d1-collapse-btn" aria-label="Toggle sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button class="d1-theme-btn" title="Toggle appearance" aria-label="Toggle sidebar color"></button>
-        </div>
         <a href="apply.html" class="sb-btn-primary">Apply Now</a>
         <a href="login.html" class="sb-btn-ghost">Sign In</a>
       </div>
@@ -564,22 +621,7 @@
   <!-- ── Main content ── -->
   <main id="main-content" class="v3-page-main">
 
-    <!-- Members-only gate — shown to non-members, hides page content -->
-    <div id="pcr-gate" style="display:none; min-height:100vh; align-items:center; justify-content:center; padding:60px 24px;">
-      <div style="max-width:440px; width:100%; text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:color-mix(in oklab,var(--accent) 12%,transparent);border:1px solid color-mix(in oklab,var(--accent) 30%,transparent);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
-        <h2 style="font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);margin-bottom:10px;">Members Only</h2>
-        <p style="font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px;">Peer Connect is an exclusive feature for verified Expertly members. Join to get matched with a fellow practitioner every month.</p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <a href="apply.html" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:10px;background:var(--accent);color:#06251d;font-size:14px;font-weight:600;text-decoration:none;transition:background 0.15s;">Apply to Join</a>
-          <a href="login.html?returnTo=peer-connect.html&mode=member" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:10px;background:transparent;border:1.5px solid var(--ink-2);color:var(--ink);font-size:14px;font-weight:600;text-decoration:none;transition:background 0.15s,border-color 0.15s;">Sign In</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Page content — hidden when gate is shown -->
+    <!-- Page content (members only — non-members are redirected before this ever renders) -->
     <div id="pcr-member-content">
 
     <!-- Hero -->
@@ -936,9 +978,7 @@
       const isLast = i === PHASES.length - 1;
       const connDone = i < currentIndex;
 
-      let dotInner = '';
-      if (state === 'done') dotInner = checkIcon;
-      else if (state === 'active') dotInner = `<span class="pcr-tli-pulse"></span>`;
+      let dotInner = state === 'done' ? checkIcon : String(i + 1);
 
       const bodyHtml = isOpen
         ? `<div class="pcr-tli-eyebrow"><span class="pcr-tli-edot"></span>${EYEBROW_BY_STATE[state]}</div>
@@ -961,12 +1001,20 @@
 
     document.getElementById('rail').innerHTML = `
       <div class="pcr-rail-card">
-        <div class="pcr-tl-list">${itemsHtml}</div>
-        <div class="pcr-rail-stats-block">
-          <div class="pcr-rsi-row"><b>7</b><span>Sessions done</span></div>
-          <div class="pcr-rsi-row"><b>5🔥</b><span>Month streak</span></div>
-          <div class="pcr-rsi-row"><b>4.8</b><span>Avg rating given</span></div>
+        <div class="pcr-rail-head">
+          <div class="pcr-rail-head-top">
+            <span class="pcr-rail-head-lbl">Your journey</span>
+            <span class="pcr-rail-head-cycle">${CYCLE_MONTH} cycle</span>
+          </div>
+          <div class="pcr-rail-progress-track"><div class="pcr-rail-progress-fill" style="width:${(currentIndex / (PHASES.length - 1)) * 100}%"></div></div>
+          <div class="pcr-rail-head-step">Step <b>${currentIndex + 1}</b> of ${PHASES.length} — ${PHASES[currentIndex].label}</div>
         </div>
+        <div class="pcr-tl-list">${itemsHtml}</div>
+      </div>
+      <div class="pcr-rail-stats-block">
+        <div class="pcr-rsi-row"><span>Sessions done</span><b>7</b></div>
+        <div class="pcr-rsi-row"><span>Month streak</span><b>5</b></div>
+        <div class="pcr-rsi-row"><span>Avg rating given</span><b>4.8</b></div>
       </div>`;
   }
 
@@ -1380,21 +1428,5 @@
 </script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
-<script>
-  /* ── Auth gate: check session ── */
-  (function () {
-    var session = null;
-    try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
-    var isMember = session && session.role === 'member';
-    var gate    = document.getElementById('pcr-gate');
-    var content = document.getElementById('pcr-member-content');
-    if (!isMember) {
-      gate.style.display    = 'flex';
-      content.style.display = 'none';
-    }
-  })();
-
-  /* Sidebar footer auth is handled by sidebar-theme.js */
-</script>
 </body>
 </html>

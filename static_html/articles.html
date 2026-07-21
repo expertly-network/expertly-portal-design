@@ -87,7 +87,7 @@
     .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
     .d1-collapse-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .sb-rail-icons { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .sb-utility-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .sb-utility-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px; }
     .sb-utility-row .d1-collapse-btn svg { transform: rotate(0deg); }
 
     /* Sidebar foot: icon-rail stacked, centred */
@@ -261,11 +261,487 @@
     }
 
     @keyframes anvIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    /* ═══════════════════════════════════════════════
+       "Write an Article" tab (members only)
+       ═══════════════════════════════════════════════ */
+
+    /* Tab row: tabs on the left, "Write an Article" as a standalone button on the right */
+    .anv-tab-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); margin-bottom: 32px; flex-wrap: wrap; }
+    .anv-tab-list { display: flex; gap: 28px; }
+    .anv-tab {
+      display: flex; align-items: center; gap: 7px;
+      padding: 0 0 14px; margin-bottom: -1px;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      font-family: inherit; font-size: 14.5px; font-weight: 500; color: var(--ink-4);
+      cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .anv-tab:hover { color: var(--ink-2); }
+    .anv-tab.active { color: var(--ink); font-weight: 600; border-color: var(--ink); }
+    .anv-tab .anv-tab-spark { color: var(--accent); flex-shrink: 0; }
+
+    .anv-write-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px;
+      padding: 10px 18px; border-radius: 10px; border: none;
+      background: var(--ink); color: #fff;
+      font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .anv-write-cta-btn svg { color: var(--accent); flex-shrink: 0; }
+    .anv-write-cta-btn:hover { background: var(--accent); transform: translateY(-1px); }
+    .anv-write-cta-btn.active { background: var(--accent); }
+
+    .anv-write-exit {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-3);
+      margin-bottom: 20px; transition: color 0.15s;
+    }
+    .anv-write-exit:hover { color: var(--ink); }
+
+    /* "View my Articles" panel */
+    .anv-my-empty {
+      max-width: 420px; margin: 40px auto; text-align: center; padding: 48px 32px;
+      background: var(--bg-card); border: 1px dashed var(--line-2); border-radius: 18px;
+    }
+    .anv-my-empty-icon {
+      width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 18px;
+      background: color-mix(in oklab, var(--accent) 12%, transparent); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .anv-my-empty-title { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+    .anv-my-empty-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.55; margin-bottom: 22px; }
+
+    .anv-status-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 99px; color: #fff;
+      background: var(--accent);
+    }
+    .anv-status-badge.pending { background: #B08A2E; }
+    .anv-card { position: relative; }
+
+    .anv-write-wrap { background: #fff; padding: 56px 0 120px; }
+
+    /* Intro — a real hero moment, not a form label */
+    .anv-write-intro { max-width: 680px; margin: 0 auto 20px; text-align: center; }
+    .anv-write-title { font-size: clamp(28px, 3.4vw, 42px); font-weight: 500; letter-spacing: -0.025em; color: var(--ink); margin-top: 16px; }
+    .anv-write-sub { font-size: 16px; color: var(--ink-3); margin-top: 12px; line-height: 1.6; }
+
+    .anv-write-stats {
+      display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+      margin: 28px 0 44px;
+    }
+    .anv-write-stat {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 16px; border-radius: 99px; background: var(--bg-card);
+      border: 1px solid var(--line-2); box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-2);
+    }
+    .anv-write-stat b { color: var(--ink); font-weight: 700; }
+    .anv-write-stat svg { color: var(--accent); flex-shrink: 0; }
+
+    /* Two-path chooser */
+    .anv-write-options { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 980px; margin: 0 auto; animation: anvIn 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+    .anv-write-option {
+      position: relative; overflow: hidden; text-align: left; background: var(--bg-card);
+      border: 1.5px solid var(--line-2); border-radius: 24px; padding: 34px 32px;
+      cursor: pointer; font-family: inherit;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 24px 48px -32px rgba(0,0,0,0.16);
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .anv-write-option::after {
+      content: '';
+      position: absolute; top: -55%; right: -25%; width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in oklab, var(--ink) 4%, transparent) 0%, transparent 70%);
+      pointer-events: none; transition: opacity 0.25s;
+    }
+    .anv-write-option > * { position: relative; z-index: 1; }
+    .anv-write-option:hover {
+      transform: translateY(-5px); border-color: var(--ink-3);
+      box-shadow: 0 24px 48px -26px rgba(0,0,0,0.2);
+    }
+    .anv-write-option.ai {
+      border-color: color-mix(in oklab, var(--accent) 35%, var(--line-2));
+      background: linear-gradient(160deg, color-mix(in oklab, var(--accent) 7%, var(--bg-card)), var(--bg-card));
+    }
+    .anv-write-option.ai::after {
+      background: radial-gradient(circle, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 70%);
+    }
+    .anv-write-option.ai:hover {
+      border-color: var(--accent); transform: translateY(-6px) scale(1.008);
+      box-shadow: 0 28px 56px -22px color-mix(in oklab, var(--accent) 35%, transparent);
+    }
+    .anv-wo-badge {
+      position: absolute; top: 22px; right: 22px; z-index: 2;
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+      background: linear-gradient(120deg, var(--accent), #6366F1);
+      padding: 4px 10px; border-radius: 99px;
+      box-shadow: 0 4px 12px -4px color-mix(in oklab, var(--accent) 50%, transparent);
+    }
+    .anv-wo-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-alt); color: var(--ink-2); margin-bottom: 20px;
+      transition: transform 0.25s;
+    }
+    .anv-write-option:hover .anv-wo-icon { transform: scale(1.08) rotate(-4deg); }
+    .anv-write-option.ai .anv-wo-icon {
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 22%, transparent), color-mix(in oklab, #6366F1 18%, transparent));
+      color: var(--accent);
+    }
+    .anv-wo-title { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); margin-bottom: 8px; }
+    .anv-wo-desc { font-size: 13.5px; color: var(--ink-3); line-height: 1.55; margin-bottom: 22px; }
+    .anv-wo-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .anv-wo-meta { display: inline-flex; align-items: center; gap: 5px; font-family: 'Archivo', sans-serif; font-size: 11px; color: var(--ink-4); font-weight: 500; }
+    .anv-wo-cta { font-size: 13px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; transition: gap 0.15s; }
+    .anv-write-option.ai .anv-wo-cta { color: var(--accent); }
+    .anv-write-option:hover .anv-wo-cta { gap: 9px; }
+
+    /* Back link */
+    .anv-write-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-3);
+      margin-bottom: 20px; transition: color 0.15s;
+    }
+    .anv-write-back:hover { color: var(--ink); }
+
+    /* Centered single-column layout — the form is the whole show,
+       framed with generous margins and sitting on the atmospheric
+       backdrop above instead of a flat white page */
+    .anv-write-centered { max-width: 760px; margin: 0 auto; }
+
+    /* Form card */
+    .anv-write-card {
+      background: var(--bg-card); border: 1px solid var(--line);
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 40px 80px -36px rgba(0,0,0,0.22);
+    }
+    .anv-write-card-head {
+      padding: 22px 32px; border-bottom: 1px solid var(--line);
+      font-size: 15.5px; font-weight: 600; color: var(--ink);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .anv-write-card-head-icon {
+      width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: color-mix(in oklab, var(--accent) 13%, transparent); color: var(--accent);
+    }
+    .anv-write-card-head .anv-tab-spark { color: var(--accent); }
+    .anv-write-card-body { padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+
+    .anv-field-label { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; display: block; }
+    .anv-field-hint { font-size: 11.5px; color: var(--ink-4); margin-top: 6px; }
+    .anv-input, .anv-select, .anv-textarea {
+      width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 10px;
+      border: 1.5px solid var(--line-2); font-family: inherit; font-size: 14px; color: var(--ink);
+      background: var(--bg); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .anv-input:focus, .anv-select:focus, .anv-textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+    .anv-textarea { min-height: 220px; resize: vertical; line-height: 1.6; font-family: 'Geist', sans-serif; }
+
+    .anv-upload-tabs { display: flex; gap: 4px; background: var(--bg-alt); border-radius: 10px; padding: 4px; width: fit-content; }
+    .anv-upload-tab {
+      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      color: var(--ink-3); cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .anv-upload-tab.active { background: var(--bg-card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    .anv-dropzone {
+      border: 2px dashed var(--line-2); border-radius: 14px; padding: 40px 20px;
+      text-align: center; transition: border-color 0.15s, background 0.15s; cursor: pointer;
+    }
+    .anv-dropzone:hover, .anv-dropzone.drag { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 4%, transparent); }
+    .anv-dropzone-icon { color: var(--ink-4); margin-bottom: 12px; }
+    .anv-dropzone-text { font-size: 14px; color: var(--ink-2); font-weight: 500; }
+    .anv-dropzone-text span { color: var(--accent); text-decoration: underline; }
+    .anv-dropzone-sub { font-size: 11.5px; color: var(--ink-4); margin-top: 6px; }
+    .anv-dropzone-file { display: none; margin-top: 14px; align-items: center; gap: 8px; justify-content: center; font-size: 13px; color: var(--ink-2); font-weight: 500; }
+    .anv-dropzone-file.show { display: flex; }
+
+    .anv-write-submit, .anv-ai-generate-btn {
+      align-self: flex-start; padding: 13px 26px; border-radius: 11px; border: none;
+      background: linear-gradient(135deg, var(--ink), #1a1a1c); color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 10px 24px -12px rgba(0,0,0,0.35);
+    }
+    .anv-write-submit:hover, .anv-ai-generate-btn:hover {
+      background: linear-gradient(135deg, var(--accent), #00b38a);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px -12px color-mix(in oklab, var(--accent) 55%, transparent);
+    }
+
+    .anv-ai-generating { padding: 48px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .anv-ai-spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--line-2); border-top-color: var(--accent); animation: anvSpin 0.9s linear infinite; }
+    @keyframes anvSpin { to { transform: rotate(360deg); } }
+    .anv-ai-generating-title { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .anv-ai-generating-sub { font-size: 13px; color: var(--ink-3); max-width: 340px; line-height: 1.55; }
+
+    .anv-ai-draft { padding: 28px; }
+    .anv-ai-draft-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, transparent);
+      padding: 4px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    .anv-ai-draft-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 14px; }
+    .anv-ai-draft-points { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-direction: column; gap: 9px; }
+    .anv-ai-draft-points li { display: flex; gap: 9px; font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+    .anv-ai-draft-points li::before { content: '✦'; color: var(--accent); flex-shrink: 0; }
+    .anv-ai-draft-body { font-size: 14px; line-height: 1.7; color: var(--ink-2); background: var(--bg-alt); border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; }
+    .anv-ai-draft-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .anv-btn-outline-sm {
+      padding: 10px 18px; border-radius: 9px; border: 1.5px solid var(--line-2); background: var(--bg-card);
+      color: var(--ink-2); font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    }
+    .anv-btn-outline-sm:hover { border-color: var(--ink-3); color: var(--ink); }
+
+    .anv-write-success { display: flex; align-items: center; gap: 20px; padding: 32px 28px; animation: anvIn 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+    .anv-success-badge {
+      position: relative; flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .anv-success-ring {
+      position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--accent);
+      opacity: 0; animation: anvSuccessPulse 1.6s ease-out 0.3s 2;
+    }
+    @keyframes anvSuccessPulse {
+      0% { transform: scale(0.85); opacity: 0.7; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+    .anv-success-title { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); margin-bottom: 4px; }
+    .anv-success-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.5; }
+
+    /* Wizard progress + sub-step nav */
+    .anv-wizard-progress { display: flex; align-items: flex-start; padding: 20px 28px 4px; }
+    .anv-wizard-step-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 7px; flex-shrink: 0; width: 92px;
+    }
+    .anv-wizard-step-dot span {
+      width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700;
+      background: var(--bg-alt); color: var(--ink-4); border: 1.5px solid var(--line-2);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .anv-wizard-step-dot label { font-size: 11px; font-weight: 600; color: var(--ink-4); transition: color 0.2s; white-space: nowrap; }
+    .anv-wizard-step-dot.active span { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .anv-wizard-step-dot.active label { color: var(--ink); }
+    .anv-wizard-step-dot.done span { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .anv-wizard-step-dot.done label { color: var(--ink-2); }
+    .anv-wizard-step-line { flex: 1; height: 1.5px; background: var(--line-2); margin-top: 13px; }
+    .anv-wizard-step-line.done { background: var(--accent); }
+
+    .anv-wizard-substep { animation: anvIn 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+    .anv-wizard-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; }
+    .anv-wizard-back-step {
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-3); transition: color 0.15s;
+    }
+    .anv-wizard-back-step:hover { color: var(--ink); }
+    .anv-wizard-next {
+      margin-left: auto; padding: 11px 20px; border-radius: 9px; border: none;
+      background: var(--ink); color: #fff; font-family: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: background 0.15s, gap 0.15s;
+    }
+    .anv-wizard-next:hover { background: var(--accent); gap: 10px; }
+
+    /* Paired fields side by side */
+    .anv-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .anv-optional { font-weight: 400; color: var(--ink-4); }
+
+    /* Word counter */
+    .anv-word-count {
+      font-family: 'Archivo', sans-serif; font-size: 11px; color: var(--ink-4);
+      text-align: right; margin-top: 6px;
+    }
+
+    /* Source material (docs + links) block */
+    .anv-source-block { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+    .anv-dropzone-sm { padding: 26px 16px; }
+    .anv-file-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .anv-file-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px;
+      border-radius: 8px; background: var(--bg-card); border: 1px solid var(--line-2);
+      font-size: 12px; color: var(--ink-2); font-weight: 500;
+    }
+    .anv-file-chip svg { color: var(--accent); flex-shrink: 0; }
+    .anv-file-chip button {
+      background: none; border: none; cursor: pointer; color: var(--ink-4); font-size: 13px;
+      line-height: 1; padding: 0 0 0 4px;
+    }
+    .anv-file-chip button:hover { color: var(--ink); }
+
+    /* Extracting-text loading row */
+    .anv-extracting {
+      display: flex; align-items: center; gap: 10px; margin-top: 12px;
+      font-size: 13px; color: var(--ink-3); font-weight: 500;
+    }
+    .anv-ai-spinner-sm { width: 18px; height: 18px; border-width: 2px; }
+
+    /* Toggle (checkbox) row */
+    .anv-toggle-row {
+      display: flex; align-items: flex-start; gap: 11px; cursor: pointer;
+      font-size: 13.5px; color: var(--ink-2); line-height: 1.5;
+    }
+    .anv-toggle-row input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .anv-toggle-box {
+      width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--line-2);
+      flex-shrink: 0; margin-top: 1px; position: relative; transition: background 0.12s, border-color 0.12s;
+    }
+    .anv-toggle-row input:checked + .anv-toggle-box { background: var(--accent); border-color: var(--accent); }
+    .anv-toggle-row input:checked + .anv-toggle-box::after {
+      content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px;
+      border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+    }
+
+    /* Auto-selected cover image */
+    .anv-auto-image {
+      display: flex; gap: 14px; align-items: center; padding: 14px; border: 1px solid var(--line);
+      border-radius: 14px; background: var(--bg-alt);
+    }
+    .anv-auto-image-img { width: 84px; height: 64px; border-radius: 9px; object-fit: cover; flex-shrink: 0; background: var(--line-2); }
+    .anv-auto-image-body { min-width: 0; flex: 1; }
+    .anv-auto-image-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+    /* Suggested tag chips */
+    .anv-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .anv-tag-chip {
+      font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
+      padding: 6px 12px; border-radius: 99px; background: color-mix(in oklab, var(--accent) 12%, transparent);
+      color: var(--accent); border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+    }
+
+    /* Refine panel */
+    .anv-refine { border-top: 1px solid var(--line); padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 12px; }
+    .anv-refine-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+    /* Share block */
+    .anv-share-block { padding: 20px 28px 28px; border-top: 1px solid var(--line); }
+    .anv-share-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .anv-share-actions a.anv-btn-outline-sm { text-decoration: none; display: inline-flex; align-items: center; }
+
+    /* ═══ Full article preview — mirrors article.html's real layout ═══ */
+    .anv-preview-page-label {
+      display: flex; align-items: center; gap: 12px; justify-content: space-between;
+      font-size: 12.5px; color: var(--ink-3); margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .anv-preview-page-label-text { display: flex; align-items: center; gap: 8px; }
+    .anv-preview-page-label svg { color: var(--accent); flex-shrink: 0; }
+    .anv-preview-edit-toggle {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 15px; border-radius: 9px; border: 1.5px solid var(--line-2); background: var(--bg-card);
+      font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .anv-preview-edit-toggle:hover { border-color: var(--ink-3); color: var(--ink); }
+    .anv-preview-edit-toggle.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .anv-preview-page {
+      background: var(--bg-card); border: 1px solid var(--line); border-radius: 22px; overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 32px 64px -32px rgba(0,0,0,0.2);
+      animation: anvIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .anv-preview-hero { position: relative; height: 220px; overflow: hidden; background: var(--ink); }
+    .anv-preview-hero-img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.6; }
+    .anv-preview-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(11,11,12,0.88) 0%, rgba(11,11,12,0.25) 55%, transparent 100%);
+    }
+    .anv-preview-hero-content {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 28px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .anv-preview-hero-back { font-size: 12.5px; color: rgba(255,255,255,0.6); }
+    .anv-preview-hero-cat {
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+      padding: 4px 12px; border-radius: 100px;
+    }
+
+    .anv-preview-body-card { padding: 32px 40px 40px; }
+    .anv-preview-h1 { font-size: clamp(22px, 2.6vw, 32px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; color: var(--ink); }
+    .anv-preview-meta { display: flex; align-items: center; gap: 18px; margin-top: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .anv-preview-meta-item {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-3); font-weight: 500;
+    }
+    .anv-preview-meta-item svg { color: var(--ink-4); flex-shrink: 0; }
+
+    .anv-preview-ai-summary {
+      margin-top: 24px; padding: 18px 22px; border-radius: 14px;
+      background: color-mix(in oklab, var(--accent) 6%, var(--bg-alt));
+      border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+    }
+    .anv-preview-summary-head {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .anv-preview-summary-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .anv-preview-summary-points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .anv-preview-summary-points li { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); padding-left: 16px; position: relative; }
+    .anv-preview-summary-points li::before { content: '✦'; position: absolute; left: 0; top: 1px; color: var(--accent); font-size: 10px; }
+
+    .anv-preview-article-body { margin-top: 26px; font-size: 15.5px; line-height: 1.75; color: var(--ink-2); }
+    .anv-preview-article-body p { margin: 0 0 18px; }
+    .anv-preview-article-body p:last-child { margin-bottom: 0; }
+    .anv-preview-article-body h2 {
+      font-size: clamp(17px, 1.8vw, 21px); font-weight: 500; letter-spacing: -0.02em;
+      color: var(--ink); margin: 28px 0 12px; line-height: 1.25;
+    }
+    .anv-preview-article-body ul { list-style: none; margin: 0 0 18px; display: flex; flex-direction: column; gap: 9px; }
+    .anv-preview-article-body ul li { display: flex; gap: 10px; align-items: flex-start; }
+    .anv-preview-article-body ul li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 10px; }
+    .anv-preview-article-body blockquote {
+      margin: 22px 0; padding: 16px 20px; border-left: 3px solid var(--accent); background: var(--bg-alt);
+      border-radius: 0 10px 10px 0; font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
+      font-size: 16px; line-height: 1.5; color: var(--ink);
+    }
+
+    .anv-preview-disclaimer {
+      margin-top: 30px; padding: 13px 16px; background: var(--bg-alt); border-radius: 10px; border: 1px solid var(--line);
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: 0.02em; color: var(--ink-4); line-height: 1.6;
+    }
+
+    /* Inline "Edit content" mode — the title/summary/body become directly editable */
+    .anv-preview-page.editing #anv-fp-title,
+    .anv-preview-page.editing #anv-fp-summary,
+    .anv-preview-page.editing #anv-fp-body {
+      outline: 2px dashed color-mix(in oklab, var(--accent) 55%, transparent);
+      outline-offset: 6px; border-radius: 8px; cursor: text;
+      background: color-mix(in oklab, var(--accent) 4%, transparent);
+    }
+    .anv-preview-page.editing #anv-fp-title:focus,
+    .anv-preview-page.editing #anv-fp-body:focus { outline-style: solid; }
+
+    .anv-preview-confirm-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      margin-top: 24px; padding: 18px 24px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
+    }
+    .anv-preview-confirm-text { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+    @media (max-width: 760px) {
+      .anv-preview-body-card { padding: 24px 22px 28px; }
+      .anv-preview-hero { height: 170px; }
+    }
+
+    @media (max-width: 760px) {
+      .anv-write-options { grid-template-columns: 1fr; }
+      .anv-field-row { grid-template-columns: 1fr; }
+      .anv-wizard-step-dot label { display: none; }
+      .anv-wizard-step-dot { width: auto; }
+    }
   </style>
 </head>
 
 <body>
-<script>(function(){var t=localStorage.getItem("expertly_sidebar_theme")||"dark";if(t==="light")document.documentElement.classList.add("sidebar-light");})()</script>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="d1-shell" id="d1-shell">
@@ -339,12 +815,6 @@
         </a>
       </div>
       <div class="sb-cta-group">
-        <div class="sb-utility-row">
-          <button class="d1-collapse-clone d1-collapse-btn" aria-label="Toggle sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button class="d1-theme-btn" title="Toggle appearance" aria-label="Toggle sidebar color"></button>
-        </div>
         <a href="apply.html" class="sb-btn-primary">Apply Now</a>
         <a href="login.html" class="sb-btn-ghost">Sign In</a>
       </div>
@@ -386,8 +856,22 @@
       </div>
     </section>
 
+    <!-- ── Tabs: Browse Articles / View my Articles, + Write an Article button ── -->
+    <div class="container-wide" style="padding-top:36px;">
+      <div class="anv-tab-row">
+        <div class="anv-tab-list">
+          <button class="anv-tab active" id="anv-tab-browse" data-tab="browse">Browse Articles</button>
+          <button class="anv-tab" id="anv-tab-mine" data-tab="mine" style="display:none;">View my Articles</button>
+        </div>
+        <button class="anv-write-cta-btn" id="anv-write-btn" style="display:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Write an Article
+        </button>
+      </div>
+    </div>
+
     <!-- ── Browsable V3 bento grid ── -->
-    <section class="anv-grid-wrap">
+    <section class="anv-grid-wrap" id="anv-browse-panel">
       <div class="container-wide">
         <div class="anv-section-head">
           <div class="anv-section-head-right">
@@ -428,6 +912,412 @@
           <button class="btn btn-outline" id="anv-reset">View all</button>
         </div>
         <div class="anv-grid" id="anv-grid"></div>
+      </div>
+    </section>
+
+    <!-- ── View my Articles (members only) ── -->
+    <section class="anv-grid-wrap" id="anv-my-panel" style="display:none;">
+      <div class="container-wide">
+        <div class="anv-grid-head" style="border-bottom:1px solid var(--line); margin-bottom:20px;">
+          <span class="anv-grid-count mono" id="anv-my-count"></span>
+        </div>
+        <div id="anv-my-empty" class="anv-my-empty" style="display:none;">
+          <div class="anv-my-empty-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          </div>
+          <div class="anv-my-empty-title">You haven't published anything yet</div>
+          <div class="anv-my-empty-sub">Write your first article and it'll show up here — including anything still waiting on editorial review.</div>
+          <button class="anv-write-cta-btn" id="anv-my-empty-write-btn" style="margin:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Write an Article
+          </button>
+        </div>
+        <div class="anv-grid" id="anv-my-grid"></div>
+      </div>
+    </section>
+
+    <!-- ── Write an Article (members only) ── -->
+    <section class="anv-write-wrap" id="anv-write-panel" style="display:none;">
+      <div class="container-wide">
+
+        <button class="anv-write-exit" type="button" id="anv-write-exit">← Back to articles</button>
+
+        <!-- Step 0: choose a path -->
+        <div id="anv-write-choose">
+          <div class="anv-write-intro">
+            <span class="eyebrow" style="display:inline-flex;align-items:center;gap:9px;">
+              <span style="width:22px;height:2px;background:var(--accent);border-radius:2px;display:inline-block;"></span>
+              For members
+            </span>
+            <h2 class="anv-write-title">Share your expertise.</h2>
+            <p class="anv-write-sub">Publish an article and reach verified practitioners across 20+ countries. Choose how you'd like to create it.</p>
+          </div>
+
+          <div class="anv-write-stats">
+            <span class="anv-write-stat">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <b>20,000+</b>&nbsp;monthly readers
+            </span>
+            <span class="anv-write-stat">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <b>20+</b>&nbsp;countries reached
+            </span>
+            <span class="anv-write-stat">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <b>48hr</b>&nbsp;editorial turnaround
+            </span>
+          </div>
+
+          <div class="anv-write-options">
+            <button class="anv-write-option" type="button" data-path="upload">
+              <div class="anv-wo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><path d="M12 18v-6M9.5 14.5L12 12l2.5 2.5"/></svg>
+              </div>
+              <div class="anv-wo-title">Write it yourself</div>
+              <div class="anv-wo-desc">Upload a file or paste your own text. Full control over your voice and structure.</div>
+              <div class="anv-wo-foot">
+                <span class="anv-wo-meta"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ~5 min</span>
+                <span class="anv-wo-cta">Start writing <span>→</span></span>
+              </div>
+            </button>
+
+            <button class="anv-write-option ai" type="button" data-path="ai">
+              <div class="anv-wo-badge">AI-Powered</div>
+              <div class="anv-wo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div class="anv-wo-title">Let Expertly AI draft it</div>
+              <div class="anv-wo-desc">Answer a few quick questions and our AI writes a complete first draft for you to review.</div>
+              <div class="anv-wo-foot">
+                <span class="anv-wo-meta"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ~2 min</span>
+                <span class="anv-wo-cta">Answer questions <span>→</span></span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 1a: write it yourself -->
+        <div id="anv-write-upload" style="display:none;">
+          <button class="anv-write-back" type="button" data-back>← Back</button>
+          <div class="anv-write-centered">
+          <div class="anv-write-card">
+            <div class="anv-write-card-head">
+              <span class="anv-write-card-head-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              </span>
+              Write your article
+            </div>
+            <div class="anv-write-card-body">
+              <div>
+                <label class="anv-field-label" for="anv-up-title">Title</label>
+                <input class="anv-input" id="anv-up-title" type="text" placeholder="e.g. Navigating Stamp Duty on Cross-Border Mergers">
+              </div>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="anv-up-cat">Practice area</label>
+                  <select class="anv-select" id="anv-up-cat">
+                    <option>Direct Tax</option>
+                    <option>Indirect Tax</option>
+                    <option>Corporate Law</option>
+                    <option>M&amp;A</option>
+                    <option>IP &amp; Tech</option>
+                    <option>Transfer Pricing</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="anv-up-country">Country &amp; state (relevance)</label>
+                  <input class="anv-input" id="anv-up-country" type="text" placeholder="e.g. Singapore">
+                </div>
+              </div>
+              <div>
+                <div class="anv-upload-tabs" id="anv-upload-mode-tabs">
+                  <div class="anv-upload-tab active" data-mode="text">Paste / write text</div>
+                  <div class="anv-upload-tab" data-mode="file">Upload a document</div>
+                </div>
+                <div id="anv-upload-text-wrap" style="margin-top:14px;">
+                  <textarea class="anv-textarea" id="anv-up-text" placeholder="Start writing, or paste your draft here…"></textarea>
+                  <div class="anv-word-count" id="anv-up-wordcount">0 words</div>
+                </div>
+                <div id="anv-upload-file-wrap" style="display:none; margin-top:14px;">
+                  <div class="anv-dropzone" id="anv-dropzone">
+                    <div class="anv-dropzone-icon">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <div class="anv-dropzone-text">Drag &amp; drop a document here, or <span>browse</span></div>
+                    <div class="anv-dropzone-sub">.DOCX, .PDF, or .TXT — we'll extract the article text for you</div>
+                    <div class="anv-dropzone-file" id="anv-dropzone-file">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+                      <span id="anv-dropzone-filename"></span>
+                    </div>
+                    <input type="file" id="anv-file-input" accept=".doc,.docx,.pdf,.txt" hidden>
+                  </div>
+                  <div class="anv-extracting" id="anv-extracting" style="display:none;">
+                    <div class="anv-ai-spinner anv-ai-spinner-sm"></div>
+                    Extracting text from your document…
+                  </div>
+                </div>
+              </div>
+
+              <!-- Auto-selected cover image -->
+              <div class="anv-auto-image" id="anv-up-image-block">
+                <img class="anv-auto-image-img" id="anv-up-image-preview" src="" alt="">
+                <div class="anv-auto-image-body">
+                  <div class="anv-auto-image-label">Auto-selected cover image</div>
+                  <div class="anv-field-hint" style="margin-top:2px;">Picked to match your practice area — swap it any time before submitting.</div>
+                  <button class="anv-btn-outline-sm" id="anv-up-image-shuffle" type="button" style="margin-top:8px;">Try another image</button>
+                </div>
+              </div>
+
+              <!-- Auto-suggested tags -->
+              <div id="anv-up-tags-block" style="display:none;">
+                <label class="anv-field-label">Suggested tags</label>
+                <div class="anv-tag-row" id="anv-up-tags"></div>
+              </div>
+
+              <button class="anv-write-submit" id="anv-upload-submit" type="button">
+                Preview article
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <div class="anv-field-hint">See exactly how it'll look on Expertly before you submit it for editorial review.</div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 1b: Expertly AI wizard -->
+        <div id="anv-write-ai" style="display:none;">
+          <button class="anv-write-back" type="button" data-back>← Back</button>
+          <div class="anv-write-centered">
+          <div class="anv-write-card">
+
+            <div id="anv-ai-form-wrap">
+              <div class="anv-write-card-head">
+                <span class="anv-write-card-head-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </span>
+                Expertly AI — a few quick questions
+              </div>
+
+              <!-- Progress -->
+              <div class="anv-wizard-progress" id="anv-wizard-progress">
+                <div class="anv-wizard-step-dot active" data-step="1"><span>1</span><label>The basics</label></div>
+                <div class="anv-wizard-step-line"></div>
+                <div class="anv-wizard-step-dot" data-step="2"><span>2</span><label>Your input</label></div>
+                <div class="anv-wizard-step-line"></div>
+                <div class="anv-wizard-step-dot" data-step="3"><span>3</span><label>Sources &amp; style</label></div>
+              </div>
+
+              <!-- Sub-step 1: the basics -->
+              <div class="anv-write-card-body anv-wizard-substep" id="anv-ai-step-1">
+                <div>
+                  <label class="anv-field-label" for="anv-ai-title">Title of the article</label>
+                  <input class="anv-input" id="anv-ai-title" type="text" placeholder="e.g. GST implications for SaaS exports">
+                </div>
+                <div class="anv-field-row">
+                  <div>
+                    <label class="anv-field-label" for="anv-ai-cat">Practice area</label>
+                    <select class="anv-select" id="anv-ai-cat">
+                      <option>Direct Tax</option>
+                      <option>Indirect Tax</option>
+                      <option>Corporate Law</option>
+                      <option>M&amp;A</option>
+                      <option>IP &amp; Tech</option>
+                      <option>Transfer Pricing</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="anv-field-label" for="anv-ai-country">Country &amp; state (relevance)</label>
+                    <input class="anv-input" id="anv-ai-country" type="text" placeholder="e.g. India, Maharashtra">
+                  </div>
+                </div>
+                <div class="anv-wizard-nav">
+                  <span></span>
+                  <button class="anv-wizard-next" type="button" data-goto="2">Continue <span>→</span></button>
+                </div>
+              </div>
+
+              <!-- Sub-step 2: your input -->
+              <div class="anv-write-card-body anv-wizard-substep" id="anv-ai-step-2" style="display:none;">
+                <div>
+                  <label class="anv-field-label" for="anv-ai-notes">Your thoughts / notes</label>
+                  <textarea class="anv-textarea" id="anv-ai-notes" style="min-height:100px;" placeholder="What's your own take on this? Give the AI your perspective to write from."></textarea>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="anv-ai-developments">Any recent developments or regulations for this topic? <span class="anv-optional">(optional)</span></label>
+                  <textarea class="anv-textarea" id="anv-ai-developments" style="min-height:80px;" placeholder="e.g. a new circular, amendment, or ruling the article should reference"></textarea>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="anv-ai-advice">Your advice / comments for readers</label>
+                  <textarea class="anv-textarea" id="anv-ai-advice" style="min-height:80px;" placeholder="What should readers actually do with this information?"></textarea>
+                </div>
+                <div class="anv-wizard-nav">
+                  <button class="anv-wizard-back-step" type="button" data-goto="1">← Back</button>
+                  <button class="anv-wizard-next" type="button" data-goto="3">Continue <span>→</span></button>
+                </div>
+              </div>
+
+              <!-- Sub-step 3: sources & style -->
+              <div class="anv-write-card-body anv-wizard-substep" id="anv-ai-step-3" style="display:none;">
+                <div class="anv-source-block">
+                  <label class="anv-field-label">Source material <span class="anv-optional">(optional, but strongly improves quality)</span></label>
+                  <div class="anv-field-hint" style="margin:-2px 0 12px;">Upload documents or paste links you want the AI to read and pull real detail from — the more grounded the source, the less generic the draft.</div>
+
+                  <div class="anv-dropzone anv-dropzone-sm" id="anv-ai-dropzone">
+                    <div class="anv-dropzone-icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <div class="anv-dropzone-text">Drag &amp; drop documents, or <span>browse</span></div>
+                    <div class="anv-dropzone-sub">Circulars, notes, judgments, decks — .PDF, .DOCX, .TXT</div>
+                    <input type="file" id="anv-ai-file-input" accept=".doc,.docx,.pdf,.txt" multiple hidden>
+                  </div>
+                  <div class="anv-file-chip-row" id="anv-ai-file-chips"></div>
+
+                  <div style="margin-top:14px;">
+                    <label class="anv-field-label" for="anv-ai-links">Links for the AI to research <span class="anv-optional">(one per line)</span></label>
+                    <textarea class="anv-textarea" id="anv-ai-links" style="min-height:70px;" placeholder="https://…&#10;https://…"></textarea>
+                  </div>
+                </div>
+
+                <label class="anv-toggle-row" for="anv-ai-visual">
+                  <input type="checkbox" id="anv-ai-visual" checked>
+                  <span class="anv-toggle-box"></span>
+                  <span>Let Expertly AI include a table or illustration if it's relevant to the topic</span>
+                </label>
+
+                <div class="anv-field-row">
+                  <div>
+                    <label class="anv-field-label" for="anv-ai-tone">Tone</label>
+                    <select class="anv-select" id="anv-ai-tone">
+                      <option>Practical &amp; accessible</option>
+                      <option>Formal &amp; technical</option>
+                      <option>Concise briefing</option>
+                      <option>Casual &amp; conversational</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="anv-field-label" for="anv-ai-points">Anything else? <span class="anv-optional">(optional)</span></label>
+                    <input class="anv-input" id="anv-ai-points" type="text" placeholder="e.g. keep it brief, ~600 words, avoid jargon…">
+                  </div>
+                </div>
+                <div class="anv-wizard-nav">
+                  <button class="anv-wizard-back-step" type="button" data-goto="2">← Back</button>
+                  <button class="anv-ai-generate-btn" id="anv-ai-generate" type="button">
+                    Generate with Expertly AI
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="anv-ai-generating" id="anv-ai-generating" style="display:none;">
+              <div class="anv-ai-spinner"></div>
+              <div class="anv-ai-generating-title">Expertly AI is drafting your article…</div>
+              <div class="anv-ai-generating-sub">This usually takes just a few seconds.</div>
+            </div>
+
+            <div class="anv-ai-draft" id="anv-ai-draft" style="display:none;"></div>
+
+            <!-- Refine: comment/rephrase before finalizing -->
+            <div class="anv-refine" id="anv-ai-refine" style="display:none;">
+              <div class="anv-refine-label">Not quite right? Tell the AI what to change</div>
+              <textarea class="anv-textarea" id="anv-refine-notes" style="min-height:80px;" placeholder="e.g. make the second section more formal, shorten the intro, add a line on penalties…"></textarea>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="anv-refine-tone">Adjust tone</label>
+                  <select class="anv-select" id="anv-refine-tone">
+                    <option>Keep as-is</option>
+                    <option>More formal</option>
+                    <option>More casual</option>
+                    <option>More concise</option>
+                    <option>More detailed</option>
+                  </select>
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                  <button class="anv-btn-outline-sm" id="anv-refine-apply" type="button" style="width:100%;">Rephrase with these notes</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Full article preview (shared by both paths) -->
+        <div id="anv-write-preview" style="display:none;">
+          <button class="anv-write-back" type="button" id="anv-preview-back">← Edit</button>
+          <div class="anv-write-centered">
+            <div class="anv-preview-page-label">
+              <span class="anv-preview-page-label-text">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg>
+                This is exactly how your article will appear once it's live
+              </span>
+              <button class="anv-preview-edit-toggle" id="anv-preview-edit-toggle" type="button">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit content
+              </button>
+            </div>
+
+            <div class="anv-preview-page" id="anv-preview-page-el">
+              <div class="anv-preview-hero">
+                <img class="anv-preview-hero-img" id="anv-fp-hero-img" src="" alt="">
+                <div class="anv-preview-hero-overlay"></div>
+                <div class="anv-preview-hero-content">
+                  <span class="anv-preview-hero-back">← Articles</span>
+                  <span class="anv-preview-hero-cat" id="anv-fp-cat">Direct Tax</span>
+                </div>
+              </div>
+              <div class="anv-preview-body-card">
+                <h1 class="anv-preview-h1" id="anv-fp-title">Article title</h1>
+                <div class="anv-preview-meta" id="anv-fp-meta"></div>
+                <div class="anv-preview-ai-summary" id="anv-fp-summary" style="display:none;"></div>
+                <div class="anv-preview-article-body" id="anv-fp-body"></div>
+                <div class="anv-preview-disclaimer">The views expressed in this article are those of the author and do not constitute legal, tax, or financial advice. This content is published for informational purposes only.</div>
+              </div>
+            </div>
+
+            <div class="anv-preview-confirm-bar">
+              <div class="anv-preview-confirm-text">Happy with how it looks?</div>
+              <div style="display:flex; gap:10px;">
+                <button class="anv-btn-outline-sm" id="anv-preview-edit-btn" type="button">← Back to form</button>
+                <button class="anv-write-submit" id="anv-preview-confirm-btn" type="button">
+                  Submit for review
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success + Share state -->
+        <div id="anv-write-success" style="display:none;">
+          <button class="anv-write-back" type="button" data-back-choose>← Back</button>
+          <div class="anv-write-centered">
+          <div class="anv-write-card">
+            <div class="anv-write-success">
+              <div class="anv-success-badge">
+                <span class="anv-success-ring"></span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div>
+                <div class="anv-success-title">You're all set.</div>
+                <div class="anv-success-sub">Submitted for review — the editorial team typically publishes within 2 business days.</div>
+              </div>
+            </div>
+            <div class="anv-share-block">
+              <div class="anv-field-label" style="margin-bottom:4px;">Get the word out once it's live</div>
+              <div class="anv-field-hint" style="margin-bottom:14px;">Expertly doesn't auto-post on your behalf — copy your summary below, or open a pre-filled share dialog on the platforms that support one.</div>
+              <textarea class="anv-textarea" id="anv-share-text" style="min-height:90px;" readonly></textarea>
+              <div class="anv-share-actions">
+                <button class="anv-btn-outline-sm" id="anv-share-copy" type="button">Copy text</button>
+                <a class="anv-btn-outline-sm" id="anv-share-linkedin" href="#" target="_blank" rel="noopener">Share on LinkedIn</a>
+                <a class="anv-btn-outline-sm" id="anv-share-reddit" href="#" target="_blank" rel="noopener">Share on Reddit</a>
+                <button class="anv-btn-outline-sm" id="anv-share-other" type="button">Copy for Quora / Medium</button>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -638,6 +1528,516 @@
       };
 
       renderGrid();
+    });
+  </script>
+
+  <!-- ── "Write an Article" tab: member gate + tab switching + mock flows ── -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let session = null;
+      try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
+      const isMember = !!(session && session.role === 'member');
+      const articles = window.EXPERTLY_ARTICLES || [];
+      const members  = window.EXPERTLY_MEMBERS  || [];
+
+      const tabBrowse   = document.getElementById('anv-tab-browse');
+      const tabMine     = document.getElementById('anv-tab-mine');
+      const writeBtn    = document.getElementById('anv-write-btn');
+      const browsePanel = document.getElementById('anv-browse-panel');
+      const minePanel   = document.getElementById('anv-my-panel');
+      const writePanel  = document.getElementById('anv-write-panel');
+
+      if (isMember) { tabMine.style.display = 'flex'; writeBtn.style.display = 'inline-flex'; }
+
+      let lastTab = 'browse';
+
+      function showTab(name) {
+        lastTab = name;
+        const mine = name === 'mine';
+        tabBrowse.classList.toggle('active', !mine);
+        tabMine.classList.toggle('active', mine);
+        browsePanel.style.display = mine ? 'none' : '';
+        minePanel.style.display = mine ? '' : 'none';
+        writePanel.style.display = 'none';
+        writeBtn.classList.remove('active');
+        if (mine) renderMyArticles();
+      }
+      tabBrowse.addEventListener('click', () => showTab('browse'));
+      tabMine.addEventListener('click', () => showTab('mine'));
+
+      function openWritePanel() {
+        browsePanel.style.display = 'none';
+        minePanel.style.display = 'none';
+        writePanel.style.display = 'block';
+        writeBtn.classList.add('active');
+        showStep(stepChoose);
+      }
+      function closeWritePanel() { showTab(lastTab); }
+      writeBtn.addEventListener('click', openWritePanel);
+      document.getElementById('anv-write-exit').addEventListener('click', closeWritePanel);
+      const myEmptyWriteBtn = document.getElementById('anv-my-empty-write-btn');
+      if (myEmptyWriteBtn) myEmptyWriteBtn.addEventListener('click', openWritePanel);
+
+      /* ── View my Articles: mock "current author" + locally-submitted drafts ── */
+      const CURRENT_AUTHOR_ID = (members[0] && members[0].id) || null;
+      function getMySubmissions() {
+        try { return JSON.parse(localStorage.getItem('expertly_my_submissions')) || []; } catch (e) { return []; }
+      }
+      function addMySubmission(record) {
+        const list = getMySubmissions();
+        list.unshift(record);
+        localStorage.setItem('expertly_my_submissions', JSON.stringify(list));
+      }
+
+      const myGridEl = document.getElementById('anv-my-grid');
+      const myEmptyEl = document.getElementById('anv-my-empty');
+      const myCountEl = document.getElementById('anv-my-count');
+
+      function renderMyArticles() {
+        const published = articles.filter(a => a.author === CURRENT_AUTHOR_ID)
+          .map(a => ({ id: a.id, title: a.title, category: a.category, image: a.image, date: a.date, readTime: a.readTime, status: 'published', href: `article.html?id=${a.id}` }));
+        const pending = getMySubmissions();
+        const mine = [...pending, ...published];
+
+        myCountEl.textContent = `${mine.length} article${mine.length !== 1 ? 's' : ''}`;
+        if (!mine.length) { myGridEl.innerHTML = ''; myEmptyEl.style.display = 'block'; return; }
+        myEmptyEl.style.display = 'none';
+
+        myGridEl.innerHTML = mine.map((a, i) => {
+          const delay = Math.min(i * 45, 360);
+          const isPending = a.status !== 'published';
+          const wrapTag = isPending ? 'div' : 'a';
+          const hrefAttr = isPending ? '' : `href="${a.href}"`;
+          return `
+        <${wrapTag} class="anv-card" ${hrefAttr}
+           style="animation:anvIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
+          <span class="anv-status-badge${isPending ? ' pending' : ''}">${isPending ? 'Pending review' : 'Published'}</span>
+          <div class="anv-card-img">
+            <img src="${a.image}" alt="${a.title}" loading="lazy" />
+          </div>
+          <div class="anv-card-body">
+            <div class="anv-card-top-row">
+              <span class="anv-cat-label">${a.category}</span>
+              <span class="anv-card-meta">${a.date}${a.readTime ? ` · ${a.readTime}` : ''}</span>
+            </div>
+            <h3 class="anv-card-title">${a.title}</h3>
+          </div>
+        </${wrapTag}>`;
+        }).join('');
+      }
+
+      /* ── Step navigation within the Write panel ── */
+      const stepChoose  = document.getElementById('anv-write-choose');
+      const stepUpload  = document.getElementById('anv-write-upload');
+      const stepAi      = document.getElementById('anv-write-ai');
+      const stepPreview = document.getElementById('anv-write-preview');
+      const stepSuccess = document.getElementById('anv-write-success');
+      const steps = [stepChoose, stepUpload, stepAi, stepPreview, stepSuccess];
+
+      function showStep(el) {
+        steps.forEach(s => { s.style.display = (s === el) ? '' : 'none'; });
+      }
+
+      /* ── Sample full-length article — stands in for real long-form output
+         so the preview always shows a genuinely complete piece, since
+         neither write path can produce real finished prose without a
+         real backend/LLM wired in. Testing/demo content only. ── */
+      const SAMPLE_BODY_HTML = `
+        <p>Understanding stamp duty implications on mergers, demergers, slump sales, and restructuring can substantially impact your organization's bottom line.</p>
+        <h2>Why Stamp Duty Deserves Early Attention in Restructuring</h2>
+        <p>When advisors plan mergers, demergers, or slump sales, stamp duty is often treated as an afterthought — a cost to be noted in the final transaction documentation rather than a factor that shapes the structure. This approach is costly. In India alone, stamp duty rates on instrument transfers vary from as little as 0.1% to over 5% depending on the state, the nature of the instrument, and the assets involved. On a ₹1,000 crore restructuring, that difference is not marginal.</p>
+        <h2>State-by-State Divergence: The Core Challenge</h2>
+        <p>India's federal structure means stamp duty on commercial instruments is a state subject. Each of the 28 states and 8 union territories maintains its own Stamp Act, its own rate schedules, and its own procedural requirements. Maharashtra, Karnataka, and Delhi are most frequently encountered in large corporate restructurings — and all three take meaningfully different approaches to key instruments.</p>
+        <ul>
+          <li>Maharashtra charges stamp duty on amalgamation orders at 10% of the market value of shares issued, subject to a cap that varies by instrument type.</li>
+          <li>Karnataka recently revised its approach to slump sales, treating them as conveyances of movable and immovable property separately.</li>
+          <li>Delhi continues to follow the Indian Stamp Act 1899 for many categories, with modernisation pending legislative action.</li>
+        </ul>
+        <h2>NCLT Schemes and the Exemption Landscape</h2>
+        <p>One of the most frequently misunderstood points is that stamp duty exemptions under amalgamation schemes approved by the National Company Law Tribunal (NCLT) are not automatic. While Section 394 of the Companies Act provides for transfer of property and liabilities in NCLT-sanctioned amalgamations, stamp duty treatment depends on state-specific provisions, the nature of the assets involved, and whether the scheme explicitly addresses the issue.</p>
+        <blockquote>"The absence of explicit stamp duty planning in NCLT petitions has resulted in significant unexpected liabilities being raised by state revenue authorities years after the transaction closes."</blockquote>
+        <h2>Practical Planning Steps</h2>
+        <p>Advisors structuring transactions across multiple states should build stamp duty analysis into the pre-structuring phase, not the documentation phase. A state-by-state mapping of assets, instruments, and applicable rates — cross-referenced against available exemptions and concessions — will often reveal structuring options that reduce overall stamp duty cost without altering the economic substance of the transaction.</p>
+        <p>Early engagement with state stamp authorities, particularly where novel instruments or cross-state property transfers are involved, is increasingly recommended. Several recent restructurings have benefited from advance rulings that provided certainty on stamp duty treatment, reducing the risk of post-transaction disputes.</p>
+      `;
+
+      /* ── Full article preview (shared by both write paths) ── */
+      let pendingSubmission = null;
+      let returnStepFromPreview = stepChoose;
+      const previewPageEl = document.getElementById('anv-preview-page-el');
+      const previewEditToggle = document.getElementById('anv-preview-edit-toggle');
+      let previewEditing = false;
+
+      function setPreviewEditing(on) {
+        previewEditing = on;
+        previewPageEl.classList.toggle('editing', on);
+        ['anv-fp-title', 'anv-fp-summary', 'anv-fp-body'].forEach(id => {
+          document.getElementById(id).setAttribute('contenteditable', on ? 'true' : 'false');
+        });
+        previewEditToggle.classList.toggle('active', on);
+        previewEditToggle.innerHTML = on
+          ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg> Done editing`
+          : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit content`;
+        if (on) document.getElementById('anv-fp-title').focus();
+      }
+      previewEditToggle.addEventListener('click', () => setPreviewEditing(!previewEditing));
+
+      function openPreview(data) {
+        returnStepFromPreview = data.source === 'ai' ? stepAi : stepUpload;
+        const bodyHtml = data.bodyHtml || (data.bodyParas || []).map(p => `<p>${p}</p>`).join('');
+        const wordCount = document.createElement('div');
+        wordCount.innerHTML = bodyHtml;
+        const words = (wordCount.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+
+        document.getElementById('anv-fp-hero-img').src = data.image;
+        document.getElementById('anv-fp-cat').textContent = data.category;
+        document.getElementById('anv-fp-title').textContent = data.title;
+
+        document.getElementById('anv-fp-meta').innerHTML = `
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${Math.max(1, Math.round(words / 200))} min read</span>
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>You</span>
+          ${data.country ? `<span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${data.country}</span>` : ''}
+        `;
+
+        const summaryEl = document.getElementById('anv-fp-summary');
+        if (data.summaryPoints && data.summaryPoints.length) {
+          summaryEl.style.display = '';
+          summaryEl.innerHTML = `
+            <div class="anv-preview-summary-head"><span class="anv-preview-summary-dot"></span>Expertly Summary — Powered by AI</div>
+            <ul class="anv-preview-summary-points">${data.summaryPoints.map(p => `<li>${p}</li>`).join('')}</ul>`;
+        } else {
+          summaryEl.style.display = 'none';
+        }
+
+        document.getElementById('anv-fp-body').innerHTML = bodyHtml;
+        setPreviewEditing(false);
+
+        pendingSubmission = {
+          title: data.title, category: data.category, image: data.image,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          status: 'pending',
+        };
+
+        showStep(stepPreview);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      document.getElementById('anv-preview-back').addEventListener('click', () => showStep(returnStepFromPreview));
+      document.getElementById('anv-preview-edit-btn').addEventListener('click', () => showStep(returnStepFromPreview));
+      document.getElementById('anv-preview-confirm-btn').addEventListener('click', () => {
+        if (pendingSubmission) {
+          const editedTitle = document.getElementById('anv-fp-title').textContent.trim();
+          if (editedTitle) pendingSubmission.title = editedTitle;
+          buildShareText(pendingSubmission.title);
+          addMySubmission(pendingSubmission);
+        }
+        showStep(stepSuccess);
+      });
+
+      document.querySelectorAll('.anv-write-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const isAi = btn.dataset.path === 'ai';
+          showStep(isAi ? stepAi : stepUpload);
+          if (isAi) goToSubstep(1);
+        });
+      });
+      document.querySelectorAll('[data-back]').forEach(btn => {
+        btn.addEventListener('click', () => showStep(stepChoose));
+      });
+      const backChoose = document.querySelector('[data-back-choose]');
+      if (backChoose) backChoose.addEventListener('click', () => showStep(stepChoose));
+
+      /* ── AI wizard sub-step navigation (3 mini-steps) ── */
+      const aiSubsteps = [1, 2, 3].map(n => document.getElementById(`anv-ai-step-${n}`));
+      const wizardDots = document.querySelectorAll('.anv-wizard-step-dot');
+      const wizardLines = document.querySelectorAll('.anv-wizard-step-line');
+      function goToSubstep(n) {
+        aiSubsteps.forEach((el, i) => { el.style.display = (i === n - 1) ? '' : 'none'; });
+        wizardDots.forEach(dot => {
+          const step = Number(dot.dataset.step);
+          dot.classList.toggle('active', step === n);
+          dot.classList.toggle('done', step < n);
+        });
+        wizardLines.forEach((line, i) => line.classList.toggle('done', i < n - 1));
+      }
+      document.querySelectorAll('.anv-wizard-next, .anv-wizard-back-step').forEach(btn => {
+        btn.addEventListener('click', () => goToSubstep(Number(btn.dataset.goto)));
+      });
+      wizardDots.forEach(dot => {
+        dot.addEventListener('click', () => { if (dot.classList.contains('done') || dot.classList.contains('active')) goToSubstep(Number(dot.dataset.step)); });
+        dot.style.cursor = 'pointer';
+      });
+
+      /* ── Category → auto-image pool (mock) ── */
+      const CATEGORY_IMAGES = {
+        'Direct Tax':       ['https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop'],
+        'Indirect Tax':     ['https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop'],
+        'Corporate Law':    ['https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop'],
+        'M&A':              ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=800&auto=format&fit=crop'],
+        'IP & Tech':        ['https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=800&auto=format&fit=crop'],
+        'Transfer Pricing': ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop', 'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?q=80&w=800&auto=format&fit=crop'],
+      };
+      function pickImage(cat, avoid) {
+        const pool = CATEGORY_IMAGES[cat] || CATEGORY_IMAGES['Direct Tax'];
+        const choices = pool.filter(u => u !== avoid);
+        return (choices.length ? choices : pool)[Math.floor(Math.random() * (choices.length ? choices.length : pool.length))];
+      }
+
+      /* ── Tag suggestion (mock keyword match) ── */
+      const TAG_POOL = ['Compliance', 'Cross-border', 'Regulatory update', 'Litigation', 'Restructuring', 'M&A', 'Due diligence', 'Disclosure', 'Practical guidance'];
+      function suggestTags(text, cat) {
+        const t = text.toLowerCase();
+        const hits = TAG_POOL.filter(tag => t.includes(tag.toLowerCase().split(' ')[0]));
+        const tags = [cat, ...hits];
+        while (tags.length < 3) {
+          const extra = TAG_POOL[Math.floor(Math.random() * TAG_POOL.length)];
+          if (!tags.includes(extra)) tags.push(extra);
+        }
+        return [...new Set(tags)].slice(0, 4);
+      }
+
+      /* ── Upload path: text/file mode toggle ── */
+      const modeTabs = document.getElementById('anv-upload-mode-tabs');
+      const textWrap = document.getElementById('anv-upload-text-wrap');
+      const fileWrap = document.getElementById('anv-upload-file-wrap');
+      modeTabs.querySelectorAll('.anv-upload-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          modeTabs.querySelectorAll('.anv-upload-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const isFile = tab.dataset.mode === 'file';
+          textWrap.style.display = isFile ? 'none' : '';
+          fileWrap.style.display = isFile ? '' : 'none';
+        });
+      });
+
+      /* ── Word counter (self-written) ── */
+      const upText = document.getElementById('anv-up-text');
+      const upWordCount = document.getElementById('anv-up-wordcount');
+      function updateWordCount() {
+        const words = upText.value.trim().split(/\s+/).filter(Boolean).length;
+        upWordCount.textContent = `${words} word${words === 1 ? '' : 's'}`;
+      }
+      upText.addEventListener('input', updateWordCount);
+      upText.addEventListener('input', () => maybeShowTags(upText.value));
+
+      /* ── Auto-image + auto-tags for self-written path ── */
+      const upCatSelect = document.getElementById('anv-up-cat');
+      const upImagePreview = document.getElementById('anv-up-image-preview');
+      const upTagsBlock = document.getElementById('anv-up-tags-block');
+      const upTagsEl = document.getElementById('anv-up-tags');
+      function refreshUpImage() { upImagePreview.src = pickImage(upCatSelect.value, upImagePreview.src); }
+      refreshUpImage();
+      upCatSelect.addEventListener('change', refreshUpImage);
+      document.getElementById('anv-up-image-shuffle').addEventListener('click', refreshUpImage);
+
+      let tagsShown = false;
+      function maybeShowTags(text) {
+        if (text.trim().split(/\s+/).filter(Boolean).length < 25) return;
+        tagsShown = true;
+        upTagsBlock.style.display = '';
+        upTagsEl.innerHTML = suggestTags(text, upCatSelect.value).map(t => `<span class="anv-tag-chip">${t}</span>`).join('');
+      }
+
+      /* ── Dropzone: self-written document → extract into textarea ── */
+      const dropzone = document.getElementById('anv-dropzone');
+      const fileInput = document.getElementById('anv-file-input');
+      const fileNameEl = document.getElementById('anv-dropzone-filename');
+      const fileBadge = document.getElementById('anv-dropzone-file');
+      const extracting = document.getElementById('anv-extracting');
+
+      function extractDocument(name) {
+        fileNameEl.textContent = name;
+        fileBadge.classList.add('show');
+        extracting.style.display = 'flex';
+        setTimeout(() => {
+          extracting.style.display = 'none';
+          upText.value = `[Extracted from "${name}"]\n\nThis section reproduces the body of the uploaded document as a starting draft — review and edit freely before submitting. Headings, citations, and formatting from the original file are preserved as plain text; re-apply any structure you'd like the published article to keep.`;
+          updateWordCount();
+          maybeShowTags(upText.value);
+          modeTabs.querySelectorAll('.anv-upload-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === 'text'));
+          textWrap.style.display = '';
+          fileWrap.style.display = 'none';
+        }, 1400);
+      }
+      dropzone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', () => { if (fileInput.files[0]) extractDocument(fileInput.files[0].name); });
+      ['dragover', 'dragenter'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
+      ['dragleave', 'drop'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+      dropzone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) extractDocument(e.dataTransfer.files[0].name); });
+
+      /* ── Source-material dropzone inside the AI wizard (chips, not extraction) ── */
+      const aiDropzone = document.getElementById('anv-ai-dropzone');
+      const aiFileInput = document.getElementById('anv-ai-file-input');
+      const aiFileChips = document.getElementById('anv-ai-file-chips');
+      function addSourceFile(name) {
+        const chip = document.createElement('span');
+        chip.className = 'anv-file-chip';
+        chip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span></span><button type="button" aria-label="Remove">×</button>`;
+        chip.querySelector('span').textContent = name;
+        chip.querySelector('button').addEventListener('click', () => chip.remove());
+        aiFileChips.appendChild(chip);
+      }
+      aiDropzone.addEventListener('click', () => aiFileInput.click());
+      aiFileInput.addEventListener('change', () => { Array.from(aiFileInput.files).forEach(f => addSourceFile(f.name)); });
+      ['dragover', 'dragenter'].forEach(evt => aiDropzone.addEventListener(evt, e => { e.preventDefault(); aiDropzone.classList.add('drag'); }));
+      ['dragleave', 'drop'].forEach(evt => aiDropzone.addEventListener(evt, e => { e.preventDefault(); aiDropzone.classList.remove('drag'); }));
+      aiDropzone.addEventListener('drop', e => { Array.from(e.dataTransfer.files).forEach(f => addSourceFile(f.name)); });
+
+      /* ── Share panel ── */
+      const shareText = document.getElementById('anv-share-text');
+      function buildShareText(title) {
+        const link = `https://expertly.example/article.html?id=${(title || 'article').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)}`;
+        shareText.value = `Just published on Expertly: "${title}" — sharing what I'm seeing on the ground with fellow practitioners. Read it here: ${link}`;
+        document.getElementById('anv-share-linkedin').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link);
+        document.getElementById('anv-share-reddit').href = 'https://www.reddit.com/submit?url=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title);
+      }
+      document.getElementById('anv-share-copy').addEventListener('click', (e) => {
+        navigator.clipboard && navigator.clipboard.writeText(shareText.value);
+        const btn = e.currentTarget; const old = btn.textContent;
+        btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = old; }, 1600);
+      });
+      document.getElementById('anv-share-other').addEventListener('click', (e) => {
+        navigator.clipboard && navigator.clipboard.writeText(shareText.value);
+        const btn = e.currentTarget; const old = btn.textContent;
+        btn.textContent = 'Copied — paste into Quora / Medium ✓'; setTimeout(() => { btn.textContent = old; }, 2200);
+      });
+
+      document.getElementById('anv-upload-submit').addEventListener('click', () => {
+        const title = document.getElementById('anv-up-title').value.trim() || 'My new article';
+        const hasOwnText = upText.value.trim().split(/\s+/).filter(Boolean).length > 40;
+        const bodyHtml = hasOwnText
+          ? upText.value.trim().split(/\n{2,}/).map(p => `<p>${p.trim()}</p>`).join('')
+          : SAMPLE_BODY_HTML;
+        openPreview({
+          title, category: upCatSelect.value, country: document.getElementById('anv-up-country').value.trim(),
+          image: upImagePreview.src,
+          summaryPoints: null,
+          bodyHtml,
+          source: 'upload',
+        });
+      });
+
+      /* ── AI wizard ── */
+      const aiFormWrap = document.getElementById('anv-ai-form-wrap');
+      const aiGenerating = document.getElementById('anv-ai-generating');
+      const aiDraft = document.getElementById('anv-ai-draft');
+      const aiRefine = document.getElementById('anv-ai-refine');
+
+      const SUMMARY_MAP = {
+        'Direct Tax':       ['A structural overview of how the current framework applies to this scenario.', 'Practical compliance steps to take before the next filing or reporting deadline.', 'Key risks practitioners should flag to clients proactively.'],
+        'Indirect Tax':     ['How the relevant indirect tax treatment applies across the transaction chain.', 'Common compliance pitfalls and how to avoid them.', 'What recent guidance changes for affected businesses.'],
+        'Corporate Law':    ['The governance and reporting obligations this change introduces.', 'How boards and counsel should prepare ahead of the effective date.', 'Practical implementation steps for existing structures.'],
+        'M&A':              ['Key structuring and due-diligence considerations for this kind of transaction.', 'Risks acquirers and targets frequently overlook.', 'Steps to protect deal value through closing.'],
+        'IP & Tech':        ['How this development reshapes existing licensing and liability positions.', 'What in-house counsel should review immediately.', 'Practical steps to protect IP going forward.'],
+        'Transfer Pricing': ['How this affects intercompany pricing and documentation strategy.', 'What tax authorities are scrutinising most closely right now.', 'Where the highest practical risk sits, and how to mitigate it.'],
+      };
+
+      let lastDraft = {};
+
+      function renderDraft() {
+        const { title, cat, country, notes, developments, advice, tone } = lastDraft;
+        const points = SUMMARY_MAP[cat] || SUMMARY_MAP['Direct Tax'];
+        const img = pickImage(cat);
+        const bodyText = `${country ? `Written with ${country} specifically in mind, and ` : 'Grounded '}in a ${tone.toLowerCase()} tone${notes ? `, drawing on your note that "${notes}"` : ''}. ${developments ? `It references the recent development you flagged — ${developments} — as current context. ` : ''}${advice ? `The piece closes with your guidance to readers: "${advice}"` : 'The piece closes with clear, practical next steps for readers.'}`;
+        lastDraft.img = img;
+        lastDraft.points = points;
+        lastDraft.bodyText = bodyText;
+
+        aiDraft.innerHTML = `
+          <div class="anv-ai-draft-badge">Expertly Summary — Powered by AI</div>
+          <img src="${img}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:16px;">
+          <div class="anv-ai-draft-title">${title}</div>
+          <ul class="anv-ai-draft-points">
+            ${points.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+          <div class="anv-ai-draft-body">${bodyText}</div>
+          <div class="anv-ai-draft-actions">
+            <button class="anv-write-submit" id="anv-ai-submit" type="button">
+              Preview article
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="anv-btn-outline-sm" id="anv-ai-regenerate" type="button">Regenerate</button>
+          </div>`;
+        aiDraft.style.display = 'block';
+        aiRefine.style.display = 'block';
+
+        document.getElementById('anv-ai-submit').addEventListener('click', () => {
+          openPreview({
+            title, category: cat, country, image: img,
+            summaryPoints: points,
+            bodyHtml: `<p>${bodyText}</p>` + SAMPLE_BODY_HTML,
+            source: 'ai',
+          });
+        });
+        document.getElementById('anv-ai-regenerate').addEventListener('click', () => {
+          aiDraft.style.display = 'none';
+          aiRefine.style.display = 'none';
+          aiFormWrap.style.display = '';
+        });
+      }
+
+      /* ── Cycling status messages while "generating" ── */
+      const generatingTitleEl = document.querySelector('#anv-ai-generating .anv-ai-generating-title');
+      let statusTimer = null;
+      function runStatusCycle(messages, totalMs) {
+        let i = 0;
+        generatingTitleEl.textContent = messages[0];
+        const step = Math.floor(totalMs / messages.length);
+        statusTimer = setInterval(() => {
+          i++;
+          if (i < messages.length) generatingTitleEl.textContent = messages[i];
+        }, step);
+      }
+      function stopStatusCycle() { if (statusTimer) { clearInterval(statusTimer); statusTimer = null; } }
+
+      document.getElementById('anv-ai-generate').addEventListener('click', () => {
+        lastDraft = {
+          title: document.getElementById('anv-ai-title').value.trim() || 'Untitled article',
+          cat: document.getElementById('anv-ai-cat').value,
+          country: document.getElementById('anv-ai-country').value.trim(),
+          notes: document.getElementById('anv-ai-notes').value.trim(),
+          developments: document.getElementById('anv-ai-developments').value.trim(),
+          advice: document.getElementById('anv-ai-advice').value.trim(),
+          tone: document.getElementById('anv-ai-tone').value,
+        };
+
+        aiFormWrap.style.display = 'none';
+        aiGenerating.style.display = 'flex';
+        aiDraft.style.display = 'none';
+        aiRefine.style.display = 'none';
+
+        runStatusCycle([
+          'Reading your notes and source material…',
+          'Cross-checking recent developments…',
+          'Structuring the article…',
+          'Adding finishing touches…',
+        ], 2200);
+
+        setTimeout(() => { stopStatusCycle(); renderDraft(); }, 2200);
+      });
+
+      /* ── Refine: rephrase with author's comments ── */
+      document.getElementById('anv-refine-apply').addEventListener('click', () => {
+        const note = document.getElementById('anv-refine-notes').value.trim();
+        const toneAdj = document.getElementById('anv-refine-tone').value;
+        aiDraft.style.display = 'none';
+        aiRefine.style.display = 'none';
+        aiGenerating.style.display = 'flex';
+
+        runStatusCycle([
+          'Rereading your notes…',
+          'Applying your changes…',
+          'Rephrasing the draft…',
+        ], 1500);
+
+        setTimeout(() => {
+          stopStatusCycle();
+          if (toneAdj !== 'Keep as-is') lastDraft.tone = toneAdj.replace('More ', '');
+          if (note) lastDraft.advice = `${lastDraft.advice} (Updated per your note: ${note})`.trim();
+          renderDraft();
+        }, 1500);
+      });
     });
   </script>
 <script src="assets/sidebar-theme.js"></script>

@@ -24,7 +24,7 @@
     /* ── Icon-rail → floats open on hover (Instagram-style) ──────
        The grid column stays a fixed 56px gutter at all times so the
        main content never shifts. The sidebar stays in normal grid
-       flow (still sticky) but widens beyond its 56px track on hover —
+       flow (still sticky) but widens beyond its 56px track on hover -
        grid tracks don't clip by default, so it visually overlays the
        page instead of pushing it. */
     .d1-shell {
@@ -78,8 +78,8 @@
     .sb-utility-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
     .sb-utility-row .d1-collapse-btn svg { transform: rotate(0deg); }
 
-    /* Utility row: collapse left, theme right — intentional placement */
-    .sb-utility-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    /* Utility row: collapse left, theme right - intentional placement */
+    .sb-utility-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px; }
 
     /* Nav items: icons centred in rail state */
     .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
@@ -967,7 +967,6 @@
 </head>
 
 <body>
-  <script>(function () { var t = localStorage.getItem("expertly_sidebar_theme") || "dark"; if (t === "light") document.documentElement.classList.add("sidebar-light"); })()</script>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <div class="d1-shell" id="d1-shell">
@@ -1066,14 +1065,6 @@
         </div>
         <!-- Expanded: utility row (collapse + theme) then CTAs -->
         <div class="sb-cta-group">
-          <div class="sb-utility-row">
-            <button class="d1-collapse-clone d1-collapse-btn" aria-label="Toggle sidebar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <button class="d1-theme-btn" title="Toggle appearance" aria-label="Toggle sidebar color"></button>
-          </div>
           <a href="apply.html" class="sb-btn-primary">Apply Now</a>
           <a href="login.html" class="sb-btn-ghost">Sign In</a>
         </div>
@@ -1844,7 +1835,7 @@
             <h2 class="section-title" style="margin-top: 16px;">One <span class="accent-text">platform</span>. Two
               powerful paths.</h2>
             <p class="lede" style="margin-top: 16px; max-width: 560px;">Whether you need the expertise or you are the
-              expertise — Expertly is built to deliver real value, both ways.</p>
+              expertise - Expertly is built to deliver real value, both ways.</p>
           </div>
           <div class="dual-grid">
             <div class="dual-card">
