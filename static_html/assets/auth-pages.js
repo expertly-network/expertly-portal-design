@@ -809,6 +809,19 @@ function initApplicationWizard() {
       };
 
       localStorage.setItem('expertly_application_data', JSON.stringify(appData));
+
+      if (window.ExpertlyAdmin) {
+        window.ExpertlyAdmin.pushApplication(Object.assign({}, appData, {
+          name: (appData.firstName + ' ' + appData.lastName).trim() || appData.email,
+          phone: [appData.phoneExt, appData.phone].filter(Boolean).join(' '),
+          location: [appData.city, appData.state, appData.country].filter(Boolean).join(', '),
+          practiceArea: appData.service1,
+          services: [appData.service1, appData.service2, appData.service3].filter(Boolean),
+          rateRange: (appData.rateMin || appData.rateMax) ? (appData.rateMin + '–' + appData.rateMax) : '',
+          source: 'apply'
+        }));
+      }
+
       window.location.href = 'review.html';
     });
   }

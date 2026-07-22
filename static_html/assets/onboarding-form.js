@@ -895,6 +895,34 @@ function initNavigationStepper() {
   wizardForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    if (window.ExpertlyAdmin) {
+      var normalizedWork = (formData.workExperience || []).map(function (w) {
+        return {
+          title: w.jobTitle, company: w.company, city: w.city, size: w.firmSize, url: w.companyWebsite,
+          startMonth: w.startMonth, startYear: w.startYear, isCurrent: w.isCurrent, endMonth: w.endMonth, endYear: w.endYear
+        };
+      });
+      var normalizedEdu = (formData.education || []).map(function (ed) {
+        return { institution: ed.institution, degree: ed.degree, field: ed.fieldOfStudy, start: ed.startYear, end: ed.endYear };
+      });
+
+      window.ExpertlyAdmin.pushApplication(Object.assign({}, formData, {
+        name: (formData.firstName + ' ' + formData.lastName).trim() || formData.contactEmail,
+        email: formData.contactEmail,
+        phone: [formData.phoneExtension, formData.phone].filter(Boolean).join(' '),
+        location: [formData.city, formData.state, formData.country].filter(Boolean).join(', '),
+        practiceArea: formData.firstPref,
+        services: [formData.firstPref, formData.secondPref, formData.thirdPref].filter(Boolean),
+        yearsExp: formData.yearsOfExperience,
+        linkedin: formData.linkedinUrl,
+        workHistory: normalizedWork,
+        education: normalizedEdu,
+        photoHtml: formData.profilePhoto ? '<img src="' + formData.profilePhoto + '" alt="" style="width:100%;height:100%;object-fit:cover;">' : '',
+        rateRange: (formData.minFee || formData.maxFee) ? (formData.minFee + '–' + formData.maxFee) : '',
+        source: 'onboarding'
+      }));
+    }
+
     // Vouch declaration boxes - bypass validation blocks to allow submitting
     sessionStorage.removeItem('expertly_onboarding_form');
     sessionStorage.removeItem('expertly_onboarding_step');

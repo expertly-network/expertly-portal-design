@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Expertly</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/dashboard-shell.css">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+
+  <div class="d1-shell adm-shell" id="d1-shell">
+
+    <!-- ── Admin sidebar ── -->
+    <aside class="d1-sidebar">
+      <div class="d1-logo-row">
+        <span class="d1-logo" aria-label="Expertly Admin">
+          <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
+        </span>
+      </div>
+      <span class="adm-badge">Admin</span>
+
+      <div class="d1-nav-center">
+        <nav class="d1-nav" id="adm-nav">
+          <div class="d1-nav-label">Manage</div>
+          <a href="#" data-tab="overview" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <span class="d1-nav-lbl">Overview</span>
+          </a>
+          <a href="#" data-tab="applications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+            <span class="d1-nav-lbl">Applications</span>
+            <span class="adm-nav-count" id="adm-count-applications">0</span>
+          </a>
+          <a href="#" data-tab="articles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <span class="d1-nav-lbl">Articles</span>
+            <span class="adm-nav-count" id="adm-count-articles">0</span>
+          </a>
+          <a href="#" data-tab="events">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span class="d1-nav-lbl">Events</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="d1-sidebar-foot">
+        <div class="d1-user-avatar" id="adm-user-avatar">A</div>
+        <div class="d1-user-info"><b>Admin</b><span id="adm-user-email">admin@expertly.com</span></div>
+        <button class="d1-logout-btn" id="adm-logout-btn" title="Log out" aria-label="Log out">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main class="adm-main" id="main-content">
+
+      <section class="adm-hero">
+        <div class="container-wide">
+          <span class="adm-eyebrow">Expertly Admin</span>
+          <h1 class="adm-heading">Everything that needs your review, <em>in one place.</em></h1>
+          <p class="adm-sub">Membership applications, article submissions, and the events calendar — approve, reject, and publish from here.</p>
+        </div>
+      </section>
+
+      <div class="container-wide">
+
+        <!-- ══════════════ OVERVIEW ══════════════ -->
+        <section class="adm-panel" data-panel="overview">
+          <div class="adm-stats-row">
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-pending-apps">0</span>
+              <span class="adm-stat-label">Pending applications</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-approved-apps">0</span>
+              <span class="adm-stat-label">Approved members</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-pending-articles">0</span>
+              <span class="adm-stat-label">Articles awaiting review</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-total-events">0</span>
+              <span class="adm-stat-label">Events on the calendar</span>
+            </div>
+          </div>
+
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Recent activity</h2>
+          </div>
+          <div class="adm-feed" id="adm-recent-feed">
+            <div class="adm-empty">Nothing yet — activity will show up here as applications and articles come in.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ APPLICATIONS ══════════════ -->
+        <section class="adm-panel" data-panel="applications" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Membership applications</h2>
+            <span class="adm-section-count" id="adm-apps-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Fed by the public <b>Apply</b> and <b>Onboarding</b> forms. Approving here marks the applicant as a member on this device — it doesn't create a real account since this is a front-end prototype with no server.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-apps-table">
+              <thead>
+                <tr>
+                  <th>Applicant</th>
+                  <th>Practice area</th>
+                  <th>Location</th>
+                  <th>Rate</th>
+                  <th>Source</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adm-apps-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-apps-empty">No applications yet. Submit one via <a href="apply.html">apply.html</a> or <a href="onboarding_form.html">onboarding_form.html</a> to see it appear here.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ ARTICLES ══════════════ -->
+        <section class="adm-panel" data-panel="articles" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Article submissions</h2>
+            <span class="adm-section-count" id="adm-articles-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Fed by the <b>Write an Article</b> flow on articles.html (member-only). Approving publishes it; the member will see the updated status on their "My Articles" tab.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-articles-table">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th>Category</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adm-articles-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-articles-empty">No article submissions yet. Submit one via the "Write an Article" tab on <a href="articles.html">articles.html</a> (as a signed-in member) to see it appear here.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ EVENTS ══════════════ -->
+        <section class="adm-panel" data-panel="events" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Add a new event</h2>
+          </div>
+          <form class="adm-event-form" id="adm-event-form">
+            <div class="adm-form-row">
+              <div class="adm-field">
+                <label>Event title</label>
+                <input type="text" id="adm-ev-title" placeholder="e.g. Global Transfer Pricing Summit" required>
+              </div>
+              <div class="adm-field">
+                <label>Organizer</label>
+                <input type="text" id="adm-ev-org" placeholder="e.g. Expertly Network">
+              </div>
+            </div>
+            <div class="adm-field">
+              <label>Description</label>
+              <textarea id="adm-ev-desc" rows="2" placeholder="One line describing the event"></textarea>
+            </div>
+            <div class="adm-form-row adm-form-row-4">
+              <div class="adm-field">
+                <label>Start date</label>
+                <input type="date" id="adm-ev-start" required>
+              </div>
+              <div class="adm-field">
+                <label>End date <span class="adm-optional">(optional)</span></label>
+                <input type="date" id="adm-ev-end">
+              </div>
+              <div class="adm-field">
+                <label>Format</label>
+                <select id="adm-ev-format">
+                  <option>In Person</option>
+                  <option>Hybrid</option>
+                  <option>Virtual</option>
+                </select>
+              </div>
+              <div class="adm-field">
+                <label>Category</label>
+                <select id="adm-ev-category">
+                  <option>Tax</option>
+                  <option>Legal</option>
+                  <option>Audit</option>
+                  <option>AI &amp; Tech</option>
+                  <option>General</option>
+                </select>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-field">
+                <label>City</label>
+                <input type="text" id="adm-ev-city" placeholder="e.g. London">
+              </div>
+              <div class="adm-field">
+                <label>Country</label>
+                <input type="text" id="adm-ev-country" placeholder="e.g. United Kingdom">
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Publish event to calendar</button>
+          </form>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title">Events you've added</h2>
+            <span class="adm-section-count" id="adm-admin-events-count">0</span>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-events-table">
+              <thead>
+                <tr><th>Title</th><th>Dates</th><th>Location</th><th>Category</th><th></th></tr>
+              </thead>
+              <tbody id="adm-events-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-events-empty">You haven't added any events yet — use the form above.</div>
+          </div>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title">Existing calendar events</h2>
+            <span class="adm-section-count" id="adm-static-events-count">0</span>
+          </div>
+          <p class="adm-panel-note">These ship with the site's static event list and can't be deleted from here — only events you add above can be removed.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-static-events-table">
+              <thead>
+                <tr><th>Title</th><th>Dates</th><th>Location</th><th>Category</th></tr>
+              </thead>
+              <tbody id="adm-static-events-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Application detail modal ── -->
+  <div class="adm-modal-backdrop" id="adm-app-modal" hidden>
+    <div class="adm-modal">
+      <div class="adm-modal-head">
+        <h3>Application details</h3>
+        <button type="button" class="adm-modal-close" id="adm-app-modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="adm-modal-body" id="adm-app-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="assets/members.js"></script>
+  <script src="assets/admin-data.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // ── Auth gate ──────────────────────────────────────────────
+      var session = window.ExpertlyAdmin.getAdminSession();
+      if (!session || session.role !== 'admin') {
+        window.location.href = 'admin-login.html';
+        return;
+      }
+      document.getElementById('adm-user-email').textContent = session.email || 'admin@expertly.com';
+      document.getElementById('adm-user-avatar').textContent = (session.email || 'A').charAt(0).toUpperCase();
+
+      document.getElementById('adm-logout-btn').addEventListener('click', function () {
+        window.ExpertlyAdmin.clearAdminSession();
+        window.location.href = 'admin-login.html';
+      });
+
+      // ── Tab switching ──────────────────────────────────────────
+      var navLinks = document.querySelectorAll('#adm-nav a');
+      var panels = document.querySelectorAll('.adm-panel');
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          var tab = link.getAttribute('data-tab');
+          navLinks.forEach(function (l) { l.classList.toggle('active', l === link); });
+          panels.forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab; });
+        });
+      });
+
+      // ── Helpers ────────────────────────────────────────────────
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function fmtDate(iso) {
+        if (!iso) return '—';
+        var d = new Date(iso);
+        if (isNaN(d)) return esc(iso);
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      function statusPill(status) {
+        var cls = status === 'pending' ? 'pending' : (status === 'published' || status === 'approved') ? 'approved' : 'rejected';
+        var label = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending';
+        return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>';
+      }
+
+      // ── Render: Applications ───────────────────────────────────
+      function renderApplications() {
+        var apps = window.ExpertlyAdmin.getApplications();
+        var tbody = document.getElementById('adm-apps-tbody');
+        var empty = document.getElementById('adm-apps-empty');
+        document.getElementById('adm-apps-count-label').textContent = apps.length + ' total';
+
+        var pending = apps.filter(function (a) { return a.status === 'pending'; }).length;
+        var approved = apps.filter(function (a) { return a.status === 'approved'; }).length;
+        document.getElementById('adm-count-applications').textContent = pending;
+        document.getElementById('stat-pending-apps').textContent = pending;
+        document.getElementById('stat-approved-apps').textContent = approved;
+
+        if (!apps.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = apps.map(function (a) {
+          var actions = (a.status === 'pending'
+            ? '<button class="adm-btn adm-btn-approve" data-action="approve-app" data-id="' + esc(a.id) + '">Approve</button>' +
+              '<button class="adm-btn adm-btn-reject" data-action="reject-app" data-id="' + esc(a.id) + '">Reject</button>'
+            : '<button class="adm-btn adm-btn-ghost" data-action="reset-app" data-id="' + esc(a.id) + '">Reset</button>') +
+            '<button class="adm-btn adm-btn-ghost" data-action="view-app" data-id="' + esc(a.id) + '">View</button>';
+          return '<tr>' +
+            '<td><b>' + esc(a.name) + '</b><span class="adm-td-sub">' + esc(a.email) + '</span></td>' +
+            '<td>' + esc(a.practiceArea) + '</td>' +
+            '<td>' + esc(a.location) + '</td>' +
+            '<td>' + (a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '—') + '</td>' +
+            '<td class="adm-td-source">' + esc(a.source) + '</td>' +
+            '<td>' + fmtDate(a.submittedAt) + '</td>' +
+            '<td>' + statusPill(a.status) + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      // ── Application detail modal ────────────────────────────────
+      var appModal = document.getElementById('adm-app-modal');
+      var appModalBody = document.getElementById('adm-app-modal-body');
+
+      function fmtLabel(key) {
+        return key.replace(/([A-Z])/g, ' $1').replace(/^./, function (c) { return c.toUpperCase(); }).trim();
+      }
+      function row(label, value) {
+        if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) return '';
+        return '<div class="adm-detail-row"><span class="adm-detail-label">' + esc(label) + '</span><span class="adm-detail-value">' + value + '</span></div>';
+      }
+
+      function openApplicationModal(a) {
+        var photo = a.photoHtml
+          ? '<div class="adm-detail-photo">' + a.photoHtml + '</div>'
+          : '<div class="adm-detail-photo adm-detail-photo-empty">' + esc((a.name || '?').charAt(0).toUpperCase()) + '</div>';
+
+        var work = (a.workHistory || []).filter(function (w) { return w && (w.title || w.company); }).map(function (w) {
+          var span = [w.startMonth, w.startYear].filter(Boolean).join(' ') + ' – ' + (w.isCurrent ? 'Present' : [w.endMonth, w.endYear].filter(Boolean).join(' '));
+          return '<div class="adm-detail-card">' +
+            '<b>' + esc(w.title || 'Untitled role') + (w.company ? ' · ' + esc(w.company) : '') + '</b>' +
+            '<span>' + esc([w.city, w.size].filter(Boolean).join(' · ')) + (span.trim() !== '–' ? ' · ' + esc(span) : '') + '</span>' +
+            (w.url ? '<a href="' + esc(w.url) + '" target="_blank" rel="noopener">' + esc(w.url) + '</a>' : '') +
+            '</div>';
+        }).join('');
+
+        var edu = (a.education || []).filter(function (ed) { return ed && (ed.institution || ed.degree); }).map(function (ed) {
+          return '<div class="adm-detail-card">' +
+            '<b>' + esc(ed.institution || 'Institution') + '</b>' +
+            '<span>' + esc([ed.degree, ed.field].filter(Boolean).join(', ')) + (ed.start || ed.end ? ' · ' + esc([ed.start, ed.end].filter(Boolean).join('–')) : '') + '</span>' +
+            '</div>';
+        }).join('');
+
+        var consents = ['consentTerms', 'consentPrivacy', 'consentVerify'].filter(function (k) { return a[k]; })
+          .map(function (k) { return fmtLabel(k.replace('consent', '')); });
+
+        appModalBody.innerHTML =
+          '<div class="adm-detail-head">' + photo +
+            '<div><h4>' + esc(a.name) + '</h4><span>' + esc(a.email) + '</span>' + statusPill(a.status) + '</div>' +
+          '</div>' +
+          '<div class="adm-detail-section"><h5>Contact</h5>' +
+            row('Email', esc(a.email)) + row('Phone', esc(a.phone)) + row('LinkedIn', a.linkedin ? '<a href="' + esc(a.linkedin) + '" target="_blank" rel="noopener">' + esc(a.linkedin) + '</a>' : '') +
+            row('Location', esc(a.location)) + row('Region', esc(a.region)) +
+          '</div>' +
+          '<div class="adm-detail-section"><h5>Practice</h5>' +
+            row('Years of experience', esc(a.yearsExp)) +
+            row('Service preferences', (a.services || []).map(esc).join(', ')) +
+            row('Rate range', a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '') +
+          '</div>' +
+          (a.bio ? '<div class="adm-detail-section"><h5>Bio</h5><p class="adm-detail-bio">' + esc(a.bio) + '</p></div>' : '') +
+          (work ? '<div class="adm-detail-section"><h5>Work history</h5>' + work + '</div>' : '') +
+          (edu ? '<div class="adm-detail-section"><h5>Education</h5>' + edu + '</div>' : '') +
+          (consents.length ? '<div class="adm-detail-section"><h5>Consents given</h5><p class="adm-detail-bio">' + consents.map(esc).join(' · ') + '</p></div>' : '') +
+          '<div class="adm-detail-section"><h5>Submission</h5>' +
+            row('Source', esc(a.source)) + row('Submitted', fmtDate(a.submittedAt)) + row('Application ID', esc(a.id)) +
+          '</div>';
+
+        appModal.hidden = false;
+      }
+
+      document.getElementById('adm-app-modal-close').addEventListener('click', function () { appModal.hidden = true; });
+      appModal.addEventListener('click', function (e) { if (e.target === appModal) appModal.hidden = true; });
+
+      document.getElementById('adm-apps-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        if (action === 'view-app') {
+          var app = window.ExpertlyAdmin.getApplications().find(function (a) { return a.id === id; });
+          if (app) openApplicationModal(app);
+          return;
+        }
+        var status = action === 'approve-app' ? 'approved' : action === 'reject-app' ? 'rejected' : 'pending';
+        window.ExpertlyAdmin.setApplicationStatus(id, status);
+        renderApplications();
+        renderFeed();
+      });
+
+      // ── Render: Articles ────────────────────────────────────────
+      function renderArticles() {
+        var arts = window.ExpertlyAdmin.getArticleSubmissions();
+        var tbody = document.getElementById('adm-articles-tbody');
+        var empty = document.getElementById('adm-articles-empty');
+        document.getElementById('adm-articles-count-label').textContent = arts.length + ' total';
+
+        var pending = arts.filter(function (a) { return a.status === 'pending'; }).length;
+        document.getElementById('adm-count-articles').textContent = pending;
+        document.getElementById('stat-pending-articles').textContent = pending;
+
+        if (!arts.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = arts.map(function (a, i) {
+          var actions = (!a.status || a.status === 'pending')
+            ? '<button class="adm-btn adm-btn-approve" data-action="approve-art" data-idx="' + i + '">Approve</button>' +
+              '<button class="adm-btn adm-btn-reject" data-action="reject-art" data-idx="' + i + '">Reject</button>'
+            : '<button class="adm-btn adm-btn-ghost" data-action="reset-art" data-idx="' + i + '">Reset</button>';
+          return '<tr>' +
+            '<td><b>' + esc(a.title) + '</b></td>' +
+            '<td>' + esc(a.category) + '</td>' +
+            '<td>' + esc(a.date || '—') + '</td>' +
+            '<td>' + statusPill(a.status || 'pending') + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-articles-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        var action = btn.getAttribute('data-action');
+        var status = action === 'approve-art' ? 'published' : action === 'reject-art' ? 'rejected' : 'pending';
+        window.ExpertlyAdmin.setArticleStatus(idx, status);
+        renderArticles();
+        renderFeed();
+      });
+
+      // ── Render: Events ──────────────────────────────────────────
+      var MONTH_CODE = { Jan: 'JAN', Feb: 'FEB', Mar: 'MAR', Apr: 'APR', May: 'MAY', Jun: 'JUN', Jul: 'JUL', Aug: 'AUG', Sep: 'SEP', Oct: 'OCT', Nov: 'NOV', Dec: 'DEC' };
+      function toEventDateCode(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr + 'T00:00:00');
+        if (isNaN(d)) return '';
+        var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        return months[d.getMonth()] + ' ' + d.getDate();
+      }
+
+      function renderEvents() {
+        var adminEvents = window.ExpertlyAdmin.getAdminEvents();
+        var staticEvents = window.EXPERTLY_EVENTS || [];
+        document.getElementById('stat-total-events').textContent = adminEvents.length + staticEvents.length;
+
+        var evTbody = document.getElementById('adm-events-tbody');
+        var evEmpty = document.getElementById('adm-events-empty');
+        document.getElementById('adm-admin-events-count').textContent = adminEvents.length;
+        if (!adminEvents.length) { evTbody.innerHTML = ''; evEmpty.style.display = 'block'; }
+        else {
+          evEmpty.style.display = 'none';
+          evTbody.innerHTML = adminEvents.map(function (e) {
+            return '<tr>' +
+              '<td><b>' + esc(e.title) + '</b></td>' +
+              '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
+              '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
+              '<td>' + esc(e.category) + '</td>' +
+              '<td class="adm-td-actions"><button class="adm-btn adm-btn-reject" data-action="delete-event" data-id="' + esc(e.id) + '">Remove</button></td>' +
+              '</tr>';
+          }).join('');
+        }
+
+        var staticTbody = document.getElementById('adm-static-events-tbody');
+        document.getElementById('adm-static-events-count').textContent = staticEvents.length;
+        staticTbody.innerHTML = staticEvents.map(function (e) {
+          return '<tr>' +
+            '<td><b>' + esc(e.title) + '</b></td>' +
+            '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
+            '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
+            '<td>' + esc(e.category) + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-events-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-event"]');
+        if (!btn) return;
+        window.ExpertlyAdmin.deleteAdminEvent(btn.getAttribute('data-id'));
+        renderEvents();
+      });
+
+      document.getElementById('adm-event-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var start = toEventDateCode(document.getElementById('adm-ev-start').value);
+        var end = toEventDateCode(document.getElementById('adm-ev-end').value);
+        window.ExpertlyAdmin.addAdminEvent({
+          title: document.getElementById('adm-ev-title').value.trim(),
+          desc: document.getElementById('adm-ev-desc').value.trim(),
+          org: document.getElementById('adm-ev-org').value.trim(),
+          start: start,
+          end: end || null,
+          city: document.getElementById('adm-ev-city').value.trim(),
+          country: document.getElementById('adm-ev-country').value.trim(),
+          format: document.getElementById('adm-ev-format').value,
+          category: document.getElementById('adm-ev-category').value
+        });
+        e.target.reset();
+        renderEvents();
+        renderFeed();
+      });
+
+      // ── Recent activity feed (Overview tab) ─────────────────────
+      function renderFeed() {
+        var apps = window.ExpertlyAdmin.getApplications().map(function (a) {
+          return { type: 'Application', label: a.name, sub: a.practiceArea, when: a.submittedAt, status: a.status };
+        });
+        var arts = window.ExpertlyAdmin.getArticleSubmissions().map(function (a) {
+          return { type: 'Article', label: a.title, sub: a.category, when: a.date, status: a.status || 'pending' };
+        });
+        var all = apps.concat(arts).filter(function (x) { return x.label; });
+        all.sort(function (a, b) { return new Date(b.when || 0) - new Date(a.when || 0); });
+        all = all.slice(0, 10);
+
+        var feed = document.getElementById('adm-recent-feed');
+        if (!all.length) {
+          feed.innerHTML = '<div class="adm-empty">Nothing yet — activity will show up here as applications and articles come in.</div>';
+          return;
+        }
+        feed.innerHTML = all.map(function (x) {
+          return '<div class="adm-feed-row">' +
+            '<span class="adm-feed-type">' + esc(x.type) + '</span>' +
+            '<div class="adm-feed-body"><b>' + esc(x.label) + '</b><span>' + esc(x.sub || '') + '</span></div>' +
+            statusPill(x.status) +
+            '</div>';
+        }).join('');
+      }
+
+      // ── Sample data (first run only) ────────────────────────────
+      // Seeds two fully-filled-out applications so the "View" detail
+      // panel has something real to show before anyone has actually
+      // submitted the public apply/onboarding forms on this device.
+      function seedSampleApplications() {
+        if (window.ExpertlyAdmin.getApplications().length) return;
+
+        window.ExpertlyAdmin.pushApplication({
+          name: 'Priya Krishnaswamy', firstName: 'Priya', lastName: 'Krishnaswamy',
+          email: 'priya.krishnaswamy@example.com', phone: '+65 9123 4567',
+          location: 'Singapore, Singapore', region: 'APAC', country: 'Singapore', state: '', city: 'Singapore',
+          linkedin: 'https://linkedin.com/in/priya-krishnaswamy',
+          bio: 'Tax partner with 14 years advising multinational groups on transfer pricing, cross-border restructuring, and APA applications across the Asia-Pacific region.',
+          yearsExp: '14',
+          practiceArea: 'Transfer Pricing', services: ['Transfer Pricing', 'Corporate Tax', 'M&A Tax'],
+          rateRange: '450–650',
+          workHistory: [
+            { title: 'Tax Partner', company: 'Krishnaswamy & Associates', city: 'Singapore', size: '11-50', url: 'https://krishnaswamylaw.example.com', startMonth: 'Jun', startYear: '2018', isCurrent: true, endMonth: '', endYear: '' },
+            { title: 'Senior Tax Manager', company: 'Deloitte Singapore', city: 'Singapore', size: '1000+', url: '', startMonth: 'Jan', startYear: '2012', isCurrent: false, endMonth: 'May', endYear: '2018' }
+          ],
+          education: [
+            { institution: 'National University of Singapore', degree: 'LLB', field: 'Law', start: '2005', end: '2009' },
+            { institution: 'Singapore Management University', degree: 'Master of Taxation', field: 'Taxation', start: '2010', end: '2011' }
+          ],
+          source: 'apply'
+        });
+
+        window.ExpertlyAdmin.pushApplication({
+          name: 'Rohan Mehta', firstName: 'Rohan', lastName: 'Mehta',
+          email: 'rohan.mehta@example.com', phone: '+44 7700 900123',
+          location: 'London, United Kingdom', region: 'EMEA', country: 'United Kingdom', state: '', city: 'London',
+          linkedin: 'https://linkedin.com/in/rohan-mehta',
+          bio: 'M&A counsel with 9 years advising acquirers and targets on cross-border deal structuring, due diligence, and post-merger integration across Europe.',
+          yearsExp: '9',
+          practiceArea: 'M&A', services: ['M&A', 'Corporate Law'],
+          rateRange: '380–520',
+          workHistory: [
+            { title: 'M&A Counsel', company: 'Mehta Corporate Advisors', city: 'London', size: '11-50', url: '', startMonth: 'Mar', startYear: '2020', isCurrent: true, endMonth: '', endYear: '' },
+            { title: 'Associate', company: 'Linklaters', city: 'London', size: '1000+', url: '', startMonth: 'Sep', startYear: '2015', isCurrent: false, endMonth: 'Feb', endYear: '2020' }
+          ],
+          education: [
+            { institution: 'University of Oxford', degree: 'BA Jurisprudence', field: 'Law', start: '2011', end: '2014' }
+          ],
+          consentTerms: true, consentPrivacy: true, consentVerify: true,
+          source: 'onboarding'
+        });
+      }
+
+      // ── Init ──────────────────────────────────────────────────
+      seedSampleApplications();
+      renderApplications();
+      renderArticles();
+      renderEvents();
+      renderFeed();
+    })();
+  </script>
+</body>
+
+</html>

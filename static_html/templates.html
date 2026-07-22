@@ -13,183 +13,7 @@
   <link rel="stylesheet" href="assets/pages.css">
   <link rel="stylesheet" href="assets/dashboard-shell.css">
   <link rel="stylesheet" href="assets/sidebar-light.css">
-  <style>
-
-    /* ── Shell ────────────────────────────────────────────────────────── */
-    /* ── Shell: icon-rail → floats open on hover (same as index.html) ────
-       The grid column stays a fixed 56px gutter at all times so the main
-       content never shifts. The sidebar stays in normal grid flow (still
-       sticky) but widens beyond its 56px track on hover/pin — grid tracks
-       don't clip by default, so it visually overlays the page instead of
-       pushing it. */
-    .d1-shell { grid-template-columns: 56px 1fr; }
-    @media (min-width: 761px) {
-      .d1-sidebar {
-        width: 56px;
-        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
-      }
-      .d1-shell.revealed .d1-sidebar {
-        width: 248px;
-        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
-      }
-    }
-
-    /* Logo row: centred in narrow rail, left-aligned when revealed */
-    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
-    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
-    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
-
-    /* Logo text + dot: hidden in rail, fade in when revealed */
-    .d1-logo-full {
-      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
-      transition: opacity 0.2s, max-width 0s;
-    }
-    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
-    .d1-shell.revealed .d1-logo-full {
-      display: inline; max-width: 160px;
-      opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
-    }
-    .d1-shell.revealed .d1-logo .dot {
-      opacity: 1; transition: opacity 0.22s 0.35s;
-    }
-
-    .d1-collapse-btn {
-      flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background 0.15s, color 0.15s;
-    }
-    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
-    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .d1-shell.revealed .d1-collapse-btn svg { transform: rotate(180deg); }
-
-    /* Nav items: icons centred in rail, label + row layout when revealed */
-    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
-    .d1-nav-lbl {
-      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
-      transition: opacity 0.2s, max-width 0s;
-    }
-    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
-    .d1-shell.revealed .d1-nav-lbl {
-      opacity: 1; max-width: 160px;
-      transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
-    }
-
-    /* Section labels, dividers, soon badges: hidden in rail, revealed when expanded */
-    .d1-nav-label { display: none !important; }
-    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
-    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
-    .d1-nav-divider { display: none !important; }
-    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
-    .d1-nav a .soon { display: none !important; }
-    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
-
-    /* Sidebar foot: just the avatar in rail, full row (info/theme/logout) when revealed */
-    @media (min-width: 761px) {
-      .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
-      .d1-sidebar-foot .d1-user-info,
-      .d1-sidebar-foot .d1-theme-btn,
-      .d1-sidebar-foot .d1-logout-btn { display: none; }
-      .d1-shell.revealed .d1-sidebar-foot { justify-content: flex-start; padding-left: 10px; padding-right: 10px; }
-      .d1-shell.revealed .d1-sidebar-foot .d1-user-info { display: block; }
-      .d1-shell.revealed .d1-sidebar-foot .d1-theme-btn,
-      .d1-shell.revealed .d1-sidebar-foot .d1-logout-btn { display: flex; }
-    }
-    .v2-page-main { min-height: 100vh; overflow-x: clip; position: relative; z-index: 1; background: var(--bg); }
-
-    /* ── Hero ─────────────────────────────────────────────────────────── */
-    .db-hero { background: var(--bg-alt); padding: 52px 0 44px; border-bottom: 1px solid var(--line); }
-    .db-eyebrow {
-      font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.14em;
-      text-transform: capitalize; color: var(--ink-3); font-weight: 500;
-      display: inline-flex; align-items: center; gap: 9px; margin-bottom: 14px;
-    }
-    .db-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
-    .db-heading { font-size: clamp(28px, 3.4vw, 44px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink); }
-    .db-heading em { font-style: normal; font-weight: 400; color: var(--accent); }
-    .db-sub { font-size: 15px; color: var(--ink-3); margin-top: 12px; max-width: 560px; line-height: 1.6; }
-
-    /* ── Category tabs ────────────────────────────────────────────────── */
-    .tpl-tabs { display: flex; gap: 6px; padding: 32px 0 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
-    .tpl-tab {
-      padding: 10px 18px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--ink-3);
-      background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .tpl-tab.active { color: var(--ink); border-color: var(--ink); font-weight: 600; }
-    .tpl-count { font-size: 12.5px; color: var(--ink-4); font-family: 'Archivo', sans-serif; font-weight: 500; }
-
-    /* ── Right-side filter dropdowns ─────────────────────────────────── */
-    .flt-row { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; padding: 10px 0 0; }
-    .flt-btn {
-      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 100px;
-      background: var(--bg-card); border: 1px solid var(--line-2); font-family: inherit;
-      font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer;
-      transition: border-color 0.15s, background 0.15s, color 0.15s; white-space: nowrap; position: relative; user-select: none;
-    }
-    .flt-btn:hover { border-color: var(--ink-3); }
-    .flt-btn.open { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
-    .flt-btn.has-value { background: var(--ink); color: #fff; border-color: var(--ink); }
-    .flt-caret { font-size: 9px; opacity: 0.5; transition: transform 0.2s; }
-    .flt-btn.open .flt-caret { transform: rotate(180deg); }
-    .flt-popover {
-      position: absolute; top: calc(100% + 8px); right: 0; z-index: 40; width: 190px;
-      background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 14px;
-      box-shadow: 0 16px 48px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.08);
-      opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.98);
-      transform-origin: top right; transition: opacity 0.18s, transform 0.18s; padding: 6px 0;
-    }
-    .flt-popover.open { opacity: 1; pointer-events: all; transform: none; }
-    .flt-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background 0.1s, color 0.1s; }
-    .flt-option:hover { background: var(--bg-alt); color: var(--ink); }
-    .flt-option.selected { color: var(--accent); font-weight: 600; }
-    .flt-check { font-size: 11px; color: var(--accent); opacity: 0; }
-    .flt-option.selected .flt-check { opacity: 1; }
-
-    /* ── Template grid ────────────────────────────────────────────────── */
-    .tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 24px 0 100px; }
-    @media (max-width: 980px) { .tpl-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) { .tpl-grid { grid-template-columns: 1fr; } }
-
-    .tpl-card {
-      background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px;
-      display: flex; align-items: flex-start; gap: 14px; transition: border-color 0.15s, transform 0.2s;
-    }
-    .tpl-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
-    .tpl-filetype {
-      width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; color: #fff;
-    }
-    .tpl-filetype.doc { background: #2b579a; }
-    .tpl-filetype.xls { background: #1d6f42; }
-    .tpl-filetype.ppt { background: #b7472a; }
-    .tpl-body { flex: 1; min-width: 0; }
-    .tpl-cat-tag {
-      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
-    }
-    .tpl-title { font-size: 14.5px; font-weight: 600; color: var(--ink); line-height: 1.35; margin-bottom: 4px; }
-    .tpl-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.55; margin-bottom: 12px; }
-    .tpl-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .tpl-format { font-size: 11px; color: var(--ink-4); font-weight: 500; }
-    .tpl-download {
-      display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border-radius: 8px;
-      background: var(--bg-alt); border: 1px solid var(--line-2); font-family: inherit; font-size: 12px;
-      font-weight: 600; color: var(--ink-2); cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .tpl-download svg { width: 12px; height: 12px; }
-    .tpl-download:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-
-    @media (max-width: 760px) {
-      .d1-shell { grid-template-columns: 1fr; }
-      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
-      .d1-nav { flex-direction: row; flex-wrap: wrap; }
-      .d1-nav-label { display: none; }
-      .d1-sidebar-foot { display: none; }
-      .d1-logo-row { padding-bottom: 8px; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
@@ -202,9 +26,6 @@
       <a href="index.html" class="d1-logo" aria-label="Expertly home">
         <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
       </a>
-      <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
     <div class="d1-nav-center">
       <nav class="d1-nav">
@@ -270,9 +91,9 @@
 
     <section class="db-hero">
       <div class="container-wide">
-        <span class="db-eyebrow">Member Portal</span>
-        <h1 class="db-heading">Standard templates, <em>ready to use.</em></h1>
-        <p class="db-sub">Review-ready templates for audit, tax and legal engagements — drafted by practitioners so you're not starting from a blank page.</p>
+        <span class="pg-eyebrow">Member Portal</span>
+        <h1 class="pg-heading">Standard templates, <em>ready to use.</em></h1>
+        <p class="pg-sub">Review-ready templates for audit, tax and legal engagements — drafted by practitioners so you're not starting from a blank page.</p>
 
         <div class="hero-search" style="margin-top:36px; max-width:680px;">
           <div class="hero-search-input">
@@ -329,18 +150,11 @@
     (function () {
       const shell = document.getElementById('d1-shell');
       const sidebar = document.querySelector('.d1-sidebar');
-      const btn = document.getElementById('d1-collapse-btn');
-      let pinned = false;
 
-      function togglePin() {
-        pinned = !pinned;
-        shell.classList.toggle('revealed', pinned);
-      }
-      btn.addEventListener('click', togglePin);
 
       if (sidebar) {
         sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
-        sidebar.addEventListener('mouseleave', function () { if (!pinned) shell.classList.remove('revealed'); });
+        sidebar.addEventListener('mouseleave', function () { shell.classList.remove('revealed'); });
       }
     })();
   </script>

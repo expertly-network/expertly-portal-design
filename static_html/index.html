@@ -15,961 +15,16 @@
   <link rel="stylesheet" href="assets/pages.css">
   <link rel="stylesheet" href="assets/dashboard-shell.css">
   <link rel="stylesheet" href="assets/sidebar-light.css">
-  <style>
-    /* ── Override html/body backgrounds set by orbit hero ── */
-    html[data-hero="orbit"] {
-      background: var(--bg-alt) !important;
-    }
-
-    /* ── Icon-rail → floats open on hover (Instagram-style) ──────
-       The grid column stays a fixed 56px gutter at all times so the
-       main content never shifts. The sidebar stays in normal grid
-       flow (still sticky) but widens beyond its 56px track on hover -
-       grid tracks don't clip by default, so it visually overlays the
-       page instead of pushing it. */
-    .d1-shell {
-      grid-template-columns: 56px 1fr;
-    }
-    @media (min-width: 761px) {
-      .d1-sidebar {
-        width: 56px;
-        transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s;
-      }
-      .d1-shell.revealed .d1-sidebar {
-        width: 248px;
-        box-shadow: 6px 0 32px rgba(0,0,0,0.28);
-      }
-    }
-
-    /* Logo row: centred in narrow rail, left-aligned when revealed */
-    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
-    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
-    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
-
-    /* Logo text + dot: hidden in rail, fade in when revealed */
-    .d1-logo-full {
-      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
-      transition: opacity 0.2s, max-width 0s;
-    }
-    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
-    .d1-shell.revealed .d1-logo-full {
-      display: inline; max-width: 160px;
-      opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
-    }
-    .d1-shell.revealed .d1-logo .dot {
-      opacity: 1; transition: opacity 0.22s 0.35s;
-    }
-
-    /* Shared collapse button style */
-    .d1-collapse-btn {
-      display: flex !important;
-      width: 32px; height: 32px; border-radius: 8px;
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
-      color: rgba(255,255,255,0.4);
-      align-items: center; justify-content: center; flex-shrink: 0;
-      cursor: pointer; transition: background 0.15s, color 0.15s;
-    }
-    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
-    .d1-collapse-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
-    /* Rail icons: stacked vertically, centred */
-    .sb-rail-icons { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    /* Hide rail icons when expanded, show cta-group instead (handled in sidebar-foot CSS) */
-    /* Utility row: both icons side by side */
-    .sb-utility-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-    .sb-utility-row .d1-collapse-btn svg { transform: rotate(0deg); }
-
-    /* Utility row: collapse left, theme right - intentional placement */
-    .sb-utility-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px; }
-
-    /* Nav items: icons centred in rail state */
-    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
-    .d1-nav-lbl {
-      opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap;
-      transition: opacity 0.2s, max-width 0s;
-    }
-    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
-    .d1-shell.revealed .d1-nav-lbl {
-      opacity: 1; max-width: 160px;
-      transition: opacity 0.22s 0.3s, max-width 0s 0.3s;
-    }
-
-    /* Section labels, dividers, soon badges: hidden in rail, revealed when expanded */
-    .d1-nav-label { display: none !important; }
-    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
-    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
-    .d1-nav-divider { display: none !important; }
-    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
-    .d1-nav a .soon { display: none !important; }
-    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
-
-    /* Sidebar foot ── icon-rail: stacked icons, centred */
-    .d1-sidebar-foot {
-      flex-direction: column; align-items: center;
-      padding: 12px 0; gap: 8px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .sb-rail-icons { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .sb-signin-icon {
-      display: flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px; border-radius: 8px;
-      color: rgba(255,255,255,0.4); text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-    .sb-signin-icon:hover { background: rgba(255,255,255,0.08); color: #fff; }
-    .sb-cta-group { display: none; }
-
-    /* Sidebar foot ── expanded: utility row (chevron + theme) then CTAs */
-    .d1-shell.revealed .d1-sidebar-foot {
-      flex-direction: column; align-items: stretch;
-      padding: 14px 12px 12px; gap: 8px;
-    }
-    .d1-shell.revealed .sb-rail-icons { display: none; }
-    .d1-shell.revealed .sb-cta-group { display: flex; flex-direction: column; gap: 8px; }
-    .sb-btn-primary {
-      display: block; text-align: center; text-decoration: none;
-      padding: 9px 14px; border-radius: 9px;
-      background: #00C99E; color: #06251d;
-      font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
-      transition: background 0.15s;
-    }
-    .sb-btn-primary:hover { background: #00b38a; }
-    .sb-btn-ghost {
-      display: block; text-align: center; text-decoration: none;
-      padding: 9px 14px; border-radius: 9px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.75);
-      font-size: 13px; font-weight: 500;
-      transition: background 0.15s, color 0.15s;
-    }
-    .sb-btn-ghost:hover { background: rgba(255,255,255,0.11); color: #fff; }
-
-    /* ── Main content area ───────────────────────────────────────── */
-    .v3-home-main { min-height: 100vh; overflow-x: hidden; }
-  </style>
-  <style>
-    .hero-toggle-wrapper {
-      display: inline-flex;
-      background: #f3f4f6;
-      border: 1px solid #e5e7eb;
-      padding: 5px;
-      border-radius: 100px;
-      margin-top: 32px;
-      margin-bottom: 0;
-      position: relative;
-      z-index: 10;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-    }
-
-    .hero-toggle-indicator {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      bottom: 5px;
-      width: calc(50% - 5px);
-      background: #111111;
-      border-radius: 100px;
-      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-      z-index: 1;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-indicator {
-      transform: translateX(100%);
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-indicator {
-      transform: translateX(0);
-    }
-
-    .hero-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-family: 'Geist', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: #6b7280;
-      padding: 10px 28px;
-      border-radius: 100px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      transition: color 0.25s ease, transform 0.2s ease;
-      position: relative;
-      z-index: 2;
-      user-select: none;
-    }
-
-    .hero-toggle-btn:hover {
-      transform: scale(1.03);
-    }
-
-    .hero-toggle-btn:active {
-      transform: scale(0.96);
-    }
-
-    .hero-toggle-btn.active {
-      color: #ffffff;
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="become"] {
-      color: #ffffff;
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="become"]:hover) .hero-toggle-btn[data-mode="find"] {
-      color: #6b7280;
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-btn[data-mode="find"] {
-      color: #ffffff;
-    }
-
-    .hero-toggle-wrapper:has(.hero-toggle-btn[data-mode="find"]:hover) .hero-toggle-btn[data-mode="become"] {
-      color: #6b7280;
-    }
-
-    .hero-center .hero-search {
-      margin-top: 32px;
-    }
-  </style>
-  <style>
-    /* ════════════════════════════════════════════════════
-   STELLAR ORBIT HERO
-   Active when: <html data-hero="orbit">
-   To revert to original: change data-hero="orbit"
-   back to data-hero="split" on the <html> tag (line 2).
-   All styles scoped to .hero-stellar - zero bleed.
-   ════════════════════════════════════════════════════ */
-
-    /* Toggle */
-    .hero-stellar {
-      display: none;
-    }
-
-    html[data-hero="orbit"] .hero-stellar {
-      display: flex !important;
-    }
-
-    html[data-hero="orbit"] .hero-split {
-      display: none !important;
-    }
-
-    /* Section shell */
-    .hero-stellar {
-      position: relative;
-      flex-direction: column;
-      overflow: hidden;
-      background: #0B0B0C;
-      color: #fff;
-      min-height: 100dvh;
-    }
-
-    /* Atmosphere */
-    .hero-stellar .hs-glow-1 {
-      position: absolute;
-      top: -15%;
-      right: -8%;
-      width: 900px;
-      height: 900px;
-      background: radial-gradient(circle, rgba(0, 165, 130, 0.07) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    .hero-stellar .hs-glow-2 {
-      position: absolute;
-      bottom: 5%;
-      left: 5%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0, 165, 130, 0.04) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    /* Layout */
-    .hero-stellar .hs-body {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      max-width: 1520px;
-      margin: 0 auto;
-      padding: 48px 64px 40px;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Left */
-    .hero-stellar .hs-left {
-      flex: 0 1 580px;
-      display: flex;
-      flex-direction: column;
-      animation: hs-fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
-    }
-
-    @keyframes hs-fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes hs-fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes hs-scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.85);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .hero-stellar .hs-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Archivo', sans-serif;
-      font-size: 10.5px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #00A582;
-      margin-bottom: 30px;
-    }
-
-    .hero-stellar .hs-eyebrow::before {
-      content: '';
-      width: 22px;
-      height: 1.5px;
-      background: #00A582;
-      border-radius: 100px;
-      flex-shrink: 0;
-    }
-
-    .hero-stellar .hs-heading {
-      font-size: clamp(38px, 4.2vw, 66px);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -0.035em;
-      color: #fff;
-      min-height: 3.8em;
-    }
-
-    .hero-stellar .hs-heading .part-accent {
-      color: #00A582;
-    }
-
-    .hs-tw-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 0.82em;
-      background: #00A582;
-      margin-left: 3px;
-      vertical-align: middle;
-      animation: hs-blink 0.85s steps(1) infinite;
-    }
-
-    .hs-tw-cursor.done {
-      animation: none;
-      opacity: 0;
-      transition: opacity 0.6s 1.2s;
-    }
-
-    @keyframes hs-blink {
-
-      0%,
-      49% {
-        opacity: 1;
-      }
-
-      50%,
-      100% {
-        opacity: 0;
-      }
-    }
-
-    .hero-stellar .hs-lede {
-      font-size: 16.5px;
-      line-height: 1.65;
-      color: rgba(255, 255, 255, 0.5);
-      margin-top: 26px;
-      max-width: 460px;
-      letter-spacing: -0.005em;
-      opacity: 0;
-      animation: hs-fadeIn 0.7s ease 3.8s both;
-    }
-
-    .hero-stellar .hs-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 40px;
-      opacity: 0;
-      animation: hs-fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 4.1s both;
-    }
-
-    .hero-stellar .hs-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      border-radius: 100px;
-      background: #00A582;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      border: 1px solid #00A582;
-      transition: background 0.25s, transform 0.2s;
-    }
-
-    .hero-stellar .hs-btn-primary:hover {
-      background: #00C99E;
-      border-color: #00C99E;
-      transform: translateY(-2px);
-    }
-
-    .hero-stellar .hs-btn-primary svg {
-      transition: transform 0.2s;
-    }
-
-    .hero-stellar .hs-btn-primary:hover svg {
-      transform: translateX(3px);
-    }
-
-    .hero-stellar .hs-btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      padding: 13px 22px;
-      border-radius: 100px;
-      background: transparent;
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 15px;
-      font-weight: 450;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .hero-stellar .hs-btn-ghost:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
-    .hero-stellar .hs-trust {
-      display: flex;
-      align-items: flex-start;
-      margin-top: 52px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      opacity: 0;
-      animation: hs-fadeIn 0.6s ease 4.3s both;
-    }
-
-    .hero-stellar .hs-trust-item {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding-right: 28px;
-      margin-right: 28px;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .hero-stellar .hs-trust-item:last-child {
-      border-right: none;
-      margin-right: 0;
-      padding-right: 0;
-    }
-
-    .hero-stellar .hs-trust-num {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .hero-stellar .hs-trust-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.35);
-      white-space: nowrap;
-    }
-
-    /* Right: orbit */
-    .hero-stellar .hs-right {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      animation: hs-scaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-    }
-
-    .hero-stellar .hs-orbit-container {
-      position: relative;
-      width: 540px;
-      height: 540px;
-      flex-shrink: 0;
-      transform: translateX(40px);
-    }
-
-    .hero-stellar .hs-orbit-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      border-radius: 50%;
-      transform-origin: 50% 50%;
-    }
-
-    .hero-stellar .hs-orbit-ring::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      padding: 1px;
-      background: linear-gradient(180deg, rgba(0, 165, 130, 0) 0%, rgba(0, 165, 130, 0.85) 43%, rgba(0, 165, 130, 0) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .hero-stellar .hs-orbit-1 {
-      width: 265px;
-      height: 265px;
-      margin-top: -132.5px;
-      margin-left: -132.5px;
-      animation: hs-spin-ccw 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-2 {
-      width: 376px;
-      height: 376px;
-      margin-top: -188px;
-      margin-left: -188px;
-      animation: hs-spin-cw 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-3 {
-      width: 487px;
-      height: 487px;
-      margin-top: -243.5px;
-      margin-left: -243.5px;
-      animation: hs-spin-cw 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-4 {
-      width: 598px;
-      height: 598px;
-      margin-top: -299px;
-      margin-left: -299px;
-      animation: hs-spin-ccw 40s linear infinite;
-    }
-
-    @keyframes hs-spin-cw {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @keyframes hs-spin-ccw {
-      to {
-        transform: rotate(-360deg);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .hero-stellar .hs-orbit-ring,
-      .hero-stellar .hs-avatar-img {
-        animation: none !important;
-      }
-    }
-
-    .hero-stellar .hs-avatar {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-    }
-
-    .hero-stellar .hs-cancel {
-      display: block;
-    }
-
-    .hero-stellar .hs-avatar-img {
-      display: block;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(0, 165, 130, 0.5);
-      box-shadow: 0 0 0 3px #0B0B0C, 0 3px 10px rgba(11, 11, 12, 0.5);
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    .hero-stellar .hs-avatar-img.sz-lg {
-      width: 58px;
-      height: 58px;
-    }
-
-    .hero-stellar .hs-avatar-img.sz-xl {
-      width: 66px;
-      height: 66px;
-    }
-
-    .hero-stellar .hs-orbit-1 .hs-avatar-img {
-      animation: hs-co-1 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-2 .hs-avatar-img {
-      animation: hs-co-2 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-3 .hs-avatar-img {
-      animation: hs-co-3 40s linear infinite;
-    }
-
-    .hero-stellar .hs-orbit-4 .hs-avatar-img {
-      animation: hs-co-4 40s linear infinite;
-    }
-
-    @keyframes hs-co-1 {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @keyframes hs-co-2 {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(-360deg);
-      }
-    }
-
-    @keyframes hs-co-3 {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(-360deg);
-      }
-    }
-
-    @keyframes hs-co-4 {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .hero-stellar .hs-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 116px;
-      height: 116px;
-      margin-top: -58px;
-      margin-left: -58px;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, rgba(0, 165, 130, 0.1) 0%, rgba(0, 165, 130, 0.04) 60%, transparent 80%);
-      border: 1px solid rgba(0, 165, 130, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    .hero-stellar .hs-center-inner {
-      text-align: center;
-    }
-
-    .hero-stellar .hs-count-num {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -0.04em;
-      color: #8BFCD8;
-      line-height: 1;
-      display: block;
-    }
-
-    .hero-stellar .hs-count-label {
-      font-family: 'Archivo', sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.4);
-      margin-top: 5px;
-      display: block;
-    }
-
-    /* Responsive */
-    @media (max-width: 1280px) {
-      .hero-stellar .hs-orbit-container {
-        transform: scale(0.9);
-      }
-    }
-
-    @media (max-width: 1100px) {
-      .hero-stellar .hs-body {
-        padding: 44px 48px 32px;
-      }
-
-      .hero-stellar .hs-orbit-container {
-        transform: scale(0.78);
-        margin-right: -40px;
-      }
-    }
-
-    @media (max-width: 960px) {
-      .hero-stellar .hs-body {
-        flex-direction: column;
-        padding: 40px 40px 24px;
-        align-items: center;
-        text-align: center;
-      }
-
-      .hero-stellar .hs-left {
-        flex: none;
-        align-items: center;
-      }
-
-      .hero-stellar .hs-eyebrow {
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-lede {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero-stellar .hs-actions {
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-trust {
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-heading {
-        min-height: auto;
-      }
-
-      .hero-stellar .hs-orbit-container {
-        transform: scale(0.75);
-        margin-top: -60px;
-        margin-bottom: -60px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-stellar .hs-orbit-container {
-        transform: scale(0.58);
-        margin-top: -110px;
-        margin-bottom: -110px;
-      }
-
-      .hero-stellar .hs-trust {
-        flex-wrap: wrap;
-        gap: 16px;
-      }
-
-      .hero-stellar .hs-trust-item {
-        border-right: none;
-        margin-right: 0;
-        padding-right: 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-stellar .hs-orbit-container {
-        transform: scale(0.44);
-        margin-top: -165px;
-        margin-bottom: -165px;
-      }
-
-      .hero-stellar .hs-body {
-        padding: 36px 20px 12px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .hero-stellar .hs-right {
-        display: none !important;
-      }
-
-      .hero-stellar .hs-body {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 48px 24px 40px;
-        min-height: 72dvh;
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-left {
-        flex: none;
-        align-items: center;
-      }
-
-      .hero-stellar .hs-eyebrow {
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-heading {
-        font-size: clamp(32px, 9vw, 48px);
-        min-height: auto;
-        text-align: center;
-      }
-
-      .hero-stellar .hs-lede {
-        text-align: center;
-        max-width: 100%;
-        opacity: 1;
-        animation: none;
-      }
-
-      .hero-stellar .hs-actions {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        opacity: 1;
-        animation: none;
-      }
-
-      .hero-stellar .hs-btn-primary,
-      .hero-stellar .hs-btn-ghost {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .hero-stellar .hs-trust {
-        flex-direction: column;
-        gap: 0;
-        padding-top: 20px;
-        margin-top: 36px;
-        opacity: 1;
-        animation: none;
-      }
-
-      .hero-stellar .hs-trust-item {
-        flex-direction: row;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 0;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        margin-right: 0;
-        padding-right: 0;
-      }
-
-      .hero-stellar .hs-trust-item:last-child {
-        border-bottom: none;
-      }
-    }
-
-    /* Match page background to hero so scroll/overscroll never flashes white at the top */
-    html[data-hero="orbit"] {
-      background: #0B0B0C;
-    }
-
-    /* ── Dark nav while stellar hero is visible ── */
-    /* nav-inner transitions smoothly between dark (hero) and white (content) */
-    html[data-hero="orbit"] .nav-inner {
-      transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.45s ease;
-    }
-
-    html[data-hero="orbit"] .nav-logo,
-    html[data-hero="orbit"] .nav-links a,
-    html[data-hero="orbit"] .nav .btn-ghost {
-      transition: color 0.45s ease;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark {
-      background: #0B0B0C;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-inner {
-      background: #0B0B0C;
-      border-bottom-color: #0B0B0C;
-      box-shadow: none;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-logo {
-      color: #fff;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary {
-      background: transparent;
-      color: #00C99E;
-      border: 1px solid rgba(0, 165, 130, 0.5);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover {
-      background: rgba(0, 165, 130, 0.14);
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css">
+  
+  
 
 </head>
 
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <div class="d1-shell" id="d1-shell">
+  <div class="d1-shell in-hero" id="d1-shell">
 
     <!-- ── Collapsible sidebar ── -->
     <aside class="d1-sidebar">
@@ -1050,11 +105,6 @@
       <div class="d1-sidebar-foot">
         <!-- Icon-rail: collapse chevron + sign-in stacked vertically, centred -->
         <div class="sb-rail-icons">
-          <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
           <a href="login.html" class="sb-signin-icon" title="Sign in" aria-label="Sign in">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
@@ -1251,6 +301,8 @@
       <section class="hero-stellar" aria-label="Hero">
         <div class="hs-glow-1" aria-hidden="true"></div>
         <div class="hs-glow-2" aria-hidden="true"></div>
+
+        <a href="index.html" class="hs-logo" aria-label="Expertly home">Expertly<span class="dot"></span></a>
 
         <div class="hs-body">
           <div class="hs-left">
@@ -2236,34 +1288,100 @@
       'use strict';
       if (document.documentElement.getAttribute('data-hero') !== 'orbit') return;
 
-      /* Typewriter */
+      /* Typewriter — first three lines are static (render immediately with
+         the page). Only the last line ("They're Already in Our Network.")
+         types in. Line breaks for that text are pre-measured from the
+         FINAL string and hard-inserted as we type, so a word can never
+         render on one line and then jump to the next mid-type — and the
+         heading's height is locked to its final size upfront so nothing
+         below it (lede/buttons/stats) shifts while the type-in runs. */
       var PART1 = "The Right Finance & Legal Expert\nIsn't Out of Reach,";
-      var PART2 = "\nThey're Already in Our Network.";
-      var FULL = PART1 + PART2;
-      var SPLIT = PART1.length;
+      var PART2_TEXT = "They're Already in Our Network.";
+      var PART1_HTML = PART1.replace(/\n/g, '<br>');
       var outEl = document.getElementById('hs-tw-output');
       var curEl = document.getElementById('hs-tw-cursor');
+      var headingEl = outEl.closest('.hs-heading');
       var typed = 0;
+      var part2Breaks = [];
 
-      function renderTyped() {
-        var p1 = FULL.slice(0, Math.min(typed, SPLIT)).replace(/\n/g, '<br>');
-        var p2 = typed > SPLIT
-          ? '<span class="part-accent">' + FULL.slice(SPLIT, typed).replace(/\n/g, '<br>') + '</span>'
-          : '';
-        outEl.innerHTML = p1 + p2;
+      outEl.innerHTML = PART1_HTML;
+
+      function measureBreaks(text, refEl) {
+        var probe = document.createElement('span');
+        probe.innerHTML = text.split('').map(function (c) {
+          return '<span>' + (c === ' ' ? '&nbsp;' : c) + '</span>';
+        }).join('');
+        var wrapper = document.createElement('div');
+        var cs = getComputedStyle(refEl);
+        wrapper.style.cssText = 'position:absolute; visibility:hidden; top:-9999px; left:-9999px; white-space:normal;';
+        wrapper.style.width = refEl.clientWidth + 'px';
+        wrapper.style.font = cs.font;
+        wrapper.style.letterSpacing = cs.letterSpacing;
+        wrapper.appendChild(probe);
+        document.body.appendChild(wrapper);
+        var spans = probe.querySelectorAll('span');
+        var breaks = [];
+        var lastTop = null;
+        for (var i = 0; i < spans.length; i++) {
+          var top = spans[i].offsetTop;
+          if (lastTop !== null && top !== lastTop) breaks.push(i);
+          lastTop = top;
+        }
+        document.body.removeChild(wrapper);
+        return breaks;
       }
 
-      setTimeout(function () {
-        var iv = setInterval(function () {
-          typed++;
-          renderTyped();
-          if (typed >= FULL.length) {
-            clearInterval(iv);
-            curEl.classList.add('done');
-            setTimeout(startCounters, 200);
+      function insertBreaks(text, breaks, upto) {
+        var breakSet = {};
+        breaks.forEach(function (b) { breakSet[b] = true; });
+        var out = '';
+        for (var i = 0; i < Math.min(upto, text.length); i++) {
+          if (breakSet[i]) {
+            if (out.slice(-1) === ' ') out = out.slice(0, -1);
+            out += '<br>';
           }
-        }, 32);
-      }, 400);
+          out += text[i];
+        }
+        return out;
+      }
+
+      function lockHeadingHeight() {
+        var probe = document.createElement('div');
+        probe.className = headingEl.className;
+        probe.style.cssText = 'position:absolute; visibility:hidden; top:-9999px; left:-9999px; min-height:0;';
+        probe.style.width = headingEl.clientWidth + 'px';
+        probe.innerHTML = PART1_HTML + '<br>' + insertBreaks(PART2_TEXT, part2Breaks, PART2_TEXT.length);
+        document.body.appendChild(probe);
+        headingEl.style.minHeight = probe.getBoundingClientRect().height + 'px';
+        document.body.removeChild(probe);
+      }
+
+      function renderTyped() {
+        var p2 = '<br><span class="part-accent">' + insertBreaks(PART2_TEXT, part2Breaks, typed) + '</span>';
+        outEl.innerHTML = PART1_HTML + p2;
+      }
+
+      function startTyping() {
+        part2Breaks = measureBreaks(PART2_TEXT, headingEl);
+        lockHeadingHeight();
+        setTimeout(function () {
+          var iv = setInterval(function () {
+            typed++;
+            renderTyped();
+            if (typed >= PART2_TEXT.length) {
+              clearInterval(iv);
+              curEl.classList.add('done');
+              setTimeout(startCounters, 200);
+            }
+          }, 32);
+        }, 400);
+      }
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(startTyping);
+      } else {
+        startTyping();
+      }
 
       /* Count-up */
       function countTo(el, target, ms) {
@@ -2291,13 +1409,16 @@
         setTimeout(function () { img.style.opacity = '1'; }, d * 1000);
       });
 
-      /* Dark nav while stellar hero is visible */
+      /* Dark nav + sidebar wordmark handoff while stellar hero is visible */
       var navEl = document.querySelector('.nav');
       var heroSection = document.querySelector('.hero-stellar');
+      var shellEl = document.getElementById('d1-shell');
       if (navEl && heroSection) {
         navEl.classList.add('hs-nav-dark'); /* dark immediately on load */
         new IntersectionObserver(function (entries) {
-          navEl.classList.toggle('hs-nav-dark', entries[0].isIntersecting);
+          var inHero = entries[0].isIntersecting;
+          navEl.classList.toggle('hs-nav-dark', inHero);
+          if (shellEl) shellEl.classList.toggle('in-hero', inHero);
         }, { threshold: 0 }).observe(heroSection);
       }
 
@@ -2649,27 +1770,18 @@
     })();
   </script>
 
-  <!-- ── Sidebar: hover-to-float (Instagram-style) + pin toggle ── -->
+  <!-- ── Sidebar: hover-to-float (Instagram-style) ── -->
   <script>
     (function () {
       const shell = document.getElementById('d1-shell');
       const sidebar = document.querySelector('.d1-sidebar');
-      let pinned = false;
-
-      function togglePin() {
-        pinned = !pinned;
-        shell.classList.toggle('revealed', pinned);
-      }
-      document.querySelectorAll('.d1-collapse-btn, .d1-collapse-clone').forEach(function(btn) {
-        btn.addEventListener('click', togglePin);
-      });
 
       if (sidebar) {
         sidebar.addEventListener('mouseenter', function () {
           shell.classList.add('revealed');
         });
         sidebar.addEventListener('mouseleave', function () {
-          if (!pinned) shell.classList.remove('revealed');
+          shell.classList.remove('revealed');
         });
       }
     })();

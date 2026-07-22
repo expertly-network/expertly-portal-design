@@ -16,51 +16,7 @@
   <link rel="stylesheet" href="assets/auth.css">
   <link rel="stylesheet" href="assets/dashboard-shell.css">
   <link rel="stylesheet" href="assets/sidebar-light.css">
-  <style>
-    .d1-shell { grid-template-columns: 56px 1fr; }
-    @media (min-width: 761px) {
-      .d1-sidebar { width: 56px; transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s; }
-      .d1-shell.revealed .d1-sidebar { width: 248px; box-shadow: 6px 0 32px rgba(0,0,0,0.28); }
-    }
-    .d1-logo-row { display: flex; align-items: center; justify-content: center; padding: 6px 0 22px; }
-    .d1-logo-row .d1-logo { padding: 0; min-width: 0; overflow: hidden; text-decoration: none; flex: 0 0 auto; }
-    .d1-shell.revealed .d1-logo-row { justify-content: flex-start; padding: 6px 4px 22px 10px; }
-    .d1-logo-full { opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap; transition: opacity 0.2s, max-width 0s; }
-    .d1-logo .dot { max-width: 10px; flex-shrink: 0; }
-    .d1-shell.revealed .d1-logo-full { display: inline; max-width: 160px; opacity: 1; transition: opacity 0.22s 0.3s, max-width 0s 0.3s; }
-    .d1-shell.revealed .d1-logo .dot { opacity: 1; transition: opacity 0.22s 0.35s; }
-    .d1-collapse-btn { flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s, color 0.15s; }
-    .d1-collapse-btn svg { width: 13px; height: 13px; transition: transform 0.3s; transform: rotate(180deg); }
-    .d1-collapse-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .d1-shell.revealed .d1-collapse-btn svg { transform: rotate(180deg); }
-    .d1-nav a { justify-content: center; gap: 0; padding: 10px; }
-    .d1-nav-lbl { opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap; transition: opacity 0.2s, max-width 0s; }
-    .d1-shell.revealed .d1-nav a { justify-content: flex-start; gap: 10px; padding: 9px 10px; }
-    .d1-shell.revealed .d1-nav-lbl { opacity: 1; max-width: 160px; transition: opacity 0.22s 0.3s, max-width 0s 0.3s; }
-    .d1-nav-label { display: none !important; }
-    .d1-shell.revealed .d1-nav-label:not([data-member-nav]) { display: block !important; }
-    .session-member .d1-shell.revealed .d1-nav-label[data-member-nav] { display: block !important; }
-    .d1-nav-divider { display: none !important; }
-    .session-member .d1-shell.revealed .d1-nav-divider[data-member-nav] { display: block !important; }
-    .d1-nav a .soon { display: none !important; }
-    .d1-shell.revealed .d1-nav a .soon { display: inline !important; }
-    @media (min-width: 761px) {
-      .d1-sidebar-foot { justify-content: center; padding-left: 0; padding-right: 0; }
-      .d1-sidebar-foot .d1-user-info, .d1-sidebar-foot .d1-theme-btn, .d1-sidebar-foot .d1-logout-btn { display: none; }
-      .d1-shell.revealed .d1-sidebar-foot { justify-content: flex-start; padding-left: 10px; padding-right: 10px; }
-      .d1-shell.revealed .d1-sidebar-foot .d1-user-info { display: block; }
-      .d1-shell.revealed .d1-sidebar-foot .d1-theme-btn, .d1-shell.revealed .d1-sidebar-foot .d1-logout-btn { display: flex; }
-    }
-    .v2-page-main { min-height: 100vh; overflow-x: clip; }
-    @media (max-width: 760px) {
-      .d1-shell { grid-template-columns: 1fr; }
-      .d1-sidebar { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
-      .d1-nav { flex-direction: row; flex-wrap: wrap; }
-      .d1-nav-label { display: none; }
-      .d1-sidebar-foot { display: none; }
-      .d1-logo-row { padding-bottom: 8px; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
@@ -73,9 +29,6 @@
         <a href="index.html" class="d1-logo" aria-label="Expertly home">
           <span class="d1-logo-mark">E</span><span class="d1-logo-full">xpertly</span><span class="dot"></span>
         </a>
-        <button class="d1-collapse-btn" id="d1-collapse-btn" aria-label="Toggle sidebar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
       </div>
       <div class="d1-nav-center">
         <nav class="d1-nav">
@@ -843,19 +796,16 @@
   </div>
 
   <script src="assets/members.js"></script>
+  <script src="assets/admin-data.js"></script>
   <script src="assets/shared.js"></script>
   <script src="assets/sidebar-theme.js"></script>
   <script>
     (function () {
       var shell = document.getElementById('d1-shell');
       var sidebar = document.querySelector('.d1-sidebar');
-      var btn = document.getElementById('d1-collapse-btn');
-      var pinned = false;
-      function togglePin() { pinned = !pinned; shell.classList.toggle('revealed', pinned); }
-      btn.addEventListener('click', togglePin);
       if (sidebar) {
         sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
-        sidebar.addEventListener('mouseleave', function () { if (!pinned) shell.classList.remove('revealed'); });
+        sidebar.addEventListener('mouseleave', function () { shell.classList.remove('revealed'); });
       }
     })();
   </script>

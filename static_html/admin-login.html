@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login — Expertly</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body class="adm-login-body">
+
+  <main class="adm-login-main">
+    <div class="adm-login-card">
+      <div class="adm-login-mark">
+        <span class="adm-login-mark-e">E</span><span class="dot"></span>
+      </div>
+      <span class="adm-login-eyebrow">Expertly Admin</span>
+      <h1 class="adm-login-title">Sign in to the admin dashboard.</h1>
+      <p class="adm-login-sub">Restricted to Expertly staff. Approve applications, review articles, and manage the events calendar.</p>
+
+      <form id="adm-login-form" class="adm-login-form" onsubmit="event.preventDefault();">
+        <div class="adm-login-field">
+          <label for="adm-login-email">Admin email</label>
+          <input type="email" id="adm-login-email" placeholder="admin@expertly.com" autocomplete="username" required>
+        </div>
+        <div class="adm-login-field">
+          <label for="adm-login-password">Password</label>
+          <input type="password" id="adm-login-password" placeholder="••••••••••" autocomplete="current-password" required>
+        </div>
+
+        <p class="adm-login-error" id="adm-login-error">Incorrect email or password.</p>
+
+        <button class="btn btn-primary btn-lg" type="submit" id="adm-login-submit" style="width:100%">
+          Sign in <span class="arr">→</span>
+        </button>
+      </form>
+
+      <div class="adm-login-demo">
+        <b>Demo credentials</b>
+        <div><span>Email</span><code>admin@expertly.com</code></div>
+        <div><span>Password</span><code>Expertly@Admin2026</code></div>
+      </div>
+
+      <a href="index.html" class="adm-login-back">← Back to Expertly</a>
+    </div>
+  </main>
+
+  <script src="assets/admin-data.js"></script>
+  <script>
+    (function () {
+      var ADMIN_EMAIL = 'admin@expertly.com';
+      var ADMIN_PASSWORD = 'Expertly@Admin2026';
+
+      // Already signed in? skip straight to the dashboard.
+      var existing = window.ExpertlyAdmin.getAdminSession();
+      if (existing && existing.role === 'admin') {
+        window.location.href = 'admin-dashboard.html';
+        return;
+      }
+
+      var form = document.getElementById('adm-login-form');
+      var errorEl = document.getElementById('adm-login-error');
+
+      form.addEventListener('submit', function () {
+        var email = document.getElementById('adm-login-email').value.trim().toLowerCase();
+        var password = document.getElementById('adm-login-password').value;
+
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+          window.ExpertlyAdmin.setAdminSession({ email: email, role: 'admin', signedInAt: new Date().toISOString() });
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          errorEl.classList.add('visible');
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
