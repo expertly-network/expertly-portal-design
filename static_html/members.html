@@ -51,6 +51,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
         <span class="d1-nav-lbl">Why join Expertly</span>
       </a>
+      <a href="my-consultations.html" data-user-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span class="d1-nav-lbl">My Consultations</span>
+      </a>
       <div class="d1-nav-divider" data-member-nav></div>
       <div class="d1-nav-label" data-member-nav>Member Portal</div>
       <a href="dashboard.html" data-member-nav>
@@ -376,6 +380,14 @@
       const serviceChips = m => { const tags = serviceMap[m.practice] || [m.practice, m.practice]; return [tags[0], tags[1]]; };
       const bio = m => { const firmPart = m.firm && m.firm !== 'Independent' ? `at ${m.firm}` : 'as an independent practitioner'; const locationShort = m.location.split(',')[0]; return `${m.name} is a ${m.title.toLowerCase()} with ${m.tenure} of experience specialising in ${m.practice} ${firmPart}, based in ${locationShort}. Available for cross-border mandates and international engagements.`; };
 
+      let _mv4Session = null;
+      try { _mv4Session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) { }
+      const isSignedIn = !!(_mv4Session && _mv4Session.email);
+
+      window.requestConsult = function (id) {
+        window.location.href = `member-profile.html?id=${id}&request=1`;
+      };
+
       const renderCard = (m, animIdx) => {
         const firm = m.firm && m.firm !== 'Independent' ? m.firm : null;
         const roleText = firm ? `${m.title} at ${firm}` : m.title;
@@ -385,7 +397,8 @@
         const verifiedInline = m.verified ? `<span class="mv4-verified-circle">${checkSvg}</span>` : '';
         const isBudding = parseInt(m.tenure) < 12;
         const tierBadge = isBudding ? `<span class="mv4-tier-badge mv4-tier-budding">${sproutIcon} Budding</span>` : '';
-        return `<a href="member-profile.html?id=${m.id}" style="text-decoration:none;display:block;"><div class="mv4-card" id="${m.id}" style="animation: cardSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;"><div class="mv4-photo-col"><div class="mv4-photo-frame">${photoEl}</div></div><div class="mv4-content"><div class="mv4-name-row"><span class="mv4-name">${m.name}</span>${verifiedInline}${tierBadge}</div><div class="mv4-role">${roleText}</div><div class="mv4-meta"><div class="mv4-meta-item"><span class="mv4-meta-icon">${pinSvg}</span><span>${m.location}</span></div><div class="mv4-meta-item"><span class="mv4-meta-icon">${clockSvg}</span><span>${expText}</span></div><div class="mv4-meta-item"><span class="mv4-meta-rate">${m.rate}</span></div></div><p class="mv4-bio">${bio(m)}</p><div class="mv4-chips"><span class="chip">${serviceChips(m)[0]}</span><span class="chip">${serviceChips(m)[1]}</span></div></div></div></a>`;
+        const requestBtn = isSignedIn ? `<button type="button" class="mv4-request-btn" onclick="event.preventDefault();event.stopPropagation();requestConsult('${m.id}');">Request Consultation</button>` : '';
+        return `<a href="member-profile.html?id=${m.id}" style="text-decoration:none;display:block;"><div class="mv4-card" id="${m.id}" style="animation: cardSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;"><div class="mv4-photo-col"><div class="mv4-photo-frame">${photoEl}</div></div><div class="mv4-content"><div class="mv4-name-row"><span class="mv4-name">${m.name}</span>${verifiedInline}${tierBadge}</div><div class="mv4-role">${roleText}</div><div class="mv4-meta"><div class="mv4-meta-item"><span class="mv4-meta-icon">${pinSvg}</span><span>${m.location}</span></div><div class="mv4-meta-item"><span class="mv4-meta-icon">${clockSvg}</span><span>${expText}</span></div><div class="mv4-meta-item"><span class="mv4-meta-rate">${m.rate}</span></div></div><p class="mv4-bio">${bio(m)}</p><div class="mv4-chips"><span class="chip">${serviceChips(m)[0]}</span><span class="chip">${serviceChips(m)[1]}</span>${requestBtn}</div></div></div></a>`;
       };
 
       const loadMore = () => { const start = currentPage * PAGE_SIZE; const batch = allFiltered.slice(start, start + PAGE_SIZE); if (!batch.length) return; listEl.insertAdjacentHTML('beforeend', batch.map((m, i) => renderCard(m, i)).join('')); currentPage++; };

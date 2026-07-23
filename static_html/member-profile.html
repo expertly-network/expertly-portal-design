@@ -50,6 +50,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
           <span class="d1-nav-lbl">Why join Expertly</span>
         </a>
+        <a href="my-consultations.html" data-user-nav>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="d1-nav-lbl">My Consultations</span>
+        </a>
         <div class="d1-nav-divider" data-member-nav></div>
         <div class="d1-nav-label" data-member-nav>Member Portal</div>
         <a href="dashboard.html" data-member-nav>
@@ -471,15 +475,28 @@
         <div class="mp-modal-error" id="mp-modal-error"></div>
 
         <div class="mp-form-field">
-          <label class="mp-form-label" for="mp-form-subject">Subject</label>
-          <input type="text" class="mp-form-input" id="mp-form-subject" maxlength="200"
-            placeholder="e.g. Transfer pricing advice for Singapore entity" />
+          <label class="mp-form-label" for="mp-form-name">Your Name</label>
+          <input type="text" class="mp-form-input" id="mp-form-name" maxlength="120"
+            placeholder="e.g. Amelia Ross" />
+        </div>
+
+        <div class="mp-form-field-row">
+          <div class="mp-form-field">
+            <label class="mp-form-label" for="mp-form-email">Email Address</label>
+            <input type="email" class="mp-form-input" id="mp-form-email" maxlength="200"
+              placeholder="you@firm.com" />
+          </div>
+          <div class="mp-form-field">
+            <label class="mp-form-label" for="mp-form-phone">Mobile Number</label>
+            <input type="tel" class="mp-form-input" id="mp-form-phone" maxlength="30"
+              placeholder="+1 212 555 0148" />
+          </div>
         </div>
 
         <div class="mp-form-field">
-          <label class="mp-form-label" for="mp-form-message">Message</label>
+          <label class="mp-form-label" for="mp-form-message">Description of Work Required</label>
           <textarea class="mp-form-textarea" id="mp-form-message" rows="5" maxlength="2000"
-            placeholder="Briefly describe what you need help with…"></textarea>
+            placeholder="Describe what you need help with, in as much detail as possible…"></textarea>
           <div class="mp-char-counter"><span id="mp-char-count">0</span> / 2000</div>
         </div>
 
@@ -1676,6 +1693,7 @@
 
     // ── Modal state ───────────────────────────────────
     let _modalOpen = false;
+    let currentMember = null;
 
     function openModal() {
       const overlay = document.getElementById('mp-modal-overlay');
@@ -1686,9 +1704,15 @@
       document.getElementById('mp-modal-form-body').style.display = '';
       document.getElementById('mp-modal-success').classList.remove('show');
       document.getElementById('mp-modal-error').classList.remove('show');
-      document.getElementById('mp-form-subject').value = '';
+      document.getElementById('mp-form-name').value = '';
+      document.getElementById('mp-form-phone').value = '';
       document.getElementById('mp-form-message').value = '';
       document.getElementById('mp-char-count').textContent = '0';
+
+      let session = null;
+      try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) { }
+      document.getElementById('mp-form-email').value = (session && session.email) || '';
+
       document.getElementById('mp-modal-submit-btn').disabled = true;
       document.getElementById('mp-modal-submit-btn').textContent = 'Send Request';
     }
@@ -1701,13 +1725,20 @@
     }
 
     function submitConsultation() {
-      const subject = document.getElementById('mp-form-subject').value.trim();
+      const name = document.getElementById('mp-form-name').value.trim();
+      const email = document.getElementById('mp-form-email').value.trim();
+      const phone = document.getElementById('mp-form-phone').value.trim();
       const message = document.getElementById('mp-form-message').value.trim();
       const btn = document.getElementById('mp-modal-submit-btn');
       const errorEl = document.getElementById('mp-modal-error');
 
-      if (!subject || !message) {
-        errorEl.textContent = 'Please fill in both the subject and message fields.';
+      if (!name || !email || !phone || !message) {
+        errorEl.textContent = 'Please fill in your name, email, mobile number, and a description of the work required.';
+        errorEl.classList.add('show');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Please enter a valid email address.';
         errorEl.classList.add('show');
         return;
       }
@@ -1716,9 +1747,38 @@
       btn.textContent = 'Sending…';
 
       setTimeout(() => {
+        saveConsultationRequest(name, email, phone, message);
         document.getElementById('mp-modal-form-body').style.display = 'none';
         document.getElementById('mp-modal-success').classList.add('show');
       }, 1500);
+    }
+
+    function saveConsultationRequest(name, email, phone, message) {
+      if (!currentMember) return;
+      let session = null;
+      try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) { }
+      if (!session || !session.email) return;
+
+      let all = [];
+      try { all = JSON.parse(localStorage.getItem('expertly_my_consultations')) || []; } catch (e) { all = []; }
+
+      all.push({
+        id: 'req-' + Date.now(),
+        requesterEmail: session.email,
+        requesterName: name,
+        requesterContactEmail: email,
+        requesterPhone: phone,
+        memberId: currentMember.id,
+        memberName: currentMember.name,
+        memberFirm: currentMember.firm && currentMember.firm !== 'Independent' ? currentMember.firm : '',
+        memberAvatar: currentMember.img || '',
+        memberPractice: currentMember.practice || '',
+        message,
+        sentAt: Date.now(),
+        status: 'pending',
+      });
+
+      localStorage.setItem('expertly_my_consultations', JSON.stringify(all));
     }
 
     // ── Engagement list render + edit ────────────────
@@ -2176,13 +2236,17 @@
       document.getElementById('mp-char-count').textContent = len;
       validateModal();
     });
-    document.getElementById('mp-form-subject').addEventListener('input', validateModal);
+    document.getElementById('mp-form-name').addEventListener('input', validateModal);
+    document.getElementById('mp-form-email').addEventListener('input', validateModal);
+    document.getElementById('mp-form-phone').addEventListener('input', validateModal);
 
     function validateModal() {
-      const subject = document.getElementById('mp-form-subject').value.trim();
+      const name = document.getElementById('mp-form-name').value.trim();
+      const email = document.getElementById('mp-form-email').value.trim();
+      const phone = document.getElementById('mp-form-phone').value.trim();
       const message = document.getElementById('mp-form-message').value.trim();
       const btn = document.getElementById('mp-modal-submit-btn');
-      btn.disabled = !subject || !message;
+      btn.disabled = !name || !email || !phone || !message;
     }
 
     // ── DOMContentLoaded ──────────────────────────────
@@ -2210,8 +2274,10 @@
         document.getElementById('mp-auth-wall').style.display = 'none';
         document.getElementById('mp-profile').style.display = '';
         if (member) {
+          currentMember = member;
           populateProfile(member, extended);
           setupTabs();
+          if (params.get('request') === '1') openModal();
         }
       }
     });

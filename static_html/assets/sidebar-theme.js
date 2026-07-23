@@ -112,6 +112,8 @@
   function initNavAuth(session) {
     if (session && session.role === 'member') {
       document.body.classList.add('session-member');
+    } else if (session && session.role === 'user') {
+      document.body.classList.add('session-user');
     }
   }
 

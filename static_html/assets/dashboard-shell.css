@@ -221,6 +221,11 @@ a[data-member-nav],
 /* "Why join Expertly" (membership.html) stays visible in the nav for
    everyone, members included — no longer hidden once signed in. */
 
+/* User-only nav items — signed-in non-member users, hidden until JS adds
+   .session-user to body */
+a[data-user-nav] { display: none; }
+.session-user a[data-user-nav] { display: flex; }
+
 /* Thin rule separating member-portal from public items */
 .d1-nav-divider { height: 1px; background: rgba(255,255,255,0.08); }
 
