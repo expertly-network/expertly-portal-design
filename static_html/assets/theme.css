@@ -537,11 +537,17 @@ body:has(.footer--minimal) {
 
 .footer-min-links a:hover { color: #fff; }
 
+.footer-min-links-primary a {
+  color: rgba(255,255,255,0.82);
+  font-weight: 600;
+}
+.footer-min-links-primary a:hover { color: var(--accent-2); }
+
 .footer-min-copy {
   font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  
   color: rgba(255,255,255,0.28);
 }
 

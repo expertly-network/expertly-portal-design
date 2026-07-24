@@ -674,7 +674,7 @@ html[data-grid="1"] .hero-split::before {
 .hero-search-hints span.mono {
   font-family: 'Archivo', sans-serif;
   font-size: 10px;
-  text-transform: uppercase;
+  
   letter-spacing: 0.1em;
   color: var(--ink-4);
   margin-right: 4px;
@@ -1276,7 +1276,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   font-family: 'Archivo', sans-serif;
   font-size: 11px;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  
   color: var(--neon);
   font-weight: 600;
   line-height: 1;
@@ -1461,12 +1461,12 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 }
 .hcal-month-label {
   font-family: 'Archivo', sans-serif; font-size: 13px;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+  letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600;
 }
 .hcal-live-badge {
   display: inline-flex; align-items: center; gap: 6px;
   font-family: 'Archivo', sans-serif; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ok);
+  letter-spacing: 0.12em; color: var(--ok);
   border: 1px solid color-mix(in oklab, var(--ok) 30%, transparent);
   background: color-mix(in oklab, var(--ok) 8%, var(--bg));
   border-radius: 100px; padding: 3px 9px 3px 6px;
@@ -1495,7 +1495,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   padding: 10px 0 14px; text-align: center;
   font-family: 'Archivo', sans-serif; font-size: 10px;
   letter-spacing: 0.14em; font-weight: 700; color: var(--ink-2);
-  text-transform: uppercase;
+  
 }
 
 /* ── Week row: FIXED height, two absolute layers ── */
@@ -1630,7 +1630,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 
 .hcal-ev-cat {
   font-family: 'Archivo', sans-serif; font-size: 8px; font-weight: 800;
-  letter-spacing: 0.1em; text-transform: uppercase;
+  letter-spacing: 0.1em; 
   color: var(--ev-color, var(--accent)); flex-shrink: 0;
 }
 .hcal-ev--past .hcal-ev-cat { color: var(--ink-3); }
@@ -1677,14 +1677,20 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   background: var(--ink) !important;
   border-color: var(--ink-2) !important;
   box-shadow: 0 8px 32px -8px rgba(0,0,0,0.28) !important;
+  position: relative; overflow: hidden;
+}
+.hcal-sidebar--promo::before {
+  content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px;
+  border-radius: 50%; background: color-mix(in oklab, var(--accent) 18%, transparent); pointer-events: none;
 }
 .hcal-promo {
   display: flex; flex-direction: column; justify-content: center;
   padding: 32px 28px; gap: 18px; flex: 1;
+  position: relative; z-index: 1;
 }
 .hcal-promo-eyebrow {
   font-family: 'Archivo', sans-serif; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+  letter-spacing: 0.14em; color: var(--accent);
 }
 .hcal-promo-title {
   font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2;
@@ -1695,13 +1701,13 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 }
 .hcal-promo-cta {
   display: inline-flex; align-items: center; align-self: flex-start;
-  background: var(--accent); color: #fff;
+  background: var(--bg-card); color: var(--ink);
   font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700;
   letter-spacing: 0.02em; padding: 11px 18px; border-radius: 9px;
   text-decoration: none; margin-top: 6px;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
-.hcal-promo-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+.hcal-promo-cta:hover { background: var(--accent-2); transform: translateY(-1px); }
 .hcal-promo-link {
   font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 500;
   color: rgba(255,255,255,0.35); text-decoration: none; align-self: flex-start;
@@ -1717,7 +1723,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 }
 .hcal-upcm-label {
   font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700;
-  letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-2);
+  letter-spacing: 0.13em; color: var(--ink-2);
 }
 .hcal-upcm-count {
   font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 500; color: var(--ink-4);
@@ -1748,7 +1754,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
 }
 .hcal-upcm-mon {
   font-family: 'Archivo', sans-serif; font-size: 8px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
+  letter-spacing: 0.1em; 
   color: color-mix(in oklab, var(--ev-color, var(--accent)) 60%, var(--ink-3));
 }
 .hcal-upcm-date--range .hcal-upcm-day {
@@ -1771,7 +1777,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   border-top: 1px solid var(--line-2);
   background: var(--bg-alt);
   font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.06em; text-transform: uppercase;
+  letter-spacing: 0.06em; 
   color: var(--accent); text-align: center;
   transition: background 0.15s ease, color 0.15s ease;
   margin-top: auto;

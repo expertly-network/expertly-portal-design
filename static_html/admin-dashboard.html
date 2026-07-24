@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Dashboard — Expertly</title>
+  <title>Admin Dashboard - Expertly</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,30 +30,39 @@
       <div class="d1-nav-center">
         <nav class="d1-nav" id="adm-nav">
           <div class="d1-nav-label">Manage</div>
-          <a href="#" data-tab="overview" class="active">
+          <a href="#" data-tab="overview" data-perm="viewDashboard" class="active">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             <span class="d1-nav-lbl">Overview</span>
           </a>
-          <a href="#" data-tab="applications">
+          <a href="#" data-tab="applications" data-perm="manageApplications">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
             <span class="d1-nav-lbl">Applications</span>
             <span class="adm-nav-count" id="adm-count-applications">0</span>
           </a>
-          <a href="#" data-tab="articles">
+          <a href="#" data-tab="articles" data-perm="manageArticles">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             <span class="d1-nav-lbl">Articles</span>
             <span class="adm-nav-count" id="adm-count-articles">0</span>
           </a>
-          <a href="#" data-tab="events">
+          <a href="#" data-tab="write-article" data-perm="writeArticles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span class="d1-nav-lbl">Write Article</span>
+          </a>
+          <a href="#" data-tab="events" data-perm="manageEvents">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <span class="d1-nav-lbl">Events</span>
+          </a>
+          <div class="d1-nav-divider" data-perm="manageAdmins"></div>
+          <a href="#" data-tab="admins" data-perm="manageAdmins">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span class="d1-nav-lbl">Admin Users</span>
           </a>
         </nav>
       </div>
 
       <div class="d1-sidebar-foot">
         <div class="d1-user-avatar" id="adm-user-avatar">A</div>
-        <div class="d1-user-info"><b>Admin</b><span id="adm-user-email">admin@expertly.com</span></div>
+        <div class="d1-user-info"><b id="adm-user-name">Admin</b><span id="adm-user-email">admin@expertly.com</span></div>
         <button class="d1-logout-btn" id="adm-logout-btn" title="Log out" aria-label="Log out">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         </button>
@@ -67,7 +76,7 @@
         <div class="container-wide">
           <span class="adm-eyebrow">Expertly Admin</span>
           <h1 class="adm-heading">Everything that needs your review, <em>in one place.</em></h1>
-          <p class="adm-sub">Membership applications, article submissions, and the events calendar — approve, reject, and publish from here.</p>
+          <p class="adm-sub">Membership applications, article submissions, and the events calendar - write, publish, approve, reject, and delete, all from here. <span id="adm-role-note"></span></p>
         </div>
       </section>
 
@@ -89,6 +98,10 @@
               <span class="adm-stat-label">Articles awaiting review</span>
             </div>
             <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-published-articles">0</span>
+              <span class="adm-stat-label">Published articles live</span>
+            </div>
+            <div class="adm-stat-card">
               <span class="adm-stat-num" id="stat-total-events">0</span>
               <span class="adm-stat-label">Events on the calendar</span>
             </div>
@@ -98,7 +111,7 @@
             <h2 class="adm-section-title">Recent activity</h2>
           </div>
           <div class="adm-feed" id="adm-recent-feed">
-            <div class="adm-empty">Nothing yet — activity will show up here as applications and articles come in.</div>
+            <div class="adm-empty">Nothing yet - activity will show up here as applications and articles come in.</div>
           </div>
         </section>
 
@@ -108,7 +121,7 @@
             <h2 class="adm-section-title">Membership applications</h2>
             <span class="adm-section-count" id="adm-apps-count-label">0 total</span>
           </div>
-          <p class="adm-panel-note">Fed by the public <b>Apply</b> and <b>Onboarding</b> forms. Approving here marks the applicant as a member on this device — it doesn't create a real account since this is a front-end prototype with no server.</p>
+          <p class="adm-panel-note">Fed by the public <b>Apply</b> and <b>Onboarding</b> forms. Approving here marks the applicant as a member on this device - it doesn't create a real account since this is a front-end prototype with no server.</p>
           <div class="adm-table-wrap">
             <table class="adm-table" id="adm-apps-table">
               <thead>
@@ -151,11 +164,103 @@
             </table>
             <div class="adm-empty" id="adm-articles-empty">No article submissions yet. Submit one via the "Write an Article" tab on <a href="articles.html">articles.html</a> (as a signed-in member) to see it appear here.</div>
           </div>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title">Published articles</h2>
+            <span class="adm-section-count" id="adm-published-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everything currently live on the public Articles page - member-authored, admin-authored, or shipped with the site. Deleting one here removes it from the public site immediately, on this device.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-published-table">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Source</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adm-published-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-published-empty" style="display:none;">Nothing published yet.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ WRITE ARTICLE ══════════════ -->
+        <section class="adm-panel" data-panel="write-article" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Write &amp; publish an article</h2>
+          </div>
+          <p class="adm-panel-note">Published immediately - articles written here don't go through the review queue since an admin authored them directly.</p>
+
+          <div class="anv-write-card" style="max-width:760px;">
+            <div class="anv-write-card-body" style="padding:28px 32px;">
+              <div>
+                <label class="anv-field-label" for="adm-wa-title">Title <span class="anv-required">*</span></label>
+                <input class="anv-input" id="adm-wa-title" type="text" placeholder="e.g. Navigating Stamp Duty on Cross-Border Mergers">
+                <div class="anv-field-error" id="adm-wa-title-error">Title is required.</div>
+              </div>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="adm-wa-cat">Practice area <span class="anv-required">*</span></label>
+                  <select class="anv-select" id="adm-wa-cat">
+                    <option>Direct Tax</option>
+                    <option>Indirect Tax</option>
+                    <option>Corporate Law</option>
+                    <option>M&amp;A</option>
+                    <option>IP &amp; Tech</option>
+                    <option>Transfer Pricing</option>
+                    <option>Compliance</option>
+                    <option>Banking &amp; Finance</option>
+                    <option>Dispute Resolution</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="adm-wa-country">Country &amp; state <span class="anv-optional">(optional)</span></label>
+                  <input class="anv-input" id="adm-wa-country" type="text" placeholder="e.g. India, Maharashtra">
+                </div>
+              </div>
+              <div>
+                <label class="anv-field-label" for="adm-wa-image">Cover image URL <span class="anv-optional">(optional - a default is used if left blank)</span></label>
+                <input class="anv-input" id="adm-wa-image" type="text" placeholder="https://…">
+              </div>
+              <div>
+                <label class="anv-field-label" for="adm-wa-body">Article content <span class="anv-required">*</span></label>
+                <textarea class="anv-textarea anv-textarea-notepad" id="adm-wa-body" spellcheck="false" placeholder="Write or paste your text here…"></textarea>
+                <div class="anv-word-count-row">
+                  <div class="anv-word-count" id="adm-wa-wordcount">0 words</div>
+                  <div class="anv-word-count-hint">Minimum 800 words, maximum 2,000 words.</div>
+                </div>
+                <div class="anv-field-error" id="adm-wa-body-error">Please check the number of words before publishing.</div>
+              </div>
+              <button class="anv-write-submit" id="adm-wa-submit" type="button">
+                Publish article
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <div class="adm-panel-note" id="adm-wa-success" style="display:none;color:var(--ok);font-weight:600;">Published - it's live on the Articles page now.</div>
+            </div>
+          </div>
         </section>
 
         <!-- ══════════════ EVENTS ══════════════ -->
         <section class="adm-panel" data-panel="events" hidden>
           <div class="adm-section-head">
+            <h2 class="adm-section-title">Event suggestions</h2>
+            <span class="adm-section-count" id="adm-evsug-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Submitted via the "Suggest an event" box on the public events.html page - from members or event organizers. Approving publishes it straight to the calendar.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-evsug-table">
+              <thead>
+                <tr><th>Event</th><th>Dates</th><th>Website</th><th>Submitted by</th><th>Status</th><th></th></tr>
+              </thead>
+              <tbody id="adm-evsug-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-evsug-empty">No event suggestions yet.</div>
+          </div>
+
+          <div class="adm-section-head" style="margin-top:36px;">
             <h2 class="adm-section-title">Add a new event</h2>
           </div>
           <form class="adm-event-form" id="adm-event-form">
@@ -225,20 +330,86 @@
               </thead>
               <tbody id="adm-events-tbody"></tbody>
             </table>
-            <div class="adm-empty" id="adm-events-empty">You haven't added any events yet — use the form above.</div>
+            <div class="adm-empty" id="adm-events-empty">You haven't added any events yet - use the form above.</div>
           </div>
 
           <div class="adm-section-head" style="margin-top:36px;">
             <h2 class="adm-section-title">Existing calendar events</h2>
             <span class="adm-section-count" id="adm-static-events-count">0</span>
           </div>
-          <p class="adm-panel-note">These ship with the site's static event list and can't be deleted from here — only events you add above can be removed.</p>
+          <p class="adm-panel-note">Ships with the site's static event list. Deleting one here removes it from the public calendar immediately, on this device.</p>
           <div class="adm-table-wrap">
             <table class="adm-table" id="adm-static-events-table">
               <thead>
-                <tr><th>Title</th><th>Dates</th><th>Location</th><th>Category</th></tr>
+                <tr><th>Title</th><th>Dates</th><th>Location</th><th>Category</th><th></th></tr>
               </thead>
               <tbody id="adm-static-events-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ══════════════ ADMIN USERS (Super Admin only) ══════════════ -->
+        <section class="adm-panel" data-panel="admins" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Admin team &amp; permissions</h2>
+          </div>
+
+          <div class="adm-roles-grid">
+            <div class="adm-role-card">
+              <b>Super Admin - every power</b>
+              <span>Full control: write/publish/delete articles &amp; events, review applications, and manage other admin accounts.</span>
+            </div>
+            <div class="adm-role-card">
+              <b>Content Manager - moderate power</b>
+              <span>Can write, publish, and delete articles &amp; events, and review applications. Can't manage admin accounts.</span>
+            </div>
+            <div class="adm-role-card">
+              <b>Reviewer - limited power</b>
+              <span>Can only approve/reject membership applications and article submissions. No write, delete, or admin-management access.</span>
+            </div>
+          </div>
+
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Add an admin login</h2>
+          </div>
+          <form class="adm-event-form" id="adm-user-form">
+            <div class="adm-form-row">
+              <div class="adm-field">
+                <label>Name</label>
+                <input type="text" id="adm-au-name" placeholder="e.g. Priya Nair" required>
+              </div>
+              <div class="adm-field">
+                <label>Email</label>
+                <input type="email" id="adm-au-email" placeholder="name@expertly.com" required>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-field">
+                <label>Password</label>
+                <input type="text" id="adm-au-password" placeholder="Set a temporary password" required>
+              </div>
+              <div class="adm-field">
+                <label>Power level</label>
+                <select id="adm-au-role">
+                  <option value="reviewer">Reviewer - limited power</option>
+                  <option value="content_manager">Content Manager - moderate power</option>
+                  <option value="super_admin">Super Admin - every power</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Add admin login</button>
+          </form>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title">Current admin logins</h2>
+            <span class="adm-section-count" id="adm-users-count">0</span>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-users-table">
+              <thead>
+                <tr><th>Name</th><th>Email</th><th>Power level</th><th></th></tr>
+              </thead>
+              <tbody id="adm-users-tbody"></tbody>
             </table>
           </div>
         </section>
@@ -266,29 +437,45 @@
 
       // ── Auth gate ──────────────────────────────────────────────
       var session = window.ExpertlyAdmin.getAdminSession();
-      if (!session || session.role !== 'admin') {
+      if (!session || !session.role || !window.ExpertlyAdmin.ROLES[session.role]) {
+        window.ExpertlyAdmin.clearAdminSession();
         window.location.href = 'admin-login.html';
         return;
       }
-      document.getElementById('adm-user-email').textContent = session.email || 'admin@expertly.com';
-      document.getElementById('adm-user-avatar').textContent = (session.email || 'A').charAt(0).toUpperCase();
+      var can = function (perm) { return window.ExpertlyAdmin.hasPermission(session, perm); };
+
+      document.getElementById('adm-user-name').textContent = session.name || 'Admin';
+      document.getElementById('adm-user-email').textContent = session.email || '';
+      document.getElementById('adm-user-avatar').textContent = (session.name || session.email || 'A').charAt(0).toUpperCase();
+      document.getElementById('adm-role-note').textContent = 'Signed in as ' + window.ExpertlyAdmin.getRoleLabel(session.role) + '.';
 
       document.getElementById('adm-logout-btn').addEventListener('click', function () {
         window.ExpertlyAdmin.clearAdminSession();
         window.location.href = 'admin-login.html';
       });
 
-      // ── Tab switching ──────────────────────────────────────────
-      var navLinks = document.querySelectorAll('#adm-nav a');
+      // ── Permission-gated nav: hide anything this role can't touch ──
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('#adm-nav a, #adm-nav .d1-nav-divider'));
+      navLinks.forEach(function (el) {
+        var perm = el.getAttribute('data-perm');
+        if (perm && !can(perm)) el.style.display = 'none';
+      });
+
+      var visibleLinks = navLinks.filter(function (el) { return el.tagName === 'A' && el.style.display !== 'none'; });
       var panels = document.querySelectorAll('.adm-panel');
-      navLinks.forEach(function (link) {
+
+      function activateTab(tab) {
+        visibleLinks.forEach(function (l) { l.classList.toggle('active', l.getAttribute('data-tab') === tab); });
+        panels.forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab; });
+      }
+      visibleLinks.forEach(function (link) {
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          var tab = link.getAttribute('data-tab');
-          navLinks.forEach(function (l) { l.classList.toggle('active', l === link); });
-          panels.forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab; });
+          activateTab(link.getAttribute('data-tab'));
         });
       });
+      // Land on the first tab this role can actually see.
+      if (visibleLinks.length) activateTab(visibleLinks[0].getAttribute('data-tab'));
 
       // ── Helpers ────────────────────────────────────────────────
       function esc(s) {
@@ -297,7 +484,7 @@
         });
       }
       function fmtDate(iso) {
-        if (!iso) return '—';
+        if (!iso) return '-';
         var d = new Date(iso);
         if (isNaN(d)) return esc(iso);
         return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
@@ -306,6 +493,9 @@
         var cls = status === 'pending' ? 'pending' : (status === 'published' || status === 'approved') ? 'approved' : 'rejected';
         var label = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending';
         return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>';
+      }
+      function rolePill(role) {
+        return '<span class="adm-pill adm-pill-role-' + esc(role) + '">' + esc(window.ExpertlyAdmin.getRoleLabel(role)) + '</span>';
       }
 
       // ── Render: Applications ───────────────────────────────────
@@ -324,17 +514,18 @@
         if (!apps.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
         empty.style.display = 'none';
 
+        var canManage = can('manageApplications');
         tbody.innerHTML = apps.map(function (a) {
-          var actions = (a.status === 'pending'
+          var actions = !canManage ? '' : ((a.status === 'pending'
             ? '<button class="adm-btn adm-btn-approve" data-action="approve-app" data-id="' + esc(a.id) + '">Approve</button>' +
               '<button class="adm-btn adm-btn-reject" data-action="reject-app" data-id="' + esc(a.id) + '">Reject</button>'
             : '<button class="adm-btn adm-btn-ghost" data-action="reset-app" data-id="' + esc(a.id) + '">Reset</button>') +
-            '<button class="adm-btn adm-btn-ghost" data-action="view-app" data-id="' + esc(a.id) + '">View</button>';
+            '<button class="adm-btn adm-btn-ghost" data-action="view-app" data-id="' + esc(a.id) + '">View</button>');
           return '<tr>' +
             '<td><b>' + esc(a.name) + '</b><span class="adm-td-sub">' + esc(a.email) + '</span></td>' +
             '<td>' + esc(a.practiceArea) + '</td>' +
             '<td>' + esc(a.location) + '</td>' +
-            '<td>' + (a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '—') + '</td>' +
+            '<td>' + (a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '-') + '</td>' +
             '<td class="adm-td-source">' + esc(a.source) + '</td>' +
             '<td>' + fmtDate(a.submittedAt) + '</td>' +
             '<td>' + statusPill(a.status) + '</td>' +
@@ -416,13 +607,14 @@
           if (app) openApplicationModal(app);
           return;
         }
+        if (!can('manageApplications')) return;
         var status = action === 'approve-app' ? 'approved' : action === 'reject-app' ? 'rejected' : 'pending';
         window.ExpertlyAdmin.setApplicationStatus(id, status);
         renderApplications();
         renderFeed();
       });
 
-      // ── Render: Articles ────────────────────────────────────────
+      // ── Render: Article submissions (review queue) ─────────────
       function renderArticles() {
         var arts = window.ExpertlyAdmin.getArticleSubmissions();
         var tbody = document.getElementById('adm-articles-tbody');
@@ -436,15 +628,18 @@
         if (!arts.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
         empty.style.display = 'none';
 
+        var canManage = can('manageArticles');
+        var canDelete = can('deleteContent');
         tbody.innerHTML = arts.map(function (a, i) {
-          var actions = (!a.status || a.status === 'pending')
+          var actions = !canManage ? '' : ((!a.status || a.status === 'pending')
             ? '<button class="adm-btn adm-btn-approve" data-action="approve-art" data-idx="' + i + '">Approve</button>' +
               '<button class="adm-btn adm-btn-reject" data-action="reject-art" data-idx="' + i + '">Reject</button>'
-            : '<button class="adm-btn adm-btn-ghost" data-action="reset-art" data-idx="' + i + '">Reset</button>';
+            : '<button class="adm-btn adm-btn-ghost" data-action="reset-art" data-idx="' + i + '">Reset</button>');
+          if (canDelete) actions += '<button class="adm-btn adm-btn-reject" data-action="delete-art" data-idx="' + i + '">Delete</button>';
           return '<tr>' +
             '<td><b>' + esc(a.title) + '</b></td>' +
             '<td>' + esc(a.category) + '</td>' +
-            '<td>' + esc(a.date || '—') + '</td>' +
+            '<td>' + esc(a.date || '-') + '</td>' +
             '<td>' + statusPill(a.status || 'pending') + '</td>' +
             '<td class="adm-td-actions">' + actions + '</td>' +
             '</tr>';
@@ -456,14 +651,128 @@
         if (!btn) return;
         var idx = parseInt(btn.getAttribute('data-idx'), 10);
         var action = btn.getAttribute('data-action');
+        if (action === 'delete-art') {
+          if (!can('deleteContent')) return;
+          window.ExpertlyAdmin.deleteArticleSubmission(idx);
+          renderArticles();
+          renderFeed();
+          return;
+        }
+        if (!can('manageArticles')) return;
         var status = action === 'approve-art' ? 'published' : action === 'reject-art' ? 'rejected' : 'pending';
         window.ExpertlyAdmin.setArticleStatus(idx, status);
         renderArticles();
+        renderPublished();
+        renderFeed();
+      });
+
+      // ── Render: Published articles (everything live on the site) ──
+      function renderPublished() {
+        var all = window.ExpertlyAdmin.getAllVisibleArticles();
+        var adminIds = window.ExpertlyAdmin.getAdminArticles().map(function (a) { return a.id; });
+        var tbody = document.getElementById('adm-published-tbody');
+        var empty = document.getElementById('adm-published-empty');
+        document.getElementById('adm-published-count-label').textContent = all.length + ' total';
+        document.getElementById('stat-published-articles').textContent = all.length;
+
+        if (!all.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        var canDelete = can('deleteContent');
+        tbody.innerHTML = all.map(function (a) {
+          var source = adminIds.indexOf(a.id) !== -1 ? 'Admin-authored' : 'Site';
+          var actions = canDelete
+            ? '<button class="adm-btn adm-btn-reject" data-action="delete-published" data-id="' + esc(a.id) + '">Delete</button>'
+            : '';
+          return '<tr>' +
+            '<td><b>' + esc(a.title) + '</b></td>' +
+            '<td>' + esc(a.category) + '</td>' +
+            '<td>' + esc(a.date || '-') + '</td>' +
+            '<td>' + esc(source) + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-published-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-published"]');
+        if (!btn || !can('deleteContent')) return;
+        window.ExpertlyAdmin.deleteArticleById(btn.getAttribute('data-id'));
+        renderPublished();
+        renderFeed();
+      });
+
+      // ── Write & publish an article (admin-authored, direct publish) ──
+      var CATEGORY_IMAGES = {
+        'Direct Tax': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop',
+        'Indirect Tax': 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=800&auto=format&fit=crop',
+        'Corporate Law': 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=800&auto=format&fit=crop',
+        'M&A': 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop',
+        'IP & Tech': 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
+        'Transfer Pricing': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop'
+      };
+      var MIN_WORDS = 800, MAX_WORDS = 2000;
+      function countWords(text) { return (text || '').trim().split(/\s+/).filter(Boolean).length; }
+
+      var waTitle = document.getElementById('adm-wa-title');
+      var waBody = document.getElementById('adm-wa-body');
+      var waWordCount = document.getElementById('adm-wa-wordcount');
+      function updateWaWordCount() {
+        var words = countWords(waBody.value);
+        waWordCount.textContent = words + (words === 1 ? ' word' : ' words');
+        waWordCount.classList.remove('under', 'over', 'ok');
+        if (words > 0) waWordCount.classList.add(words < MIN_WORDS ? 'under' : words > MAX_WORDS ? 'over' : 'ok');
+      }
+      waBody.addEventListener('input', updateWaWordCount);
+
+      document.getElementById('adm-wa-submit').addEventListener('click', function () {
+        if (!can('writeArticles')) return;
+        var title = waTitle.value.trim();
+        var body = waBody.value.trim();
+        var words = countWords(body);
+        var titleErr = document.getElementById('adm-wa-title-error');
+        var bodyErr = document.getElementById('adm-wa-body-error');
+        var valid = true;
+
+        waTitle.classList.toggle('anv-invalid', !title);
+        titleErr.classList.toggle('show', !title);
+        if (!title) valid = false;
+
+        var contentValid = words >= MIN_WORDS && words <= MAX_WORDS;
+        waBody.classList.toggle('anv-invalid', !contentValid);
+        bodyErr.textContent = !words
+          ? 'Article content is required.'
+          : 'Please check the number of words - this article is ' + words + ' words. It must be between 800 and 2,000 words.';
+        bodyErr.classList.toggle('show', !contentValid);
+        if (!contentValid) valid = false;
+
+        if (!valid) return;
+
+        var cat = document.getElementById('adm-wa-cat').value;
+        var country = document.getElementById('adm-wa-country').value.trim();
+        var image = document.getElementById('adm-wa-image').value.trim() || CATEGORY_IMAGES[cat] || CATEGORY_IMAGES['Direct Tax'];
+        var wordsForRead = Math.max(1, Math.round(words / 200));
+
+        window.ExpertlyAdmin.addAdminArticle({
+          title: title, category: cat, image: image,
+          excerpt: body.slice(0, 180).trim() + (body.length > 180 ? '…' : ''),
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase(),
+          readTime: wordsForRead + ' min',
+          country: country || null,
+          bodyText: body,
+          status: 'published'
+        });
+
+        waTitle.value = ''; waBody.value = ''; document.getElementById('adm-wa-country').value = ''; document.getElementById('adm-wa-image').value = '';
+        updateWaWordCount();
+        document.getElementById('adm-wa-success').style.display = 'block';
+        setTimeout(function () { document.getElementById('adm-wa-success').style.display = 'none'; }, 3200);
+
+        renderPublished();
         renderFeed();
       });
 
       // ── Render: Events ──────────────────────────────────────────
-      var MONTH_CODE = { Jan: 'JAN', Feb: 'FEB', Mar: 'MAR', Apr: 'APR', May: 'MAY', Jun: 'JUN', Jul: 'JUL', Aug: 'AUG', Sep: 'SEP', Oct: 'OCT', Nov: 'NOV', Dec: 'DEC' };
       function toEventDateCode(dateStr) {
         if (!dateStr) return '';
         var d = new Date(dateStr + 'T00:00:00');
@@ -474,8 +783,11 @@
 
       function renderEvents() {
         var adminEvents = window.ExpertlyAdmin.getAdminEvents();
-        var staticEvents = window.EXPERTLY_EVENTS || [];
+        var hiddenIds = window.ExpertlyAdmin.getHiddenEventIds();
+        var staticEvents = (window.EXPERTLY_EVENTS || []).filter(function (e) { return hiddenIds.indexOf(e.id) === -1; });
         document.getElementById('stat-total-events').textContent = adminEvents.length + staticEvents.length;
+
+        var canDelete = can('deleteContent');
 
         var evTbody = document.getElementById('adm-events-tbody');
         var evEmpty = document.getElementById('adm-events-empty');
@@ -489,7 +801,7 @@
               '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
               '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
               '<td>' + esc(e.category) + '</td>' +
-              '<td class="adm-td-actions"><button class="adm-btn adm-btn-reject" data-action="delete-event" data-id="' + esc(e.id) + '">Remove</button></td>' +
+              '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-event" data-id="' + esc(e.id) + '">Remove</button>' : '') + '</td>' +
               '</tr>';
           }).join('');
         }
@@ -502,19 +814,75 @@
             '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
             '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
             '<td>' + esc(e.category) + '</td>' +
+            '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-static-event" data-id="' + esc(e.id) + '">Delete</button>' : '') + '</td>' +
             '</tr>';
         }).join('');
       }
 
       document.getElementById('adm-events-tbody').addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-action="delete-event"]');
-        if (!btn) return;
+        if (!btn || !can('deleteContent')) return;
         window.ExpertlyAdmin.deleteAdminEvent(btn.getAttribute('data-id'));
         renderEvents();
+      });
+      document.getElementById('adm-static-events-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-static-event"]');
+        if (!btn || !can('deleteContent')) return;
+        window.ExpertlyAdmin.deleteStaticEvent(btn.getAttribute('data-id'));
+        renderEvents();
+      });
+
+      // ── Render: Event suggestions (from the public "Suggest an event" box) ──
+      function renderEventSuggestions() {
+        var subs = window.ExpertlyAdmin.getEventSuggestions();
+        var tbody = document.getElementById('adm-evsug-tbody');
+        var empty = document.getElementById('adm-evsug-empty');
+        document.getElementById('adm-evsug-count-label').textContent = subs.length + ' total';
+
+        if (!subs.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        var canManage = can('manageEvents');
+        var canDelete = can('deleteContent');
+        tbody.innerHTML = subs.map(function (s) {
+          var actions = !canManage ? '' : ((!s.status || s.status === 'pending')
+            ? '<button class="adm-btn adm-btn-approve" data-action="approve-evsug" data-id="' + esc(s.id) + '">Approve</button>' +
+              '<button class="adm-btn adm-btn-reject" data-action="reject-evsug" data-id="' + esc(s.id) + '">Reject</button>'
+            : '<button class="adm-btn adm-btn-ghost" data-action="reset-evsug" data-id="' + esc(s.id) + '">Reset</button>');
+          if (canDelete) actions += '<button class="adm-btn adm-btn-reject" data-action="delete-evsug" data-id="' + esc(s.id) + '">Delete</button>';
+          return '<tr>' +
+            '<td><b>' + esc(s.title) + '</b><span class="adm-td-sub">' + esc([s.city, s.country].filter(Boolean).join(', ')) + '</span></td>' +
+            '<td>' + esc(s.start) + (s.end ? ' – ' + esc(s.end) : '') + '</td>' +
+            '<td>' + (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener">Link</a>' : '-') + '</td>' +
+            '<td>' + esc(s.org || '-') + '</td>' +
+            '<td>' + statusPill(s.status || 'pending') + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-evsug-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        if (action === 'delete-evsug') {
+          if (!can('deleteContent')) return;
+          window.ExpertlyAdmin.deleteEventSuggestion(id);
+          renderEventSuggestions();
+          return;
+        }
+        if (!can('manageEvents')) return;
+        var status = action === 'approve-evsug' ? 'approved' : action === 'reject-evsug' ? 'rejected' : 'pending';
+        window.ExpertlyAdmin.setEventSuggestionStatus(id, status);
+        renderEventSuggestions();
+        renderEvents();
+        renderFeed();
       });
 
       document.getElementById('adm-event-form').addEventListener('submit', function (e) {
         e.preventDefault();
+        if (!can('manageEvents')) return;
         var start = toEventDateCode(document.getElementById('adm-ev-start').value);
         var end = toEventDateCode(document.getElementById('adm-ev-end').value);
         window.ExpertlyAdmin.addAdminEvent({
@@ -533,6 +901,52 @@
         renderFeed();
       });
 
+      // ── Render: Admin users (Super Admin only) ──────────────────
+      function renderAdminUsers() {
+        if (!can('manageAdmins')) return;
+        var users = window.ExpertlyAdmin.getAdminUsers();
+        document.getElementById('adm-users-count').textContent = users.length;
+        document.getElementById('adm-users-tbody').innerHTML = users.map(function (u) {
+          var isSelf = u.id === session.userId;
+          var isLastSuper = u.role === 'super_admin' && window.ExpertlyAdmin.countSuperAdmins(u.id) === 0;
+          var canDelete = !isSelf && !isLastSuper;
+          return '<tr>' +
+            '<td><b>' + esc(u.name) + '</b>' + (isSelf ? ' <span class="adm-td-sub">(you)</span>' : '') + '</td>' +
+            '<td>' + esc(u.email) + '</td>' +
+            '<td>' + rolePill(u.role) + '</td>' +
+            '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-user" data-id="' + esc(u.id) + '">Remove</button>' : '<span class="adm-td-sub">-</span>') + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      var adminUserForm = document.getElementById('adm-user-form');
+      if (adminUserForm) {
+        adminUserForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!can('manageAdmins')) return;
+          var email = document.getElementById('adm-au-email').value.trim().toLowerCase();
+          var existing = window.ExpertlyAdmin.getAdminUsers().some(function (u) { return u.email.toLowerCase() === email; });
+          if (existing) { alert('An admin with that email already exists.'); return; }
+          window.ExpertlyAdmin.addAdminUser({
+            name: document.getElementById('adm-au-name').value.trim(),
+            email: email,
+            password: document.getElementById('adm-au-password').value,
+            role: document.getElementById('adm-au-role').value
+          });
+          e.target.reset();
+          renderAdminUsers();
+        });
+      }
+      var adminUsersTbody = document.getElementById('adm-users-tbody');
+      if (adminUsersTbody) {
+        adminUsersTbody.addEventListener('click', function (e) {
+          var btn = e.target.closest('button[data-action="delete-user"]');
+          if (!btn || !can('manageAdmins')) return;
+          window.ExpertlyAdmin.deleteAdminUser(btn.getAttribute('data-id'));
+          renderAdminUsers();
+        });
+      }
+
       // ── Recent activity feed (Overview tab) ─────────────────────
       function renderFeed() {
         var apps = window.ExpertlyAdmin.getApplications().map(function (a) {
@@ -541,13 +955,19 @@
         var arts = window.ExpertlyAdmin.getArticleSubmissions().map(function (a) {
           return { type: 'Article', label: a.title, sub: a.category, when: a.date, status: a.status || 'pending' };
         });
-        var all = apps.concat(arts).filter(function (x) { return x.label; });
+        var adminArts = window.ExpertlyAdmin.getAdminArticles().map(function (a) {
+          return { type: 'Article (admin)', label: a.title, sub: a.category, when: a.date, status: 'published' };
+        });
+        var evSugs = window.ExpertlyAdmin.getEventSuggestions().map(function (s) {
+          return { type: 'Event suggestion', label: s.title, sub: [s.city, s.country].filter(Boolean).join(', '), when: s.submittedAt, status: s.status };
+        });
+        var all = apps.concat(arts, adminArts, evSugs).filter(function (x) { return x.label; });
         all.sort(function (a, b) { return new Date(b.when || 0) - new Date(a.when || 0); });
         all = all.slice(0, 10);
 
         var feed = document.getElementById('adm-recent-feed');
         if (!all.length) {
-          feed.innerHTML = '<div class="adm-empty">Nothing yet — activity will show up here as applications and articles come in.</div>';
+          feed.innerHTML = '<div class="adm-empty">Nothing yet - activity will show up here as applications and articles come in.</div>';
           return;
         }
         feed.innerHTML = all.map(function (x) {
@@ -560,9 +980,6 @@
       }
 
       // ── Sample data (first run only) ────────────────────────────
-      // Seeds two fully-filled-out applications so the "View" detail
-      // panel has something real to show before anyone has actually
-      // submitted the public apply/onboarding forms on this device.
       function seedSampleApplications() {
         if (window.ExpertlyAdmin.getApplications().length) return;
 
@@ -611,8 +1028,12 @@
       seedSampleApplications();
       renderApplications();
       renderArticles();
+      renderPublished();
       renderEvents();
+      renderEventSuggestions();
+      renderAdminUsers();
       renderFeed();
+      updateWaWordCount();
     })();
   </script>
 </body>

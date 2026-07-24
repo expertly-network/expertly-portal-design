@@ -49,7 +49,7 @@
       </a>
       <a href="membership.html" data-guest-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
-        <span class="d1-nav-lbl">Why join Expertly</span>
+        <span class="d1-nav-lbl">Expertly Benefits</span>
       </a>
       <a href="my-consultations.html" data-user-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -139,7 +139,7 @@
       <div class="anv-tab-row">
         <div class="anv-tab-list">
           <button class="anv-tab active" id="anv-tab-browse" data-tab="browse">Browse Articles</button>
-          <button class="anv-tab" id="anv-tab-mine" data-tab="mine" style="display:none;">View my Articles</button>
+          <button class="anv-tab" id="anv-tab-mine" data-tab="mine" style="display:none;">My Articles</button>
         </div>
         <button class="anv-write-cta-btn" id="anv-write-btn" style="display:none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -204,7 +204,7 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
           </div>
           <div class="anv-my-empty-title">You haven't published anything yet</div>
-          <div class="anv-my-empty-sub">Write your first article and it'll show up here — including anything still waiting on editorial review.</div>
+          <div class="anv-my-empty-sub">Write your first article and it'll show up here - including anything still waiting on editorial review.</div>
           <button class="anv-write-cta-btn" id="anv-my-empty-write-btn" style="margin:0;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Write an Article
@@ -229,21 +229,6 @@
             </span>
             <h2 class="anv-write-title">Share your expertise.</h2>
             <p class="anv-write-sub">Publish an article and reach verified practitioners across 20+ countries. Choose how you'd like to create it.</p>
-          </div>
-
-          <div class="anv-write-stats">
-            <span class="anv-write-stat">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-              <b>20,000+</b>&nbsp;monthly readers
-            </span>
-            <span class="anv-write-stat">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <b>20+</b>&nbsp;countries reached
-            </span>
-            <span class="anv-write-stat">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <b>48hr</b>&nbsp;editorial turnaround
-            </span>
           </div>
 
           <div class="anv-write-options">
@@ -287,61 +272,75 @@
             </div>
             <div class="anv-write-card-body">
               <div>
-                <label class="anv-field-label" for="anv-up-title">Title</label>
-                <input class="anv-input" id="anv-up-title" type="text" placeholder="e.g. Navigating Stamp Duty on Cross-Border Mergers">
+                <label class="anv-field-label" for="anv-up-title">Title <span class="anv-required">*</span></label>
+                <input class="anv-input" id="anv-up-title" type="text" required placeholder="e.g. Navigating Stamp Duty on Cross-Border Mergers">
+                <div class="anv-field-error" id="anv-up-title-error">Title is required.</div>
               </div>
               <div class="anv-field-row">
                 <div>
-                  <label class="anv-field-label" for="anv-up-cat">Practice area</label>
-                  <select class="anv-select" id="anv-up-cat">
-                    <option>Direct Tax</option>
-                    <option>Indirect Tax</option>
-                    <option>Corporate Law</option>
-                    <option>M&amp;A</option>
-                    <option>IP &amp; Tech</option>
-                    <option>Transfer Pricing</option>
-                  </select>
+                  <label class="anv-field-label">Practice area(s) <span class="anv-required">*</span></label>
+                  <div class="anv-msel-wrap" id="anv-up-cat-wrap">
+                    <button type="button" class="anv-msel-trigger" id="anv-up-cat-trigger">
+                      <span id="anv-up-cat-trigger-label">Select practice areas</span>
+                      <span class="anv-msel-caret">▾</span>
+                    </button>
+                    <div class="anv-msel-popover" id="anv-up-cat-popover">
+                      <div class="anv-dd-search-wrap">
+                        <input class="anv-dd-search" id="anv-up-cat-search" placeholder="Search practice areas…" autocomplete="off">
+                      </div>
+                      <div class="anv-msel-list" id="anv-up-cat-list"></div>
+                      <div class="anv-msel-custom-wrap">
+                        <label class="anv-msel-option" style="padding:8px 0;">
+                          <input type="checkbox" id="anv-up-cat-custom-check">
+                          <span>Custom / other topic</span>
+                        </label>
+                        <input class="anv-input anv-msel-custom-input" id="anv-up-cat-custom-input" type="text" placeholder="Type your own practice area, press Enter…" style="display:none;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="anv-msel-chips" id="anv-up-cat-chips"></div>
+                  <div class="anv-field-error" id="anv-up-cat-error">Select at least one practice area.</div>
                 </div>
                 <div>
-                  <label class="anv-field-label" for="anv-up-country">Country &amp; state (relevance)</label>
-                  <input class="anv-input" id="anv-up-country" type="text" placeholder="e.g. Singapore">
+                  <label class="anv-field-label">Country <span class="anv-required">*</span></label>
+                  <div class="anv-msel-wrap" id="anv-up-country-wrap">
+                    <button type="button" class="anv-msel-trigger" id="anv-up-country-trigger">
+                      <span id="anv-up-country-trigger-label">Select countries</span>
+                      <span class="anv-msel-caret">▾</span>
+                    </button>
+                    <div class="anv-msel-popover" id="anv-up-country-popover">
+                      <div class="anv-dd-search-wrap">
+                        <input class="anv-dd-search" id="anv-up-country-search" placeholder="Search countries…" autocomplete="off">
+                      </div>
+                      <div class="anv-msel-list" id="anv-up-country-list"></div>
+                    </div>
+                  </div>
+                  <div class="anv-msel-chips" id="anv-up-country-chips"></div>
+                  <div class="anv-field-error" id="anv-up-country-error">Select at least one country.</div>
                 </div>
               </div>
               <div>
-                <div class="anv-upload-tabs" id="anv-upload-mode-tabs">
-                  <div class="anv-upload-tab active" data-mode="text">Paste / write text</div>
-                  <div class="anv-upload-tab" data-mode="file">Upload a document</div>
-                </div>
-                <div id="anv-upload-text-wrap" style="margin-top:14px;">
-                  <textarea class="anv-textarea" id="anv-up-text" placeholder="Start writing, or paste your draft here…"></textarea>
-                  <div class="anv-word-count" id="anv-up-wordcount">0 words</div>
-                </div>
-                <div id="anv-upload-file-wrap" style="display:none; margin-top:14px;">
-                  <div class="anv-dropzone" id="anv-dropzone">
-                    <div class="anv-dropzone-icon">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    </div>
-                    <div class="anv-dropzone-text">Drag &amp; drop a document here, or <span>browse</span></div>
-                    <div class="anv-dropzone-sub">.DOCX, .PDF, or .TXT — we'll extract the article text for you</div>
-                    <div class="anv-dropzone-file" id="anv-dropzone-file">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
-                      <span id="anv-dropzone-filename"></span>
-                    </div>
-                    <input type="file" id="anv-file-input" accept=".doc,.docx,.pdf,.txt" hidden>
-                  </div>
-                  <div class="anv-extracting" id="anv-extracting" style="display:none;">
-                    <div class="anv-ai-spinner anv-ai-spinner-sm"></div>
-                    Extracting text from your document…
+                <label class="anv-field-label" for="anv-up-state">State / province <span class="anv-optional">(optional - only if this is state-specific, e.g. US, India)</span></label>
+                <input class="anv-input" id="anv-up-state" type="text" placeholder="e.g. California, Maharashtra">
+              </div>
+              <div>
+                <label class="anv-field-label" for="anv-up-text">Article content <span class="anv-required">*</span></label>
+                <div id="anv-upload-text-wrap" style="margin-top:8px;">
+                  <textarea class="anv-textarea anv-textarea-notepad" id="anv-up-text" required spellcheck="false" placeholder="Write or paste your text here…"></textarea>
+                  <div class="anv-word-count-row">
+                    <div class="anv-word-count" id="anv-up-wordcount">0 words</div>
+                    <div class="anv-word-count-hint">Minimum 800 words, maximum 2,000 words.</div>
                   </div>
                 </div>
+                <div class="anv-field-error" id="anv-up-content-error">Write or paste your article content before continuing.</div>
               </div>
 
-              <!-- Auto-selected cover image -->
+              <!-- Auto-selected cover image (auto-generated - optional to change) -->
               <div class="anv-auto-image" id="anv-up-image-block">
                 <img class="anv-auto-image-img" id="anv-up-image-preview" src="" alt="">
                 <div class="anv-auto-image-body">
                   <div class="anv-auto-image-label">Auto-selected cover image</div>
-                  <div class="anv-field-hint" style="margin-top:2px;">Picked to match your practice area — swap it any time before submitting.</div>
+                  <div class="anv-field-hint" style="margin-top:2px;">Picked to match your practice area - swap it any time before submitting.</div>
                   <button class="anv-btn-outline-sm" id="anv-up-image-shuffle" type="button" style="margin-top:8px;">Try another image</button>
                 </div>
               </div>
@@ -366,14 +365,14 @@
         <div id="anv-write-ai" style="display:none;">
           <button class="anv-write-back" type="button" data-back>← Back</button>
           <div class="anv-write-centered">
-          <div class="anv-write-card">
+          <div class="anv-write-card" id="anv-ai-card">
 
             <div id="anv-ai-form-wrap">
               <div class="anv-write-card-head">
                 <span class="anv-write-card-head-icon">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </span>
-                Expertly AI — a few quick questions
+                Expertly AI - a few quick questions
               </div>
 
               <!-- Progress -->
@@ -393,24 +392,54 @@
                 </div>
                 <div class="anv-field-row">
                   <div>
-                    <label class="anv-field-label" for="anv-ai-cat">Practice area</label>
-                    <select class="anv-select" id="anv-ai-cat">
-                      <option>Direct Tax</option>
-                      <option>Indirect Tax</option>
-                      <option>Corporate Law</option>
-                      <option>M&amp;A</option>
-                      <option>IP &amp; Tech</option>
-                      <option>Transfer Pricing</option>
-                    </select>
+                    <label class="anv-field-label">Practice area(s) <span class="anv-required">*</span></label>
+                    <div class="anv-msel-wrap" id="anv-ai-cat-wrap">
+                      <button type="button" class="anv-msel-trigger" id="anv-ai-cat-trigger">
+                        <span id="anv-ai-cat-trigger-label">Select practice areas</span>
+                        <span class="anv-msel-caret">▾</span>
+                      </button>
+                      <div class="anv-msel-popover" id="anv-ai-cat-popover">
+                        <div class="anv-dd-search-wrap">
+                          <input class="anv-dd-search" id="anv-ai-cat-search" placeholder="Search practice areas…" autocomplete="off">
+                        </div>
+                        <div class="anv-msel-list" id="anv-ai-cat-list"></div>
+                        <div class="anv-msel-custom-wrap">
+                          <label class="anv-msel-option" style="padding:8px 0;">
+                            <input type="checkbox" id="anv-ai-cat-custom-check">
+                            <span>Custom / other topic</span>
+                          </label>
+                          <input class="anv-input anv-msel-custom-input" id="anv-ai-cat-custom-input" type="text" placeholder="Type your own practice area, press Enter…" style="display:none;">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="anv-msel-chips" id="anv-ai-cat-chips"></div>
+                    <div class="anv-field-error" id="anv-ai-cat-error">Select at least one practice area.</div>
                   </div>
                   <div>
-                    <label class="anv-field-label" for="anv-ai-country">Country &amp; state (relevance)</label>
-                    <input class="anv-input" id="anv-ai-country" type="text" placeholder="e.g. India, Maharashtra">
+                    <label class="anv-field-label">Country <span class="anv-required">*</span></label>
+                    <div class="anv-msel-wrap" id="anv-ai-country-wrap">
+                      <button type="button" class="anv-msel-trigger" id="anv-ai-country-trigger">
+                        <span id="anv-ai-country-trigger-label">Select country</span>
+                        <span class="anv-msel-caret">▾</span>
+                      </button>
+                      <div class="anv-msel-popover" id="anv-ai-country-popover">
+                        <div class="anv-dd-search-wrap">
+                          <input class="anv-dd-search" id="anv-ai-country-search" placeholder="Search countries…" autocomplete="off">
+                        </div>
+                        <div class="anv-msel-list" id="anv-ai-country-list"></div>
+                      </div>
+                    </div>
+                    <div class="anv-msel-chips" id="anv-ai-country-chips"></div>
+                    <div class="anv-field-error" id="anv-ai-country-error">Select at least one country.</div>
                   </div>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="anv-ai-state">State / province <span class="anv-optional">(optional - only if this is state-specific, e.g. US, India)</span></label>
+                  <input class="anv-input" id="anv-ai-state" type="text" placeholder="e.g. California, Maharashtra">
                 </div>
                 <div class="anv-wizard-nav">
                   <span></span>
-                  <button class="anv-wizard-next" type="button" data-goto="2">Continue <span>→</span></button>
+                  <button class="anv-wizard-next" type="button" id="anv-ai-step1-continue" data-goto="2">Continue <span>→</span></button>
                 </div>
               </div>
 
@@ -438,14 +467,14 @@
               <div class="anv-write-card-body anv-wizard-substep" id="anv-ai-step-3" style="display:none;">
                 <div class="anv-source-block">
                   <label class="anv-field-label">Source material <span class="anv-optional">(optional, but strongly improves quality)</span></label>
-                  <div class="anv-field-hint" style="margin:-2px 0 12px;">Upload documents or paste links you want the AI to read and pull real detail from — the more grounded the source, the less generic the draft.</div>
+                  <div class="anv-field-hint" style="margin:-2px 0 12px;">Upload documents or paste links you want the AI to read and pull real detail from - the more grounded the source, the less generic the draft.</div>
 
                   <div class="anv-dropzone anv-dropzone-sm" id="anv-ai-dropzone">
                     <div class="anv-dropzone-icon">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     </div>
                     <div class="anv-dropzone-text">Drag &amp; drop documents, or <span>browse</span></div>
-                    <div class="anv-dropzone-sub">Circulars, notes, judgments, decks — .PDF, .DOCX, .TXT</div>
+                    <div class="anv-dropzone-sub">Circulars, notes, judgments, decks - .PDF, .DOCX, .TXT</div>
                     <input type="file" id="anv-ai-file-input" accept=".doc,.docx,.pdf,.txt" multiple hidden>
                   </div>
                   <div class="anv-file-chip-row" id="anv-ai-file-chips"></div>
@@ -493,30 +522,32 @@
               <div class="anv-ai-generating-sub">This usually takes just a few seconds.</div>
             </div>
 
-            <div class="anv-ai-draft" id="anv-ai-draft" style="display:none;"></div>
+          </div>
 
-            <!-- Refine: comment/rephrase before finalizing -->
-            <div class="anv-refine" id="anv-ai-refine" style="display:none;">
-              <div class="anv-refine-label">Not quite right? Tell the AI what to change</div>
-              <textarea class="anv-textarea" id="anv-refine-notes" style="min-height:80px;" placeholder="e.g. make the second section more formal, shorten the intro, add a line on penalties…"></textarea>
-              <div class="anv-field-row">
-                <div>
-                  <label class="anv-field-label" for="anv-refine-tone">Adjust tone</label>
-                  <select class="anv-select" id="anv-refine-tone">
-                    <option>Keep as-is</option>
-                    <option>More formal</option>
-                    <option>More casual</option>
-                    <option>More concise</option>
-                    <option>More detailed</option>
-                  </select>
-                </div>
-                <div style="display:flex; align-items:flex-end;">
-                  <button class="anv-btn-outline-sm" id="anv-refine-apply" type="button" style="width:100%;">Rephrase with these notes</button>
-                </div>
+          <!-- Full article preview, shown inline as soon as the draft is generated - no separate preview step -->
+          <div class="anv-ai-draft" id="anv-ai-draft" style="display:none;"></div>
+
+          <!-- Refine: comment/rephrase before finalizing -->
+          <div class="anv-refine" id="anv-ai-refine" style="display:none;">
+            <div class="anv-refine-label">Not quite right? Tell the AI what to change</div>
+            <textarea class="anv-textarea" id="anv-refine-notes" style="min-height:80px;" placeholder="e.g. make the second section more formal, shorten the intro, add a line on penalties…"></textarea>
+            <div class="anv-field-row">
+              <div>
+                <label class="anv-field-label" for="anv-refine-tone">Adjust tone</label>
+                <select class="anv-select" id="anv-refine-tone">
+                  <option>Keep as-is</option>
+                  <option>More formal</option>
+                  <option>More casual</option>
+                  <option>More concise</option>
+                  <option>More detailed</option>
+                </select>
+              </div>
+              <div style="display:flex; align-items:flex-end;">
+                <button class="anv-btn-outline-sm" id="anv-refine-apply" type="button" style="width:100%;">Rephrase with these notes</button>
               </div>
             </div>
-
           </div>
+
           </div>
         </div>
 
@@ -578,18 +609,7 @@
               </div>
               <div>
                 <div class="anv-success-title">You're all set.</div>
-                <div class="anv-success-sub">Submitted for review — the editorial team typically publishes within 2 business days.</div>
-              </div>
-            </div>
-            <div class="anv-share-block">
-              <div class="anv-field-label" style="margin-bottom:4px;">Get the word out once it's live</div>
-              <div class="anv-field-hint" style="margin-bottom:14px;">Expertly doesn't auto-post on your behalf — copy your summary below, or open a pre-filled share dialog on the platforms that support one.</div>
-              <textarea class="anv-textarea" id="anv-share-text" style="min-height:90px;" readonly></textarea>
-              <div class="anv-share-actions">
-                <button class="anv-btn-outline-sm" id="anv-share-copy" type="button">Copy text</button>
-                <a class="anv-btn-outline-sm" id="anv-share-linkedin" href="#" target="_blank" rel="noopener">Share on LinkedIn</a>
-                <a class="anv-btn-outline-sm" id="anv-share-reddit" href="#" target="_blank" rel="noopener">Share on Reddit</a>
-                <button class="anv-btn-outline-sm" id="anv-share-other" type="button">Copy for Quora / Medium</button>
+                <div class="anv-success-sub">Submitted for expert team review - the editorial team typically publishes within 2 business days. Once it's live, you'll be able to share it straight from the article page.</div>
               </div>
             </div>
           </div>
@@ -606,6 +626,7 @@
   <footer class="footer--minimal" aria-label="Site footer"></footer>
 
   <script src="assets/members.js"></script>
+  <script src="assets/admin-data.js"></script>
   <script src="assets/shared.js"></script>
 
   <!-- ── Sidebar hover-reveal ── -->
@@ -652,7 +673,7 @@
   <!-- ── Articles page logic ── -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const articles = window.EXPERTLY_ARTICLES || [];
+      const articles = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleArticles() : (window.EXPERTLY_ARTICLES || []);
       const members = window.EXPERTLY_MEMBERS || [];
 
       const gridEl = document.getElementById('anv-grid');
@@ -806,7 +827,7 @@
       let session = null;
       try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
       const isMember = !!(session && session.role === 'member');
-      const articles = window.EXPERTLY_ARTICLES || [];
+      const articles = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleArticles() : (window.EXPERTLY_ARTICLES || []);
       const members  = window.EXPERTLY_MEMBERS  || [];
 
       const tabBrowse   = document.getElementById('anv-tab-browse');
@@ -910,16 +931,16 @@
         if (writeExitBtn) writeExitBtn.style.display = (el === stepChoose) ? '' : 'none';
       }
 
-      /* ── Sample full-length article — stands in for real long-form output
+      /* ── Sample full-length article - stands in for real long-form output
          so the preview always shows a genuinely complete piece, since
          neither write path can produce real finished prose without a
          real backend/LLM wired in. Testing/demo content only. ── */
       const SAMPLE_BODY_HTML = `
         <p>Understanding stamp duty implications on mergers, demergers, slump sales, and restructuring can substantially impact your organization's bottom line.</p>
         <h2>Why Stamp Duty Deserves Early Attention in Restructuring</h2>
-        <p>When advisors plan mergers, demergers, or slump sales, stamp duty is often treated as an afterthought — a cost to be noted in the final transaction documentation rather than a factor that shapes the structure. This approach is costly. In India alone, stamp duty rates on instrument transfers vary from as little as 0.1% to over 5% depending on the state, the nature of the instrument, and the assets involved. On a ₹1,000 crore restructuring, that difference is not marginal.</p>
+        <p>When advisors plan mergers, demergers, or slump sales, stamp duty is often treated as an afterthought - a cost to be noted in the final transaction documentation rather than a factor that shapes the structure. This approach is costly. In India alone, stamp duty rates on instrument transfers vary from as little as 0.1% to over 5% depending on the state, the nature of the instrument, and the assets involved. On a ₹1,000 crore restructuring, that difference is not marginal.</p>
         <h2>State-by-State Divergence: The Core Challenge</h2>
-        <p>India's federal structure means stamp duty on commercial instruments is a state subject. Each of the 28 states and 8 union territories maintains its own Stamp Act, its own rate schedules, and its own procedural requirements. Maharashtra, Karnataka, and Delhi are most frequently encountered in large corporate restructurings — and all three take meaningfully different approaches to key instruments.</p>
+        <p>India's federal structure means stamp duty on commercial instruments is a state subject. Each of the 28 states and 8 union territories maintains its own Stamp Act, its own rate schedules, and its own procedural requirements. Maharashtra, Karnataka, and Delhi are most frequently encountered in large corporate restructurings - and all three take meaningfully different approaches to key instruments.</p>
         <ul>
           <li>Maharashtra charges stamp duty on amalgamation orders at 10% of the market value of shares issued, subject to a cap that varies by instrument type.</li>
           <li>Karnataka recently revised its approach to slump sales, treating them as conveyances of movable and immovable property separately.</li>
@@ -929,8 +950,20 @@
         <p>One of the most frequently misunderstood points is that stamp duty exemptions under amalgamation schemes approved by the National Company Law Tribunal (NCLT) are not automatic. While Section 394 of the Companies Act provides for transfer of property and liabilities in NCLT-sanctioned amalgamations, stamp duty treatment depends on state-specific provisions, the nature of the assets involved, and whether the scheme explicitly addresses the issue.</p>
         <blockquote>"The absence of explicit stamp duty planning in NCLT petitions has resulted in significant unexpected liabilities being raised by state revenue authorities years after the transaction closes."</blockquote>
         <h2>Practical Planning Steps</h2>
-        <p>Advisors structuring transactions across multiple states should build stamp duty analysis into the pre-structuring phase, not the documentation phase. A state-by-state mapping of assets, instruments, and applicable rates — cross-referenced against available exemptions and concessions — will often reveal structuring options that reduce overall stamp duty cost without altering the economic substance of the transaction.</p>
+        <p>Advisors structuring transactions across multiple states should build stamp duty analysis into the pre-structuring phase, not the documentation phase. A state-by-state mapping of assets, instruments, and applicable rates - cross-referenced against available exemptions and concessions - will often reveal structuring options that reduce overall stamp duty cost without altering the economic substance of the transaction.</p>
         <p>Early engagement with state stamp authorities, particularly where novel instruments or cross-state property transfers are involved, is increasingly recommended. Several recent restructurings have benefited from advance rulings that provided certainty on stamp duty treatment, reducing the risk of post-transaction disputes.</p>
+        <h2>Cross-Border Considerations</h2>
+        <p>Multinational groups restructuring Indian subsidiaries face an additional layer of complexity: foreign exchange regulations, transfer pricing implications, and treaty positions all interact with the stamp duty analysis. A scheme that is efficient from a stamp duty perspective in one state may trigger disproportionate withholding tax or FEMA compliance costs elsewhere in the group structure. Coordinating the tax, corporate, and regulatory workstreams from the outset - rather than sequencing them - consistently produces better outcomes and avoids the rework that comes from discovering a conflict late in execution.</p>
+        <p>Foreign investors in particular should note that RBI approval requirements and sectoral caps can influence the choice between a merger, a slump sale, or an asset transfer, independent of the stamp duty calculus. Building a single decision matrix that scores each structuring option against tax cost, regulatory approval timelines, and stamp duty exposure gives deal teams a defensible basis for the structure they ultimately recommend to the board.</p>
+        <h2>Documentation and Filing Checklist</h2>
+        <p>Once a structure is chosen, the documentation phase determines whether the anticipated stamp duty treatment actually survives scrutiny. Valuation reports, board resolutions, and the scheme document itself must be internally consistent - inconsistencies between the stated consideration in different documents are one of the most common triggers for a state revenue authority to reopen an assessment years after the transaction has closed.</p>
+        <ul>
+          <li>Confirm the applicable stamp duty rate and cap for each state where immovable property or registered instruments are involved, not just the state of incorporation.</li>
+          <li>Retain valuation workpapers and board minutes that clearly tie the consideration in the scheme document to an independent valuation basis.</li>
+          <li>File for adjudication proactively in states that offer it, rather than waiting for a demand notice to establish the duty payable.</li>
+          <li>Track pending litigation and circulars in each relevant state, since stamp duty positions can shift materially between the planning and execution phases of a transaction.</li>
+        </ul>
+        <p>None of this replaces the need for state-specific legal advice - the frameworks above are meant to help advisors ask the right questions early, when the cost of changing course is still low, rather than after the scheme has already been filed with the relevant authorities.</p>
       `;
 
       /* ── Full article preview (shared by both write paths) ── */
@@ -976,7 +1009,7 @@
         if (data.summaryPoints && data.summaryPoints.length) {
           summaryEl.style.display = '';
           summaryEl.innerHTML = `
-            <div class="anv-preview-summary-head"><span class="anv-preview-summary-dot"></span>Expertly Summary — Powered by AI</div>
+            <div class="anv-preview-summary-head"><span class="anv-preview-summary-dot"></span>Expertly Summary - Powered by AI</div>
             <ul class="anv-preview-summary-points">${data.summaryPoints.map(p => `<li>${p}</li>`).join('')}</ul>`;
         } else {
           summaryEl.style.display = 'none';
@@ -1001,7 +1034,6 @@
         if (pendingSubmission) {
           const editedTitle = document.getElementById('anv-fp-title').textContent.trim();
           if (editedTitle) pendingSubmission.title = editedTitle;
-          buildShareText(pendingSubmission.title);
           addMySubmission(pendingSubmission);
         }
         showStep(stepSuccess);
@@ -1011,7 +1043,14 @@
         btn.addEventListener('click', () => {
           const isAi = btn.dataset.path === 'ai';
           showStep(isAi ? stepAi : stepUpload);
-          if (isAi) goToSubstep(1);
+          if (isAi) {
+            goToSubstep(1);
+            aiCard.style.display = '';
+            aiFormWrap.style.display = '';
+            aiGenerating.style.display = 'none';
+            aiDraft.style.display = 'none';
+            aiRefine.style.display = 'none';
+          }
         });
       });
       document.querySelectorAll('[data-back]').forEach(btn => {
@@ -1034,7 +1073,15 @@
         wizardLines.forEach((line, i) => line.classList.toggle('done', i < n - 1));
       }
       document.querySelectorAll('.anv-wizard-next, .anv-wizard-back-step').forEach(btn => {
+        if (btn.id === 'anv-ai-step1-continue') return;
         btn.addEventListener('click', () => goToSubstep(Number(btn.dataset.goto)));
+      });
+      document.getElementById('anv-ai-step1-continue').addEventListener('click', () => {
+        let valid = true;
+        if (!aiCatMulti.isValid()) { aiCatMulti.markInvalid(); valid = false; }
+        if (!aiCountryMulti.isValid()) { aiCountryMulti.markInvalid(); valid = false; }
+        if (!valid) return;
+        goToSubstep(2);
       });
       wizardDots.forEach(dot => {
         dot.addEventListener('click', () => { if (dot.classList.contains('done') || dot.classList.contains('active')) goToSubstep(Number(dot.dataset.step)); });
@@ -1069,38 +1116,150 @@
         return [...new Set(tags)].slice(0, 4);
       }
 
-      /* ── Upload path: text/file mode toggle ── */
-      const modeTabs = document.getElementById('anv-upload-mode-tabs');
-      const textWrap = document.getElementById('anv-upload-text-wrap');
-      const fileWrap = document.getElementById('anv-upload-file-wrap');
-      modeTabs.querySelectorAll('.anv-upload-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          modeTabs.querySelectorAll('.anv-upload-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const isFile = tab.dataset.mode === 'file';
-          textWrap.style.display = isFile ? 'none' : '';
-          fileWrap.style.display = isFile ? '' : 'none';
-        });
-      });
-
-      /* ── Word counter (self-written) ── */
+      /* ── Word counter (self-written) - 800–2,000 word requirement ── */
+      const MIN_WORDS = 800;
+      const MAX_WORDS = 2000;
+      function countWords(text) { return (text || '').trim().split(/\s+/).filter(Boolean).length; }
       const upText = document.getElementById('anv-up-text');
       const upWordCount = document.getElementById('anv-up-wordcount');
       function updateWordCount() {
-        const words = upText.value.trim().split(/\s+/).filter(Boolean).length;
+        const words = countWords(upText.value);
         upWordCount.textContent = `${words} word${words === 1 ? '' : 's'}`;
+        upWordCount.classList.remove('under', 'over', 'ok');
+        if (words > 0) upWordCount.classList.add(words < MIN_WORDS ? 'under' : words > MAX_WORDS ? 'over' : 'ok');
       }
       upText.addEventListener('input', updateWordCount);
       upText.addEventListener('input', () => maybeShowTags(upText.value));
+      upText.addEventListener('input', () => {
+        const words = countWords(upText.value);
+        if (words >= MIN_WORDS && words <= MAX_WORDS) {
+          upText.classList.remove('anv-invalid');
+          document.getElementById('anv-up-content-error').classList.remove('show');
+        }
+      });
+      document.getElementById('anv-up-title').addEventListener('input', function () {
+        if (this.value.trim()) { this.classList.remove('anv-invalid'); document.getElementById('anv-up-title-error').classList.remove('show'); }
+      });
+
+      /* ── Practice-area / country multi-select (searchable, multi-choice) ── */
+      const PRACTICE_AREAS = [
+        'Direct Tax', 'Indirect Tax', 'Transfer Pricing', 'Cross-Border Tax', 'M&A Tax',
+        'Corporate Law', 'M&A', 'Private Equity', 'Venture Capital', 'Securities',
+        'Capital Markets', 'Banking & Finance', 'Fintech', 'Restructuring', 'Bankruptcy & Insolvency',
+        'Dispute Resolution', 'Arbitration', 'Antitrust & Competition', 'White Collar & Investigations',
+        'Compliance', 'Regulatory Affairs', 'Employment Law', 'IP & Tech', 'Data Privacy & Cybersecurity',
+        'Real Estate', 'Insurance', 'Trusts & Estates', 'Environmental & ESG', 'International Trade', 'Valuation',
+      ];
+      const ALL_COUNTRIES = [
+        'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo, Democratic Republic of the','Congo, Republic of the','Costa Rica','Croatia','Cuba','Cyprus','Czechia','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Ivory Coast','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe'
+      ];
+
+      function initMultiSelect(idPrefix, options, { allowCustom = false, placeholder = 'Select…', fallback = '' } = {}) {
+        const wrap = document.getElementById(`${idPrefix}-wrap`);
+        const trigger = document.getElementById(`${idPrefix}-trigger`);
+        const triggerLabel = document.getElementById(`${idPrefix}-trigger-label`);
+        const popover = document.getElementById(`${idPrefix}-popover`);
+        const search = document.getElementById(`${idPrefix}-search`);
+        const list = document.getElementById(`${idPrefix}-list`);
+        const chipsEl = document.getElementById(`${idPrefix}-chips`);
+        const customCheck = allowCustom ? document.getElementById(`${idPrefix}-custom-check`) : null;
+        const customInput = allowCustom ? document.getElementById(`${idPrefix}-custom-input`) : null;
+        const errorEl = document.getElementById(`${idPrefix}-error`);
+
+        let selected = [];
+        let open = false;
+
+        function buildList(query = '') {
+          const q = query.trim().toLowerCase();
+          const filtered = q ? options.filter(c => c.toLowerCase().includes(q)) : options;
+          list.innerHTML = filtered.length
+            ? filtered.map(c => `
+              <label class="anv-msel-option${selected.includes(c) ? ' selected' : ''}">
+                <input type="checkbox" data-val="${c}" ${selected.includes(c) ? 'checked' : ''}>
+                <span>${c}</span>
+              </label>`).join('')
+            : `<div class="anv-msel-empty">No matches</div>`;
+          list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+              const val = cb.dataset.val;
+              if (cb.checked) { if (!selected.includes(val)) selected.push(val); }
+              else { selected = selected.filter(c => c !== val); }
+              cb.closest('.anv-msel-option').classList.toggle('selected', cb.checked);
+              syncUI();
+            });
+          });
+        }
+
+        function syncUI() {
+          trigger.classList.toggle('has-value', selected.length > 0);
+          triggerLabel.textContent = selected.length
+            ? selected.length === 1 ? selected[0] : `${selected.length} selected`
+            : placeholder;
+          chipsEl.innerHTML = selected.map(c => `
+            <span class="anv-msel-chip" data-val="${c.replace(/"/g, '&quot;')}">${c}<button type="button" aria-label="Remove ${c}">×</button></span>`).join('');
+          chipsEl.querySelectorAll('.anv-msel-chip button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const val = btn.parentElement.dataset.val;
+              selected = selected.filter(c => c !== val);
+              syncUI();
+              buildList(search.value);
+            });
+          });
+          if (selected.length && errorEl) {
+            errorEl.classList.remove('show');
+            trigger.classList.remove('anv-invalid');
+          }
+          wrap.dispatchEvent(new CustomEvent('mschange', { detail: { values: selected.slice() } }));
+        }
+
+        function openDd() {
+          open = true; trigger.classList.add('open'); popover.classList.add('open');
+          search.value = ''; buildList(); setTimeout(() => search.focus(), 50);
+        }
+        function closeDd() { open = false; trigger.classList.remove('open'); popover.classList.remove('open'); }
+        trigger.addEventListener('click', e => { e.stopPropagation(); open ? closeDd() : openDd(); });
+        search.addEventListener('input', () => buildList(search.value));
+        wrap.addEventListener('click', e => e.stopPropagation());
+        document.addEventListener('click', () => { if (open) closeDd(); });
+
+        if (allowCustom && customCheck && customInput) {
+          customCheck.addEventListener('change', () => {
+            customInput.style.display = customCheck.checked ? '' : 'none';
+            if (customCheck.checked) setTimeout(() => customInput.focus(), 50);
+          });
+          const addCustomFromInput = () => {
+            const val = customInput.value.trim();
+            if (val && !selected.includes(val)) { selected.push(val); syncUI(); }
+            customInput.value = '';
+          };
+          customInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCustomFromInput(); } });
+          customInput.addEventListener('blur', addCustomFromInput);
+        }
+
+        buildList();
+        syncUI();
+
+        return {
+          getValues: () => selected.slice(),
+          getPrimary: () => selected[0] || fallback,
+          getDisplay: () => selected.join(', '),
+          isValid: () => selected.length > 0,
+          markInvalid: () => { if (errorEl) errorEl.classList.add('show'); trigger.classList.add('anv-invalid'); },
+        };
+      }
+
+      const upCatMulti = initMultiSelect('anv-up-cat', PRACTICE_AREAS, { allowCustom: true, placeholder: 'Select practice areas', fallback: 'Direct Tax' });
+      const aiCatMulti = initMultiSelect('anv-ai-cat', PRACTICE_AREAS, { allowCustom: true, placeholder: 'Select practice areas', fallback: 'Direct Tax' });
+      const upCountryMulti = initMultiSelect('anv-up-country', ALL_COUNTRIES, { placeholder: 'Select countries' });
+      const aiCountryMulti = initMultiSelect('anv-ai-country', ALL_COUNTRIES, { placeholder: 'Select countries' });
 
       /* ── Auto-image + auto-tags for self-written path ── */
-      const upCatSelect = document.getElementById('anv-up-cat');
       const upImagePreview = document.getElementById('anv-up-image-preview');
       const upTagsBlock = document.getElementById('anv-up-tags-block');
       const upTagsEl = document.getElementById('anv-up-tags');
-      function refreshUpImage() { upImagePreview.src = pickImage(upCatSelect.value, upImagePreview.src); }
+      function refreshUpImage() { upImagePreview.src = pickImage(upCatMulti.getPrimary(), upImagePreview.src); }
       refreshUpImage();
-      upCatSelect.addEventListener('change', refreshUpImage);
+      document.getElementById('anv-up-cat-wrap').addEventListener('mschange', refreshUpImage);
       document.getElementById('anv-up-image-shuffle').addEventListener('click', refreshUpImage);
 
       let tagsShown = false;
@@ -1108,35 +1267,8 @@
         if (text.trim().split(/\s+/).filter(Boolean).length < 25) return;
         tagsShown = true;
         upTagsBlock.style.display = '';
-        upTagsEl.innerHTML = suggestTags(text, upCatSelect.value).map(t => `<span class="anv-tag-chip">${t}</span>`).join('');
+        upTagsEl.innerHTML = suggestTags(text, upCatMulti.getPrimary()).map(t => `<span class="anv-tag-chip">${t}</span>`).join('');
       }
-
-      /* ── Dropzone: self-written document → extract into textarea ── */
-      const dropzone = document.getElementById('anv-dropzone');
-      const fileInput = document.getElementById('anv-file-input');
-      const fileNameEl = document.getElementById('anv-dropzone-filename');
-      const fileBadge = document.getElementById('anv-dropzone-file');
-      const extracting = document.getElementById('anv-extracting');
-
-      function extractDocument(name) {
-        fileNameEl.textContent = name;
-        fileBadge.classList.add('show');
-        extracting.style.display = 'flex';
-        setTimeout(() => {
-          extracting.style.display = 'none';
-          upText.value = `[Extracted from "${name}"]\n\nThis section reproduces the body of the uploaded document as a starting draft — review and edit freely before submitting. Headings, citations, and formatting from the original file are preserved as plain text; re-apply any structure you'd like the published article to keep.`;
-          updateWordCount();
-          maybeShowTags(upText.value);
-          modeTabs.querySelectorAll('.anv-upload-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === 'text'));
-          textWrap.style.display = '';
-          fileWrap.style.display = 'none';
-        }, 1400);
-      }
-      dropzone.addEventListener('click', () => fileInput.click());
-      fileInput.addEventListener('change', () => { if (fileInput.files[0]) extractDocument(fileInput.files[0].name); });
-      ['dragover', 'dragenter'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
-      ['dragleave', 'drop'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
-      dropzone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) extractDocument(e.dataTransfer.files[0].name); });
 
       /* ── Source-material dropzone inside the AI wizard (chips, not extraction) ── */
       const aiDropzone = document.getElementById('anv-ai-dropzone');
@@ -1156,33 +1288,38 @@
       ['dragleave', 'drop'].forEach(evt => aiDropzone.addEventListener(evt, e => { e.preventDefault(); aiDropzone.classList.remove('drag'); }));
       aiDropzone.addEventListener('drop', e => { Array.from(e.dataTransfer.files).forEach(f => addSourceFile(f.name)); });
 
-      /* ── Share panel ── */
-      const shareText = document.getElementById('anv-share-text');
-      function buildShareText(title) {
-        const link = `https://expertly.example/article.html?id=${(title || 'article').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)}`;
-        shareText.value = `Just published on Expertly: "${title}" — sharing what I'm seeing on the ground with fellow practitioners. Read it here: ${link}`;
-        document.getElementById('anv-share-linkedin').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link);
-        document.getElementById('anv-share-reddit').href = 'https://www.reddit.com/submit?url=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title);
-      }
-      document.getElementById('anv-share-copy').addEventListener('click', (e) => {
-        navigator.clipboard && navigator.clipboard.writeText(shareText.value);
-        const btn = e.currentTarget; const old = btn.textContent;
-        btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = old; }, 1600);
-      });
-      document.getElementById('anv-share-other').addEventListener('click', (e) => {
-        navigator.clipboard && navigator.clipboard.writeText(shareText.value);
-        const btn = e.currentTarget; const old = btn.textContent;
-        btn.textContent = 'Copied — paste into Quora / Medium ✓'; setTimeout(() => { btn.textContent = old; }, 2200);
-      });
-
       document.getElementById('anv-upload-submit').addEventListener('click', () => {
-        const title = document.getElementById('anv-up-title').value.trim() || 'My new article';
-        const hasOwnText = upText.value.trim().split(/\s+/).filter(Boolean).length > 40;
-        const bodyHtml = hasOwnText
-          ? upText.value.trim().split(/\n{2,}/).map(p => `<p>${p.trim()}</p>`).join('')
-          : SAMPLE_BODY_HTML;
+        const titleInput = document.getElementById('anv-up-title');
+        const title = titleInput.value.trim();
+        const state = document.getElementById('anv-up-state').value.trim();
+        const hasContent = upText.value.trim().length > 0;
+
+        let valid = true;
+        titleInput.classList.toggle('anv-invalid', !title);
+        document.getElementById('anv-up-title-error').classList.toggle('show', !title);
+        if (!title) valid = false;
+
+        if (!upCatMulti.isValid()) { upCatMulti.markInvalid(); valid = false; }
+        if (!upCountryMulti.isValid()) { upCountryMulti.markInvalid(); valid = false; }
+
+        const words = countWords(upText.value);
+        const contentErrorEl = document.getElementById('anv-up-content-error');
+        let contentError = '';
+        if (!hasContent) contentError = 'Write or paste your article content before continuing.';
+        else if (words < MIN_WORDS) contentError = `Please check the number of words - your article is currently ${words} words. The minimum is 800 words.`;
+        else if (words > MAX_WORDS) contentError = `Please check the number of words - your article is currently ${words} words. The maximum is 2,000 words.`;
+        const contentValid = hasContent && words >= MIN_WORDS && words <= MAX_WORDS;
+        upText.classList.toggle('anv-invalid', !contentValid);
+        contentErrorEl.textContent = contentError;
+        contentErrorEl.classList.toggle('show', !contentValid);
+        if (!contentValid) valid = false;
+
+        if (!valid) return;
+
+        const countryDisplay = upCountryMulti.getDisplay() + (state ? ` (${state})` : '');
+        const bodyHtml = upText.value.trim().split(/\n{2,}/).map(p => `<p>${p.trim()}</p>`).join('');
         openPreview({
-          title, category: upCatSelect.value, country: document.getElementById('anv-up-country').value.trim(),
+          title, category: upCatMulti.getDisplay(), country: countryDisplay,
           image: upImagePreview.src,
           summaryPoints: null,
           bodyHtml,
@@ -1191,6 +1328,7 @@
       });
 
       /* ── AI wizard ── */
+      const aiCard = document.getElementById('anv-ai-card');
       const aiFormWrap = document.getElementById('anv-ai-form-wrap');
       const aiGenerating = document.getElementById('anv-ai-generating');
       const aiDraft = document.getElementById('anv-ai-draft');
@@ -1208,43 +1346,83 @@
       let lastDraft = {};
 
       function renderDraft() {
-        const { title, cat, country, notes, developments, advice, tone } = lastDraft;
+        const { title, cat, catDisplay, country, notes, developments, advice, tone } = lastDraft;
         const points = SUMMARY_MAP[cat] || SUMMARY_MAP['Direct Tax'];
         const img = pickImage(cat);
-        const bodyText = `${country ? `Written with ${country} specifically in mind, and ` : 'Grounded '}in a ${tone.toLowerCase()} tone${notes ? `, drawing on your note that "${notes}"` : ''}. ${developments ? `It references the recent development you flagged — ${developments} — as current context. ` : ''}${advice ? `The piece closes with your guidance to readers: "${advice}"` : 'The piece closes with clear, practical next steps for readers.'}`;
+        const bodyText = `${country ? `Written with ${country} specifically in mind, and ` : 'Grounded '}in a ${tone.toLowerCase()} tone${notes ? `, drawing on your note that "${notes}"` : ''}. ${developments ? `It references the recent development you flagged - ${developments} - as current context. ` : ''}${advice ? `The piece closes with your guidance to readers: "${advice}"` : 'The piece closes with clear, practical next steps for readers.'}`;
+        const fullBodyHtml = `<p>${bodyText}</p>` + SAMPLE_BODY_HTML;
+        const plainTextHolder = document.createElement('div');
+        plainTextHolder.innerHTML = fullBodyHtml;
+        const draftWords = countWords(plainTextHolder.textContent);
+        const draftWordsValid = draftWords >= MIN_WORDS && draftWords <= MAX_WORDS;
         lastDraft.img = img;
         lastDraft.points = points;
         lastDraft.bodyText = bodyText;
 
+        const metaHtml = `
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${Math.max(1, Math.round(draftWords / 200))} min read</span>
+          <span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>You</span>
+          ${country ? `<span class="anv-preview-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${country}</span>` : ''}
+        `;
+
         aiDraft.innerHTML = `
-          <div class="anv-ai-draft-badge">Expertly Summary — Powered by AI</div>
-          <img src="${img}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:16px;">
-          <div class="anv-ai-draft-title">${title}</div>
-          <ul class="anv-ai-draft-points">
-            ${points.map(p => `<li>${p}</li>`).join('')}
-          </ul>
-          <div class="anv-ai-draft-body">${bodyText}</div>
-          <div class="anv-ai-draft-actions">
+          <div class="anv-preview-page-label">
+            <span class="anv-preview-page-label-text">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg>
+              This is exactly how your article will appear once it's live
+            </span>
+          </div>
+          <div class="anv-preview-page">
+            <div class="anv-preview-hero">
+              <img class="anv-preview-hero-img" src="${img}" alt="">
+              <div class="anv-preview-hero-overlay"></div>
+              <div class="anv-preview-hero-content">
+                <span class="anv-preview-hero-back">← Articles</span>
+                <span class="anv-preview-hero-cat">${catDisplay || cat}</span>
+              </div>
+            </div>
+            <div class="anv-preview-body-card">
+              <h1 class="anv-preview-h1">${title}</h1>
+              <div class="anv-preview-meta">${metaHtml}</div>
+              <div class="anv-preview-ai-summary">
+                <div class="anv-preview-summary-head"><span class="anv-preview-summary-dot"></span>Expertly Summary - Powered by AI</div>
+                <ul class="anv-preview-summary-points">${points.map(p => `<li>${p}</li>`).join('')}</ul>
+              </div>
+              <div class="anv-preview-article-body">${fullBodyHtml}</div>
+              <div class="anv-preview-disclaimer">The views expressed in this article are those of the author and do not constitute legal, tax, or financial advice. This content is published for informational purposes only.</div>
+            </div>
+          </div>
+          <div class="anv-word-count-row" style="margin:16px 2px 0;">
+            <div class="anv-word-count ${draftWordsValid ? 'ok' : (draftWords < MIN_WORDS ? 'under' : 'over')}">${draftWords} words</div>
+            <div class="anv-word-count-hint">Minimum 800 words, maximum 2,000 words.</div>
+          </div>
+          <div class="anv-field-error${draftWordsValid ? '' : ' show'}" id="anv-ai-draft-error" style="margin:6px 2px 0;">Please check the number of words - this draft is ${draftWords} words. It must be between 800 and 2,000 words. Try regenerating with more notes/detail, or refine it below.</div>
+          <div class="anv-ai-draft-actions" style="padding-top:16px;">
             <button class="anv-write-submit" id="anv-ai-submit" type="button">
-              Preview article
+              Submit for review
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
             <button class="anv-btn-outline-sm" id="anv-ai-regenerate" type="button">Regenerate</button>
           </div>`;
+        aiCard.style.display = 'none';
         aiDraft.style.display = 'block';
-        aiRefine.style.display = 'block';
+        aiRefine.style.display = 'flex';
 
         document.getElementById('anv-ai-submit').addEventListener('click', () => {
-          openPreview({
-            title, category: cat, country, image: img,
-            summaryPoints: points,
-            bodyHtml: `<p>${bodyText}</p>` + SAMPLE_BODY_HTML,
-            source: 'ai',
+          if (!draftWordsValid) return;
+          addMySubmission({
+            title, category: catDisplay || cat, image: img,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            status: 'pending',
           });
+          showStep(stepSuccess);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         document.getElementById('anv-ai-regenerate').addEventListener('click', () => {
           aiDraft.style.display = 'none';
           aiRefine.style.display = 'none';
+          aiCard.style.display = '';
           aiFormWrap.style.display = '';
         });
       }
@@ -1266,8 +1444,9 @@
       document.getElementById('anv-ai-generate').addEventListener('click', () => {
         lastDraft = {
           title: document.getElementById('anv-ai-title').value.trim() || 'Untitled article',
-          cat: document.getElementById('anv-ai-cat').value,
-          country: document.getElementById('anv-ai-country').value.trim(),
+          cat: aiCatMulti.getPrimary(),
+          catDisplay: aiCatMulti.getDisplay(),
+          country: aiCountryMulti.getDisplay() + (document.getElementById('anv-ai-state').value.trim() ? ` (${document.getElementById('anv-ai-state').value.trim()})` : ''),
           notes: document.getElementById('anv-ai-notes').value.trim(),
           developments: document.getElementById('anv-ai-developments').value.trim(),
           advice: document.getElementById('anv-ai-advice').value.trim(),
@@ -1295,6 +1474,7 @@
         const toneAdj = document.getElementById('anv-refine-tone').value;
         aiDraft.style.display = 'none';
         aiRefine.style.display = 'none';
+        aiCard.style.display = '';
         aiGenerating.style.display = 'flex';
 
         runStatusCycle([

@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   0b. FOOTER RENDER — single source of truth for all pages
+   0b. FOOTER RENDER - single source of truth for all pages
    ========================================================================== */
 function renderFooter() {
   const footer = document.querySelector('.footer--minimal');
@@ -204,6 +204,15 @@ function renderFooter() {
       <div class="footer-min-wordmark" aria-label="Expertly">
         Expertly<span class="footer-min-dot" aria-hidden="true"></span>
       </div>
+      <nav aria-label="Site links">
+        <ul class="footer-min-links footer-min-links-primary">
+          <li><a href="index.html">Expertly</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="membership.html">Benefits</a></li>
+          <li><a href="members.html">Members</a></li>
+        </ul>
+      </nav>
       <nav aria-label="Footer links">
         <ul class="footer-min-links">
           <li><a href="https://www.linkedin.com/company/expertly-network" target="_blank" rel="noopener">LinkedIn</a></li>
@@ -218,7 +227,7 @@ function renderFooter() {
 }
 
 /* ==========================================================================
-   0. NAVBAR RENDER — single source of truth for all pages
+   0. NAVBAR RENDER - single source of truth for all pages
    ========================================================================== */
 function renderNav() {
   const nav = document.querySelector('.nav');
@@ -547,7 +556,7 @@ function injectDynamicElements() {
     <div class="gsearch-panel" role="dialog" aria-modal="true" aria-label="Search Expertly">
       <div class="gsearch-bar">
         <span class="gsearch-spark">✦</span>
-        <input class="gsearch-input" id="gsearch-input" placeholder="Ask anything — try &quot;M&amp;A tax advisor in Singapore under $500/hr&quot;" />
+        <input class="gsearch-input" id="gsearch-input" placeholder="Ask anything - try &quot;M&amp;A tax advisor in Singapore under $500/hr&quot;" />
         <button class="gsearch-clear" id="gsearch-clear" aria-label="Clear" style="display: none;">×</button>
         <button class="gsearch-esc" id="gsearch-close">Esc</button>
       </div>
@@ -577,7 +586,7 @@ function injectDynamicElements() {
   `;
   document.body.appendChild(searchOverlay);
 
-  // Inject Floating Search Button — homepage + membership (why-join) page
+  // Inject Floating Search Button - homepage + membership (why-join) page
   const pageFile = window.location.pathname.split('/').pop();
   const floatingSearchPages = ['', 'index.html', 'membership.html'];
   const isHomepage = floatingSearchPages.includes(pageFile.toLowerCase());
@@ -648,7 +657,7 @@ function initGlobalSearch() {
     'M&A tax advisor in Singapore under $500/hr',
     'Transfer pricing expert with BEPS 2.0 experience',
     'IP counsel for SaaS, EU + US coverage',
-    'Restructuring partner — Italy, distressed debt'
+    'Restructuring partner - Italy, distressed debt'
   ];
   let phraseIdx = 0;
 
@@ -656,7 +665,7 @@ function initGlobalSearch() {
   const rotationInterval = setInterval(() => {
     if (!searchOpen && input) {
       phraseIdx = (phraseIdx + 1) % rotatingPhrases.length;
-      input.setAttribute('placeholder', `Ask anything — try "${rotatingPhrases[phraseIdx]}"`);
+      input.setAttribute('placeholder', `Ask anything - try "${rotatingPhrases[phraseIdx]}"`);
     }
   }, 3200);
 

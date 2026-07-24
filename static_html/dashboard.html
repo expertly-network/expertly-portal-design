@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Member Portal — Expertly</title>
+  <title>Member Portal - Expertly</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;450;500;600;700&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
         </a>
         <a href="membership.html" data-guest-nav>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
-          <span class="d1-nav-lbl">Why join Expertly</span>
+          <span class="d1-nav-lbl">Expertly Benefits</span>
         </a>
         <a href="my-consultations.html" data-user-nav>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -98,7 +98,7 @@
       <div class="container-wide">
         <span class="db-eyebrow">Member Portal</span>
         <h1 class="db-heading">Welcome back, <em>Member.</em></h1>
-        <p class="db-sub">Everything included in your Expertly membership, in one place — publish, connect, and grow your practice.</p>
+        <p class="db-sub">Everything included in your Expertly membership, in one place - publish, connect, and grow your practice.</p>
 
         <div class="hero-search" style="margin-top:36px; max-width:680px;">
           <div class="hero-search-input">
@@ -171,7 +171,7 @@
             <div class="db-links">
               <a href="articles.html" class="db-link-row">
                 <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
-                Write an article<span class="db-link-arr">→</span>
+                Write an Article<span class="db-link-arr">→</span>
               </a>
               <a href="events.html" class="db-link-row">
                 <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
@@ -212,7 +212,7 @@
           <div class="db-rail-card db-rail-card-dark">
             <div class="db-benefit-eyebrow">For members</div>
             <div class="db-benefit-headline">Zero commission, ever.</div>
-            <div class="db-benefit-body">Every client conversation you get through Expertly is yours to keep — we never take a cut of your fees.</div>
+            <div class="db-benefit-body">Every client conversation you get through Expertly is yours to keep - we never take a cut of your fees.</div>
           </div>
 
           <div class="db-rail-card">
@@ -293,7 +293,7 @@
     const articles = window.EXPERTLY_ARTICLES || [];
     const getAuthor = id => members.find(m => m.id === id) || { name: 'Expertly Counsel' };
 
-    // Quick links — collapse the last 3 behind "View more"
+    // Quick links - collapse the last 3 behind "View more"
     const linksMore = document.getElementById('db-links-more');
     const linksToggle = document.getElementById('db-links-toggle');
     if (linksMore && linksToggle) {
@@ -305,17 +305,17 @@
       });
     }
 
-    // Consultation requests (mock — what the member has received via their profile)
+    // Consultation requests (mock - what the member has received via their profile)
     const CONSULTATIONS = [
-      { name: 'David Whitfield', type: 'member', avatar: 'https://randomuser.me/api/portraits/men/11.jpg', work: 'Looking for advice on structuring a cross-border M&A deal between a UK acquirer and an Indian target — need help on tax-efficient holding structure, withholding tax exposure, and post-deal integration.', email: 'david.whitfield@whitfieldcapital.com', phone: '+44 7700 900123', received: 'Jul 18, 2026', status: 'pending' },
-      { name: 'Larissa Kim', type: 'user', work: 'Reviewing a GST refund claim for exports of services — want a second opinion on the documentation before we file, and guidance on likely turnaround time with the department.', email: 'larissa.kim@gmail.com', phone: '+82 10 2345 6789', received: 'Jul 16, 2026', status: 'pending' },
+      { name: 'David Whitfield', type: 'member', avatar: 'https://randomuser.me/api/portraits/men/11.jpg', work: 'Looking for advice on structuring a cross-border M&A deal between a UK acquirer and an Indian target - need help on tax-efficient holding structure, withholding tax exposure, and post-deal integration.', email: 'david.whitfield@whitfieldcapital.com', phone: '+44 7700 900123', received: 'Jul 18, 2026', status: 'pending' },
+      { name: 'Larissa Kim', type: 'user', work: 'Reviewing a GST refund claim for exports of services - want a second opinion on the documentation before we file, and guidance on likely turnaround time with the department.', email: 'larissa.kim@gmail.com', phone: '+82 10 2345 6789', received: 'Jul 16, 2026', status: 'pending' },
     ];
     const STATUS_LABEL = { pending: 'Pending', completed: 'Completed' };
     const consultFeed = document.getElementById('db-consult-feed');
     const consultCount = document.getElementById('db-consult-count');
     if (consultFeed) {
       if (!CONSULTATIONS.length) {
-        consultFeed.innerHTML = '<div class="db-consult-empty">No consultation requests yet — they\'ll show up here once a client reaches out.</div>';
+        consultFeed.innerHTML = '<div class="db-consult-empty">No consultation requests yet - they\'ll show up here once a client reaches out.</div>';
       } else {
         consultFeed.innerHTML = CONSULTATIONS.map(c => `
           <div class="db-consult-row">

@@ -49,7 +49,7 @@
       </a>
       <a href="membership.html" data-guest-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
-        <span class="d1-nav-lbl">Why join Expertly</span>
+        <span class="d1-nav-lbl">Expertly Benefits</span>
       </a>
       <a href="my-consultations.html" data-user-nav>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -231,6 +231,87 @@
               <div class="ev-sidebar-stat-text"><b>Formats</b>, in person and hybrid, to suit your schedule and location.</div>
             </div>
           </div>
+          <!-- Suggest an event - open to any member or event organizer, not just admins -->
+          <div class="ev-sidebar-card ev-suggest-card" id="ev-suggest-card">
+            <div class="ev-sidebar-eyebrow">Know of one we're missing?</div>
+            <div class="ev-sidebar-headline">Suggest an event.</div>
+            <div class="ev-sidebar-body">Running or attending something relevant? Send us the details and our team will review it for the calendar.</div>
+
+            <button class="btn btn-outline" id="ev-suggest-toggle" type="button" style="width:100%;margin-top:14px;">
+              Suggest an event <span class="arr">→</span>
+            </button>
+
+            <form class="ev-suggest-form" id="ev-suggest-form" style="display:none;">
+              <div class="anv-field-row">
+                <div style="grid-column:1/-1;">
+                  <label class="anv-field-label" for="ev-sug-title">Event name <span class="anv-required">*</span></label>
+                  <input class="anv-input" id="ev-sug-title" type="text" required placeholder="e.g. Global Transfer Pricing Summit">
+                </div>
+              </div>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="ev-sug-start">Start date <span class="anv-required">*</span></label>
+                  <input class="anv-input" id="ev-sug-start" type="date" required>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="ev-sug-end">End date <span class="anv-optional">(optional)</span></label>
+                  <input class="anv-input" id="ev-sug-end" type="date">
+                </div>
+              </div>
+              <div>
+                <label class="anv-field-label" for="ev-sug-website">Event website / link <span class="anv-required">*</span></label>
+                <input class="anv-input" id="ev-sug-website" type="url" required placeholder="https://…">
+              </div>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="ev-sug-city">City <span class="anv-optional">(optional)</span></label>
+                  <input class="anv-input" id="ev-sug-city" type="text" placeholder="e.g. London">
+                </div>
+                <div>
+                  <label class="anv-field-label" for="ev-sug-country">Country <span class="anv-optional">(optional)</span></label>
+                  <input class="anv-input" id="ev-sug-country" type="text" placeholder="e.g. United Kingdom">
+                </div>
+              </div>
+              <div class="anv-field-row">
+                <div>
+                  <label class="anv-field-label" for="ev-sug-format">Format</label>
+                  <select class="anv-select" id="ev-sug-format">
+                    <option>In Person</option>
+                    <option>Hybrid</option>
+                    <option>Virtual</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="anv-field-label" for="ev-sug-category">Category</label>
+                  <select class="anv-select" id="ev-sug-category">
+                    <option>Tax</option>
+                    <option>Legal</option>
+                    <option>Audit</option>
+                    <option>AI &amp; Tech</option>
+                    <option>General</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="anv-field-label" for="ev-sug-desc">A few basic details <span class="anv-optional">(optional)</span></label>
+                <textarea class="anv-textarea" id="ev-sug-desc" style="min-height:80px;" placeholder="Who's organising it, who it's for, and anything else worth knowing…"></textarea>
+              </div>
+              <div>
+                <label class="anv-field-label" for="ev-sug-org">Your name / organisation <span class="anv-optional">(optional)</span></label>
+                <input class="anv-input" id="ev-sug-org" type="text" placeholder="e.g. Jane Doe, Global Tax Forum">
+              </div>
+              <button class="anv-write-submit" id="ev-suggest-submit" type="button" style="width:100%;justify-content:center;">
+                Submit for review
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+
+            <div class="ev-suggest-success" id="ev-suggest-success" style="display:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+              Thanks - sent to our team for review.
+            </div>
+          </div>
+
           <div class="ev-sidebar-cta">
             <div class="ev-sidebar-cta-eyebrow">For members</div>
             <div class="ev-sidebar-cta-headline">Get early access to events.</div>
@@ -307,8 +388,7 @@
     const numToDate = n => new Date(Math.floor(n / 10000), Math.floor((n % 10000) / 100) - 1, n % 100);
 
     document.addEventListener('DOMContentLoaded', () => {
-      const adminEvents = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAdminEvents() : [];
-      const events = adminEvents.concat(window.EXPERTLY_EVENTS || []);
+      const events = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleEvents() : (window.EXPERTLY_EVENTS || []);
       const eventDateNums = new Set();
       events.forEach(e => { const start = parseEventDate(e.start); const end = e.end ? parseEventDate(e.end) : start; for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) { eventDateNums.add(dateToNum(new Date(d))); } });
 
@@ -437,6 +517,74 @@
       };
 
       renderList();
+    });
+  </script>
+
+  <!-- ── Suggest an event (any member or event organizer) ── -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('ev-suggest-toggle');
+      const form = document.getElementById('ev-suggest-form');
+      const successEl = document.getElementById('ev-suggest-success');
+      const submitBtn = document.getElementById('ev-suggest-submit');
+      if (!toggleBtn || !form || !submitBtn) return;
+
+      toggleBtn.addEventListener('click', () => {
+        const opening = form.style.display === 'none';
+        form.style.display = opening ? 'flex' : 'none';
+        toggleBtn.textContent = '';
+        toggleBtn.innerHTML = opening
+          ? 'Never mind <span class="arr">✕</span>'
+          : 'Suggest an event <span class="arr">→</span>';
+      });
+
+      ['ev-sug-title', 'ev-sug-start', 'ev-sug-website'].forEach(id => {
+        document.getElementById(id).addEventListener('input', function () {
+          if (this.value.trim()) this.classList.remove('anv-invalid');
+        });
+      });
+
+      const MONTH_CODES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      const toEventDateCode = dateStr => {
+        if (!dateStr) return '';
+        const d = new Date(dateStr + 'T00:00:00');
+        if (isNaN(d)) return '';
+        return `${MONTH_CODES[d.getMonth()]} ${d.getDate()}`;
+      };
+
+      submitBtn.addEventListener('click', () => {
+        const title = document.getElementById('ev-sug-title').value.trim();
+        const start = document.getElementById('ev-sug-start').value;
+        const website = document.getElementById('ev-sug-website').value.trim();
+
+        let valid = true;
+        [
+          ['ev-sug-title', title],
+          ['ev-sug-start', start],
+          ['ev-sug-website', website]
+        ].forEach(([id, val]) => {
+          document.getElementById(id).classList.toggle('anv-invalid', !val);
+          if (!val) valid = false;
+        });
+        if (!valid) return;
+
+        window.ExpertlyAdmin && window.ExpertlyAdmin.pushEventSuggestion({
+          title,
+          start: toEventDateCode(start),
+          end: toEventDateCode(document.getElementById('ev-sug-end').value) || null,
+          website,
+          city: document.getElementById('ev-sug-city').value.trim(),
+          country: document.getElementById('ev-sug-country').value.trim(),
+          format: document.getElementById('ev-sug-format').value,
+          category: document.getElementById('ev-sug-category').value,
+          desc: document.getElementById('ev-sug-desc').value.trim(),
+          org: document.getElementById('ev-sug-org').value.trim()
+        });
+
+        form.style.display = 'none';
+        toggleBtn.style.display = 'none';
+        successEl.style.display = 'flex';
+      });
     });
   </script>
 <script src="assets/sidebar-theme.js"></script>

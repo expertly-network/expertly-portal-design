@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Login — Expertly</title>
+  <title>Admin Login - Expertly</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +42,13 @@
       </form>
 
       <div class="adm-login-demo">
-        <b>Demo credentials</b>
-        <div><span>Email</span><code>admin@expertly.com</code></div>
+        <b>Demo credentials - three power tiers</b>
+        <div><span>Super Admin</span><code>admin@expertly.com</code></div>
         <div><span>Password</span><code>Expertly@Admin2026</code></div>
+        <div><span>Content Manager</span><code>content@expertly.com</code></div>
+        <div><span>Password</span><code>Expertly@Content2026</code></div>
+        <div><span>Reviewer</span><code>reviewer@expertly.com</code></div>
+        <div><span>Password</span><code>Expertly@Review2026</code></div>
       </div>
 
       <a href="index.html" class="adm-login-back">← Back to Expertly</a>
@@ -54,25 +58,30 @@
   <script src="assets/admin-data.js"></script>
   <script>
     (function () {
-      var ADMIN_EMAIL = 'admin@expertly.com';
-      var ADMIN_PASSWORD = 'Expertly@Admin2026';
-
-      // Already signed in? skip straight to the dashboard.
+      // Already signed in with a valid (current-scheme) session? Skip straight to the dashboard.
+      // A session from an older version of this prototype (e.g. role: 'admin') won't match any
+      // known role - clear it here instead of bouncing to the dashboard and back forever.
       var existing = window.ExpertlyAdmin.getAdminSession();
-      if (existing && existing.role === 'admin') {
+      if (existing && existing.role && window.ExpertlyAdmin.ROLES[existing.role]) {
         window.location.href = 'admin-dashboard.html';
         return;
+      } else if (existing) {
+        window.ExpertlyAdmin.clearAdminSession();
       }
 
       var form = document.getElementById('adm-login-form');
       var errorEl = document.getElementById('adm-login-error');
 
       form.addEventListener('submit', function () {
-        var email = document.getElementById('adm-login-email').value.trim().toLowerCase();
+        var email = document.getElementById('adm-login-email').value.trim();
         var password = document.getElementById('adm-login-password').value;
+        var user = window.ExpertlyAdmin.authenticate(email, password);
 
-        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          window.ExpertlyAdmin.setAdminSession({ email: email, role: 'admin', signedInAt: new Date().toISOString() });
+        if (user) {
+          window.ExpertlyAdmin.setAdminSession({
+            userId: user.id, name: user.name, email: user.email, role: user.role,
+            signedInAt: new Date().toISOString()
+          });
           window.location.href = 'admin-dashboard.html';
         } else {
           errorEl.classList.add('visible');
