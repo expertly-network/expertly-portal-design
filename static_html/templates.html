@@ -147,6 +147,7 @@
 <footer class="footer--minimal" aria-label="Site footer"></footer>
 
 <script src="assets/members.js"></script>
+<script src="assets/admin-data.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 
@@ -164,21 +165,6 @@
   </script>
 
 <script>
-  const TPL_ITEMS = [
-    { cat: 'audit', catLabel: 'Audit', title: 'Audit Planning Memorandum', desc: 'Scope, risk assessment and engagement timeline in a standard planning format.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'audit', catLabel: 'Audit', title: 'Internal Controls Checklist', desc: 'Walkthrough checklist covering entity-level and process-level controls.', type: 'xls', format: 'Excel · .xlsx' },
-    { cat: 'audit', catLabel: 'Audit', title: 'Audit Report - Standard Format', desc: 'A clean, review-ready structure for opinions, findings and management letters.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'audit', catLabel: 'Audit', title: 'Sampling & Materiality Workbook', desc: 'Pre-built formulas for sample size, materiality thresholds and error projection.', type: 'xls', format: 'Excel · .xlsx' },
-    { cat: 'tax', catLabel: 'Tax', title: 'Tax Due Diligence Checklist', desc: 'A structured checklist for M&A and transaction tax due diligence reviews.', type: 'xls', format: 'Excel · .xlsx' },
-    { cat: 'tax', catLabel: 'Tax', title: 'GST Reconciliation Workbook', desc: 'Reconcile GSTR filings against books with pre-built variance formulas.', type: 'xls', format: 'Excel · .xlsx' },
-    { cat: 'tax', catLabel: 'Tax', title: 'Transfer Pricing Documentation Template', desc: 'Local file structure covering functional analysis, benchmarking and conclusions.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'tax', catLabel: 'Tax', title: 'Tax Position Memo', desc: 'A concise format for documenting and defending technical tax positions.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'legal', catLabel: 'Legal', title: 'Engagement Letter Template', desc: 'Standard client engagement letter with scope, fees and liability clauses.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'legal', catLabel: 'Legal', title: 'NDA - Mutual', desc: 'A balanced mutual non-disclosure agreement for early-stage client discussions.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'legal', catLabel: 'Legal', title: 'Board Resolution Template', desc: 'Common board resolution formats for approvals, appointments and authorisations.', type: 'doc', format: 'Word · .docx' },
-    { cat: 'legal', catLabel: 'Legal', title: 'Client Pitch Deck - Legal Services', desc: 'A ready-to-brand deck structure for pitching legal engagements to new clients.', type: 'ppt', format: 'PowerPoint · .pptx' },
-  ];
-
   function tplBadge(type) {
     const label = type === 'doc' ? 'DOC' : type === 'xls' ? 'XLS' : 'PPT';
     return `<div class="tpl-filetype ${type}">${label}</div>`;
@@ -217,7 +203,8 @@
   function renderTemplates() {
     const grid = document.getElementById('tpl-grid');
     const countEl = document.getElementById('tpl-count');
-    const list = TPL_ITEMS.filter(t =>
+    const items = window.ExpertlyAdmin ? window.ExpertlyAdmin.getTemplates() : [];
+    const list = items.filter(t =>
       (activeTplCat === 'all' || t.cat === activeTplCat) &&
       (activeFormat === 'all' || t.type === activeFormat)
     );
@@ -232,7 +219,7 @@
           <div class="tpl-desc">${t.desc}</div>
           <div class="tpl-row">
             <span class="tpl-format">${t.format}</span>
-            <a href="#" class="tpl-download" onclick="return false">
+            <a href="${t.fileUrl ? t.fileUrl : '#'}" class="tpl-download" ${t.fileUrl ? 'target="_blank" rel="noopener"' : 'onclick="return false"'}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5"/><path d="M4 21h16"/></svg>
               Download
             </a>

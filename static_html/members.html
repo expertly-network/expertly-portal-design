@@ -232,6 +232,7 @@
   <footer class="footer--minimal" aria-label="Site footer"></footer>
 
   <script src="assets/members.js"></script>
+  <script src="assets/admin-data.js"></script>
   <script src="assets/shared.js?v=10"></script>
 
   <!-- ── Sidebar collapse toggle ── -->
@@ -286,7 +287,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const members = window.EXPERTLY_MEMBERS || [];
+      const members = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleMembers() : (window.EXPERTLY_MEMBERS || []);
       const searchInput = document.getElementById('dir-search-input');
       const listEl = document.getElementById('dir-members-grid');
       const emptyEl = document.getElementById('dir-empty-state');

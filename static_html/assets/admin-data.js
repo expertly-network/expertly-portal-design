@@ -18,8 +18,20 @@
     DELETED_ARTICLE_IDS: 'expertly_deleted_article_ids',
     EVENTS: 'expertly_admin_events',
     HIDDEN_EVENT_IDS: 'expertly_hidden_event_ids',
-    EVENT_SUGGESTIONS: 'expertly_event_suggestions'
+    EVENT_SUGGESTIONS: 'expertly_event_suggestions',
+    MEMBERS: 'expertly_admin_members',
+    HIDDEN_MEMBER_IDS: 'expertly_hidden_member_ids',
+    PERKS: 'expertly_perks',
+    TEMPLATES: 'expertly_templates',
+    LEARNINGS: 'expertly_learnings',
+    CONSULTATIONS: 'expertly_my_consultations',
+    PROFILE_EDITS: 'expertly_profile_edits',
+    PROFILE_OVERRIDES: 'expertly_profile_overrides'
   };
+
+  function slugify(s) {
+    return String(s || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
 
   function readArray(key) {
     try {
@@ -47,17 +59,17 @@
     super_admin: {
       label: 'Super Admin',
       description: 'Full control - every permission, including managing other admin accounts.',
-      permissions: ['viewDashboard', 'manageApplications', 'manageArticles', 'writeArticles', 'manageEvents', 'deleteContent', 'manageAdmins']
+      permissions: ['viewDashboard', 'manageApplications', 'manageArticles', 'writeArticles', 'manageEvents', 'deleteContent', 'manageAdmins', 'manageMembers', 'manageConsultations', 'manageResources']
     },
     content_manager: {
       label: 'Content Manager',
       description: 'Moderate power - can write, publish, and delete articles & events, and review applications. Cannot manage admin accounts.',
-      permissions: ['viewDashboard', 'manageApplications', 'manageArticles', 'writeArticles', 'manageEvents', 'deleteContent']
+      permissions: ['viewDashboard', 'manageApplications', 'manageArticles', 'writeArticles', 'manageEvents', 'deleteContent', 'manageMembers', 'manageConsultations', 'manageResources']
     },
     reviewer: {
       label: 'Reviewer',
       description: 'Limited power - can review and approve/reject membership applications and article submissions only. Cannot write, publish, delete, or manage admins.',
-      permissions: ['viewDashboard', 'manageApplications', 'manageArticles']
+      permissions: ['viewDashboard', 'manageApplications', 'manageArticles', 'manageMembers', 'manageConsultations']
     }
   };
 
@@ -144,8 +156,14 @@
 
   function setApplicationStatus(id, status) {
     var list = readArray(KEYS.APPLICATIONS);
-    list.forEach(function (a) { if (a.id === id) a.status = status; });
+    var match = null;
+    list.forEach(function (a) { if (a.id === id) { a.status = status; match = a; } });
     writeArray(KEYS.APPLICATIONS, list);
+    if (match && status === 'approved' && !match.promotedMemberId) {
+      var memberId = promoteApplicationToMember(match);
+      list.forEach(function (a) { if (a.id === id) a.promotedMemberId = memberId; });
+      writeArray(KEYS.APPLICATIONS, list);
+    }
     return list;
   }
 
@@ -304,6 +322,312 @@
     return getAdminEvents().concat(staticEvents);
   }
 
+  /* ── Members (members.html / member-profile.html read window.EXPERTLY_MEMBERS as
+     the static seed; admin-added/promoted members merge on top, static ones can be
+     hidden. Same "seed + admin additions - hidden = visible" pattern as events/articles,
+     since member ids (slugs) are already stable and meaningful. ── */
+  function getAdminMembers() {
+    return readArray(KEYS.MEMBERS);
+  }
+
+  function addAdminMember(member) {
+    var list = getAdminMembers();
+    var record = Object.assign({ id: member.id || makeId('mem'), createdAt: new Date().toISOString() }, member);
+    list.unshift(record);
+    writeArray(KEYS.MEMBERS, list);
+    return record;
+  }
+
+  function updateAdminMember(id, patch) {
+    var list = getAdminMembers();
+    list.forEach(function (m) { if (m.id === id) Object.assign(m, patch); });
+    writeArray(KEYS.MEMBERS, list);
+    return list;
+  }
+
+  function deleteAdminMember(id) {
+    var list = getAdminMembers().filter(function (m) { return m.id !== id; });
+    writeArray(KEYS.MEMBERS, list);
+    return list;
+  }
+
+  function getHiddenMemberIds() {
+    return readArray(KEYS.HIDDEN_MEMBER_IDS);
+  }
+
+  function deleteStaticMember(id) {
+    var ids = getHiddenMemberIds();
+    if (ids.indexOf(id) === -1) ids.push(id);
+    writeArray(KEYS.HIDDEN_MEMBER_IDS, ids);
+    return ids;
+  }
+
+  function restoreStaticMember(id) {
+    var ids = getHiddenMemberIds().filter(function (x) { return x !== id; });
+    writeArray(KEYS.HIDDEN_MEMBER_IDS, ids);
+    return ids;
+  }
+
+  /* Combines admin members (added directly or promoted from an approved application)
+     + static seed members, minus anything hidden/deactivated. Use instead of
+     window.EXPERTLY_MEMBERS directly wherever members are listed or looked up on
+     public-facing pages (members.html, member-profile.html, etc). */
+  function getAllVisibleMembers() {
+    var hidden = getHiddenMemberIds();
+    var staticMembers = (global.EXPERTLY_MEMBERS || []).filter(function (m) { return hidden.indexOf(m.id) === -1; });
+    return getAdminMembers().filter(function (m) { return m.status !== 'deactivated'; }).concat(staticMembers);
+  }
+
+  /* Same as getAllVisibleMembers but includes deactivated members - for the admin
+     dashboard's own Members tab, so a deactivated member can still be found and
+     reactivated instead of disappearing from admin entirely. */
+  function getAllMembersForAdmin() {
+    var hidden = getHiddenMemberIds();
+    var staticMembers = (global.EXPERTLY_MEMBERS || []).filter(function (m) { return hidden.indexOf(m.id) === -1; });
+    return getAdminMembers().concat(staticMembers);
+  }
+
+  function initialsOf(name) {
+    var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+  }
+
+  /* Turns an approved membership application into a real, listable member record. */
+  function promoteApplicationToMember(app) {
+    var record = addAdminMember({
+      id: slugify(app.name) + '-' + makeId('m'),
+      name: app.name,
+      initials: initialsOf(app.name),
+      title: app.title || 'Member',
+      firm: app.firm || 'Independent',
+      location: app.location || [app.city, app.country].filter(Boolean).join(', '),
+      country: app.country || '',
+      practice: app.practiceArea || '',
+      verified: true,
+      tenure: app.yearsExp ? app.yearsExp + 'y' : '',
+      rate: app.rateRange ? '$' + app.rateRange + '/hr' : '',
+      img: 'https://ui-avatars.com/api/?background=random&name=' + encodeURIComponent(app.name || '?'),
+      status: 'active',
+      ownerEmail: app.email || '',
+      fromApplicationId: app.id
+    });
+    return record.id;
+  }
+
+  function setMemberStatus(id, status) {
+    var list = getAdminMembers();
+    var found = list.some(function (m) { return m.id === id; });
+    if (found) {
+      updateAdminMember(id, { status: status });
+    } else {
+      // A static seed member being deactivated - promote it into the admin list
+      // (as an override) rather than deleting it outright, so it can be reactivated.
+      var seedMatch = (global.EXPERTLY_MEMBERS || []).find(function (m) { return m.id === id; });
+      if (seedMatch) {
+        deleteStaticMember(id);
+        addAdminMember(Object.assign({}, seedMatch, { status: status }));
+      }
+    }
+    return getAllVisibleMembers();
+  }
+
+  /* ── Profile edit submissions (member self-edits + proof, reviewed by admin) ──
+     A member editing their own profile page never writes their change live - it's
+     submitted here as a pending record with proof (an uploaded file, stored as a
+     data URL for this prototype, and/or an external link). Only once an admin
+     approves it does the change get merged into PROFILE_OVERRIDES for that member/
+     section, which is what member-profile.html actually renders (base seed data,
+     overlaid with any approved override) - so public and self views both only ever
+     show manually-verified content. ── */
+  function submitProfileEdit(record) {
+    var list = readArray(KEYS.PROFILE_EDITS);
+    var full = Object.assign({
+      id: makeId('pedit'),
+      status: 'pending',
+      submittedAt: new Date().toISOString()
+    }, record);
+    list.unshift(full);
+    writeArray(KEYS.PROFILE_EDITS, list);
+    return full;
+  }
+
+  function getProfileEdits() {
+    return readArray(KEYS.PROFILE_EDITS);
+  }
+
+  function getMemberProfileEdits(memberId) {
+    return getProfileEdits().filter(function (e) { return e.memberId === memberId; });
+  }
+
+  // Most recent edit per member+section - used to show "pending review" state to the owner.
+  function getLatestProfileEdit(memberId, section) {
+    var matches = getMemberProfileEdits(memberId).filter(function (e) { return e.section === section; });
+    return matches.length ? matches[0] : null;
+  }
+
+  function getProfileOverrides(memberId) {
+    var all = {};
+    try { all = JSON.parse(localStorage.getItem(KEYS.PROFILE_OVERRIDES)) || {}; } catch (e) { all = {}; }
+    return all[memberId] || {};
+  }
+
+  function setProfileEditStatus(id, status, note) {
+    var list = readArray(KEYS.PROFILE_EDITS);
+    var match = null;
+    list.forEach(function (e) { if (e.id === id) { e.status = status; e.reviewNote = note || ''; e.reviewedAt = new Date().toISOString(); match = e; } });
+    writeArray(KEYS.PROFILE_EDITS, list);
+
+    if (match && status === 'verified') {
+      var all = {};
+      try { all = JSON.parse(localStorage.getItem(KEYS.PROFILE_OVERRIDES)) || {}; } catch (e) { all = {}; }
+      all[match.memberId] = all[match.memberId] || {};
+      all[match.memberId][match.section] = match.payload;
+      localStorage.setItem(KEYS.PROFILE_OVERRIDES, JSON.stringify(all));
+    }
+    return list;
+  }
+
+  function deleteProfileEdit(id) {
+    var list = readArray(KEYS.PROFILE_EDITS).filter(function (e) { return e.id !== id; });
+    writeArray(KEYS.PROFILE_EDITS, list);
+    return list;
+  }
+
+  /* ── Perks, Templates, Learnings ──────────────────────────────────
+     None of these ship with a persistence layer or stable ids today - they're
+     hardcoded display arrays per page. We fully migrate them into admin-owned,
+     localStorage-backed lists (seeded once from the same content that used to be
+     hardcoded) so every record is uniformly addable/editable/deletable, rather than
+     juggling a seed+hidden-id split for data that has no natural unique id. ── */
+  var DEFAULT_PERKS = [
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ClearFile Tax Suite', initials: 'CF', color: '#0f766e', discount: '20% off annual plan', desc: 'Return filing, GST reconciliation and compliance tracking for tax practices of every size.', link: '' },
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ComplyIQ', initials: 'CQ', color: '#1d4ed8', discount: '3 months free', desc: 'Automated regulatory tracking and compliance calendars across jurisdictions.', link: '' },
+    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'AuditFlow', initials: 'AF', color: '#7c3aed', discount: '15% off first year', desc: 'Workpaper management and review workflows built for audit teams.', link: '' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'CaseVault', initials: 'CV', color: '#b91c1c', discount: '25% off annual plan', desc: 'Secure case and matter management with client-facing portals.', link: '' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'LawDesk Research', initials: 'LD', color: '#0369a1', discount: '2 months free', desc: 'Case law and statute research platform with AI-assisted search.', link: '' },
+    { cat: 'legal', catLabel: 'Legal Tools', name: 'ContractPilot', initials: 'CP', color: '#166534', discount: '20% off annual plan', desc: 'Contract lifecycle management - drafting, redlining and e-signature in one place.', link: '' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'DraftGenie AI', initials: 'DG', color: '#9333ea', discount: '30% off Pro plan', desc: 'AI drafting assistant trained on legal and tax document formats.', link: '' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'SummarEase', initials: 'SE', color: '#c2410c', discount: '1 month free', desc: 'Summarise long contracts, judgments and filings in seconds.', link: '' },
+    { cat: 'ai', catLabel: 'AI Tools', name: 'InsightIQ Analytics', initials: 'IQ', color: '#0f766e', discount: '20% off annual plan', desc: 'AI-powered financial statement analysis and anomaly detection.', link: '' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'SheetSmart', initials: 'SS', color: '#15803d', discount: '15% off annual plan', desc: 'Excel add-ins for financial modelling, reconciliation and reporting.', link: '' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'PitchDeck Studio', initials: 'PD', color: '#b45309', discount: '25% off annual plan', desc: 'Presentation design tool with ready-made templates for client decks.', link: '' },
+    { cat: 'productivity', catLabel: 'Productivity', name: 'FocusFlow', initials: 'FF', color: '#4338ca', discount: '2 months free', desc: 'Time tracking and billing built for professional services firms.', link: '' }
+  ];
+
+  var DEFAULT_TEMPLATES = [
+    { cat: 'audit', catLabel: 'Audit', title: 'Audit Planning Memorandum', desc: 'Scope, risk assessment and engagement timeline in a standard planning format.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Internal Controls Checklist', desc: 'Walkthrough checklist covering entity-level and process-level controls.', type: 'xls', format: 'Excel · .xlsx', fileUrl: '' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Audit Report - Standard Format', desc: 'A clean, review-ready structure for opinions, findings and management letters.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'audit', catLabel: 'Audit', title: 'Sampling & Materiality Workbook', desc: 'Pre-built formulas for sample size, materiality thresholds and error projection.', type: 'xls', format: 'Excel · .xlsx', fileUrl: '' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Tax Due Diligence Checklist', desc: 'A structured checklist for M&A and transaction tax due diligence reviews.', type: 'xls', format: 'Excel · .xlsx', fileUrl: '' },
+    { cat: 'tax', catLabel: 'Tax', title: 'GST Reconciliation Workbook', desc: 'Reconcile GSTR filings against books with pre-built variance formulas.', type: 'xls', format: 'Excel · .xlsx', fileUrl: '' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Transfer Pricing Documentation Template', desc: 'Local file structure covering functional analysis, benchmarking and conclusions.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'tax', catLabel: 'Tax', title: 'Tax Position Memo', desc: 'A concise format for documenting and defending technical tax positions.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Engagement Letter Template', desc: 'Standard client engagement letter with scope, fees and liability clauses.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'legal', catLabel: 'Legal', title: 'NDA - Mutual', desc: 'A balanced mutual non-disclosure agreement for early-stage client discussions.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Board Resolution Template', desc: 'Common board resolution formats for approvals, appointments and authorisations.', type: 'doc', format: 'Word · .docx', fileUrl: '' },
+    { cat: 'legal', catLabel: 'Legal', title: 'Client Pitch Deck - Legal Services', desc: 'A ready-to-brand deck structure for pitching legal engagements to new clients.', type: 'ppt', format: 'PowerPoint · .pptx', fileUrl: '' }
+  ];
+
+  var DEFAULT_LEARNINGS = [
+    { cat: 'ai', catLabel: 'AI', title: 'AI for Tax & Legal Practitioners', desc: 'A practical introduction to using AI tools safely and effectively in client-facing tax and legal work.', level: 'Beginner', duration: '2h 30m', lessons: 8, link: '' },
+    { cat: 'ai', catLabel: 'AI', title: 'Prompt Engineering for Client Work', desc: 'Write prompts that produce reliable first drafts of memos, summaries and client communications.', level: 'Intermediate', duration: '1h 45m', lessons: 6, link: '' },
+    { cat: 'ai', catLabel: 'AI', title: 'AI Research & Due Diligence Workflows', desc: 'Use AI to accelerate document review and due diligence without compromising accuracy or confidentiality.', level: 'Advanced', duration: '2h 10m', lessons: 7, link: '' },
+    { cat: 'excel', catLabel: 'Excel', title: 'Excel for Financial Modelling', desc: 'Build clean, auditable financial models from scratch - structure, formulas and formatting best practice.', level: 'Beginner', duration: '3h 00m', lessons: 10, link: '' },
+    { cat: 'excel', catLabel: 'Excel', title: 'Advanced Excel: Macros & Automation', desc: 'Automate repetitive reconciliation and reporting tasks using macros, Power Query and dynamic arrays.', level: 'Advanced', duration: '2h 20m', lessons: 8, link: '' },
+    { cat: 'excel', catLabel: 'Excel', title: 'PivotTables for Audit & Tax Analysis', desc: 'Summarise large datasets fast - pivot tables, slicers and dashboards for engagement reporting.', level: 'Intermediate', duration: '1h 30m', lessons: 5, link: '' },
+    { cat: 'ppt', catLabel: 'Presentation', title: 'PowerPoint for Client Presentations', desc: 'Design clear, professional decks for board meetings and client pitches - layout, structure and visual hierarchy.', level: 'Beginner', duration: '1h 30m', lessons: 6, link: '' },
+    { cat: 'ppt', catLabel: 'Presentation', title: 'Board-Ready Decks: Storytelling with Data', desc: 'Turn dense financial and legal analysis into a narrative your clients and partners will actually remember.', level: 'Intermediate', duration: '2h 00m', lessons: 7, link: '' },
+    { cat: 'drafting', catLabel: 'Drafting', title: 'Legal Drafting Fundamentals for Juniors', desc: 'A structured introduction to drafting clear, precise contracts, memos and correspondence.', level: 'Beginner', duration: '2h 15m', lessons: 9, link: '' },
+    { cat: 'drafting', catLabel: 'Drafting', title: 'Tax Memo Writing', desc: 'Structure technical tax positions into memos that are defensible, concise and easy for clients to act on.', level: 'Advanced', duration: '1h 30m', lessons: 5, link: '' },
+    { cat: 'drafting', catLabel: 'Drafting', title: 'Reviewing & Redlining Contracts', desc: 'A junior-friendly walkthrough of what to flag, what to escalate, and how to redline efficiently.', level: 'Intermediate', duration: '1h 50m', lessons: 6, link: '' }
+  ];
+
+  function makeCrudLayer(key, prefix, defaults) {
+    function seed() {
+      if (readArray(key).length) return;
+      writeArray(key, defaults.map(function (d) { return Object.assign({ id: makeId(prefix) }, d); }));
+    }
+    function getAll() { seed(); return readArray(key); }
+    function add(record) {
+      var list = getAll();
+      var full = Object.assign({ id: makeId(prefix) }, record);
+      list.unshift(full);
+      writeArray(key, list);
+      return full;
+    }
+    function update(id, patch) {
+      var list = getAll();
+      list.forEach(function (r) { if (r.id === id) Object.assign(r, patch); });
+      writeArray(key, list);
+      return list;
+    }
+    function remove(id) {
+      var list = getAll().filter(function (r) { return r.id !== id; });
+      writeArray(key, list);
+      return list;
+    }
+    return { getAll: getAll, add: add, update: update, remove: remove };
+  }
+
+  var perksLayer = makeCrudLayer(KEYS.PERKS, 'perk', DEFAULT_PERKS);
+  var templatesLayer = makeCrudLayer(KEYS.TEMPLATES, 'tpl', DEFAULT_TEMPLATES);
+  var learningsLayer = makeCrudLayer(KEYS.LEARNINGS, 'crs', DEFAULT_LEARNINGS);
+
+  /* ── Consultation requests ─────────────────────────────────────────
+     Canonical shape (matches what member-profile.html's saveConsultationRequest
+     already writes to the shared 'expertly_my_consultations' localStorage key):
+     { id, requesterName, requesterEmail, requesterContactEmail, requesterPhone,
+       requesterFirm, memberId, memberName, memberFirm, memberAvatar, memberPractice,
+       message, sentAt, status: 'pending'|'completed'|'declined' }
+     Seeded once from the same mock data that used to be hardoded on
+     consultation-requests.html so admin has something to review immediately. ── */
+  var DEFAULT_CONSULTATIONS = [
+    { requesterName: 'David Whitfield', requesterFirm: 'Whitfield Capital, London', requesterEmail: 'david.whitfield@whitfieldcapital.com', requesterContactEmail: 'david.whitfield@whitfieldcapital.com', requesterPhone: '+44 7700 900123', memberPractice: 'M&A Tax', message: 'Looking for advice on structuring a cross-border M&A deal between a UK acquirer and an Indian target. We need help on a tax-efficient holding structure, withholding tax exposure on the consideration, and how to sequence the post-deal integration.', sentAt: 'Jul 18, 2026', status: 'pending' },
+    { requesterName: 'Larissa Kim', requesterFirm: 'Kim & Partners, Seoul', requesterEmail: 'larissa.kim@kimpartners.kr', requesterContactEmail: 'larissa.kim@kimpartners.kr', requesterPhone: '+82 10 2345 6789', memberPractice: 'Indirect Tax', message: 'Reviewing a GST refund claim for exports of services and want a second opinion on the documentation before we file.', sentAt: 'Jul 16, 2026', status: 'pending' },
+    { requesterName: 'Marcus Chen', requesterFirm: 'Chen Holdings, Singapore', requesterEmail: 'marcus.chen@chenholdings.sg', requesterContactEmail: 'marcus.chen@chenholdings.sg', requesterPhone: '+65 8123 4567', memberPractice: 'Corporate Law', message: 'Setting up a regional holding structure across Singapore and Hong Kong and need guidance on substance requirements and treaty access.', sentAt: 'Jul 15, 2026', status: 'pending' },
+    { requesterName: 'Amelia Ross', requesterFirm: '', requesterEmail: 'amelia.ross@gmail.com', requesterContactEmail: 'amelia.ross@gmail.com', requesterPhone: '+1 212 555 0148', memberPractice: 'IP & Tech', message: 'Reviewing an AI licensing agreement with a US vendor before we sign - want to flag liability and data-training clauses.', sentAt: 'Jul 14, 2026', status: 'pending' },
+    { requesterName: 'Rohan Verma', requesterFirm: 'Verma Textiles, Mumbai', requesterEmail: 'rohan.verma@vermatextiles.in', requesterContactEmail: 'rohan.verma@vermatextiles.in', requesterPhone: '+91 98200 12345', memberPractice: 'Direct Tax', message: 'Need a second opinion on a transfer pricing adjustment raised by the department for FY24.', sentAt: 'Jul 12, 2026', status: 'pending' },
+    { requesterName: 'Sophie Anderson', requesterFirm: '', requesterEmail: 'sophie.anderson@outlook.com', requesterContactEmail: 'sophie.anderson@outlook.com', requesterPhone: '+1 617 555 0199', memberPractice: 'Capital Markets', message: 'Preparing for a Series C round with a US lead investor and need help structuring the SAFE conversion.', sentAt: 'Jul 11, 2026', status: 'completed' },
+    { requesterName: 'James Okafor', requesterFirm: 'Okafor & Co, Lagos', requesterEmail: 'james.okafor@okaforco.ng', requesterContactEmail: 'james.okafor@okaforco.ng', requesterPhone: '+234 802 345 6789', memberPractice: 'M&A', message: 'Due diligence support needed on a pan-African acquisition across four jurisdictions.', sentAt: 'Jul 9, 2026', status: 'pending' },
+    { requesterName: 'Fatima Al-Hassan', requesterFirm: '', requesterEmail: 'fatima.alhassan@yahoo.com', requesterContactEmail: 'fatima.alhassan@yahoo.com', requesterPhone: '+971 50 123 4567', memberPractice: 'Compliance', message: 'Building an AML/KYC compliance programme for a new fintech licence and want a gap assessment.', sentAt: 'Jul 8, 2026', status: 'declined' },
+    { requesterName: 'Diego Martinez', requesterFirm: 'Martinez Group, Mexico City', requesterEmail: 'diego.martinez@martinezgroup.mx', requesterContactEmail: 'diego.martinez@martinezgroup.mx', requesterPhone: '+52 55 1234 5678', memberPractice: 'Transfer Pricing', message: 'Reassessing our intercompany pricing policy under BEPS 2.0 Pillar Two and need a benchmarking study refresh.', sentAt: 'Jul 6, 2026', status: 'pending' },
+    { requesterName: 'Claire Dubois', requesterFirm: '', requesterEmail: 'claire.dubois@gmail.com', requesterContactEmail: 'claire.dubois@gmail.com', requesterPhone: '+33 6 12 34 56 78', memberPractice: 'Antitrust', message: 'Filing a merger notification with the EU competition authority and need help anticipating remedy requirements.', sentAt: 'Jul 3, 2026', status: 'pending' }
+  ];
+
+  function seedConsultations() {
+    if (readArray(KEYS.CONSULTATIONS).length) return;
+    writeArray(KEYS.CONSULTATIONS, DEFAULT_CONSULTATIONS.map(function (c) {
+      return Object.assign({ id: makeId('consult') }, c);
+    }));
+  }
+
+  function getConsultations() {
+    seedConsultations();
+    return readArray(KEYS.CONSULTATIONS);
+  }
+
+  function pushConsultationRequest(record) {
+    var list = readArray(KEYS.CONSULTATIONS);
+    list.unshift(Object.assign({ id: makeId('consult'), status: 'pending', sentAt: Date.now() }, record));
+    writeArray(KEYS.CONSULTATIONS, list);
+    return list;
+  }
+
+  function setConsultationStatus(id, status) {
+    var list = readArray(KEYS.CONSULTATIONS);
+    list.forEach(function (c) { if (c.id === id) c.status = status; });
+    writeArray(KEYS.CONSULTATIONS, list);
+    return list;
+  }
+
+  function deleteConsultationRequest(id) {
+    var list = readArray(KEYS.CONSULTATIONS).filter(function (c) { return c.id !== id; });
+    writeArray(KEYS.CONSULTATIONS, list);
+    return list;
+  }
+
   /* ── Admin session (separate from the public expertly_session key) ── */
   function getAdminSession() {
     try { return JSON.parse(localStorage.getItem(KEYS.ADMIN_SESSION)); } catch (e) { return null; }
@@ -360,6 +684,46 @@
 
     getAdminSession: getAdminSession,
     setAdminSession: setAdminSession,
-    clearAdminSession: clearAdminSession
+    clearAdminSession: clearAdminSession,
+
+    getAdminMembers: getAdminMembers,
+    addAdminMember: addAdminMember,
+    updateAdminMember: updateAdminMember,
+    deleteAdminMember: deleteAdminMember,
+    getHiddenMemberIds: getHiddenMemberIds,
+    deleteStaticMember: deleteStaticMember,
+    restoreStaticMember: restoreStaticMember,
+    getAllVisibleMembers: getAllVisibleMembers,
+    getAllMembersForAdmin: getAllMembersForAdmin,
+    setMemberStatus: setMemberStatus,
+    promoteApplicationToMember: promoteApplicationToMember,
+
+    submitProfileEdit: submitProfileEdit,
+    getProfileEdits: getProfileEdits,
+    getMemberProfileEdits: getMemberProfileEdits,
+    getLatestProfileEdit: getLatestProfileEdit,
+    getProfileOverrides: getProfileOverrides,
+    setProfileEditStatus: setProfileEditStatus,
+    deleteProfileEdit: deleteProfileEdit,
+
+    getPerks: perksLayer.getAll,
+    addPerk: perksLayer.add,
+    updatePerk: perksLayer.update,
+    deletePerk: perksLayer.remove,
+
+    getTemplates: templatesLayer.getAll,
+    addTemplate: templatesLayer.add,
+    updateTemplate: templatesLayer.update,
+    deleteTemplate: templatesLayer.remove,
+
+    getLearnings: learningsLayer.getAll,
+    addLearning: learningsLayer.add,
+    updateLearning: learningsLayer.update,
+    deleteLearning: learningsLayer.remove,
+
+    getConsultations: getConsultations,
+    pushConsultationRequest: pushConsultationRequest,
+    setConsultationStatus: setConsultationStatus,
+    deleteConsultationRequest: deleteConsultationRequest
   };
 })(window);

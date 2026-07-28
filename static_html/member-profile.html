@@ -226,26 +226,38 @@
             <!-- ABOUT TAB -->
             <div class="mp-tab-panel active" id="tab-about">
 
-              <!-- Headline (LinkedIn summary line) -->
-              <div class="mp-section" id="about-headline-section" style="display:none;">
-                <p class="mp-headline" id="about-headline"></p>
-              </div>
-
-              <!-- Bio -->
-              <div id="about-bio-section" style="display:none;">
-                <p class="mp-bio" id="about-bio"></p>
+              <!-- Headline & Bio -->
+              <div class="mp-section" id="about-headline-bio-section" style="display:none;">
+                <div class="mp-section-header">
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">About</div>
+                    <span class="mp-section-badge" id="about-hb-badge"></span>
+                  </div>
+                  <button class="mp-edit-btn" id="about-hb-edit-btn" onclick="openSectionEditor('headline_bio')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Edit
+                  </button>
+                </div>
+                <p class="mp-headline" id="about-headline" style="display:none;"></p>
+                <p class="mp-bio" id="about-bio" style="display:none;"></p>
               </div>
 
               <!-- Key Engagements -->
               <div class="mp-section" id="about-engagements-section">
                 <div class="mp-section-header">
-                  <div class="mp-section-label">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                      <path d="M8 1L10 6h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5L8 1z" fill="#00A582" />
-                    </svg>
-                    Key Engagements
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 1L10 6h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5L8 1z" fill="#00A582" />
+                      </svg>
+                      Key Engagements
+                    </div>
+                    <span class="mp-section-badge" id="eng-badge"></span>
                   </div>
-                  <button class="mp-edit-btn" id="eng-edit-btn" onclick="openEngEdit()">
+                  <button class="mp-edit-btn" id="eng-edit-btn" onclick="openSectionEditor('engagements')" style="display:none;">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                       <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor"
                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
@@ -262,15 +274,27 @@
 
               <!-- Key Clients -->
               <div class="mp-section" id="about-clients-section" style="display:none;">
-                <div class="mp-section-label">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#00A582" stroke-width="1.6"
-                      stroke-linecap="round" />
-                    <circle cx="9" cy="7" r="4" stroke="#00A582" stroke-width="1.6" />
-                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#00A582" stroke-width="1.6"
-                      stroke-linecap="round" />
-                  </svg>
-                  Key Clients
+                <div class="mp-section-header">
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#00A582" stroke-width="1.6"
+                          stroke-linecap="round" />
+                        <circle cx="9" cy="7" r="4" stroke="#00A582" stroke-width="1.6" />
+                        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#00A582" stroke-width="1.6"
+                          stroke-linecap="round" />
+                      </svg>
+                      Key Clients
+                    </div>
+                    <span class="mp-section-badge" id="clients-badge"></span>
+                  </div>
+                  <button class="mp-edit-btn" id="clients-edit-btn" onclick="openSectionEditor('keyClients')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Edit
+                  </button>
                 </div>
                 <div class="mp-clients-outer">
                   <div class="mp-clients-grid" id="about-clients-grid"></div>
@@ -284,25 +308,47 @@
 
               <!-- Education -->
               <div class="mp-section" id="creds-edu-section" style="display:none;">
-                <div class="mp-section-label">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L22 8l-10 5L2 8l10-5z" stroke="#00A582" stroke-width="1.6" stroke-linejoin="round" />
-                    <path d="M6 11v5c0 2.2 2.7 4 6 4s6-1.8 6-4v-5" stroke="#00A582" stroke-width="1.6"
-                      stroke-linecap="round" />
-                  </svg>
-                  Education
+                <div class="mp-section-header">
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3L22 8l-10 5L2 8l10-5z" stroke="#00A582" stroke-width="1.6" stroke-linejoin="round" />
+                        <path d="M6 11v5c0 2.2 2.7 4 6 4s6-1.8 6-4v-5" stroke="#00A582" stroke-width="1.6"
+                          stroke-linecap="round" />
+                      </svg>
+                      Education
+                    </div>
+                  </div>
+                  <button class="mp-edit-btn" id="edu-edit-btn" onclick="openSectionEditor('education')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Edit
+                  </button>
                 </div>
                 <div class="mp-edu-grid" id="creds-edu-grid"></div>
               </div>
 
               <!-- Work Experience -->
               <div class="mp-section" id="creds-work-section" style="display:none;">
-                <div class="mp-section-label">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="7" width="20" height="14" rx="2" stroke="#00A582" stroke-width="1.6" />
-                    <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="#00A582" stroke-width="1.6" />
-                  </svg>
-                  Work Experience
+                <div class="mp-section-header">
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="#00A582" stroke-width="1.6" />
+                        <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="#00A582" stroke-width="1.6" />
+                      </svg>
+                      Work Experience
+                    </div>
+                  </div>
+                  <button class="mp-edit-btn" id="work-edit-btn" onclick="openSectionEditor('workExperiences')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Edit
+                  </button>
                 </div>
                 <div class="mp-timeline" id="creds-work-list"></div>
               </div>
@@ -321,28 +367,23 @@
               <!-- Client Testimonials -->
               <div class="mp-section" id="reviews-testi-section" style="display:none;">
                 <div class="mp-testi-section-head">
-                  <div class="mp-section-label">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#00A582"
-                        stroke-width="1.6" stroke-linejoin="round" />
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#00A582"
+                          stroke-width="1.6" stroke-linejoin="round" />
+                      </svg>
+                      Client Testimonials
+                    </div>
+                    <span class="mp-section-badge" id="testi-badge"></span>
+                  </div>
+                  <button class="mp-edit-btn" id="testi-edit-btn" onclick="openSectionEditor('testimonials')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    Client Testimonials
-                  </div>
-                  <div class="mp-testi-nav" id="reviews-testi-nav" style="display:none;">
-                    <button class="mp-testi-arrow" id="testi-prev-btn" onclick="stepTestimonial(-1)"
-                      aria-label="Previous">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M15 18l-6-6 6-6" stroke="#374151" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                      </svg>
-                    </button>
-                    <button class="mp-testi-arrow" id="testi-next-btn" onclick="stepTestimonial(1)" aria-label="Next">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 18l6-6-6-6" stroke="#374151" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                      </svg>
-                    </button>
-                  </div>
+                    Edit
+                  </button>
                 </div>
                 <div class="mp-testi-outer" id="reviews-testi-outer">
                   <div class="mp-testi-track" id="reviews-testi-list"></div>
@@ -351,14 +392,26 @@
 
               <!-- Awards & Recognition -->
               <div class="mp-section" id="reviews-awards-section" style="display:none;">
-                <div class="mp-section-label">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.6"
-                      stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582"
-                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                  Awards &amp; Recognition
+                <div class="mp-section-header">
+                  <div class="mp-section-header-left">
+                    <div class="mp-section-label" style="margin-bottom:0;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.6"
+                          stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582"
+                          stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      Awards &amp; Recognition
+                    </div>
+                    <span class="mp-section-badge" id="awards-badge"></span>
+                  </div>
+                  <button class="mp-edit-btn" id="awards-edit-btn" onclick="openSectionEditor('awards')" style="display:none;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Edit
+                  </button>
                 </div>
                 <div class="mp-awards-grid" id="reviews-awards-grid"></div>
               </div>
@@ -379,6 +432,19 @@
 
             <!-- CONTACT TAB -->
             <div class="mp-tab-panel" id="tab-contact">
+              <div class="mp-section-header">
+                <div class="mp-section-header-left">
+                  <div class="mp-section-label" style="margin-bottom:0;">Contact Information</div>
+                  <span class="mp-section-badge" id="contact-badge"></span>
+                </div>
+                <button class="mp-edit-btn" id="contact-edit-btn" onclick="openSectionEditor('contact')" style="display:none;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  Edit
+                </button>
+              </div>
               <div class="mp-contact-grid" id="contact-grid"></div>
             </div>
 
@@ -387,6 +453,16 @@
 
         <!-- Right Sidebar -->
         <div class="mp-sidebar">
+
+          <!-- Profile completion (owner only) -->
+          <div class="mp-sidebar-card mp-completion-card" id="mp-completion-card" style="display:none;">
+            <div class="mp-completion-top">
+              <span class="mp-sidebar-label">Profile completeness</span>
+              <span class="mp-completion-pct" id="mp-completion-pct">0%</span>
+            </div>
+            <div class="mp-completion-bar"><div class="mp-completion-fill" id="mp-completion-fill" style="width:0%;"></div></div>
+            <p class="mp-completion-hint">Changes you submit go live once the Expertly team verifies them.</p>
+          </div>
 
           <!-- Fee + CTA -->
           <div class="mp-sidebar-card">
@@ -428,28 +504,45 @@
 </div>
 </div>
 
-  <!-- ═══════════════════════════════════════════════ ENGAGEMENT EDIT MODAL -->
+  <!-- ═══════════════════════════════════════════════ PROFILE SECTION EDIT MODAL -->
   <div id="mp-eng-modal-overlay" role="dialog" aria-modal="true">
     <div class="mp-eng-modal">
       <div class="mp-eng-modal-head">
-        <h2>Edit Key Engagements</h2>
+        <h2 id="mp-edit-modal-title">Edit section</h2>
         <button class="mp-eng-modal-close" onclick="closeEngEdit()" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
         </button>
       </div>
-      <p class="mp-eng-modal-sub">Add or remove engagement items that highlight your most impactful work.</p>
+      <p class="mp-eng-modal-sub" id="mp-edit-modal-sub">Add or remove items.</p>
+
       <div id="mp-eng-edit-list"></div>
-      <button class="mp-eng-add-btn" onclick="addEngRow()">
+      <button class="mp-eng-add-btn" id="mp-edit-add-btn" onclick="addEngRow()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
           <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
-        Add engagement
+        <span id="mp-edit-add-label">Add item</span>
       </button>
+
+      <div class="mp-proof-section" id="mp-edit-proof-section">
+        <div class="mp-proof-label">Proof for the Expertly team</div>
+        <p class="mp-proof-hint">Upload a document/screenshot or paste a link the review team can use to verify this change (e.g. an offer letter, certificate, LinkedIn post, or news article). Required to submit.</p>
+        <div class="mp-proof-row">
+          <label class="mp-proof-upload-btn">
+            <input type="file" id="mp-edit-proof-file" accept="image/*,.pdf" style="display:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Upload file
+          </label>
+          <span class="mp-proof-filename" id="mp-edit-proof-filename">No file chosen</span>
+        </div>
+        <input type="text" class="mp-proof-url-input" id="mp-edit-proof-url" placeholder="…or paste a proof link (https://…)">
+        <div class="mp-proof-error" id="mp-edit-proof-error">Please attach a file or a link as proof before submitting.</div>
+      </div>
+
       <div class="mp-eng-modal-foot">
         <button class="mp-eng-cancel-btn" onclick="closeEngEdit()">Cancel</button>
-        <button class="mp-eng-save-btn" onclick="saveEngEdit()">Save changes</button>
+        <button class="mp-eng-save-btn" onclick="saveEngEdit()">Submit for review</button>
       </div>
     </div>
   </div>
@@ -527,6 +620,7 @@
 
   <!-- ═══════════════════════════════════════════════ SCRIPTS -->
   <script src="assets/members.js?v=11"></script>
+  <script src="assets/admin-data.js"></script>
   <script src="assets/shared.js?v=11"></script>
   <script src="assets/sidebar-theme.js"></script>
   <script>
@@ -1759,11 +1853,7 @@
       try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) { }
       if (!session || !session.email) return;
 
-      let all = [];
-      try { all = JSON.parse(localStorage.getItem('expertly_my_consultations')) || []; } catch (e) { all = []; }
-
-      all.push({
-        id: 'req-' + Date.now(),
+      const record = {
         requesterEmail: session.email,
         requesterName: name,
         requesterContactEmail: email,
@@ -1774,15 +1864,95 @@
         memberAvatar: currentMember.img || '',
         memberPractice: currentMember.practice || '',
         message,
-        sentAt: Date.now(),
-        status: 'pending',
-      });
+      };
 
-      localStorage.setItem('expertly_my_consultations', JSON.stringify(all));
+      if (window.ExpertlyAdmin) {
+        window.ExpertlyAdmin.pushConsultationRequest(record);
+      } else {
+        let all = [];
+        try { all = JSON.parse(localStorage.getItem('expertly_my_consultations')) || []; } catch (e) { all = []; }
+        all.push(Object.assign({ id: 'req-' + Date.now(), sentAt: Date.now(), status: 'pending' }, record));
+        localStorage.setItem('expertly_my_consultations', JSON.stringify(all));
+      }
     }
 
-    // ── Engagement list render + edit ────────────────
+    // ── Profile self-edit system (own profile only) ───
+    // Sections a member can propose changes to. Each list section's rows are edited
+    // as one free-text line per item (kept simple - mirrors the original Engagement
+    // editor's UX) except headline_bio, which is two separate fields.
+    const SECTION_CONFIG = {
+      headline_bio: { label: 'Headline & bio', type: 'fields', modalTitle: 'Edit headline & bio', modalSub: 'Update your one-line headline and full bio.' },
+      contact: { label: 'Contact information', type: 'fields', modalTitle: 'Edit Contact Information', modalSub: 'Update how prospective clients can reach you.' },
+      // engagements uses per-item proof (list-proof) - every single engagement needs its own
+      // supporting proof, unlike education/work/clients which take one shared proof for the batch.
+      engagements: { label: 'Key engagements', type: 'list-proof', modalTitle: 'Edit Key Engagements', modalSub: 'Add or remove engagement items that highlight your most impactful work. Each engagement needs its own proof.', addLabel: 'Add engagement', placeholder: 'Describe this engagement in up to 300 characters…' },
+      education: { label: 'Education', type: 'list', modalTitle: 'Edit Education', modalSub: 'Add or remove your education history.', addLabel: 'Add education', placeholder: 'e.g. LLB, National University of Singapore, 2009' },
+      workExperiences: { label: 'Work experience', type: 'list', modalTitle: 'Edit Work Experience', modalSub: 'Add or remove roles in your work history.', addLabel: 'Add role', placeholder: 'e.g. Senior Tax Advisor, Chen Advisory, 2020–Present' },
+      // clients: its own logo upload per row, no proof requirement (a client name +
+      // logo doesn't need supporting evidence the way an engagement claim does).
+      keyClients: { label: 'Key clients', type: 'clients', modalTitle: 'Edit Key Clients', modalSub: 'Add or remove clients you can showcase, with their logo.', addLabel: 'Add client', placeholder: 'e.g. Tata Group' },
+      // Testimonials & awards use per-item proof too, same reasoning as engagements -
+      // each is its own claim (a real client quote, a real award) and needs its own evidence.
+      testimonials: { label: 'Client testimonials', type: 'list-proof', modalTitle: 'Edit Client Testimonials', modalSub: 'Add or remove testimonials. Each needs its own proof (a screenshot of the message/email, or a review link).', addLabel: 'Add testimonial', placeholder: 'Quote · Client name · Client title, company · Month Year' },
+      awards: { label: 'Awards & recognition', type: 'list-proof', modalTitle: 'Edit Awards & Recognition', modalSub: 'Add or remove awards and recognitions. Each needs its own proof (a certificate or announcement link).', addLabel: 'Add award', placeholder: 'Award title · Issuing body · Year' }
+    };
+
+    let isOwnProfile = false;
+    let currentEditSection = null;
     let _engagements = [];
+    let _effectiveExtended = null;
+
+    function getEffectiveExtended(member) {
+      const base = (PROFILE_EXTENDED && PROFILE_EXTENDED[member.id]) || {};
+      const overrides = window.ExpertlyAdmin ? window.ExpertlyAdmin.getProfileOverrides(member.id) : {};
+      const merged = Object.assign({}, base);
+      if (overrides.headline_bio) { merged.headline = overrides.headline_bio.headline; merged.bio = overrides.headline_bio.bio; }
+      if (overrides.contact) {
+        merged.contactEmail = overrides.contact.contactEmail;
+        merged.contactPhone = overrides.contact.contactPhone;
+        merged.linkedinUrl = overrides.contact.linkedinUrl;
+        merged.website = overrides.contact.website;
+      }
+      if (overrides.engagements) merged.engagements = overrides.engagements;
+      if (overrides.education) merged.educations = overrides.education;
+      if (overrides.workExperiences) merged.workExperiences = overrides.workExperiences;
+      return merged;
+    }
+
+    function getEffectiveKeyClients(member) {
+      const overrides = window.ExpertlyAdmin ? window.ExpertlyAdmin.getProfileOverrides(member.id) : {};
+      if (overrides.keyClients) return overrides.keyClients;
+      return (KEY_CLIENTS && KEY_CLIENTS[member.id]) || [];
+    }
+
+    function getEffectiveReviews(member) {
+      const overrides = window.ExpertlyAdmin ? window.ExpertlyAdmin.getProfileOverrides(member.id) : {};
+      const base = (typeof PROFILE_REVIEWS !== 'undefined' && PROFILE_REVIEWS[member.id]) || {};
+      return {
+        testimonials: overrides.testimonials || base.testimonials || [],
+        awards: overrides.awards || base.awards || []
+      };
+    }
+
+    // Sections that show a verified/pending badge. Education & Work Experience
+    // (Credentials tab) intentionally have none - too many small, evolving facts
+    // to badge individually there.
+    const BADGED_SECTIONS = ['headline_bio', 'engagements', 'keyClients', 'contact', 'testimonials', 'awards'];
+
+    // Verified (green) if an approved override exists, or it's untouched seed data on
+    // an already-verified member. Pending (amber, owner-only) if awaiting review.
+    function sectionBadgeHtml(section, member) {
+      if (!window.ExpertlyAdmin || BADGED_SECTIONS.indexOf(section) === -1) return '';
+      const overrides = window.ExpertlyAdmin.getProfileOverrides(member.id);
+      const latestEdit = window.ExpertlyAdmin.getLatestProfileEdit(member.id, section);
+      if (latestEdit && latestEdit.status === 'pending') {
+        return isOwnProfile ? '<span class="mp-badge-pending">Pending verification</span>' : '';
+      }
+      if (overrides[section] || member.verified) {
+        return '<span class="mp-badge-verified"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#00A582" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified</span>';
+      }
+      return '';
+    }
 
     function renderEngagements(list) {
       const el = document.getElementById('about-engagements-list');
@@ -1793,8 +1963,7 @@
           <path d="M12 2l2.4 5H20l-4.5 3.5 1.7 5.5L12 13l-5.2 3 1.7-5.5L4 7h5.6L12 2z" stroke="#00A582" stroke-width="1.5" stroke-linejoin="round"/>
         </svg>
         <div>
-          <strong>No key engagements yet.</strong><br>
-          Showcase your most impactful work - <button onclick="openEngEdit()">click Edit</button> to add your first engagement.
+          <strong>No key engagements yet.</strong>${isOwnProfile ? '<br>Showcase your most impactful work - <button onclick="openSectionEditor(\'engagements\')">click Edit</button> to add your first engagement.' : ''}
         </div>
       </div>`;
       } else {
@@ -1813,15 +1982,101 @@
       }
     }
 
-    function openEngEdit() {
+    function openSectionEditor(section) {
+      if (!isOwnProfile) return;
+      currentEditSection = section;
+      const cfg = SECTION_CONFIG[section];
+      document.getElementById('mp-edit-modal-title').textContent = cfg.modalTitle;
+      document.getElementById('mp-edit-modal-sub').textContent = cfg.modalSub;
+      document.getElementById('mp-edit-proof-file').value = '';
+      document.getElementById('mp-edit-proof-filename').textContent = 'No file chosen';
+      document.getElementById('mp-edit-proof-url').value = '';
+      document.getElementById('mp-edit-proof-error').classList.remove('show');
+
+      const listEl = document.getElementById('mp-eng-edit-list');
+      listEl.innerHTML = '';
+      const addBtn = document.getElementById('mp-edit-add-btn');
+
+      const proofSection = document.getElementById('mp-edit-proof-section');
+
+      if (cfg.type === 'fields') {
+        addBtn.style.display = 'none';
+        if (proofSection) proofSection.style.display = 'none';
+        if (section === 'headline_bio') {
+          const headline = (_effectiveExtended && _effectiveExtended.headline) || '';
+          const bio = (_effectiveExtended && _effectiveExtended.bio) || '';
+          listEl.innerHTML = `
+      <div class="mp-field-block">
+        <label>Headline</label>
+        <input type="text" id="mp-edit-field-headline" maxlength="160" value="${escHtml(headline)}" placeholder="A one-line summary of your practice">
+      </div>
+      <div class="mp-field-block">
+        <label>Bio</label>
+        <textarea id="mp-edit-field-bio" rows="6" placeholder="Your full professional bio…">${escHtml(bio)}</textarea>
+      </div>`;
+        } else if (section === 'contact') {
+          const ext = _effectiveExtended || {};
+          listEl.innerHTML = `
+      <div class="mp-field-block">
+        <label>Email</label>
+        <input type="email" id="mp-edit-field-email" value="${escHtml(ext.contactEmail || '')}" placeholder="you@firm.com">
+      </div>
+      <div class="mp-field-block">
+        <label>Phone</label>
+        <input type="tel" id="mp-edit-field-phone" value="${escHtml(ext.contactPhone || '')}" placeholder="+1 212 555 0148">
+      </div>
+      <div class="mp-field-block">
+        <label>LinkedIn URL</label>
+        <input type="url" id="mp-edit-field-linkedin" value="${escHtml(ext.linkedinUrl || '')}" placeholder="https://linkedin.com/in/yourprofile">
+      </div>
+      <div class="mp-field-block">
+        <label>Website</label>
+        <input type="url" id="mp-edit-field-website" value="${escHtml(ext.website || '')}" placeholder="https://yourfirm.com">
+      </div>`;
+        }
+      } else {
+        addBtn.style.display = '';
+        // list-proof (engagements/testimonials/awards) shows proof per-row instead of one
+        // shared block; clients has no proof at all (logo upload replaces it).
+        if (proofSection) proofSection.style.display = (cfg.type === 'list-proof' || cfg.type === 'clients') ? 'none' : '';
+        document.getElementById('mp-edit-add-label').textContent = cfg.addLabel;
+        const source = section === 'engagements' ? (_effectiveExtended.engagements || [])
+          : section === 'education' ? (_effectiveExtended.educations || [])
+          : section === 'workExperiences' ? (_effectiveExtended.workExperiences || [])
+          : section === 'testimonials' ? getEffectiveReviews(currentMember).testimonials
+          : section === 'awards' ? getEffectiveReviews(currentMember).awards
+          : getEffectiveKeyClients(currentMember);
+        const rows = source.map(rowToText(section));
+        (rows.length ? rows : ['']).forEach(text => addEngRow(text));
+      }
+
       const overlay = document.getElementById('mp-eng-modal-overlay');
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
-      // populate rows
-      const listEl = document.getElementById('mp-eng-edit-list');
-      listEl.innerHTML = '';
-      (_engagements.length ? _engagements : [{ title: '', organization: '', year: '' }])
-        .forEach(e => addEngRow(e));
+    }
+
+    function rowToText(section) {
+      return (item) => {
+        if (section === 'engagements') return item.description || [item.title, item.organization, item.year].filter(Boolean).join(' · ');
+        if (section === 'education') return [item.degree, item.institution, item.field, item.endYear].filter(Boolean).join(' · ');
+        if (section === 'keyClients') return item.name || '';
+        if (section === 'testimonials') return [item.quote, item.clientName, [item.clientTitle, item.clientCompany].filter(Boolean).join(', '), item.date].filter(Boolean).join(' · ');
+        if (section === 'awards') return [item.title, item.issuingBody, item.year].filter(Boolean).join(' · ');
+        return [item.title, item.company, item.isCurrent ? (item.startYear + '–Present') : [item.startYear, item.endYear].filter(Boolean).join('–'), item.description].filter(Boolean).join(' · ');
+      };
+    }
+
+    // Turns one edited row's free-text line back into a structured item, per section.
+    function parseRowText(section, text) {
+      const parts = text.split('·').map(s => s.trim());
+      if (section === 'testimonials') {
+        const titleCompany = (parts[2] || '').split(',').map(s => s.trim());
+        return { quote: parts[0] || text, clientName: parts[1] || '', clientTitle: titleCompany[0] || '', clientCompany: titleCompany[1] || '', date: parts[3] || '' };
+      }
+      if (section === 'awards') {
+        return { title: parts[0] || text, issuingBody: parts[1] || '', year: parts[2] || '' };
+      }
+      return { description: text };
     }
 
     function closeEngEdit() {
@@ -1829,16 +2084,40 @@
       document.body.style.overflow = '';
     }
 
-    function addEngRow(data) {
-      data = data || {};
+    function addEngRow(text) {
+      text = text || '';
+      const cfg = SECTION_CONFIG[currentEditSection] || {};
+      const needsRowProof = cfg.type === 'list-proof';
+      const needsLogo = cfg.type === 'clients';
       const listEl = document.getElementById('mp-eng-edit-list');
       const row = document.createElement('div');
       row.className = 'mp-eng-row';
-      const desc = data.description || (data.title ? [data.title, data.organization, data.year].filter(Boolean).join(' · ') : '');
       row.innerHTML = `
     <div class="mp-eng-row-inputs">
-      <textarea rows="2" maxlength="300" placeholder="Describe this engagement in up to 300 characters…">${escHtml(desc)}</textarea>
-      <div class="mp-eng-char-count"><span>${desc.length}</span> / 300</div>
+      <textarea rows="2" maxlength="300" placeholder="${escHtml(cfg.placeholder || 'Describe this item…')}">${escHtml(text)}</textarea>
+      <div class="mp-eng-char-count"><span>${text.length}</span> / 300</div>
+      ${needsRowProof ? `
+      <div class="mp-proof-row" style="margin-top:8px;">
+        <label class="mp-proof-upload-btn-sm">
+          <input type="file" class="mp-eng-row-proof-file" accept="image/*,.pdf" style="display:none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Upload proof
+        </label>
+        <span class="mp-proof-filename mp-eng-row-proof-filename">No file chosen</span>
+      </div>
+      <input type="text" class="mp-proof-url-input mp-eng-row-proof-url" style="margin-top:6px;" placeholder="…or paste a proof link for this engagement">
+      <div class="mp-proof-error mp-eng-row-proof-error">Proof is required for this engagement.</div>
+      ` : ''}
+      ${needsLogo ? `
+      <div class="mp-proof-row" style="margin-top:8px;">
+        <label class="mp-proof-upload-btn-sm">
+          <input type="file" class="mp-eng-row-logo-file" accept="image/*" style="display:none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Upload logo
+        </label>
+        <span class="mp-proof-filename mp-eng-row-logo-filename">No logo chosen</span>
+      </div>
+      ` : ''}
     </div>
     <button class="mp-eng-del-btn" onclick="this.closest('.mp-eng-row').remove()" title="Remove">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -1846,19 +2125,189 @@
       const ta = row.querySelector('textarea');
       const counter = row.querySelector('.mp-eng-char-count span');
       ta.addEventListener('input', () => { counter.textContent = ta.value.length; });
+      if (needsRowProof) {
+        const fileInput = row.querySelector('.mp-eng-row-proof-file');
+        const filenameEl = row.querySelector('.mp-eng-row-proof-filename');
+        fileInput.addEventListener('change', () => {
+          const f = fileInput.files[0];
+          filenameEl.textContent = f ? f.name : 'No file chosen';
+        });
+      }
+      if (needsLogo) {
+        const fileInput = row.querySelector('.mp-eng-row-logo-file');
+        const filenameEl = row.querySelector('.mp-eng-row-logo-filename');
+        fileInput.addEventListener('change', () => {
+          const f = fileInput.files[0];
+          filenameEl.textContent = f ? f.name : 'No logo chosen';
+        });
+      }
       listEl.appendChild(row);
     }
 
-    function saveEngEdit() {
-      const rows = document.querySelectorAll('#mp-eng-edit-list .mp-eng-row');
-      _engagements = [];
-      rows.forEach(row => {
-        const description = row.querySelector('textarea').value.trim();
-        if (!description) return;
-        _engagements.push({ description });
-      });
-      renderEngagements(_engagements);
+    document.getElementById('mp-edit-proof-file').addEventListener('change', function () {
+      const f = this.files && this.files[0];
+      document.getElementById('mp-edit-proof-filename').textContent = f ? f.name : 'No file chosen';
+    });
+
+    function finalizeProfileEditSubmit(section, cfg, payload, proofDataUrl, proofName, proofUrl) {
+      if (window.ExpertlyAdmin && currentMember) {
+        window.ExpertlyAdmin.submitProfileEdit({
+          memberId: currentMember.id,
+          section: section,
+          label: cfg.label,
+          payload: payload,
+          proofDataUrl: proofDataUrl || '',
+          proofName: proofName || '',
+          proofUrl: proofUrl || ''
+        });
+      }
+      if (section === 'engagements') { _engagements = _effectiveExtended.engagements || []; renderEngagements(_engagements); }
+      renderSectionBadges();
       closeEngEdit();
+      showToastMsg('Submitted for review - it\'ll go live once the Expertly team verifies it.');
+    }
+
+    // Every row in a "list-proof" section (engagements, testimonials, awards) carries
+    // its own proof (file read as a data URL, or a pasted link) - collected here so
+    // each item in the submitted payload has its own proofDataUrl/proofName/proofUrl
+    // rather than one proof for the whole batch.
+    function saveListWithRowProof(section, cfg) {
+      const rows = Array.from(document.querySelectorAll('#mp-eng-edit-list .mp-eng-row'));
+      let hasError = false;
+      const pending = [];
+      const itemNoun = section === 'testimonials' ? 'testimonial' : section === 'awards' ? 'award' : 'engagement';
+
+      rows.forEach(row => {
+        const text = row.querySelector('textarea').value.trim();
+        if (!text) return;
+        const fileInput = row.querySelector('.mp-eng-row-proof-file');
+        const urlInput = row.querySelector('.mp-eng-row-proof-url');
+        const errEl = row.querySelector('.mp-eng-row-proof-error');
+        const file = fileInput && fileInput.files[0];
+        const url = urlInput ? urlInput.value.trim() : '';
+
+        if (!file && !url) {
+          if (errEl) { errEl.textContent = 'Proof is required for this ' + itemNoun + '.'; errEl.classList.add('show'); }
+          hasError = true;
+          return;
+        }
+        if (file && file.size > 5 * 1024 * 1024) {
+          if (errEl) { errEl.textContent = 'File is too large (max 5MB) - use a smaller file or paste a link instead.'; errEl.classList.add('show'); }
+          hasError = true;
+          return;
+        }
+        if (errEl) errEl.classList.remove('show');
+        pending.push({ item: parseRowText(section, text), file, url });
+      });
+
+      if (hasError) return;
+
+      const readers = pending.map(p => new Promise(resolve => {
+        if (p.file) {
+          const reader = new FileReader();
+          reader.onload = ev => resolve(Object.assign({}, p.item, { proofDataUrl: ev.target.result, proofName: p.file.name, proofUrl: p.url || '' }));
+          reader.readAsDataURL(p.file);
+        } else {
+          resolve(Object.assign({}, p.item, { proofDataUrl: '', proofName: '', proofUrl: p.url }));
+        }
+      }));
+
+      Promise.all(readers).then(items => finalizeProfileEditSubmit(section, cfg, items, null, null, ''));
+    }
+
+    function saveEngEdit() {
+      const section = currentEditSection;
+      const cfg = SECTION_CONFIG[section];
+
+      if (cfg.type === 'fields') {
+        const payload = section === 'headline_bio'
+          ? { headline: document.getElementById('mp-edit-field-headline').value.trim(), bio: document.getElementById('mp-edit-field-bio').value.trim() }
+          : {
+              contactEmail: document.getElementById('mp-edit-field-email').value.trim(),
+              contactPhone: document.getElementById('mp-edit-field-phone').value.trim(),
+              linkedinUrl: document.getElementById('mp-edit-field-linkedin').value.trim(),
+              website: document.getElementById('mp-edit-field-website').value.trim()
+            };
+        finalizeProfileEditSubmit(section, cfg, payload, null, null, '');
+        return;
+      }
+
+      if (cfg.type === 'list-proof') {
+        saveListWithRowProof(section, cfg);
+        return;
+      }
+
+      if (cfg.type === 'clients') {
+        const rows = Array.from(document.querySelectorAll('#mp-eng-edit-list .mp-eng-row'));
+        const pending = [];
+        rows.forEach(row => {
+          const text = row.querySelector('textarea').value.trim();
+          if (!text) return;
+          const fileInput = row.querySelector('.mp-eng-row-logo-file');
+          pending.push({ name: text, file: fileInput && fileInput.files[0] });
+        });
+        const readers = pending.map(p => new Promise(resolve => {
+          if (p.file) {
+            const reader = new FileReader();
+            reader.onload = ev => resolve({ name: p.name, logoDataUrl: ev.target.result, logoName: p.file.name });
+            reader.readAsDataURL(p.file);
+          } else {
+            resolve({ name: p.name, logoDataUrl: '', logoName: '' });
+          }
+        }));
+        Promise.all(readers).then(items => finalizeProfileEditSubmit(section, cfg, items, null, null, ''));
+        return;
+      }
+
+      // cfg.type === 'list' -> one shared proof for the whole batch (education, work experience)
+      const rows = document.querySelectorAll('#mp-eng-edit-list .mp-eng-row');
+      const items = [];
+      rows.forEach(row => {
+        const text = row.querySelector('textarea').value.trim();
+        if (!text) return;
+        items.push({ description: text });
+      });
+
+      const proofFile = document.getElementById('mp-edit-proof-file').files[0];
+      const proofUrl = document.getElementById('mp-edit-proof-url').value.trim();
+      const errorEl = document.getElementById('mp-edit-proof-error');
+
+      if (!proofFile && !proofUrl) {
+        errorEl.classList.add('show');
+        return;
+      }
+      errorEl.classList.remove('show');
+
+      if (proofFile) {
+        if (proofFile.size > 5 * 1024 * 1024) { errorEl.textContent = 'File is too large (max 5MB). Please use a smaller file or paste a link instead.'; errorEl.classList.add('show'); return; }
+        const reader = new FileReader();
+        reader.onload = (ev) => finalizeProfileEditSubmit(section, cfg, items, ev.target.result, proofFile.name, proofUrl);
+        reader.readAsDataURL(proofFile);
+      } else {
+        finalizeProfileEditSubmit(section, cfg, items, null, null, proofUrl);
+      }
+    }
+
+    function showToastMsg(msg) {
+      let toast = document.getElementById('mp-edit-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'mp-edit-toast';
+        toast.className = 'mp-edit-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function renderSectionBadges() {
+      if (!currentMember) return;
+      const map = { headline_bio: 'about-hb-badge', engagements: 'eng-badge', keyClients: 'clients-badge', contact: 'contact-badge', testimonials: 'testi-badge', awards: 'awards-badge' };
+      Object.keys(map).forEach(section => {
+        const el = document.getElementById(map[section]);
+        if (el) el.innerHTML = sectionBadgeHtml(section, currentMember);
+      });
     }
 
     document.getElementById('mp-eng-modal-overlay').addEventListener('click', e => {
@@ -1980,34 +2429,53 @@
       const headline = extended && extended.headline ? extended.headline : '';
       const bio = extended && extended.bio ? extended.bio : '';
 
+      if (headline || bio || isOwnProfile) {
+        document.getElementById('about-headline-bio-section').style.display = '';
+      }
       if (headline) {
         document.getElementById('about-headline').textContent = headline;
-        document.getElementById('about-headline-section').style.display = '';
+        document.getElementById('about-headline').style.display = '';
       }
       if (bio) {
         document.getElementById('about-bio').textContent = bio;
-        document.getElementById('about-bio-section').style.display = '';
+        document.getElementById('about-bio').style.display = '';
       }
 
       // ── Engagements (always visible with edit/empty state) ──
       _engagements = extended && extended.engagements ? extended.engagements.slice() : [];
       renderEngagements(_engagements);
 
+      // ── Edit buttons + verified/pending badges (own profile only) ──
+      ['about-hb-edit-btn', 'eng-edit-btn', 'edu-edit-btn', 'work-edit-btn', 'clients-edit-btn', 'contact-edit-btn'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.style.display = isOwnProfile ? '' : 'none';
+      });
+      renderSectionBadges();
+
       // ── Featured Clients (V3: Auto-scrolling marquee - pauses on hover) ──
-      const keyClients = (KEY_CLIENTS && KEY_CLIENTS[member.id]) ? KEY_CLIENTS[member.id] : [];
+      const keyClients = getEffectiveKeyClients(member);
+      if (keyClients.length || isOwnProfile) {
+        document.getElementById('about-clients-section').style.display = '';
+      }
       if (keyClients.length) {
         const iconColors = ['#0A66C2', '#F97316', '#16A34A', '#7C3AED', '#DC2626', '#0891B2', '#B45309', '#1D4ED8', '#9333EA', '#059669'];
         const clientsGrid = document.getElementById('about-clients-grid');
         const renderCards = (list) => list.map((c, i) => {
           const ic = iconColors[i % iconColors.length];
-          const iconHtml = c.domain
+          const iconHtml = c.logoDataUrl
+            ? `<img src="${c.logoDataUrl}" width="44" height="44" style="border-radius:11px;object-fit:cover;" />`
+            : c.domain
             ? `<img src="https://www.google.com/s2/favicons?sz=64&domain=${escHtml(c.domain)}" width="44" height="44" style="border-radius:11px;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="mp-client-icon-fallback" style="background:${ic};display:none;">${escHtml(c.name.charAt(0))}</span>`
             : `<span class="mp-client-icon-fallback" style="background:${ic};">${escHtml(c.name.charAt(0))}</span>`;
           return `<div class="mp-client-card"><div class="mp-client-icon">${iconHtml}</div><div class="mp-client-name">${escHtml(c.name)}</div></div>`;
         }).join('');
         // Duplicate cards so translateX(-50%) loops seamlessly
         clientsGrid.innerHTML = renderCards(keyClients) + renderCards(keyClients);
-        document.getElementById('about-clients-section').style.display = '';
+      } else if (isOwnProfile) {
+        document.getElementById('about-clients-grid').innerHTML = `
+      <div class="mp-eng-empty">
+        <div><strong>No key clients yet.</strong> Showcase who you've worked with - <button onclick="openSectionEditor('keyClients')">click Edit</button> to add your first client.</div>
+      </div>`;
       }
 
       // ── CREDENTIALS TAB ──
@@ -2042,49 +2510,75 @@
       }
 
       // ── REVIEWS TAB ──
-      const reviews = (typeof PROFILE_REVIEWS !== 'undefined' && PROFILE_REVIEWS[member.id]) ? PROFILE_REVIEWS[member.id] : null;
-      const testimonials = reviews && reviews.testimonials ? reviews.testimonials : [];
-      const awards = reviews && reviews.awards ? reviews.awards : [];
+      const reviewsData = getEffectiveReviews(member);
+      const testimonials = reviewsData.testimonials;
+      const awards = reviewsData.awards;
 
+      ['testi-edit-btn', 'awards-edit-btn'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.style.display = isOwnProfile ? '' : 'none';
+      });
+
+      const initialsOfClient = (name) => (name || '?').trim().split(/\s+/).map(p => p.charAt(0)).slice(0, 2).join('').toUpperCase();
+
+      if (testimonials.length || isOwnProfile) {
+        document.getElementById('reviews-testi-section').style.display = '';
+      }
       if (testimonials.length) {
         const testiCardsHtml = testimonials.map(t => {
           const meta = [t.clientTitle, t.clientCompany].filter(Boolean).join(', ');
-          const date = t.date ? ` · ${escHtml(t.date)}` : '';
           return `
         <div class="mp-testimonial">
-          <p class="mp-testi-text">"${escHtml(t.quote)}"</p>
-          <div class="mp-testi-author">
-            <strong>${escHtml(t.clientName)}</strong>
-            ${meta ? escHtml(meta) + date : date}
+          <span class="mp-testi-quote-icon">&ldquo;</span>
+          <p class="mp-testi-text">${escHtml(t.quote)}</p>
+          <div class="mp-testi-footer">
+            <div class="mp-testi-avatar">${escHtml(initialsOfClient(t.clientName))}</div>
+            <div class="mp-testi-author-info">
+              <strong>${escHtml(t.clientName)}</strong>
+              <span>${escHtml(meta)}</span>
+            </div>
+            ${t.date ? `<span class="mp-testi-date">${escHtml(t.date)}</span>` : ''}
           </div>
         </div>
       `;
         }).join('');
-
         document.getElementById('reviews-testi-list').innerHTML = testiCardsHtml;
-        document.getElementById('reviews-testi-section').style.display = '';
+      } else if (isOwnProfile) {
+        document.getElementById('reviews-testi-list').innerHTML = `
+      <div class="mp-eng-empty">
+        <div><strong>No testimonials yet.</strong> Showcase client feedback - <button onclick="openSectionEditor('testimonials')">click Edit</button> to add your first testimonial.</div>
+      </div>`;
       }
 
+      if (awards.length || isOwnProfile) {
+        document.getElementById('reviews-awards-section').style.display = '';
+      }
       if (awards.length) {
         document.getElementById('reviews-awards-grid').innerHTML = awards.map(a => `
       <div class="mp-award-card">
         <div class="mp-award-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" stroke="#00A582" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 6H4a1 1 0 00-1 1v1a3 3 0 003 3M17 6h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke="#00A582" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div>
+        <div class="mp-award-body">
           <div class="mp-award-title">${escHtml(a.title)}</div>
-          <div class="mp-award-meta">${escHtml(a.issuingBody)}${a.year ? ' · ' + a.year : ''}</div>
+          <div class="mp-award-meta">${escHtml(a.issuingBody)}${a.year ? ' · ' + escHtml(String(a.year)) : ''}</div>
           ${a.description ? `<div class="mp-award-desc">${escHtml(a.description)}</div>` : ''}
         </div>
       </div>
     `).join('');
-        document.getElementById('reviews-awards-section').style.display = '';
+      } else if (isOwnProfile) {
+        document.getElementById('reviews-awards-grid').innerHTML = `
+      <div class="mp-eng-empty">
+        <div><strong>No awards yet.</strong> Showcase your recognition - <button onclick="openSectionEditor('awards')">click Edit</button> to add your first award.</div>
+      </div>`;
       }
 
-      if (!testimonials.length && !awards.length) {
+      renderSectionBadges();
+
+      if (!testimonials.length && !awards.length && !isOwnProfile) {
         document.getElementById('reviews-empty').style.display = '';
       }
 
@@ -2254,13 +2748,14 @@
       const params = new URLSearchParams(window.location.search);
       const memberId = params.get('id') || 'marcus-chen';
 
-      const session = localStorage.getItem('expertly_session');
+      const sessionRaw = localStorage.getItem('expertly_session');
+      let session = null;
+      try { session = sessionRaw ? JSON.parse(sessionRaw) : null; } catch (e) { session = null; }
 
-      const members = window.EXPERTLY_MEMBERS || [];
+      const members = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleMembers() : (window.EXPERTLY_MEMBERS || []);
       const member = members.find(m => m.id === memberId) || members.find(m => m.id === 'marcus-chen') || members[0];
-      const extended = (PROFILE_EXTENDED && PROFILE_EXTENDED[memberId]) || null;
 
-      if (!session) {
+      if (!sessionRaw) {
         // Show auth wall
         document.getElementById('mp-auth-wall').style.display = 'flex';
         document.getElementById('mp-profile').style.display = 'none';
@@ -2275,12 +2770,39 @@
         document.getElementById('mp-profile').style.display = '';
         if (member) {
           currentMember = member;
-          populateProfile(member, extended);
+          // Edit is only available on the profile that actually belongs to the
+          // signed-in visitor - matched by comparing their login email to the
+          // member record's ownerEmail (auto-set from their application email
+          // when an admin approves it; see promoteApplicationToMember).
+          isOwnProfile = !!(session && session.email && member.ownerEmail && session.email.toLowerCase() === member.ownerEmail.toLowerCase());
+          _effectiveExtended = getEffectiveExtended(member);
+          populateProfile(member, _effectiveExtended);
           setupTabs();
+          if (isOwnProfile) renderCompletion(member, _effectiveExtended);
           if (params.get('request') === '1') openModal();
         }
       }
     });
+
+    // ── Profile completion percentage (owner view only) ──
+    function renderCompletion(member, extended) {
+      const checks = [
+        !!member.img,
+        !!(extended && extended.headline),
+        !!(extended && extended.bio),
+        !!(extended && extended.engagements && extended.engagements.length),
+        !!(extended && extended.educations && extended.educations.length),
+        !!(extended && extended.workExperiences && extended.workExperiences.length),
+        !!(extended && extended.contactEmail),
+        !!(extended && extended.contactPhone),
+        !!(extended && extended.linkedinUrl),
+        !!(extended && extended.feeRangeMin && extended.feeRangeMax)
+      ];
+      const pct = Math.round((checks.filter(Boolean).length / checks.length) * 100);
+      document.getElementById('mp-completion-pct').textContent = pct + '%';
+      document.getElementById('mp-completion-fill').style.width = pct + '%';
+      document.getElementById('mp-completion-card').style.display = '';
+    }
 
     function mpShareProfile() {
       const url = window.location.href;

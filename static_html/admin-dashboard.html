@@ -52,6 +52,32 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <span class="d1-nav-lbl">Events</span>
           </a>
+          <a href="#" data-tab="members" data-perm="manageMembers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span class="d1-nav-lbl">Members</span>
+          </a>
+          <a href="#" data-tab="profile-edits" data-perm="manageMembers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <span class="d1-nav-lbl">Profile Edits</span>
+            <span class="adm-nav-count" id="adm-count-pedits">0</span>
+          </a>
+          <a href="#" data-tab="consultations" data-perm="manageConsultations">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span class="d1-nav-lbl">Consultations</span>
+            <span class="adm-nav-count" id="adm-count-consultations">0</span>
+          </a>
+          <a href="#" data-tab="perks" data-perm="manageResources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+            <span class="d1-nav-lbl">Perks</span>
+          </a>
+          <a href="#" data-tab="templates" data-perm="manageResources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg>
+            <span class="d1-nav-lbl">Templates</span>
+          </a>
+          <a href="#" data-tab="learnings" data-perm="manageResources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
+            <span class="d1-nav-lbl">Learnings</span>
+          </a>
           <div class="d1-nav-divider" data-perm="manageAdmins"></div>
           <a href="#" data-tab="admins" data-perm="manageAdmins">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
@@ -104,6 +130,14 @@
             <div class="adm-stat-card">
               <span class="adm-stat-num" id="stat-total-events">0</span>
               <span class="adm-stat-label">Events on the calendar</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-active-members">0</span>
+              <span class="adm-stat-label">Active members</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-pending-consultations">0</span>
+              <span class="adm-stat-label">Consultations awaiting response</span>
             </div>
           </div>
 
@@ -344,6 +378,183 @@
                 <tr><th>Title</th><th>Dates</th><th>Location</th><th>Category</th><th></th></tr>
               </thead>
               <tbody id="adm-static-events-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ══════════════ MEMBERS ══════════════ -->
+        <section class="adm-panel" data-panel="members" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Member directory</h2>
+            <span class="adm-section-count" id="adm-members-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everyone listed on the public <b>Members</b> directory - approving a membership application here automatically adds them. Deactivating removes them from the public directory immediately, on this device.</p>
+          <div class="adm-table-toolbar" style="margin-bottom:12px;">
+            <input class="anv-input" id="adm-members-search" type="text" placeholder="Search by name, firm, or practice area…" style="max-width:360px;">
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-members-table">
+              <thead>
+                <tr><th>Member</th><th>Firm</th><th>Location</th><th>Practice area</th><th>Rate</th><th>Status</th><th></th></tr>
+              </thead>
+              <tbody id="adm-members-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-members-empty" style="display:none;">No members match this search.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ PROFILE EDITS ══════════════ -->
+        <section class="adm-panel" data-panel="profile-edits" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Profile edit requests</h2>
+            <span class="adm-section-count" id="adm-pedits-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Every change a member has submitted from the <b>Edit</b> buttons on their own profile page, with the proof they attached. Approving makes the change live on their public profile with a Verified badge; rejecting discards it.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-pedits-table">
+              <thead>
+                <tr><th>Member</th><th>Section</th><th>Proof</th><th>Submitted</th><th>Status</th><th></th></tr>
+              </thead>
+              <tbody id="adm-pedits-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-pedits-empty" style="display:none;">No profile edit requests yet.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ CONSULTATION REQUESTS ══════════════ -->
+        <section class="adm-panel" data-panel="consultations" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Consultation requests</h2>
+            <span class="adm-section-count" id="adm-consult-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Every consultation request sent from a member's profile page, across all members. Marking one completed or declined updates it everywhere, including the requester's "My Consultations" page.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-consult-table">
+              <thead>
+                <tr><th>Requester</th><th>For</th><th>Message</th><th>Sent</th><th>Status</th><th></th></tr>
+              </thead>
+              <tbody id="adm-consult-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-consult-empty" style="display:none;">No consultation requests yet.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ PERKS ══════════════ -->
+        <section class="adm-panel" data-panel="perks" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Perks &amp; products</h2>
+            <span class="adm-section-count" id="adm-perks-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everything shown on the public <b>Perks &amp; Products</b> page. Add, edit, or remove partner offers here.</p>
+
+          <form class="adm-event-form" id="adm-perk-form">
+            <div class="adm-form-row adm-form-row-4">
+              <div class="adm-field"><label>Partner name</label><input type="text" id="adm-prk-name" placeholder="e.g. ClearFile Tax Suite" required></div>
+              <div class="adm-field"><label>Category</label>
+                <select id="adm-prk-cat">
+                  <option value="tax">Tax &amp; Compliance</option>
+                  <option value="legal">Legal Tools</option>
+                  <option value="ai">AI Tools</option>
+                  <option value="productivity">Productivity</option>
+                </select>
+              </div>
+              <div class="adm-field"><label>Offer</label><input type="text" id="adm-prk-discount" placeholder="e.g. 20% off annual plan" required></div>
+              <div class="adm-field"><label>Logo color</label><input type="color" id="adm-prk-color" value="#0f766e"></div>
+            </div>
+            <div class="adm-field"><label>Description</label><textarea id="adm-prk-desc" rows="2" placeholder="One line describing the offer"></textarea></div>
+            <div class="adm-field"><label>Claim link <span class="adm-optional">(optional)</span></label><input type="text" id="adm-prk-link" placeholder="https://…"></div>
+            <button class="btn btn-primary" type="submit">Add perk</button>
+          </form>
+
+          <div class="adm-table-wrap" style="margin-top:24px;">
+            <table class="adm-table" id="adm-perks-table">
+              <thead><tr><th>Partner</th><th>Category</th><th>Offer</th><th></th></tr></thead>
+              <tbody id="adm-perks-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ══════════════ TEMPLATES ══════════════ -->
+        <section class="adm-panel" data-panel="templates" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Shareable templates</h2>
+            <span class="adm-section-count" id="adm-templates-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everything shown on the public <b>Templates</b> page. Add, edit, or remove templates here.</p>
+
+          <form class="adm-event-form" id="adm-tpl-form">
+            <div class="adm-form-row">
+              <div class="adm-field"><label>Title</label><input type="text" id="adm-tpl-title" placeholder="e.g. Audit Planning Memorandum" required></div>
+              <div class="adm-field"><label>Category</label>
+                <select id="adm-tpl-cat">
+                  <option value="audit">Audit</option>
+                  <option value="tax">Tax</option>
+                  <option value="legal">Legal</option>
+                </select>
+              </div>
+            </div>
+            <div class="adm-field"><label>Description</label><textarea id="adm-tpl-desc" rows="2" placeholder="One line describing the template"></textarea></div>
+            <div class="adm-form-row">
+              <div class="adm-field"><label>File type</label>
+                <select id="adm-tpl-type">
+                  <option value="doc">Word (.docx)</option>
+                  <option value="xls">Excel (.xlsx)</option>
+                  <option value="ppt">PowerPoint (.pptx)</option>
+                </select>
+              </div>
+              <div class="adm-field"><label>Download link <span class="adm-optional">(optional)</span></label><input type="text" id="adm-tpl-url" placeholder="https://…"></div>
+            </div>
+            <button class="btn btn-primary" type="submit">Add template</button>
+          </form>
+
+          <div class="adm-table-wrap" style="margin-top:24px;">
+            <table class="adm-table" id="adm-templates-table">
+              <thead><tr><th>Title</th><th>Category</th><th>Format</th><th></th></tr></thead>
+              <tbody id="adm-templates-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ══════════════ LEARNINGS ══════════════ -->
+        <section class="adm-panel" data-panel="learnings" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Learnings &amp; courses</h2>
+            <span class="adm-section-count" id="adm-learnings-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everything shown on the public <b>Learnings</b> page. Add, edit, or remove courses here.</p>
+
+          <form class="adm-event-form" id="adm-crs-form">
+            <div class="adm-form-row">
+              <div class="adm-field"><label>Title</label><input type="text" id="adm-crs-title" placeholder="e.g. Excel for Financial Modelling" required></div>
+              <div class="adm-field"><label>Category</label>
+                <select id="adm-crs-cat">
+                  <option value="ai">AI</option>
+                  <option value="excel">Excel</option>
+                  <option value="ppt">Presentation</option>
+                  <option value="drafting">Drafting</option>
+                </select>
+              </div>
+            </div>
+            <div class="adm-field"><label>Description</label><textarea id="adm-crs-desc" rows="2" placeholder="One line describing the course"></textarea></div>
+            <div class="adm-form-row adm-form-row-4">
+              <div class="adm-field"><label>Level</label>
+                <select id="adm-crs-level">
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
+              </div>
+              <div class="adm-field"><label>Duration</label><input type="text" id="adm-crs-duration" placeholder="e.g. 2h 30m"></div>
+              <div class="adm-field"><label>Lessons</label><input type="number" id="adm-crs-lessons" min="1" placeholder="e.g. 8"></div>
+              <div class="adm-field"><label>Course link <span class="adm-optional">(optional)</span></label><input type="text" id="adm-crs-link" placeholder="https://…"></div>
+            </div>
+            <button class="btn btn-primary" type="submit">Add course</button>
+          </form>
+
+          <div class="adm-table-wrap" style="margin-top:24px;">
+            <table class="adm-table" id="adm-learnings-table">
+              <thead><tr><th>Title</th><th>Category</th><th>Level</th><th>Duration</th><th></th></tr></thead>
+              <tbody id="adm-learnings-tbody"></tbody>
             </table>
           </div>
         </section>
@@ -611,6 +822,7 @@
         var status = action === 'approve-app' ? 'approved' : action === 'reject-app' ? 'rejected' : 'pending';
         window.ExpertlyAdmin.setApplicationStatus(id, status);
         renderApplications();
+        renderMembers();
         renderFeed();
       });
 
@@ -901,6 +1113,315 @@
         renderFeed();
       });
 
+      // ── Render: Members ──────────────────────────────────────────
+      var membersSearchQuery = '';
+      function renderMembers() {
+        var canManage = can('manageMembers');
+        var canDelete = can('deleteContent');
+        var all = window.ExpertlyAdmin.getAllMembersForAdmin();
+        var active = all.filter(function (m) { return m.status !== 'deactivated'; });
+        document.getElementById('stat-active-members').textContent = active.length;
+        document.getElementById('adm-members-count-label').textContent = all.length + ' total';
+
+        var q = membersSearchQuery.toLowerCase();
+        var list = !q ? all : all.filter(function (m) {
+          return [m.name, m.firm, m.practice, m.location].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
+        });
+
+        var tbody = document.getElementById('adm-members-tbody');
+        var empty = document.getElementById('adm-members-empty');
+        if (!list.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = list.map(function (m) {
+          var deactivated = m.status === 'deactivated';
+          var actions = '';
+          if (canManage) {
+            actions += deactivated
+              ? '<button class="adm-btn adm-btn-approve" data-action="reactivate-member" data-id="' + esc(m.id) + '">Reactivate</button>'
+              : '<button class="adm-btn adm-btn-reject" data-action="deactivate-member" data-id="' + esc(m.id) + '">Deactivate</button>';
+          }
+          if (canDelete) actions += '<button class="adm-btn adm-btn-ghost" data-action="view-member" data-id="' + esc(m.id) + '">View profile</button>';
+          return '<tr>' +
+            '<td><b>' + esc(m.name) + '</b><span class="adm-td-sub">' + esc(m.title || '') + '</span></td>' +
+            '<td>' + esc(m.firm || '-') + '</td>' +
+            '<td>' + esc(m.location || '-') + '</td>' +
+            '<td>' + esc(m.practice || '-') + '</td>' +
+            '<td>' + esc(m.rate || '-') + '</td>' +
+            '<td>' + statusPill(deactivated ? 'rejected' : 'approved') + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      var membersSearchEl = document.getElementById('adm-members-search');
+      if (membersSearchEl) {
+        membersSearchEl.addEventListener('input', function (e) {
+          membersSearchQuery = e.target.value.trim();
+          renderMembers();
+        });
+      }
+      document.getElementById('adm-members-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        if (action === 'view-member') { window.open('member-profile.html?id=' + encodeURIComponent(id), '_blank'); return; }
+        if (!can('manageMembers')) return;
+        window.ExpertlyAdmin.setMemberStatus(id, action === 'deactivate-member' ? 'deactivated' : 'active');
+        renderMembers();
+      });
+
+      // ── Render: Profile edit requests ────────────────────────────
+      var PEDIT_SECTION_LABELS = {
+        headline_bio: 'Headline & bio', contact: 'Contact information', engagements: 'Key engagements',
+        education: 'Education', workExperiences: 'Work experience', keyClients: 'Key clients'
+      };
+      function renderProfileEdits() {
+        var canManage = can('manageMembers');
+        var canDelete = can('deleteContent');
+        var list = window.ExpertlyAdmin.getProfileEdits();
+        var members = window.ExpertlyAdmin.getAllVisibleMembers();
+        document.getElementById('adm-pedits-count-label').textContent = list.length + ' total';
+
+        var pending = list.filter(function (e) { return e.status === 'pending'; }).length;
+        document.getElementById('adm-count-pedits').textContent = pending;
+
+        var tbody = document.getElementById('adm-pedits-tbody');
+        var empty = document.getElementById('adm-pedits-empty');
+        if (!list.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = list.map(function (ed) {
+          var member = members.find(function (m) { return m.id === ed.memberId; });
+          var proof;
+          if (ed.section === 'engagements' && Array.isArray(ed.payload)) {
+            // Each engagement carries its own proof - list them individually.
+            proof = ed.payload.map(function (item, i) {
+              var link = item.proofDataUrl
+                ? '<a href="' + item.proofDataUrl + '" target="_blank" rel="noopener">' + esc(item.proofName || 'View') + '</a>'
+                : (item.proofUrl ? '<a href="' + esc(item.proofUrl) + '" target="_blank" rel="noopener">Link</a>' : '<span class="adm-td-sub">None</span>');
+              return '<div>#' + (i + 1) + ': ' + link + '</div>';
+            }).join('');
+          } else {
+            proof = ed.proofDataUrl
+              ? '<a href="' + ed.proofDataUrl + '" target="_blank" rel="noopener">' + esc(ed.proofName || 'View proof') + '</a>'
+              : (ed.proofUrl ? '<a href="' + esc(ed.proofUrl) + '" target="_blank" rel="noopener">Link</a>' : '<span class="adm-td-sub">None</span>');
+          }
+          var actions = !canManage ? '' : (ed.status === 'pending'
+            ? '<button class="adm-btn adm-btn-approve" data-action="verify-pedit" data-id="' + esc(ed.id) + '">Approve</button>' +
+              '<button class="adm-btn adm-btn-reject" data-action="reject-pedit" data-id="' + esc(ed.id) + '">Reject</button>'
+            : '');
+          if (canDelete) actions += '<button class="adm-btn adm-btn-ghost" data-action="delete-pedit" data-id="' + esc(ed.id) + '">Delete</button>';
+          return '<tr>' +
+            '<td><b>' + esc(member ? member.name : ed.memberId) + '</b></td>' +
+            '<td>' + esc(PEDIT_SECTION_LABELS[ed.section] || ed.section) + '</td>' +
+            '<td>' + proof + '</td>' +
+            '<td>' + fmtDate(ed.submittedAt) + '</td>' +
+            '<td>' + statusPill(ed.status === 'verified' ? 'approved' : ed.status) + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-pedits-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        if (action === 'delete-pedit') {
+          if (!can('deleteContent')) return;
+          window.ExpertlyAdmin.deleteProfileEdit(id);
+          renderProfileEdits();
+          return;
+        }
+        if (!can('manageMembers')) return;
+        window.ExpertlyAdmin.setProfileEditStatus(id, action === 'verify-pedit' ? 'verified' : 'rejected');
+        renderProfileEdits();
+        renderFeed();
+      });
+
+      // ── Render: Consultation requests ────────────────────────────
+      function renderConsultations() {
+        var canManage = can('manageConsultations');
+        var canDelete = can('deleteContent');
+        var list = window.ExpertlyAdmin.getConsultations();
+        document.getElementById('adm-consult-count-label').textContent = list.length + ' total';
+
+        var pending = list.filter(function (c) { return (c.status || 'pending') === 'pending'; }).length;
+        document.getElementById('adm-count-consultations').textContent = pending;
+        document.getElementById('stat-pending-consultations').textContent = pending;
+
+        var tbody = document.getElementById('adm-consult-tbody');
+        var empty = document.getElementById('adm-consult-empty');
+        if (!list.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = list.map(function (c) {
+          var status = c.status || 'pending';
+          var actions = !canManage ? '' : (status === 'pending'
+            ? '<button class="adm-btn adm-btn-approve" data-action="complete-consult" data-id="' + esc(c.id) + '">Completed</button>' +
+              '<button class="adm-btn adm-btn-reject" data-action="decline-consult" data-id="' + esc(c.id) + '">Decline</button>'
+            : '<button class="adm-btn adm-btn-ghost" data-action="reset-consult" data-id="' + esc(c.id) + '">Reset</button>');
+          if (canDelete) actions += '<button class="adm-btn adm-btn-reject" data-action="delete-consult" data-id="' + esc(c.id) + '">Delete</button>';
+          return '<tr>' +
+            '<td><b>' + esc(c.requesterName) + '</b><span class="adm-td-sub">' + esc(c.requesterFirm || c.requesterEmail || '') + '</span></td>' +
+            '<td>' + esc(c.memberName || c.memberPractice || '-') + '</td>' +
+            '<td class="adm-td-message">' + esc((c.message || '').slice(0, 90)) + ((c.message || '').length > 90 ? '…' : '') + '</td>' +
+            '<td>' + fmtDate(typeof c.sentAt === 'number' ? new Date(c.sentAt).toISOString() : c.sentAt) + '</td>' +
+            '<td>' + statusPill(status) + '</td>' +
+            '<td class="adm-td-actions">' + actions + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
+      document.getElementById('adm-consult-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        if (action === 'delete-consult') {
+          if (!can('deleteContent')) return;
+          window.ExpertlyAdmin.deleteConsultationRequest(id);
+          renderConsultations();
+          return;
+        }
+        if (!can('manageConsultations')) return;
+        var status = action === 'complete-consult' ? 'completed' : action === 'decline-consult' ? 'declined' : 'pending';
+        window.ExpertlyAdmin.setConsultationStatus(id, status);
+        renderConsultations();
+      });
+
+      // ── Render: Perks ─────────────────────────────────────────────
+      var PERK_CAT_LABELS = { tax: 'Tax & Compliance', legal: 'Legal Tools', ai: 'AI Tools', productivity: 'Productivity' };
+      function renderPerksAdmin() {
+        var canDelete = can('deleteContent');
+        var list = window.ExpertlyAdmin.getPerks();
+        document.getElementById('adm-perks-count-label').textContent = list.length + ' total';
+        document.getElementById('adm-perks-tbody').innerHTML = list.map(function (p) {
+          return '<tr>' +
+            '<td><span class="prk-logo" style="display:inline-flex;width:28px;height:28px;font-size:11px;border-radius:8px;background:' + esc(p.color) + ';color:#fff;align-items:center;justify-content:center;margin-right:8px;vertical-align:middle;">' + esc(p.initials) + '</span><b>' + esc(p.name) + '</b></td>' +
+            '<td>' + esc(p.catLabel) + '</td>' +
+            '<td>' + esc(p.discount) + '</td>' +
+            '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-perk" data-id="' + esc(p.id) + '">Delete</button>' : '') + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+      var perkForm = document.getElementById('adm-perk-form');
+      if (perkForm) {
+        perkForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!can('manageResources')) return;
+          var cat = document.getElementById('adm-prk-cat').value;
+          var name = document.getElementById('adm-prk-name').value.trim();
+          window.ExpertlyAdmin.addPerk({
+            cat: cat, catLabel: PERK_CAT_LABELS[cat],
+            name: name, initials: initialsOfName(name),
+            color: document.getElementById('adm-prk-color').value,
+            discount: document.getElementById('adm-prk-discount').value.trim(),
+            desc: document.getElementById('adm-prk-desc').value.trim(),
+            link: document.getElementById('adm-prk-link').value.trim()
+          });
+          e.target.reset();
+          document.getElementById('adm-prk-color').value = '#0f766e';
+          renderPerksAdmin();
+        });
+      }
+      function initialsOfName(name) {
+        var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return '?';
+        return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+      }
+      document.getElementById('adm-perks-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-perk"]');
+        if (!btn || !can('deleteContent')) return;
+        window.ExpertlyAdmin.deletePerk(btn.getAttribute('data-id'));
+        renderPerksAdmin();
+      });
+
+      // ── Render: Templates ───────────────────────────────────────
+      var TPL_CAT_LABELS = { audit: 'Audit', tax: 'Tax', legal: 'Legal' };
+      var TPL_FORMAT_LABELS = { doc: 'Word · .docx', xls: 'Excel · .xlsx', ppt: 'PowerPoint · .pptx' };
+      function renderTemplatesAdmin() {
+        var canDelete = can('deleteContent');
+        var list = window.ExpertlyAdmin.getTemplates();
+        document.getElementById('adm-templates-count-label').textContent = list.length + ' total';
+        document.getElementById('adm-templates-tbody').innerHTML = list.map(function (t) {
+          return '<tr>' +
+            '<td><b>' + esc(t.title) + '</b></td>' +
+            '<td>' + esc(t.catLabel) + '</td>' +
+            '<td>' + esc(t.format) + '</td>' +
+            '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-tpl" data-id="' + esc(t.id) + '">Delete</button>' : '') + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+      var tplForm = document.getElementById('adm-tpl-form');
+      if (tplForm) {
+        tplForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!can('manageResources')) return;
+          var cat = document.getElementById('adm-tpl-cat').value;
+          var type = document.getElementById('adm-tpl-type').value;
+          window.ExpertlyAdmin.addTemplate({
+            cat: cat, catLabel: TPL_CAT_LABELS[cat],
+            title: document.getElementById('adm-tpl-title').value.trim(),
+            desc: document.getElementById('adm-tpl-desc').value.trim(),
+            type: type, format: TPL_FORMAT_LABELS[type],
+            fileUrl: document.getElementById('adm-tpl-url').value.trim()
+          });
+          e.target.reset();
+          renderTemplatesAdmin();
+        });
+      }
+      document.getElementById('adm-templates-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-tpl"]');
+        if (!btn || !can('deleteContent')) return;
+        window.ExpertlyAdmin.deleteTemplate(btn.getAttribute('data-id'));
+        renderTemplatesAdmin();
+      });
+
+      // ── Render: Learnings ───────────────────────────────────────
+      var CRS_CAT_LABELS = { ai: 'AI', excel: 'Excel', ppt: 'Presentation', drafting: 'Drafting' };
+      function renderLearningsAdmin() {
+        var canDelete = can('deleteContent');
+        var list = window.ExpertlyAdmin.getLearnings();
+        document.getElementById('adm-learnings-count-label').textContent = list.length + ' total';
+        document.getElementById('adm-learnings-tbody').innerHTML = list.map(function (c) {
+          return '<tr>' +
+            '<td><b>' + esc(c.title) + '</b></td>' +
+            '<td>' + esc(c.catLabel) + '</td>' +
+            '<td>' + esc(c.level) + '</td>' +
+            '<td>' + esc(c.duration) + '</td>' +
+            '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-crs" data-id="' + esc(c.id) + '">Delete</button>' : '') + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+      var crsForm = document.getElementById('adm-crs-form');
+      if (crsForm) {
+        crsForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!can('manageResources')) return;
+          var cat = document.getElementById('adm-crs-cat').value;
+          window.ExpertlyAdmin.addLearning({
+            cat: cat, catLabel: CRS_CAT_LABELS[cat],
+            title: document.getElementById('adm-crs-title').value.trim(),
+            desc: document.getElementById('adm-crs-desc').value.trim(),
+            level: document.getElementById('adm-crs-level').value,
+            duration: document.getElementById('adm-crs-duration').value.trim() || '1h 00m',
+            lessons: parseInt(document.getElementById('adm-crs-lessons').value, 10) || 1,
+            link: document.getElementById('adm-crs-link').value.trim()
+          });
+          e.target.reset();
+          renderLearningsAdmin();
+        });
+      }
+      document.getElementById('adm-learnings-tbody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action="delete-crs"]');
+        if (!btn || !can('deleteContent')) return;
+        window.ExpertlyAdmin.deleteLearning(btn.getAttribute('data-id'));
+        renderLearningsAdmin();
+      });
+
       // ── Render: Admin users (Super Admin only) ──────────────────
       function renderAdminUsers() {
         if (!can('manageAdmins')) return;
@@ -961,7 +1482,10 @@
         var evSugs = window.ExpertlyAdmin.getEventSuggestions().map(function (s) {
           return { type: 'Event suggestion', label: s.title, sub: [s.city, s.country].filter(Boolean).join(', '), when: s.submittedAt, status: s.status };
         });
-        var all = apps.concat(arts, adminArts, evSugs).filter(function (x) { return x.label; });
+        var consults = window.ExpertlyAdmin.getConsultations().map(function (c) {
+          return { type: 'Consultation', label: c.requesterName, sub: c.memberPractice || c.memberName || '', when: c.sentAt, status: c.status || 'pending' };
+        });
+        var all = apps.concat(arts, adminArts, evSugs, consults).filter(function (x) { return x.label; });
         all.sort(function (a, b) { return new Date(b.when || 0) - new Date(a.when || 0); });
         all = all.slice(0, 10);
 
@@ -981,47 +1505,31 @@
 
       // ── Sample data (first run only) ────────────────────────────
       function seedSampleApplications() {
-        if (window.ExpertlyAdmin.getApplications().length) return;
+        var existing = window.ExpertlyAdmin.getApplications();
+        var hasEmail = function (email) { return existing.some(function (a) { return a.email === email; }); };
 
-        window.ExpertlyAdmin.pushApplication({
-          name: 'Priya Krishnaswamy', firstName: 'Priya', lastName: 'Krishnaswamy',
-          email: 'priya.krishnaswamy@example.com', phone: '+65 9123 4567',
-          location: 'Singapore, Singapore', region: 'APAC', country: 'Singapore', state: '', city: 'Singapore',
-          linkedin: 'https://linkedin.com/in/priya-krishnaswamy',
-          bio: 'Tax partner with 14 years advising multinational groups on transfer pricing, cross-border restructuring, and APA applications across the Asia-Pacific region.',
-          yearsExp: '14',
-          practiceArea: 'Transfer Pricing', services: ['Transfer Pricing', 'Corporate Tax', 'M&A Tax'],
-          rateRange: '450–650',
-          workHistory: [
-            { title: 'Tax Partner', company: 'Krishnaswamy & Associates', city: 'Singapore', size: '11-50', url: 'https://krishnaswamylaw.example.com', startMonth: 'Jun', startYear: '2018', isCurrent: true, endMonth: '', endYear: '' },
-            { title: 'Senior Tax Manager', company: 'Deloitte Singapore', city: 'Singapore', size: '1000+', url: '', startMonth: 'Jan', startYear: '2012', isCurrent: false, endMonth: 'May', endYear: '2018' }
-          ],
-          education: [
-            { institution: 'National University of Singapore', degree: 'LLB', field: 'Law', start: '2005', end: '2009' },
-            { institution: 'Singapore Management University', degree: 'Master of Taxation', field: 'Taxation', start: '2010', end: '2011' }
-          ],
-          source: 'apply'
-        });
+        if (!hasEmail('priya.krishnaswamy@example.com')) {
+          window.ExpertlyAdmin.pushApplication({
+            name: 'Priya Krishnaswamy', firstName: 'Priya', lastName: 'Krishnaswamy',
+            email: 'priya.krishnaswamy@example.com', phone: '+65 9123 4567',
+            location: 'Singapore, Singapore', region: 'APAC', country: 'Singapore', state: '', city: 'Singapore',
+            linkedin: 'https://linkedin.com/in/priya-krishnaswamy',
+            bio: 'Tax partner with 14 years advising multinational groups on transfer pricing, cross-border restructuring, and APA applications across the Asia-Pacific region.',
+            yearsExp: '14',
+            practiceArea: 'Transfer Pricing', services: ['Transfer Pricing', 'Corporate Tax', 'M&A Tax'],
+            rateRange: '450–650',
+            workHistory: [
+              { title: 'Tax Partner', company: 'Krishnaswamy & Associates', city: 'Singapore', size: '11-50', url: 'https://krishnaswamylaw.example.com', startMonth: 'Jun', startYear: '2018', isCurrent: true, endMonth: '', endYear: '' },
+              { title: 'Senior Tax Manager', company: 'Deloitte Singapore', city: 'Singapore', size: '1000+', url: '', startMonth: 'Jan', startYear: '2012', isCurrent: false, endMonth: 'May', endYear: '2018' }
+            ],
+            education: [
+              { institution: 'National University of Singapore', degree: 'LLB', field: 'Law', start: '2005', end: '2009' },
+              { institution: 'Singapore Management University', degree: 'Master of Taxation', field: 'Taxation', start: '2010', end: '2011' }
+            ],
+            source: 'apply'
+          });
+        }
 
-        window.ExpertlyAdmin.pushApplication({
-          name: 'Rohan Mehta', firstName: 'Rohan', lastName: 'Mehta',
-          email: 'rohan.mehta@example.com', phone: '+44 7700 900123',
-          location: 'London, United Kingdom', region: 'EMEA', country: 'United Kingdom', state: '', city: 'London',
-          linkedin: 'https://linkedin.com/in/rohan-mehta',
-          bio: 'M&A counsel with 9 years advising acquirers and targets on cross-border deal structuring, due diligence, and post-merger integration across Europe.',
-          yearsExp: '9',
-          practiceArea: 'M&A', services: ['M&A', 'Corporate Law'],
-          rateRange: '380–520',
-          workHistory: [
-            { title: 'M&A Counsel', company: 'Mehta Corporate Advisors', city: 'London', size: '11-50', url: '', startMonth: 'Mar', startYear: '2020', isCurrent: true, endMonth: '', endYear: '' },
-            { title: 'Associate', company: 'Linklaters', city: 'London', size: '1000+', url: '', startMonth: 'Sep', startYear: '2015', isCurrent: false, endMonth: 'Feb', endYear: '2020' }
-          ],
-          education: [
-            { institution: 'University of Oxford', degree: 'BA Jurisprudence', field: 'Law', start: '2011', end: '2014' }
-          ],
-          consentTerms: true, consentPrivacy: true, consentVerify: true,
-          source: 'onboarding'
-        });
       }
 
       // ── Init ──────────────────────────────────────────────────
@@ -1031,6 +1539,12 @@
       renderPublished();
       renderEvents();
       renderEventSuggestions();
+      renderMembers();
+      renderProfileEdits();
+      renderConsultations();
+      renderPerksAdmin();
+      renderTemplatesAdmin();
+      renderLearningsAdmin();
       renderAdminUsers();
       renderFeed();
       updateWaWordCount();

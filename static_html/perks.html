@@ -152,6 +152,7 @@
 <footer class="footer--minimal" aria-label="Site footer"></footer>
 
 <script src="assets/members.js"></script>
+<script src="assets/admin-data.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 
@@ -169,21 +170,6 @@
   </script>
 
 <script>
-  const PRK_PARTNERS = [
-    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ClearFile Tax Suite', initials: 'CF', color: '#0f766e', discount: '20% off annual plan', desc: 'Return filing, GST reconciliation and compliance tracking for tax practices of every size.' },
-    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'ComplyIQ', initials: 'CQ', color: '#1d4ed8', discount: '3 months free', desc: 'Automated regulatory tracking and compliance calendars across jurisdictions.' },
-    { cat: 'tax', catLabel: 'Tax & Compliance', name: 'AuditFlow', initials: 'AF', color: '#7c3aed', discount: '15% off first year', desc: 'Workpaper management and review workflows built for audit teams.' },
-    { cat: 'legal', catLabel: 'Legal Tools', name: 'CaseVault', initials: 'CV', color: '#b91c1c', discount: '25% off annual plan', desc: 'Secure case and matter management with client-facing portals.' },
-    { cat: 'legal', catLabel: 'Legal Tools', name: 'LawDesk Research', initials: 'LD', color: '#0369a1', discount: '2 months free', desc: 'Case law and statute research platform with AI-assisted search.' },
-    { cat: 'legal', catLabel: 'Legal Tools', name: 'ContractPilot', initials: 'CP', color: '#166534', discount: '20% off annual plan', desc: 'Contract lifecycle management - drafting, redlining and e-signature in one place.' },
-    { cat: 'ai', catLabel: 'AI Tools', name: 'DraftGenie AI', initials: 'DG', color: '#9333ea', discount: '30% off Pro plan', desc: 'AI drafting assistant trained on legal and tax document formats.' },
-    { cat: 'ai', catLabel: 'AI Tools', name: 'SummarEase', initials: 'SE', color: '#c2410c', discount: '1 month free', desc: 'Summarise long contracts, judgments and filings in seconds.' },
-    { cat: 'ai', catLabel: 'AI Tools', name: 'InsightIQ Analytics', initials: 'IQ', color: '#0f766e', discount: '20% off annual plan', desc: 'AI-powered financial statement analysis and anomaly detection.' },
-    { cat: 'productivity', catLabel: 'Productivity', name: 'SheetSmart', initials: 'SS', color: '#15803d', discount: '15% off annual plan', desc: 'Excel add-ins for financial modelling, reconciliation and reporting.' },
-    { cat: 'productivity', catLabel: 'Productivity', name: 'PitchDeck Studio', initials: 'PD', color: '#b45309', discount: '25% off annual plan', desc: 'Presentation design tool with ready-made templates for client decks.' },
-    { cat: 'productivity', catLabel: 'Productivity', name: 'FocusFlow', initials: 'FF', color: '#4338ca', discount: '2 months free', desc: 'Time tracking and billing built for professional services firms.' },
-  ];
-
   let activePrkCat = 'all', activeOffer = 'all';
 
   function createFlt(triggerId, popoverId, labelId, wrapperId, defaultLabel, onChange) {
@@ -225,7 +211,8 @@
   function renderPerks() {
     const grid = document.getElementById('prk-grid');
     const countEl = document.getElementById('prk-count');
-    const list = PRK_PARTNERS.filter(p =>
+    const perks = window.ExpertlyAdmin ? window.ExpertlyAdmin.getPerks() : [];
+    const list = perks.filter(p =>
       (activePrkCat === 'all' || p.cat === activePrkCat) && matchesOffer(p, activeOffer)
     );
     if (countEl) countEl.textContent = `${list.length} partner${list.length === 1 ? '' : 's'}`;
@@ -238,7 +225,7 @@
         <div class="prk-reveal">
           <span class="prk-discount">${p.discount}</span>
           <p class="prk-desc">${p.desc}</p>
-          <a href="#" class="prk-claim" onclick="return false">Claim discount</a>
+          <a href="${p.link ? p.link : '#'}" class="prk-claim" ${p.link ? 'target="_blank" rel="noopener"' : 'onclick="return false"'}>Claim discount</a>
         </div>
       </div>`).join('');
   }

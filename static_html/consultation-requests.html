@@ -146,6 +146,7 @@
 <footer class="footer--minimal" aria-label="Site footer"></footer>
 
 <script src="assets/members.js"></script>
+<script src="assets/admin-data.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 
@@ -164,19 +165,30 @@
   document.addEventListener('DOMContentLoaded', () => {
     const STATUS_LABEL = { pending: 'Pending', completed: 'Completed', declined: 'Declined' };
 
-    const REQUESTS = [
-      { name: 'David Whitfield', type: 'member', firm: 'Whitfield Capital, London', avatar: 'https://randomuser.me/api/portraits/men/11.jpg', practice: 'M&A Tax', work: 'Looking for advice on structuring a cross-border M&A deal between a UK acquirer and an Indian target. We need help on a tax-efficient holding structure, withholding tax exposure on the consideration, and how to sequence the post-deal integration so we don\'t trigger an unplanned residency change for the target entity.', email: 'david.whitfield@whitfieldcapital.com', phone: '+44 7700 900123', received: 'Jul 18, 2026', status: 'pending' },
-      { name: 'Larissa Kim', type: 'member', firm: 'Kim & Partners, Seoul', avatar: 'https://randomuser.me/api/portraits/women/24.jpg', practice: 'Indirect Tax', work: 'Reviewing a GST refund claim for exports of services and want a second opinion on the documentation before we file. Also keen to understand the likely turnaround time with the department given a couple of recent claims from our sector have been stuck in review for months.', email: 'larissa.kim@kimpartners.kr', phone: '+82 10 2345 6789', received: 'Jul 16, 2026', status: 'pending' },
-      { name: 'Marcus Chen', type: 'member', firm: 'Chen Holdings, Singapore', avatar: 'https://randomuser.me/api/portraits/men/32.jpg', practice: 'Corporate Law', work: 'Setting up a regional holding structure across Singapore and Hong Kong and need guidance on substance requirements and treaty access under the new framework. Would also like a view on whether it\'s worth adding a Labuan entity for the shipping-related income stream.', email: 'marcus.chen@chenholdings.sg', phone: '+65 8123 4567', received: 'Jul 15, 2026', status: 'pending' },
-      { name: 'Amelia Ross', type: 'user', practice: 'IP & Tech', work: 'Reviewing an AI licensing agreement with a US vendor before we sign - want to flag liability and data-training clauses, and understand what happens to our fine-tuned model weights if the vendor is acquired or shuts down mid-contract.', email: 'amelia.ross@gmail.com', phone: '+1 212 555 0148', received: 'Jul 14, 2026', status: 'pending' },
-      { name: 'Rohan Verma', type: 'member', firm: 'Verma Textiles, Mumbai', avatar: 'https://randomuser.me/api/portraits/men/54.jpg', practice: 'Direct Tax', work: 'Need a second opinion on a transfer pricing adjustment raised by the department for FY24. We\'re weighing whether to litigate or settle, and would value a read on how similar cases in the textile sector have played out at the tribunal level recently.', email: 'rohan.verma@vermatextiles.in', phone: '+91 98200 12345', received: 'Jul 12, 2026', status: 'pending' },
-      { name: 'Sophie Anderson', type: 'user', practice: 'Capital Markets', work: 'Preparing for a Series C round with a US lead investor and need help structuring the SAFE conversion and reviewing the securities filings. Timeline is tight - we\'re hoping to have term sheets signed within six weeks and want counsel involved from the first draft.', email: 'sophie.anderson@outlook.com', phone: '+1 617 555 0199', received: 'Jul 11, 2026', status: 'pending' },
-      { name: 'James Okafor', type: 'member', firm: 'Okafor & Co, Lagos', avatar: 'https://randomuser.me/api/portraits/men/76.jpg', practice: 'M&A', work: 'Due diligence support needed on a pan-African acquisition - the target has operations in four jurisdictions and we need a coordinated review that can flag employment and regulatory red flags fast, ideally with someone who has run multi-jurisdiction DD before.', email: 'james.okafor@okaforco.ng', phone: '+234 802 345 6789', received: 'Jul 9, 2026', status: 'pending' },
-      { name: 'Fatima Al-Hassan', type: 'user', practice: 'Compliance', work: 'Building an AML/KYC compliance programme for a new fintech licence and want a gap assessment against the latest central bank circular. Also need a sense of realistic implementation timelines so we can brief our board before the next licensing checkpoint.', email: 'fatima.alhassan@yahoo.com', phone: '+971 50 123 4567', received: 'Jul 8, 2026', status: 'pending' },
-      { name: 'Diego Martinez', type: 'member', firm: 'Martinez Group, Mexico City', avatar: 'https://randomuser.me/api/portraits/men/85.jpg', practice: 'Transfer Pricing', work: 'Reassessing our intercompany pricing policy under BEPS 2.0 Pillar Two and need a benchmarking study refresh before year-end. Keen to also understand how the top-up tax calculation interacts with our existing APA before we lock in the new policy.', email: 'diego.martinez@martinezgroup.mx', phone: '+52 55 1234 5678', received: 'Jul 6, 2026', status: 'pending' },
-      { name: 'Claire Dubois', type: 'user', practice: 'Antitrust', work: 'Filing a merger notification with the EU competition authority and need help anticipating remedy requirements given the market overlap. Would like someone who has handled Phase I filings in adjacent markets to help us shape the initial submission.', email: 'claire.dubois@gmail.com', phone: '+33 6 12 34 56 78', received: 'Jul 3, 2026', status: 'pending' },
-    ];
+    function fmtReceived(sentAt) {
+      if (typeof sentAt === 'string') return sentAt;
+      const d = new Date(sentAt);
+      return isNaN(d) ? '-' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
 
+    function loadRequests() {
+      const raw = window.ExpertlyAdmin ? window.ExpertlyAdmin.getConsultations() : [];
+      return raw.map(r => ({
+        id: r.id,
+        name: r.requesterName,
+        type: r.requesterFirm ? 'member' : 'user',
+        firm: r.requesterFirm || '',
+        avatar: r.requesterAvatar || '',
+        practice: r.memberPractice || '',
+        work: r.message || '',
+        email: r.requesterEmail || r.requesterContactEmail || '',
+        phone: r.requesterPhone || '',
+        received: fmtReceived(r.sentAt),
+        status: r.status || 'pending',
+      }));
+    }
+
+    let REQUESTS = loadRequests();
     let activeFilter = 'all';
     let searchQuery = '';
 
@@ -218,7 +230,7 @@
       }
 
       list.innerHTML = pool.map((r, i) => `
-        <div class="cr-card ${r.status}" style="animation-delay:${Math.min(i * 30, 240)}ms" data-name="${r.name}">
+        <div class="cr-card ${r.status}" style="animation-delay:${Math.min(i * 30, 240)}ms" data-id="${r.id}">
           <div class="cr-avatar">${r.type === 'member'
             ? `<img src="${r.avatar}" alt="${r.name}" loading="lazy">`
             : `<div class="cr-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>`}</div>
@@ -239,8 +251,8 @@
             </div>
             ${r.status === 'pending' ? `
             <div class="cr-actions">
-              <button class="cr-btn cr-btn-complete" data-action="complete" data-name="${r.name}">Completed</button>
-              <button class="cr-btn cr-btn-decline" data-action="decline" data-name="${r.name}">Decline</button>
+              <button class="cr-btn cr-btn-complete" data-action="complete" data-id="${r.id}">Completed</button>
+              <button class="cr-btn cr-btn-decline" data-action="decline" data-id="${r.id}">Decline</button>
             </div>` : ''}
           </div>
         </div>`).join('');
@@ -265,13 +277,10 @@
     document.getElementById('cr-list').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
       if (!btn) return;
-      const idx = REQUESTS.findIndex(r => r.name === btn.dataset.name);
-      if (idx === -1) return;
-      if (btn.dataset.action === 'complete') {
-        REQUESTS[idx].status = 'completed';
-      } else {
-        REQUESTS[idx].status = 'declined';
-      }
+      const id = btn.dataset.id;
+      const status = btn.dataset.action === 'complete' ? 'completed' : 'declined';
+      if (window.ExpertlyAdmin) window.ExpertlyAdmin.setConsultationStatus(id, status);
+      REQUESTS = loadRequests();
       render();
     });
 

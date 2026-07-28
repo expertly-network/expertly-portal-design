@@ -96,22 +96,34 @@
 
     <section class="db-hero">
       <div class="container-wide">
-        <span class="db-eyebrow">Member Portal</span>
-        <h1 class="db-heading">Welcome back, <em>Member.</em></h1>
-        <p class="db-sub">Everything included in your Expertly membership, in one place - publish, connect, and grow your practice.</p>
+        <div class="db-hero-top">
+          <div class="db-hero-left">
+            <span class="db-eyebrow">Member Portal</span>
+            <h1 class="db-heading">Welcome back, <em>Member.</em></h1>
+            <p class="db-sub">Everything included in your Expertly membership, in one place - publish, connect, and grow your practice.</p>
 
-        <div class="hero-search" style="margin-top:36px; max-width:680px;">
-          <div class="hero-search-input">
-            <div class="hero-search-prefix">
-              <span class="ai-pulse small"></span>
+            <div class="hero-search" style="margin-top:36px; max-width:680px;">
+              <div class="hero-search-input">
+                <div class="hero-search-prefix">
+                  <span class="ai-pulse small"></span>
+                </div>
+                <div class="hero-typebox" role="textbox" aria-label="Search Expertly">
+                  <span class="hero-phrase">Cross-border tax advisor under $500/hr</span>
+                </div>
+                <button class="btn btn-primary hero-find-btn">
+                  <span class="hero-find-label">Find</span>
+                  <span class="arr">→</span>
+                </button>
+              </div>
             </div>
-            <div class="hero-typebox" role="textbox" aria-label="Search Expertly">
-              <span class="hero-phrase">Cross-border tax advisor under $500/hr</span>
+          </div>
+
+          <div class="db-hero-stats-card">
+            <div class="db-hero-stats-head">
+              <div class="db-hero-stats-title">Your activity</div>
+              <span class="db-hero-stats-live"><span class="db-hero-stats-live-dot"></span>Live</span>
             </div>
-            <button class="btn btn-primary hero-find-btn">
-              <span class="hero-find-label">Find</span>
-              <span class="arr">→</span>
-            </button>
+            <div class="db-hero-stats-grid" id="db-hero-stats"></div>
           </div>
         </div>
       </div>
@@ -303,6 +315,41 @@
         linksToggle.classList.toggle('open', open);
         toggleLabel.textContent = open ? 'View less' : 'View more';
       });
+    }
+
+    // Activity stats (mock - the handful a member actually checks in on, not a
+    // full analytics dump). Quarter is computed from today's date so the copy stays sensible.
+    const now = new Date();
+    const quarter = Math.floor(now.getMonth() / 3) + 1;
+    const MEMBER_STATS = [
+      {
+        value: '3', sub: '/4', label: `Articles · Q${quarter}`, trend: '+1 this month',
+        icon: '<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'
+      },
+      {
+        value: '8', sub: '', label: 'Consultations · this month', trend: '+3 vs last month',
+        icon: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'
+      },
+      {
+        value: '5', sub: '', label: 'Peer Connect · this month', trend: '+2 vs last month',
+        icon: '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>'
+      },
+      {
+        value: '2', sub: '', label: 'Referrals · this month', trend: 'Steady',
+        icon: '<path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
+      }
+    ];
+    const heroStats = document.getElementById('db-hero-stats');
+    if (heroStats) {
+      heroStats.innerHTML = MEMBER_STATS.map(s => `
+        <div class="db-stat-item">
+          <div class="db-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg></div>
+          <div class="db-stat-text">
+            <div class="db-stat-value">${s.value}${s.sub ? `<span class="db-stat-value-sub">${s.sub}</span>` : ''}</div>
+            <div class="db-stat-label">${s.label}</div>
+            <div class="db-stat-trend">${s.trend}</div>
+          </div>
+        </div>`).join('');
     }
 
     // Consultation requests (mock - what the member has received via their profile)

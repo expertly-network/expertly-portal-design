@@ -906,6 +906,10 @@ function initNavigationStepper() {
         return { institution: ed.institution, degree: ed.degree, field: ed.fieldOfStudy, start: ed.startYear, end: ed.endYear };
       });
 
+      var termsEl = document.getElementById('onboarding-check-terms');
+      var privacyEl = document.getElementById('onboarding-check-privacy');
+      var consentEl = document.getElementById('onboarding-check-consent');
+
       window.ExpertlyAdmin.pushApplication(Object.assign({}, formData, {
         name: (formData.firstName + ' ' + formData.lastName).trim() || formData.contactEmail,
         email: formData.contactEmail,
@@ -919,6 +923,9 @@ function initNavigationStepper() {
         education: normalizedEdu,
         photoHtml: formData.profilePhoto ? '<img src="' + formData.profilePhoto + '" alt="" style="width:100%;height:100%;object-fit:cover;">' : '',
         rateRange: (formData.minFee || formData.maxFee) ? (formData.minFee + '–' + formData.maxFee) : '',
+        consentTerms: !!(termsEl && termsEl.checked),
+        consentPrivacy: !!(privacyEl && privacyEl.checked),
+        consentVerify: !!(consentEl && consentEl.checked),
         source: 'onboarding'
       }));
     }
