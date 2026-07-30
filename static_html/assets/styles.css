@@ -1926,6 +1926,8 @@
       background: radial-gradient(circle, rgba(0,165,130,0.16) 0%, transparent 65%); pointer-events: none;
     }
     .db-hero .container-wide { position: relative; z-index: 1; }
+    .hero-mesh { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    @media (max-width: 900px) { .hero-mesh { display: none; } }
     .db-eyebrow {
       font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: 0.14em;
       text-transform: capitalize; color: rgba(255,255,255,0.65); font-weight: 500;
@@ -1967,33 +1969,54 @@
     }
     .db-hero-stats-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); animation: dbStatPulse 1.8s ease-in-out infinite; }
     @keyframes dbStatPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 45%, transparent); } 50% { opacity: 0.6; box-shadow: 0 0 0 4px transparent; } }
-    .db-hero-stats-grid { display: grid; grid-template-columns: 1fr 1fr; }
-    .db-stat-item {
-      position: relative;
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 13px 12px 14px 2px;
-      border-top: 1px solid rgba(255,255,255,0.18);
-      transition: transform 0.15s ease;
-    }
-    .db-stat-item:nth-child(1), .db-stat-item:nth-child(2) { border-top: none; }
-    .db-stat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.18); padding-left: 2px; }
-    .db-stat-item:nth-child(even) { padding-left: 15px; }
-    .db-stat-item:hover { transform: translateY(-1px); }
-    .db-stat-icon {
-      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 10px;
-      background: var(--accent);
-      color: var(--ink);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .db-stat-icon svg { width: 16px; height: 16px; }
-    .db-stat-text { min-width: 0; }
-    .db-stat-value { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 700; color: #FFFFFF; line-height: 1.1; letter-spacing: -0.01em; }
-    .db-stat-value-sub { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); margin-left: 1px; }
-    .db-stat-label { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; line-height: 1.3; font-weight: 500; }
-    .db-stat-trend { font-size: 11px; color: var(--accent-2); margin-top: 4px; font-weight: 600; }
     @media (max-width: 940px) {
       .db-hero-stats-card { position: static; margin-top: 26px; width: 100%; max-width: 480px; }
       .db-hero-left { max-width: none; }
+    }
+
+    /* Horizontal placement above "Consultation requests" — pale mint field
+       (same tint used as the site's --bg-alt), each box lifting to white
+       on hover for focus. */
+    .db-hero-stats-card-horiz {
+      position: static; width: 100%; max-width: none;
+      margin-bottom: 32px;
+      background: color-mix(in oklab, var(--accent) 10%, #FFFFFF);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+    .db-hero-stats-card-horiz .db-hero-stats-title { color: var(--ink); }
+    .db-hero-stats-card-horiz .db-hero-stats-live {
+      color: var(--accent); background: color-mix(in oklab, var(--accent) 16%, transparent);
+    }
+    .db-hero-stats-card-horiz .db-hero-stats-live-dot { background: var(--accent); }
+
+    /* Progress-ring stats: each metric as a ring toward its monthly goal,
+       so relative pace reads at a glance instead of just a bare number. */
+    .db-hero-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .db-stat-item {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 10px; padding: 16px 10px; border-radius: 14px;
+    }
+    .db-stat-ring { position: relative; width: 84px; height: 84px; }
+    .db-stat-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .db-stat-ring .db-stat-ring-track { fill: none; stroke: var(--line-2); stroke-width: 6; }
+    .db-stat-ring .db-stat-ring-prog {
+      fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round;
+      stroke-dasharray: 169.65; transition: stroke-dashoffset 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .db-stat-ring-num {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 700; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .db-stat-ring-num small { font-size: 15px; font-weight: 500; color: var(--ink-4); margin-left: 2px; }
+    .db-stat-label {
+      font-family: 'Archivo', sans-serif; font-size: 15px; color: var(--ink-2);
+      font-weight: 500; line-height: 1.3;
+    }
+    .db-stat-trend { font-family: 'Archivo', sans-serif; font-size: 13px; color: var(--accent); font-weight: 700; }
+    @media (max-width: 640px) {
+      .db-hero-stats-grid { grid-template-columns: 1fr 1fr; row-gap: 18px; }
     }
 
     /* ── Two-column layout ────────────────────────────────────────────── */
@@ -2028,9 +2051,9 @@
     .db-consult-name { font-size: 18px; font-weight: 600; color: var(--ink); }
     .db-consult-topic { font-size: 16px; color: var(--ink-3); margin-top: 6px; line-height: 1.6; }
     .db-consult-meta { display: flex; align-items: center; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
-    .db-consult-meta-item { display: flex; align-items: center; gap: 6px; font-size: 15px; color: var(--ink-3); }
-    .db-consult-meta-item svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--ink-4); }
-    .db-consult-meta-item strong { color: var(--ink-2); font-weight: 500; }
+    .db-consult-meta-item { display: flex; align-items: center; gap: 6px; font-size: 15px; color: var(--accent); }
+    .db-consult-meta-item svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--accent); }
+    .db-consult-meta-item strong { color: var(--accent); font-weight: 500; }
     .db-consult-empty { padding: 32px 20px; text-align: center; font-size: 15px; color: var(--ink-3); }
     .db-consult-status {
       flex-shrink: 0; align-self: flex-start; margin-top: 1px;

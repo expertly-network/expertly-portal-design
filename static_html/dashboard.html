@@ -95,6 +95,7 @@
   <main id="main-content" class="v2-page-main">
 
     <section class="db-hero">
+      <canvas class="hero-mesh" data-motif="network" aria-hidden="true"></canvas>
       <div class="container-wide">
         <div class="db-hero-top">
           <div class="db-hero-left">
@@ -117,14 +118,6 @@
               </div>
             </div>
           </div>
-
-          <div class="db-hero-stats-card">
-            <div class="db-hero-stats-head">
-              <div class="db-hero-stats-title">Your activity</div>
-              <span class="db-hero-stats-live"><span class="db-hero-stats-live-dot"></span>Live</span>
-            </div>
-            <div class="db-hero-stats-grid" id="db-hero-stats"></div>
-          </div>
         </div>
       </div>
     </section>
@@ -134,16 +127,15 @@
 
         <!-- ── Left: main feed ── -->
         <div>
-          <div class="db-section-head" style="margin-top:0;">
-            <h2 class="db-section-title">Consultation requests</h2>
-            <div class="db-section-head-right">
-              <span class="db-section-count" id="db-consult-count"></span>
-              <a href="consultation-requests.html" class="db-consult-viewall">View all →</a>
+          <div class="db-hero-stats-card db-hero-stats-card-horiz">
+            <div class="db-hero-stats-head">
+              <div class="db-hero-stats-title">Your activity</div>
+              <span class="db-hero-stats-live"><span class="db-hero-stats-live-dot"></span>Live</span>
             </div>
+            <div class="db-hero-stats-grid" id="db-hero-stats"></div>
           </div>
-          <div class="db-feed" id="db-consult-feed"></div>
 
-          <div class="db-section-head">
+          <div class="db-section-head" style="margin-top:0;">
             <h2 class="db-section-title">Your Peer Connect match</h2>
             <a href="peer-connect.html" class="db-section-link">View full match →</a>
           </div>
@@ -159,6 +151,15 @@
               </div>
             </div>
           </a>
+
+          <div class="db-section-head">
+            <h2 class="db-section-title">Consultation requests</h2>
+            <div class="db-section-head-right">
+              <span class="db-section-count" id="db-consult-count"></span>
+              <a href="consultation-requests.html" class="db-consult-viewall">View all →</a>
+            </div>
+          </div>
+          <div class="db-feed" id="db-consult-feed"></div>
 
           <div class="db-section-head">
             <h2 class="db-section-title">Upcoming events</h2>
@@ -258,6 +259,7 @@
 <script src="assets/members.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
+<script src="assets/hero-mesh.js"></script>
 
 <script>
   (function () {
@@ -322,34 +324,30 @@
     const now = new Date();
     const quarter = Math.floor(now.getMonth() / 3) + 1;
     const MEMBER_STATS = [
-      {
-        value: '3', sub: '/4', label: `Articles · Q${quarter}`, trend: '+1 this month',
-        icon: '<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'
-      },
-      {
-        value: '8', sub: '', label: 'Consultations · this month', trend: '+3 vs last month',
-        icon: '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'
-      },
-      {
-        value: '5', sub: '', label: 'Peer Connect · this month', trend: '+2 vs last month',
-        icon: '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>'
-      },
-      {
-        value: '2', sub: '', label: 'Referrals · this month', trend: 'Steady',
-        icon: '<path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
-      }
+      { value: 3, goal: 4, sub: '/4', label: `Articles · Q${quarter}`, trend: '+1 this month' },
+      { value: 8, goal: 10, sub: '', label: 'Consultations · this month', trend: '+3 vs last month' },
+      { value: 5, goal: 8, sub: '', label: 'Peer Connect · this month', trend: '+2 vs last month' },
+      { value: 2, goal: 5, sub: '', label: 'Referrals · this month', trend: 'Steady', flat: true }
     ];
     const heroStats = document.getElementById('db-hero-stats');
     if (heroStats) {
-      heroStats.innerHTML = MEMBER_STATS.map(s => `
+      const CIRC = 169.65; // 2 * PI * r(27)
+      heroStats.innerHTML = MEMBER_STATS.map(s => {
+        const pct = Math.max(0, Math.min(1, s.value / s.goal));
+        const offset = (CIRC * (1 - pct)).toFixed(1);
+        return `
         <div class="db-stat-item">
-          <div class="db-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg></div>
-          <div class="db-stat-text">
-            <div class="db-stat-value">${s.value}${s.sub ? `<span class="db-stat-value-sub">${s.sub}</span>` : ''}</div>
-            <div class="db-stat-label">${s.label}</div>
-            <div class="db-stat-trend">${s.trend}</div>
+          <div class="db-stat-ring">
+            <svg viewBox="0 0 64 64">
+              <circle class="db-stat-ring-track" cx="32" cy="32" r="27"/>
+              <circle class="db-stat-ring-prog" cx="32" cy="32" r="27" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="db-stat-ring-num">${s.value}${s.sub ? `<small>${s.sub}</small>` : ''}</div>
           </div>
-        </div>`).join('');
+          <div class="db-stat-label">${s.label}</div>
+          <div class="db-stat-trend"${s.flat ? ' style="color:var(--ink-4)"' : ''}>${s.trend}</div>
+        </div>`;
+      }).join('');
     }
 
     // Consultation requests (mock - what the member has received via their profile)
