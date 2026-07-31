@@ -3693,7 +3693,7 @@
     .mp-testi-outer {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 360px;
+      grid-auto-rows: auto;
       gap: 16px;
       max-height: 360px;
       overflow-y: auto;
@@ -3763,6 +3763,7 @@
       border-radius: 16px;
       padding: 16px 15px 13px;
       overflow: hidden;
+      cursor: pointer;
       transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
     }
 
@@ -3770,6 +3771,16 @@
       background: color-mix(in oklab, var(--accent) 4%, var(--bg-card));
       border-color: color-mix(in oklab, var(--accent) 28%, var(--line));
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Alternate tint using the theme's pale accent background, so the row
+       reads white / tinted / white / tinted rather than a flat block. */
+    .mp-testimonial:nth-child(odd) {
+      background: var(--bg-alt);
+    }
+
+    .mp-testimonial:nth-child(odd):hover {
+      background: color-mix(in oklab, var(--accent) 8%, var(--bg-alt));
     }
 
     .mp-testi-quote-icon {
@@ -3785,8 +3796,8 @@
     }
 
     .mp-testi-text {
-      font-size: 15px;
-      font-style: italic;
+      font-size: 14px;
+      font-style: normal;
       color: var(--ink-2);
       line-height: 1.5;
       margin: 0;
@@ -3797,20 +3808,6 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
-    .mp-testi-more {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 11px;
-      font-weight: 600;
-      font-family: 'Archivo', sans-serif;
-      color: #00A582;
-      cursor: pointer;
-      display: block;
-      text-align: left;
-    }
-    .mp-testi-more:hover { text-decoration: underline; }
 
     .mp-testi-footer {
       display: flex;
@@ -4285,6 +4282,7 @@
     }
 
     .mp-modal {
+      position: relative;
       background: var(--bg-card);
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -4332,6 +4330,23 @@
     .mp-modal-close:hover {
       background: var(--line);
       color: var(--ink);
+    }
+
+    /* Testimonial modal has no title/subtitle - the header collapses to a thin
+       strip and the close button floats top-right at a fixed 10px:10px inset. */
+    .mp-testi-modal-header {
+      height: 20px;
+      padding: 0;
+      border-bottom: none;
+    }
+
+    .mp-testi-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
     }
 
     .mp-modal-body {
