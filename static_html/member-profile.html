@@ -388,6 +388,11 @@
                 <div class="mp-testi-outer" id="reviews-testi-outer">
                   <div class="mp-testi-track" id="reviews-testi-list"></div>
                 </div>
+                <button class="mp-testi-scroll-btn" id="testi-scroll-btn" style="display:none;" aria-label="Scroll testimonials">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
               </div>
 
               <!-- Awards & Recognition -->
@@ -613,6 +618,37 @@
           Your consultation request has been sent. They will respond to you directly.
         </p>
         <button class="mp-success-close" onclick="closeModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ TESTIMONIAL MODAL -->
+  <div id="mp-testi-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mp-testi-modal-title">
+    <div class="mp-modal">
+
+      <div class="mp-modal-header">
+        <div>
+          <div class="mp-modal-title" id="mp-testi-modal-title">Client Testimonial</div>
+          <div class="mp-modal-sub" id="mp-testi-modal-sub">Full review</div>
+        </div>
+        <button class="mp-modal-close" onclick="closeTestiModal()" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mp-modal-body">
+        <p class="mp-testi-modal-quote" id="mp-testi-modal-quote"></p>
+        <div class="mp-testi-footer mp-testi-modal-footer">
+          <div class="mp-testi-avatar" id="mp-testi-modal-avatar"></div>
+          <div class="mp-testi-author-info">
+            <strong id="mp-testi-modal-name"></strong>
+            <span id="mp-testi-modal-meta"></span>
+          </div>
+          <span class="mp-testi-date" id="mp-testi-modal-date"></span>
+        </div>
       </div>
 
     </div>
@@ -1582,9 +1618,10 @@
     const PROFILE_REVIEWS = {
       'mukesh-kumar-m': {
         testimonials: [
-          { id: 1, quote: 'Mukesh guided our three-way demerger with exceptional clarity. He anticipated regulatory questions months before they arose, and his structuring saved us significant tax outflow while keeping the NCLT process on schedule.Mukesh guided our three-way demerger with exceptional clarity. He anticipated regulatory questions months before they arose, and his structuring saved us significant tax outflow while keeping the NCLT process on schedule.Mukesh guided our three-way demerger with exceptional clarity. He anticipated regulatory questions months before they arose, and his structuring saved us significant tax outflow while keeping the NCLT process on schedule', clientName: 'Rahul S.', clientTitle: 'Group CFO', clientCompany: 'Confidential Listed Conglomerate', serviceName: 'M&A Tax', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'We engaged Mukesh for the tax structuring of our Singapore holdco acquisition. His command of the India–Singapore treaty and GAAR implications was outstanding - he explained complex positions in language our board could act on.', clientName: 'Ananya K.', clientTitle: 'Partner', clientCompany: 'Mid-Market PE Fund', serviceName: 'M&A Tax', date: 'November 2025', isVerified: true },
-          { id: 3, quote: 'Responsive, commercially sharp, and always a step ahead of the tax department. The capital reduction he structured for our promoter family stood up to scrutiny without a single adverse finding.', clientName: 'Vikram T.', clientTitle: 'Promoter Director', clientCompany: 'Family-Owned Manufacturing Group', serviceName: 'M&A Tax', date: 'July 2025', isVerified: false },
+          { id: 1, quote: 'Mukesh guided our three-way demerger with exceptional clarity from the first structuring memo to the final NCLT order. He anticipated regulatory questions months before they arose, kept our board, auditors, and bankers aligned throughout, and his structuring saved us significant tax outflow while keeping the entire process on the original schedule despite two unexpected objector filings along the way.', clientName: 'Rahul S.', clientTitle: 'Group CFO', clientCompany: 'Confidential Listed Conglomerate', serviceName: 'M&A Tax', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'We engaged Mukesh for the tax structuring of our Singapore holdco acquisition. His command of the India–Singapore treaty and GAAR implications was outstanding - he explained complex positions in language our board could act on, and pre-empted two assessing officer queries before they were even raised, which meant the deal closed with no last-minute surprises for anyone at the table.', clientName: 'Ananya K.', clientTitle: 'Partner', clientCompany: 'Mid-Market PE Fund', serviceName: 'M&A Tax', date: 'November 2025', isVerified: true },
+          { id: 3, quote: 'Responsive, commercially sharp, and always a step ahead of the tax department. The capital reduction he structured for our promoter family stood up to scrutiny without a single adverse finding, and he walked three generations of our family through the implications personally rather than leaving it to a junior associate, which mattered enormously to us.', clientName: 'Vikram T.', clientTitle: 'Promoter Director', clientCompany: 'Family-Owned Manufacturing Group', serviceName: 'M&A Tax', date: 'July 2025', isVerified: false },
+          { id: 4, quote: 'Mukesh advised on the tax workstream of our cross-border slump sale to a US strategic buyer. He caught a withholding tax exposure our own finance team had missed, restructured the payment waterfall in under a week, and coordinated seamlessly with counsel on both sides so the signing timeline never slipped.', clientName: 'Neha P.', clientTitle: 'VP Corporate Development', clientCompany: 'Listed Pharmaceuticals Group', serviceName: 'M&A Tax', date: 'May 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Highly Regarded - M&A Tax', issuingBody: 'ITR World Tax', year: 2025, description: 'Ranked among India\'s leading M&A tax advisers for the third consecutive year.' },
@@ -1594,8 +1631,10 @@
       },
       'shreyans-maloo': {
         testimonials: [
-          { id: 1, quote: 'Shreyans rebuilt our transfer pricing documentation across eight APAC entities and defended it through an Indian TP audit without a single addition. Senior attention, fast turnarounds, no Big 4 overhead.', clientName: 'Meera J.', clientTitle: 'Head of Tax', clientCompany: 'Technology MNE (Confidential)', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
-          { id: 2, quote: 'Our bilateral APA between India and Singapore closed faster than our advisers said was possible. Shreyans managed both competent authorities with real skill.', clientName: 'Daniel W.', clientTitle: 'Group Tax Director', clientCompany: 'Confidential Manufacturing Group', serviceName: 'Transfer Pricing', date: 'September 2025', isVerified: true },
+          { id: 1, quote: 'Shreyans rebuilt our transfer pricing documentation across eight APAC entities and defended it through an Indian TP audit without a single addition. Senior attention, fast turnarounds, no Big 4 overhead, and he was personally on every call with the revenue authority instead of delegating the defence to juniors who did not know our business.', clientName: 'Meera J.', clientTitle: 'Head of Tax', clientCompany: 'Technology MNE (Confidential)', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
+          { id: 2, quote: 'Our bilateral APA between India and Singapore closed faster than our advisers said was possible. Shreyans managed both competent authorities with real skill, kept our internal stakeholders informed at every stage, and never let the process drift the way our previous adviser\'s APA application had for nearly two years.', clientName: 'Daniel W.', clientTitle: 'Group Tax Director', clientCompany: 'Confidential Manufacturing Group', serviceName: 'Transfer Pricing', date: 'September 2025', isVerified: true },
+          { id: 3, quote: 'We brought Shreyans in for a benchmarking refresh ahead of a group-wide ERP migration. He flagged inconsistencies in our intercompany royalty flows that had persisted for three years and fixed them before they became an audit issue.', clientName: 'Priyanka D.', clientTitle: 'Regional Finance Controller', clientCompany: 'Consumer Electronics Distributor', serviceName: 'Transfer Pricing', date: 'April 2025', isVerified: false },
+          { id: 4, quote: 'Shreyans defended our master file position through a coordinated audit spanning three tax jurisdictions simultaneously. His ability to keep a single, consistent narrative across all three authorities - without contradicting himself once - is something we have not seen from any other adviser we have used.', clientName: 'Tom R.', clientTitle: 'International Tax Manager', clientCompany: 'Industrial Components Manufacturer', serviceName: 'Transfer Pricing', date: 'December 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Rising Star - Transfer Pricing', issuingBody: 'ITR World TP', year: 2024, description: null },
@@ -1604,8 +1643,10 @@
       },
       'swetha-prasad': {
         testimonials: [
-          { id: 1, quote: 'Swetha structured our family trust and ESOP scheme ahead of a partial exit, balancing personal and corporate tax considerations that three previous advisers had treated separately. The outcome exceeded our expectations.', clientName: 'Arjun R.', clientTitle: 'Founder & MD', clientCompany: 'First-Generation FMCG Business', serviceName: 'M&A Tax', date: 'January 2026', isVerified: true },
-          { id: 2, quote: 'On our promoter holdco restructuring, Swetha\'s attention to succession detail was remarkable. She works at partner level on every workstream - nothing is delegated into a black box.', clientName: 'Lakshmi N.', clientTitle: 'Family Office Head', clientCompany: 'Confidential Promoter Family', serviceName: 'M&A Tax', date: 'August 2025', isVerified: false },
+          { id: 1, quote: 'Swetha structured our family trust and ESOP scheme ahead of a partial exit, balancing personal and corporate tax considerations that three previous advisers had treated separately. The outcome exceeded our expectations, and she personally walked each family member through what the restructuring meant for them, which none of our previous advisers had ever bothered to do.', clientName: 'Arjun R.', clientTitle: 'Founder & MD', clientCompany: 'First-Generation FMCG Business', serviceName: 'M&A Tax', date: 'January 2026', isVerified: true },
+          { id: 2, quote: 'On our promoter holdco restructuring, Swetha\'s attention to succession detail was remarkable. She works at partner level on every workstream - nothing is delegated into a black box - and she flagged a stamp duty exposure across two states that would have cost us significantly had it surfaced during diligence.', clientName: 'Lakshmi N.', clientTitle: 'Family Office Head', clientCompany: 'Confidential Promoter Family', serviceName: 'M&A Tax', date: 'August 2025', isVerified: false },
+          { id: 3, quote: 'Swetha handled the tax side of our slump exchange with a listed peer, coordinating valuation, stamp duty, and capital gains treatment across two states with zero rework requested by either side\'s auditors.', clientName: 'Karthik V.', clientTitle: 'Executive Director', clientCompany: 'Diversified Industrial Group', serviceName: 'M&A Tax', date: 'March 2025', isVerified: true },
+          { id: 4, quote: 'We asked Swetha to review a succession plan drafted by our previous advisers before finalising it. She identified a structuring gap that would have triggered an unnecessary tax event on the next generation\'s entry, and redesigned the mechanism in a way that satisfied both the family and our auditors.', clientName: 'Radhika S.', clientTitle: 'Trustee', clientCompany: 'Family Investment Office', serviceName: 'M&A Tax', date: 'October 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Women in Tax Leaders', issuingBody: 'ITR World Tax', year: 2025, description: null },
@@ -1614,8 +1655,10 @@
       },
       'priya-venkatesh': {
         testimonials: [
-          { id: 1, quote: 'Priya untangled a multi-state GST credit dispute that had been stuck for two years. Her supply chain restructuring advice now saves us crores annually in blocked credits.', clientName: 'Suresh B.', clientTitle: 'VP Finance', clientCompany: 'Pan-India E-commerce Platform', serviceName: 'Indirect Tax', date: 'April 2026', isVerified: true },
-          { id: 2, quote: 'The clearest indirect tax adviser we have worked with. Priya\'s advance ruling strategy gave us certainty on a classification issue the entire industry was struggling with.', clientName: 'Kavitha M.', clientTitle: 'CFO', clientCompany: 'Consumer Durables Manufacturer', serviceName: 'Indirect Tax', date: 'October 2025', isVerified: true },
+          { id: 1, quote: 'Priya untangled a multi-state GST credit dispute that had been stuck for two years. Her supply chain restructuring advice now saves us crores annually in blocked credits, and she rebuilt our entire input tax credit reconciliation process so the same issue could never resurface across any of our nineteen warehouses again.', clientName: 'Suresh B.', clientTitle: 'VP Finance', clientCompany: 'Pan-India E-commerce Platform', serviceName: 'Indirect Tax', date: 'April 2026', isVerified: true },
+          { id: 2, quote: 'The clearest indirect tax adviser we have worked with. Priya\'s advance ruling strategy gave us certainty on a classification issue the entire industry was struggling with, and she coordinated with two industry associations to ensure the ruling would hold up as precedent well beyond our own filing.', clientName: 'Kavitha M.', clientTitle: 'CFO', clientCompany: 'Consumer Durables Manufacturer', serviceName: 'Indirect Tax', date: 'October 2025', isVerified: true },
+          { id: 3, quote: 'Priya represented us through a departmental audit spanning three financial years and closed it with no material demand raised, something our internal team had not thought possible given the state of our historical records.', clientName: 'Ramesh G.', clientTitle: 'Statutory Auditor', clientCompany: 'Retained on behalf of a Client Group', serviceName: 'Indirect Tax', date: 'July 2025', isVerified: false },
+          { id: 4, quote: 'We needed a rapid GST health check ahead of a private equity round, and Priya turned around a full review of our filings, credits, and exposure across four states within ten days, flagging two issues that materially changed how our investors viewed the deal.', clientName: 'Anita J.', clientTitle: 'Founder', clientCompany: 'D2C Consumer Brand', serviceName: 'Indirect Tax', date: 'January 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Indirect Tax Leader - India', issuingBody: 'ITR World Tax', year: 2025, description: null },
@@ -1624,8 +1667,10 @@
       },
       'marcus-chen': {
         testimonials: [
-          { id: 1, quote: 'Marcus designed our APAC holding structure across five jurisdictions with a clarity we had not seen from larger firms. His BEPS 2.0 impact modelling directly shaped our board\'s regional strategy.', clientName: 'Jennifer L.', clientTitle: 'Regional CFO', clientCompany: 'US-Headquartered MNE', serviceName: 'Cross-Border Tax', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'Pragmatic, fast, and deeply connected across APAC tax authorities. Marcus turned a two-jurisdiction PE risk into a clean, defendable operating model.', clientName: 'Wei Zhang', clientTitle: 'Head of Tax, Asia', clientCompany: 'Confidential Logistics Group', serviceName: 'Cross-Border Tax', date: 'December 2025', isVerified: true },
+          { id: 1, quote: 'Marcus designed our APAC holding structure across five jurisdictions with a clarity we had not seen from larger firms. His BEPS 2.0 impact modelling directly shaped our board\'s regional strategy, and he presented it in a boardroom setting so effectively that directors with no tax background left with real conviction.', clientName: 'Jennifer L.', clientTitle: 'Regional CFO', clientCompany: 'US-Headquartered MNE', serviceName: 'Cross-Border Tax', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'Pragmatic, fast, and deeply connected across APAC tax authorities. Marcus turned a two-jurisdiction PE risk into a clean, defendable operating model, and he did it in under six weeks while our internal team was still gathering documentation for the risk assessment.', clientName: 'Wei Zhang', clientTitle: 'Head of Tax, Asia', clientCompany: 'Confidential Logistics Group', serviceName: 'Cross-Border Tax', date: 'December 2025', isVerified: true },
+          { id: 3, quote: 'We engaged Marcus for a Pillar Two readiness review across our Singapore, Hong Kong, and Australian entities. He produced a jurisdiction-by-jurisdiction action plan that our finance team could execute directly, with none of the vague generalities we got from our previous adviser\'s report.', clientName: 'Grace T.', clientTitle: 'Group Financial Controller', clientCompany: 'APAC Consumer Goods Group', serviceName: 'Cross-Border Tax', date: 'August 2025', isVerified: false },
+          { id: 4, quote: 'Marcus advised on the tax implications of relocating our regional headquarters from Hong Kong to Singapore. He modelled three different structures with full downside scenarios for each, which let our board make the decision with genuine confidence rather than guesswork.', clientName: 'Andrew F.', clientTitle: 'CFO, APAC', clientCompany: 'Global Technology Company', serviceName: 'Cross-Border Tax', date: 'April 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Highly Regarded - International Tax', issuingBody: 'ITR World Tax', year: 2025, description: null },
@@ -1634,8 +1679,10 @@
       },
       'amara-osei': {
         testimonials: [
-          { id: 1, quote: 'Amara steered our market entry into Ghana and Côte d\'Ivoire, handling regulatory approvals and local governance requirements that would have taken us a year to navigate alone.', clientName: 'Thomas E.', clientTitle: 'General Counsel', clientCompany: 'European Infrastructure Investor', serviceName: 'Corporate Law', date: 'February 2026', isVerified: true },
-          { id: 2, quote: 'Precise, responsive, and commercially aware. Amara\'s board governance overhaul prepared us for institutional investment ahead of schedule.', clientName: 'Nana A.', clientTitle: 'CEO', clientCompany: 'West African Fintech Scale-up', serviceName: 'Corporate Law', date: 'September 2025', isVerified: false },
+          { id: 1, quote: 'Amara steered our market entry into Ghana and Côte d\'Ivoire, handling regulatory approvals and local governance requirements that would have taken us a year to navigate alone. She built relationships with both regulators in advance of our filings, which meant every submission moved without the delays we had been warned to expect.', clientName: 'Thomas E.', clientTitle: 'General Counsel', clientCompany: 'European Infrastructure Investor', serviceName: 'Corporate Law', date: 'February 2026', isVerified: true },
+          { id: 2, quote: 'Precise, responsive, and commercially aware. Amara\'s board governance overhaul prepared us for institutional investment ahead of schedule, and she personally trained our newly appointed independent directors on their duties before our first investor board meeting.', clientName: 'Nana A.', clientTitle: 'CEO', clientCompany: 'West African Fintech Scale-up', serviceName: 'Corporate Law', date: 'September 2025', isVerified: false },
+          { id: 3, quote: 'We asked Amara to lead the legal workstream on a joint venture spanning three West African markets simultaneously. She reconciled conflicting local law requirements into a single governance framework that all three regulators accepted without amendment, saving us months of back-and-forth.', clientName: 'Kwame B.', clientTitle: 'Regional Managing Director', clientCompany: 'Pan-African Logistics Company', serviceName: 'Corporate Law', date: 'May 2025', isVerified: true },
+          { id: 4, quote: 'Amara advised on our shareholder restructuring ahead of a Series C round, resolving a founder dispute that had stalled the deal for months. Her ability to keep both sides talking while protecting the company\'s interests was, frankly, the reason the round closed at all.', clientName: 'Efua O.', clientTitle: 'Board Chair', clientCompany: 'West African Health-Tech Company', serviceName: 'Corporate Law', date: 'December 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Leading Individual - Corporate & Commercial, Ghana', issuingBody: 'IFLR1000', year: 2025, description: null },
@@ -1644,8 +1691,10 @@
       },
       'fatima-al-hassan': {
         testimonials: [
-          { id: 1, quote: 'Fatima built our UAE compliance framework from the ground up ahead of a central bank inspection. The examiners closed with zero material findings - a first for us in the region.', clientName: 'Omar D.', clientTitle: 'Chief Compliance Officer', clientCompany: 'GCC Retail Bank', serviceName: 'Compliance', date: 'January 2026', isVerified: true },
-          { id: 2, quote: 'Her knowledge of DFSA and central bank expectations is encyclopaedic. Fatima translated a daunting remediation programme into a plan our teams could actually deliver.', clientName: 'Sarah M.', clientTitle: 'Head of Risk', clientCompany: 'DIFC Investment Firm', serviceName: 'Compliance', date: 'June 2025', isVerified: true },
+          { id: 1, quote: 'Fatima built our UAE compliance framework from the ground up ahead of a central bank inspection. The examiners closed with zero material findings - a first for us in the region - and she trained our entire compliance team so the framework would keep functioning long after her engagement ended.', clientName: 'Omar D.', clientTitle: 'Chief Compliance Officer', clientCompany: 'GCC Retail Bank', serviceName: 'Compliance', date: 'January 2026', isVerified: true },
+          { id: 2, quote: 'Her knowledge of DFSA and central bank expectations is encyclopaedic. Fatima translated a daunting remediation programme into a plan our teams could actually deliver, breaking an eighteen-month regulatory mandate into weekly milestones that kept everyone accountable.', clientName: 'Sarah M.', clientTitle: 'Head of Risk', clientCompany: 'DIFC Investment Firm', serviceName: 'Compliance', date: 'June 2025', isVerified: true },
+          { id: 3, quote: 'Fatima led our AML policy overhaul after a regulator finding at a peer institution prompted us to act early. She benchmarked us against three neighbouring jurisdictions and delivered a framework that exceeded what the regulator ultimately required.', clientName: 'Yusuf K.', clientTitle: 'MLRO', clientCompany: 'GCC Payments Institution', serviceName: 'Compliance', date: 'March 2025', isVerified: false },
+          { id: 4, quote: 'We asked Fatima to run an independent review of our sanctions screening programme before a licence renewal. She found gaps our internal audit team had missed for two consecutive years and helped us close them before the regulator ever asked a single question.', clientName: 'Huda R.', clientTitle: 'Chief Risk Officer', clientCompany: 'UAE Exchange House', serviceName: 'Compliance', date: 'November 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Compliance Professional of the Year - MENA', issuingBody: 'Thomson Reuters Regulatory Awards', year: 2024, description: null },
@@ -1654,8 +1703,10 @@
       },
       'james-okafor': {
         testimonials: [
-          { id: 1, quote: 'James ran our four-country African acquisition like a conductor - local counsel in Lagos, Nairobi, and Johannesburg all moving to one timetable. We closed on time and under budget.', clientName: 'Richard O.', clientTitle: 'Head of Corporate Development', clientCompany: 'FTSE-Listed Consumer Group', serviceName: 'M&A', date: 'April 2026', isVerified: true },
-          { id: 2, quote: 'The rare M&A counsel who is both technically superb and genuinely commercial. James found deal solutions where others saw only regulatory roadblocks.', clientName: 'Chidi N.', clientTitle: 'Managing Partner', clientCompany: 'Pan-African PE Fund', serviceName: 'M&A', date: 'November 2025', isVerified: true },
+          { id: 1, quote: 'James ran our four-country African acquisition like a conductor - local counsel in Lagos, Nairobi, and Johannesburg all moving to one timetable. We closed on time and under budget, and he flew to each market personally rather than relying solely on local counsel updates, which caught two issues before they became closing risks.', clientName: 'Richard O.', clientTitle: 'Head of Corporate Development', clientCompany: 'FTSE-Listed Consumer Group', serviceName: 'M&A', date: 'April 2026', isVerified: true },
+          { id: 2, quote: 'The rare M&A counsel who is both technically superb and genuinely commercial. James found deal solutions where others saw only regulatory roadblocks, and he negotiated a competition clearance timeline with the regulator that our local counsel had said was simply not achievable.', clientName: 'Chidi N.', clientTitle: 'Managing Partner', clientCompany: 'Pan-African PE Fund', serviceName: 'M&A', date: 'November 2025', isVerified: true },
+          { id: 3, quote: 'James advised on the sale of our family business to a regional strategic buyer, managing a process that touched five different regulatory bodies. His patience with a first-time seller family, combined with his negotiating discipline against a sophisticated buyer, delivered a result well above our initial expectations.', clientName: 'Adaeze M.', clientTitle: 'Founder', clientCompany: 'Nigerian FMCG Manufacturer', serviceName: 'M&A', date: 'July 2025', isVerified: false },
+          { id: 4, quote: 'We retained James for a hostile takeover defence that came together in under two weeks. His command of Nigerian securities and competition law let us respond credibly to an aggressive bidder, and the board ultimately secured a materially higher offer as a direct result of his strategy.', clientName: 'Emeka U.', clientTitle: 'Board Chairman', clientCompany: 'NGX-Listed Industrial Company', serviceName: 'M&A', date: 'February 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Band 1 - Corporate/M&A, Nigeria', issuingBody: 'Chambers Global', year: 2025, description: 'Ranked Band 1 for four consecutive years.' },
@@ -1664,8 +1715,10 @@
       },
       'elena-volkova': {
         testimonials: [
-          { id: 1, quote: 'Elena\'s advice on our AI training data licensing was months ahead of the market. She structured agreements that anticipated the EU AI Act before most firms had read the draft.', clientName: 'Sophie H.', clientTitle: 'General Counsel', clientCompany: 'Series C AI Company', serviceName: 'IP & Tech', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'Outstanding counsel on our global patent and data strategy. Elena bridges deep technical understanding with genuinely practical legal advice.', clientName: 'Mark R.', clientTitle: 'VP Legal', clientCompany: 'US Enterprise SaaS Provider', serviceName: 'IP & Tech', date: 'August 2025', isVerified: false },
+          { id: 1, quote: 'Elena\'s advice on our AI training data licensing was months ahead of the market. She structured agreements that anticipated the EU AI Act before most firms had read the draft, and every one of those clauses has since held up unchanged as the final regulatory text was published.', clientName: 'Sophie H.', clientTitle: 'General Counsel', clientCompany: 'Series C AI Company', serviceName: 'IP & Tech', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'Outstanding counsel on our global patent and data strategy. Elena bridges deep technical understanding with genuinely practical legal advice, sitting in on our engineering standups so her recommendations were grounded in how the product actually worked, not just how it was described in a term sheet.', clientName: 'Mark R.', clientTitle: 'VP Legal', clientCompany: 'US Enterprise SaaS Provider', serviceName: 'IP & Tech', date: 'August 2025', isVerified: false },
+          { id: 3, quote: 'Elena negotiated our enterprise data processing agreements with three of the largest cloud providers, each with wildly different starting positions. She got all three to a materially similar, favourable outcome within a single quarter, which our previous counsel had told us would take the better part of a year.', clientName: 'Julia S.', clientTitle: 'Chief Privacy Officer', clientCompany: 'European Fintech Scale-up', serviceName: 'IP & Tech', date: 'April 2025', isVerified: true },
+          { id: 4, quote: 'We asked Elena to lead our IP due diligence ahead of a Series D round. She uncovered an open-source licensing issue buried three layers deep in our codebase that could have derailed the round, and worked with our engineering team over a single weekend to remediate it.', clientName: 'Peter L.', clientTitle: 'CTO', clientCompany: 'European Cybersecurity Company', serviceName: 'IP & Tech', date: 'December 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Leading Individual - Technology & Data', issuingBody: 'Legal 500 UK', year: 2025, description: null },
@@ -1674,8 +1727,10 @@
       },
       'diego-martinez': {
         testimonials: [
-          { id: 1, quote: 'Diego\'s Pillar Two readiness assessment across our European and LatAm entities was the most rigorous piece of tax work we have commissioned. His TP policy redesign passed review by two Big 4 firms without amendment.', clientName: 'Carmen V.', clientTitle: 'Global Head of Tax', clientCompany: 'Spanish-Listed Industrial Group', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
-          { id: 2, quote: 'He resolved a Mexico–Spain double taxation dispute that had dragged on for three years. Diego knows how the MAP process really works on both sides of the Atlantic.', clientName: 'Luis F.', clientTitle: 'Tax Director', clientCompany: 'LatAm Consumer Goods Group', serviceName: 'Transfer Pricing', date: 'October 2025', isVerified: true },
+          { id: 1, quote: 'Diego\'s Pillar Two readiness assessment across our European and LatAm entities was the most rigorous piece of tax work we have commissioned. His TP policy redesign passed review by two Big 4 firms without amendment, which our own internal tax team said had never happened with any previous adviser\'s work.', clientName: 'Carmen V.', clientTitle: 'Global Head of Tax', clientCompany: 'Spanish-Listed Industrial Group', serviceName: 'Transfer Pricing', date: 'February 2026', isVerified: true },
+          { id: 2, quote: 'He resolved a Mexico–Spain double taxation dispute that had dragged on for three years. Diego knows how the MAP process really works on both sides of the Atlantic, and he kept both competent authorities engaged with a discipline our previous advisers never managed to sustain.', clientName: 'Luis F.', clientTitle: 'Tax Director', clientCompany: 'LatAm Consumer Goods Group', serviceName: 'Transfer Pricing', date: 'October 2025', isVerified: true },
+          { id: 3, quote: 'Diego led our transfer pricing defence through a coordinated Spanish and Mexican audit that ran in parallel for over a year. He kept a single, consistent economic narrative across both authorities and closed both audits with no adjustment, saving us a significant provision we had already booked.', clientName: 'Isabel N.', clientTitle: 'VP Tax', clientCompany: 'Iberian Retail Group', serviceName: 'Transfer Pricing', date: 'June 2025', isVerified: false },
+          { id: 4, quote: 'We brought Diego in to redesign our intercompany financing structure across six LatAm entities ahead of a ratings review. His work satisfied both our tax auditors and the rating agency\'s scrutiny, and he presented the rationale directly to our board in a way non-specialists could follow.', clientName: 'Rafael P.', clientTitle: 'Group Treasurer', clientCompany: 'Multinational Beverage Group', serviceName: 'Transfer Pricing', date: 'January 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Highly Regarded - Transfer Pricing, Spain', issuingBody: 'ITR World TP', year: 2025, description: null },
@@ -1684,8 +1739,10 @@
       },
       'hiroshi-tanaka': {
         testimonials: [
-          { id: 1, quote: 'Tanaka-sensei structured our ¥120bn syndicated facility with flawless coordination between Japanese and New York law workstreams. His dual qualification is a genuine advantage on cross-border financings.', clientName: 'Kenji I.', clientTitle: 'Head of Treasury', clientCompany: 'Japanese Trading House', serviceName: 'Banking & Finance', date: 'January 2026', isVerified: true },
-          { id: 2, quote: 'The most experienced project finance counsel in Tokyo. Hiroshi\'s regulatory capital advice shaped a structure that satisfied both the FSA and our international lenders.', clientName: 'David P.', clientTitle: 'Managing Director', clientCompany: 'Global Investment Bank', serviceName: 'Banking & Finance', date: 'July 2025', isVerified: true },
+          { id: 1, quote: 'Tanaka-sensei structured our ¥120bn syndicated facility with flawless coordination between Japanese and New York law workstreams. His dual qualification is a genuine advantage on cross-border financings, and he chaired every negotiation session personally rather than leaving the New York law points to a foreign correspondent firm.', clientName: 'Kenji I.', clientTitle: 'Head of Treasury', clientCompany: 'Japanese Trading House', serviceName: 'Banking & Finance', date: 'January 2026', isVerified: true },
+          { id: 2, quote: 'The most experienced project finance counsel in Tokyo. Hiroshi\'s regulatory capital advice shaped a structure that satisfied both the FSA and our international lenders, and he anticipated a documentation issue with our syndicate banks that would otherwise have delayed financial close by weeks.', clientName: 'David P.', clientTitle: 'Managing Director', clientCompany: 'Global Investment Bank', serviceName: 'Banking & Finance', date: 'July 2025', isVerified: true },
+          { id: 3, quote: 'Hiroshi advised on a complex renewable energy project financing involving Japanese, Australian, and Singaporean lenders. He kept the documentation consistent across three legal systems and closed the facility two weeks ahead of our target date despite a late change in the lender syndicate.', clientName: 'Aoi M.', clientTitle: 'General Manager, Project Finance', clientCompany: 'Japanese Energy Utility', serviceName: 'Banking & Finance', date: 'March 2025', isVerified: false },
+          { id: 4, quote: 'We retained Hiroshi for a distressed loan restructuring involving a Japanese borrower and an international lending syndicate. His ability to bridge the FSA\'s expectations with our lenders\' commercial requirements avoided what could easily have become a contentious enforcement process.', clientName: 'Robert S.', clientTitle: 'Head of Special Situations', clientCompany: 'International Credit Fund', serviceName: 'Banking & Finance', date: 'November 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Band 1 - Banking & Finance, Japan', issuingBody: 'Chambers Asia-Pacific', year: 2025, description: null },
@@ -1694,8 +1751,10 @@
       },
       'nadia-hassan': {
         testimonials: [
-          { id: 1, quote: 'Nadia led our ICC arbitration against a state-owned counterparty and secured a full award plus costs. Her cross-examination strategy was decisive.', clientName: 'Georges K.', clientTitle: 'CEO', clientCompany: 'Regional Construction Group', serviceName: 'Dispute Resolution', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'She enforced a foreign arbitral award across two MENA jurisdictions where local counsel said it could not be done. Tenacious, strategic, and completely dependable.', clientName: 'Amira S.', clientTitle: 'Group Legal Director', clientCompany: 'Gulf Investment Holding', serviceName: 'Dispute Resolution', date: 'September 2025', isVerified: false },
+          { id: 1, quote: 'Nadia led our ICC arbitration against a state-owned counterparty and secured a full award plus costs. Her cross-examination strategy was decisive, and she spent weeks preparing our witnesses so thoroughly that opposing counsel struggled to land a single meaningful point during the hearing itself.', clientName: 'Georges K.', clientTitle: 'CEO', clientCompany: 'Regional Construction Group', serviceName: 'Dispute Resolution', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'She enforced a foreign arbitral award across two MENA jurisdictions where local counsel said it could not be done. Tenacious, strategic, and completely dependable, Nadia coordinated enforcement counsel in both countries herself rather than leaving it to a correspondent network we had never worked with.', clientName: 'Amira S.', clientTitle: 'Group Legal Director', clientCompany: 'Gulf Investment Holding', serviceName: 'Dispute Resolution', date: 'September 2025', isVerified: false },
+          { id: 3, quote: 'Nadia represented us in a construction dispute involving a delayed infrastructure project and a counterparty willing to litigate every point. Her settlement strategy, backed by a credible readiness to go to hearing, got us a resolution in four months that we had budgeted two years for.', clientName: 'Mounir T.', clientTitle: 'Project Director', clientCompany: 'Regional Engineering Contractor', serviceName: 'Dispute Resolution', date: 'April 2025', isVerified: true },
+          { id: 4, quote: 'We asked Nadia to review a draft settlement our previous counsel had recommended we accept. She identified that we were significantly underselling our position, renegotiated the terms, and closed at nearly double the original offer within three weeks.', clientName: 'Lina F.', clientTitle: 'Head of Legal', clientCompany: 'GCC Telecommunications Provider', serviceName: 'Dispute Resolution', date: 'December 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Future Leader - Arbitration', issuingBody: 'Who\'s Who Legal', year: 2025, description: null },
@@ -1704,8 +1763,10 @@
       },
       'oliver-schmidt': {
         testimonials: [
-          { id: 1, quote: 'Oliver led our €800m dual-listing on the Frankfurt and Amsterdam exchanges. His handling of BaFin and AFM in parallel was masterful - we never missed a milestone.', clientName: 'Katrin B.', clientTitle: 'CFO', clientCompany: 'German Technology Issuer', serviceName: 'Capital Markets', date: 'February 2026', isVerified: true },
-          { id: 2, quote: 'The benchmark for DCM counsel in Frankfurt. Oliver\'s EMTN programme update was the smoothest we have run in a decade of issuances.', clientName: 'Michael H.', clientTitle: 'Head of Funding', clientCompany: 'European Landesbank', serviceName: 'Capital Markets', date: 'November 2025', isVerified: true },
+          { id: 1, quote: 'Oliver led our €800m dual-listing on the Frankfurt and Amsterdam exchanges. His handling of BaFin and AFM in parallel was masterful - we never missed a milestone, and he ran daily coordination calls between both regulatory workstreams that kept our management team fully informed without ever feeling overwhelmed.', clientName: 'Katrin B.', clientTitle: 'CFO', clientCompany: 'German Technology Issuer', serviceName: 'Capital Markets', date: 'February 2026', isVerified: true },
+          { id: 2, quote: 'The benchmark for DCM counsel in Frankfurt. Oliver\'s EMTN programme update was the smoothest we have run in a decade of issuances, and his relationship with both rating agencies meant we avoided the usual back-and-forth that typically adds weeks to the process.', clientName: 'Michael H.', clientTitle: 'Head of Funding', clientCompany: 'European Landesbank', serviceName: 'Capital Markets', date: 'November 2025', isVerified: true },
+          { id: 3, quote: 'Oliver advised on our first green bond issuance, guiding us through a framework that satisfied both German regulators and international ESG investors. His attention to the verification process meant we avoided the greenwashing scrutiny that has tripped up several peer issuers this year.', clientName: 'Ingrid W.', clientTitle: 'Head of Sustainable Finance', clientCompany: 'German Utility Group', serviceName: 'Capital Markets', date: 'June 2025', isVerified: false },
+          { id: 4, quote: 'We engaged Oliver for a convertible bond restructuring under significant market pressure. He negotiated with our noteholder committee and BaFin simultaneously, closing a deal that preserved shareholder value in a situation our board genuinely feared would end in insolvency proceedings.', clientName: 'Stefan K.', clientTitle: 'CEO', clientCompany: 'German Industrial Mid-Cap', serviceName: 'Capital Markets', date: 'January 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Leading Individual - Capital Markets, Germany', issuingBody: 'IFLR1000', year: 2025, description: null },
@@ -1714,8 +1775,10 @@
       },
       'isabella-rossi': {
         testimonials: [
-          { id: 1, quote: 'Isabella guided our concordato preventivo through the Milan courts while keeping suppliers, banks, and the union at the table. The business survived because of her.', clientName: 'Paolo G.', clientTitle: 'Chairman', clientCompany: 'Italian Fashion Manufacturer', serviceName: 'Restructuring', date: 'January 2026', isVerified: true },
-          { id: 2, quote: 'Clear-eyed and calm under pressure. Isabella\'s debt restructuring plan won unanimous creditor approval - something our banks told us was impossible.', clientName: 'Francesca T.', clientTitle: 'CEO', clientCompany: 'Family-Owned Food Group', serviceName: 'Restructuring', date: 'August 2025', isVerified: true },
+          { id: 1, quote: 'Isabella guided our concordato preventivo through the Milan courts while keeping suppliers, banks, and the union at the table. The business survived because of her, and she personally negotiated with our three largest creditors when the rest of the syndicate was ready to walk away from the table entirely.', clientName: 'Paolo G.', clientTitle: 'Chairman', clientCompany: 'Italian Fashion Manufacturer', serviceName: 'Restructuring', date: 'January 2026', isVerified: true },
+          { id: 2, quote: 'Clear-eyed and calm under pressure. Isabella\'s debt restructuring plan won unanimous creditor approval - something our banks told us was impossible - and she delivered it in under four months, half the timeline our previous advisers had quoted us at the outset.', clientName: 'Francesca T.', clientTitle: 'CEO', clientCompany: 'Family-Owned Food Group', serviceName: 'Restructuring', date: 'August 2025', isVerified: true },
+          { id: 3, quote: 'Isabella advised our board through a pre-insolvency restructuring involving a syndicate of twelve lenders with conflicting priorities. Her standstill agreement bought us the breathing room to renegotiate supplier terms and ultimately avoid formal proceedings altogether.', clientName: 'Marco B.', clientTitle: 'CFO', clientCompany: 'Northern Italian Engineering Group', serviceName: 'Restructuring', date: 'April 2025', isVerified: false },
+          { id: 4, quote: 'We brought Isabella in after our first restructuring attempt with another firm collapsed under creditor objections. She rebuilt the plan from scratch, addressed every objection individually, and secured court approval on the second attempt within ten weeks.', clientName: 'Silvia R.', clientTitle: 'Managing Director', clientCompany: 'Italian Logistics Company', serviceName: 'Restructuring', date: 'October 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Leading Individual - Restructuring & Insolvency, Italy', issuingBody: 'Legal 500 EMEA', year: 2025, description: null },
@@ -1724,8 +1787,10 @@
       },
       'rajiv-menon': {
         testimonials: [
-          { id: 1, quote: 'Rajiv\'s fairness opinion on our related-party acquisition withstood SEBI scrutiny and a shareholder challenge. His independence and rigour are exactly why boards retain him.', clientName: 'Deepak M.', clientTitle: 'Independent Director', clientCompany: 'NSE-Listed Pharma Company', serviceName: 'Valuation', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'The purchase price allocation for our five-entity acquisition was delivered ahead of audit deadlines and accepted by our auditors without a single adjustment.', clientName: 'Priya R.', clientTitle: 'Group Controller', clientCompany: 'Confidential Conglomerate', serviceName: 'Valuation', date: 'October 2025', isVerified: false },
+          { id: 1, quote: 'Rajiv\'s fairness opinion on our related-party acquisition withstood SEBI scrutiny and a shareholder challenge. His independence and rigour are exactly why boards retain him, and he defended the methodology in person before our audit committee rather than leaving it to a written report alone.', clientName: 'Deepak M.', clientTitle: 'Independent Director', clientCompany: 'NSE-Listed Pharma Company', serviceName: 'Valuation', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'The purchase price allocation for our five-entity acquisition was delivered ahead of audit deadlines and accepted by our auditors without a single adjustment, which our finance team said had never happened across the six PPAs they had managed in prior years.', clientName: 'Priya R.', clientTitle: 'Group Controller', clientCompany: 'Confidential Conglomerate', serviceName: 'Valuation', date: 'October 2025', isVerified: false },
+          { id: 3, quote: 'Rajiv provided the independent valuation for a related-party demerger that regulators reviewed line by line. His documentation was thorough enough that we received clearance on the first submission, with no queries raised at all.', clientName: 'Sanjay K.', clientTitle: 'Company Secretary', clientCompany: 'BSE-Listed Textile Group', serviceName: 'Valuation', date: 'May 2025', isVerified: true },
+          { id: 4, quote: 'We engaged Rajiv for a business valuation ahead of a shareholder buyout that had already turned contentious. His independent methodology was accepted by both sides without further negotiation, which resolved a dispute that had been heading toward litigation for months.', clientName: 'Meenal J.', clientTitle: 'Legal Counsel', clientCompany: 'Family-Owned Retail Chain', serviceName: 'Valuation', date: 'January 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Registered Valuer of the Year (shortlist)', issuingBody: 'IBBI Valuation Excellence Awards', year: 2024, description: null },
@@ -1734,8 +1799,10 @@
       },
       'claire-dubois': {
         testimonials: [
-          { id: 1, quote: 'Claire secured unconditional Phase 1 clearance from the European Commission on a merger our previous counsel said would go to Phase 2. Her read of the case team was uncanny.', clientName: 'Henri L.', clientTitle: 'General Counsel', clientCompany: 'French Industrial Group', serviceName: 'Antitrust', date: 'February 2026', isVerified: true },
-          { id: 2, quote: 'In our cartel defence before the Autorité de la concurrence, Claire\'s leniency strategy reduced our exposure by more than half. Formidable and precise.', clientName: 'Isabelle M.', clientTitle: 'Directrice Juridique', clientCompany: 'European Distribution Group', serviceName: 'Antitrust', date: 'September 2025', isVerified: true },
+          { id: 1, quote: 'Claire secured unconditional Phase 1 clearance from the European Commission on a merger our previous counsel said would go to Phase 2. Her read of the case team was uncanny, and the remedies package she prepared as a contingency was never even needed because her core argument held from the outset.', clientName: 'Henri L.', clientTitle: 'General Counsel', clientCompany: 'French Industrial Group', serviceName: 'Antitrust', date: 'February 2026', isVerified: true },
+          { id: 2, quote: 'In our cartel defence before the Autorité de la concurrence, Claire\'s leniency strategy reduced our exposure by more than half. Formidable and precise, she managed the internal investigation and the regulatory engagement simultaneously without either workstream ever compromising the other.', clientName: 'Isabelle M.', clientTitle: 'Directrice Juridique', clientCompany: 'European Distribution Group', serviceName: 'Antitrust', date: 'September 2025', isVerified: true },
+          { id: 3, quote: 'Claire advised on a dominant-position complaint filed against us by a competitor. She built a factual defence so thorough that the Commission closed its preliminary inquiry within four months, well inside the timeline we had budgeted for a full investigation.', clientName: 'Antoine R.', clientTitle: 'Head of Legal, Europe', clientCompany: 'Global Consumer Platform', serviceName: 'Antitrust', date: 'March 2025', isVerified: false },
+          { id: 4, quote: 'We asked Claire to assess merger control risk across four EU jurisdictions before signing a cross-border deal. Her analysis let us restructure the transaction to avoid a mandatory filing in two of them, saving us months of regulatory review without weakening the deal.', clientName: 'Camille D.', clientTitle: 'M&A Director', clientCompany: 'French Media Conglomerate', serviceName: 'Antitrust', date: 'November 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Leading Individual - Competition/European Law, France', issuingBody: 'Legal 500 EMEA', year: 2025, description: null },
@@ -1744,8 +1811,10 @@
       },
       'ahmed-khoury': {
         testimonials: [
-          { id: 1, quote: 'Ahmed structured our $250m GCC buyout platform end to end - fund domicile, acquisition vehicles, and management incentive plans. He thinks like an investor, not just an adviser.', clientName: 'Faisal A.', clientTitle: 'Managing Partner', clientCompany: 'Gulf-Based PE Firm', serviceName: 'Private Equity', date: 'January 2026', isVerified: true },
-          { id: 2, quote: 'Our co-investment into a Saudi logistics platform closed in eleven weeks thanks to Ahmed\'s command of the new investment regulations. Exceptional execution.', clientName: 'Layla H.', clientTitle: 'Investment Director', clientCompany: 'Sovereign-Backed Fund', serviceName: 'Private Equity', date: 'June 2025', isVerified: true },
+          { id: 1, quote: 'Ahmed structured our $250m GCC buyout platform end to end - fund domicile, acquisition vehicles, and management incentive plans. He thinks like an investor, not just an adviser, and he pressure-tested the management incentive structure against three different exit scenarios before we ever presented it to our LPs.', clientName: 'Faisal A.', clientTitle: 'Managing Partner', clientCompany: 'Gulf-Based PE Firm', serviceName: 'Private Equity', date: 'January 2026', isVerified: true },
+          { id: 2, quote: 'Our co-investment into a Saudi logistics platform closed in eleven weeks thanks to Ahmed\'s command of the new investment regulations. Exceptional execution, and he kept our compliance team ahead of every filing deadline despite the regulatory framework still being genuinely new to most advisers in the market.', clientName: 'Layla H.', clientTitle: 'Investment Director', clientCompany: 'Sovereign-Backed Fund', serviceName: 'Private Equity', date: 'June 2025', isVerified: true },
+          { id: 3, quote: 'Ahmed led the legal workstream on our take-private of a regional retail group, coordinating financing, squeeze-out mechanics, and minority shareholder communications simultaneously. His steady hand kept the deal on track through two rounds of regulatory queries that could easily have derailed a less experienced adviser.', clientName: 'Nadia B.', clientTitle: 'Partner', clientCompany: 'MENA-Focused Buyout Fund', serviceName: 'Private Equity', date: 'February 2025', isVerified: false },
+          { id: 4, quote: 'We retained Ahmed to restructure our fund\'s carried interest arrangements ahead of a new LP entering the platform. He balanced the interests of existing and incoming investors in a way that preserved team incentives without triggering a renegotiation of every prior side letter.', clientName: 'Omar R.', clientTitle: 'CFO', clientCompany: 'Gulf Growth Equity Fund', serviceName: 'Private Equity', date: 'September 2024', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Highly Regarded - Private Equity, Middle East', issuingBody: 'IFLR1000', year: 2025, description: null },
@@ -1754,8 +1823,10 @@
       },
       'sophie-anderson': {
         testimonials: [
-          { id: 1, quote: 'Sophie guided us through an SEC enforcement inquiry that ended with no action taken. Her prior regulatory experience showed in every interaction with the staff.', clientName: 'Jonathan B.', clientTitle: 'Chief Legal Officer', clientCompany: 'US Digital Asset Platform', serviceName: 'Securities', date: 'March 2026', isVerified: true },
-          { id: 2, quote: 'Our Reg A+ offering and subsequent uplisting were handled flawlessly. Sophie is the rare securities lawyer who is proactive rather than reactive.', clientName: 'Rachel K.', clientTitle: 'CEO', clientCompany: 'Fintech Growth Company', serviceName: 'Securities', date: 'December 2025', isVerified: false },
+          { id: 1, quote: 'Sophie guided us through an SEC enforcement inquiry that ended with no action taken. Her prior regulatory experience showed in every interaction with the staff, and she prepared our executive team for interviews so thoroughly that not one of them was caught off guard by a follow-up question.', clientName: 'Jonathan B.', clientTitle: 'Chief Legal Officer', clientCompany: 'US Digital Asset Platform', serviceName: 'Securities', date: 'March 2026', isVerified: true },
+          { id: 2, quote: 'Our Reg A+ offering and subsequent uplisting were handled flawlessly. Sophie is the rare securities lawyer who is proactive rather than reactive, flagging disclosure issues in our draft filings weeks before our auditors even started their review.', clientName: 'Rachel K.', clientTitle: 'CEO', clientCompany: 'Fintech Growth Company', serviceName: 'Securities', date: 'December 2025', isVerified: false },
+          { id: 3, quote: 'Sophie advised on our first proxy contest, coordinating disclosure obligations with an activist investor campaign playing out in real time. Her calm counsel through board meetings that got genuinely tense was, more than once, the reason the room stayed focused on the actual issues.', clientName: 'Michael D.', clientTitle: 'General Counsel', clientCompany: 'NASDAQ-Listed Industrial Company', serviceName: 'Securities', date: 'July 2025', isVerified: true },
+          { id: 4, quote: 'We asked Sophie to review our disclosure controls ahead of a follow-on offering after a competitor faced an SEC comment letter over similar language. She rewrote our risk factors from the ground up, and our offering went through without a single SEC comment.', clientName: 'Elena V.', clientTitle: 'CFO', clientCompany: 'US SaaS Company', serviceName: 'Securities', date: 'February 2025', isVerified: true },
         ],
         awards: [
           { id: 1, title: 'Notable Practitioner - Securities Regulation', issuingBody: 'Chambers USA', year: 2025, description: null },
@@ -1779,15 +1850,57 @@
         .replace(/"/g, '&quot;');
     }
 
-    function toggleTesti(btn) {
-      const text = btn.previousElementSibling;
-      const expanded = text.classList.toggle('expanded');
-      btn.textContent = expanded ? 'View less' : 'View more';
+    function initialsOfClient(name) {
+      return (name || '?').trim().split(/\s+/).map(p => p.charAt(0)).slice(0, 2).join('').toUpperCase();
     }
 
     // ── Modal state ───────────────────────────────────
     let _modalOpen = false;
+    let _testiModalOpen = false;
     let currentMember = null;
+    let currentTestimonials = [];
+
+    function openTestiModal(idx) {
+      const t = currentTestimonials[idx];
+      if (!t) return;
+      const meta = [t.clientTitle, t.clientCompany].filter(Boolean).join(', ');
+      document.getElementById('mp-testi-modal-quote').textContent = t.quote;
+      document.getElementById('mp-testi-modal-avatar').textContent = initialsOfClient(t.clientName);
+      document.getElementById('mp-testi-modal-name').textContent = t.clientName;
+      document.getElementById('mp-testi-modal-meta').textContent = meta;
+      document.getElementById('mp-testi-modal-date').textContent = t.date || '';
+      document.getElementById('mp-testi-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      _testiModalOpen = true;
+    }
+
+    function closeTestiModal() {
+      document.getElementById('mp-testi-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      _testiModalOpen = false;
+    }
+
+    function setupTestiScroll(count) {
+      const outer = document.getElementById('reviews-testi-outer');
+      const btn = document.getElementById('testi-scroll-btn');
+      if (!outer || !btn) return;
+      if (count > 4) {
+        btn.style.display = '';
+        btn.onclick = function () {
+          const atBottom = outer.scrollTop + outer.clientHeight >= outer.scrollHeight - 4;
+          outer.scrollTo({ top: atBottom ? 0 : outer.scrollTop + outer.clientHeight, behavior: 'smooth' });
+        };
+        outer.onscroll = function () {
+          const atBottom = outer.scrollTop + outer.clientHeight >= outer.scrollHeight - 4;
+          btn.classList.toggle('at-bottom', atBottom);
+        };
+        outer.onscroll();
+      } else {
+        btn.style.display = 'none';
+        btn.onclick = null;
+        outer.onscroll = null;
+      }
+    }
 
     function openModal() {
       const overlay = document.getElementById('mp-modal-overlay');
@@ -2519,16 +2632,16 @@
         if (btn) btn.style.display = isOwnProfile ? '' : 'none';
       });
 
-      const initialsOfClient = (name) => (name || '?').trim().split(/\s+/).map(p => p.charAt(0)).slice(0, 2).join('').toUpperCase();
+      currentTestimonials = testimonials;
 
       if (testimonials.length || isOwnProfile) {
         document.getElementById('reviews-testi-section').style.display = '';
       }
       if (testimonials.length) {
-        const testiCardsHtml = testimonials.map(t => {
+        const testiCardsHtml = testimonials.map((t, i) => {
           const meta = [t.clientTitle, t.clientCompany].filter(Boolean).join(', ');
           return `
-        <div class="mp-testimonial">
+        <div class="mp-testimonial" data-testi-index="${i}">
           <span class="mp-testi-quote-icon">&ldquo;</span>
           <p class="mp-testi-text">${escHtml(t.quote)}</p>
           <div class="mp-testi-footer">
@@ -2549,6 +2662,7 @@
         <div><strong>No testimonials yet.</strong> Showcase client feedback - <button onclick="openSectionEditor('testimonials')">click Edit</button> to add your first testimonial.</div>
       </div>`;
       }
+      setupTestiScroll(testimonials.length);
 
       if (awards.length || isOwnProfile) {
         document.getElementById('reviews-awards-section').style.display = '';
@@ -2708,8 +2822,12 @@
         if (el.scrollHeight > el.clientHeight + 2) {
           const btn = document.createElement('button');
           btn.className = 'mp-testi-more';
-          btn.textContent = 'View more';
-          btn.onclick = function() { toggleTesti(this); };
+          btn.textContent = 'Read more';
+          btn.onclick = function () {
+            const card = el.closest('.mp-testimonial');
+            const idx = card ? parseInt(card.dataset.testiIndex, 10) : -1;
+            openTestiModal(idx);
+          };
           el.insertAdjacentElement('afterend', btn);
         }
       });
@@ -2718,10 +2836,15 @@
     // ── Keyboard / overlay listeners ─────────────────
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && _modalOpen) closeModal();
+      if (e.key === 'Escape' && _testiModalOpen) closeTestiModal();
     });
 
     document.getElementById('mp-modal-overlay').addEventListener('click', e => {
       if (e.target === document.getElementById('mp-modal-overlay')) closeModal();
+    });
+
+    document.getElementById('mp-testi-modal-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('mp-testi-modal-overlay')) closeTestiModal();
     });
 
     // ── Character counter ─────────────────────────────
