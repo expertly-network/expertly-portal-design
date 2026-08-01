@@ -130,7 +130,6 @@
           <div class="db-hero-stats-card db-hero-stats-card-horiz">
             <div class="db-hero-stats-head">
               <div class="db-hero-stats-title">Your activity</div>
-              <span class="db-hero-stats-live"><span class="db-hero-stats-live-dot"></span>Live</span>
             </div>
             <div class="db-hero-stats-grid" id="db-hero-stats"></div>
           </div>
@@ -320,14 +319,12 @@
     }
 
     // Activity stats (mock - the handful a member actually checks in on, not a
-    // full analytics dump). Quarter is computed from today's date so the copy stays sensible.
-    const now = new Date();
-    const quarter = Math.floor(now.getMonth() / 3) + 1;
+    // full analytics dump).
     const MEMBER_STATS = [
-      { value: 3, goal: 4, sub: '/4', label: `Articles · Q${quarter}`, trend: '+1 this month' },
-      { value: 8, goal: 10, sub: '', label: 'Consultations · this month', trend: '+3 vs last month' },
-      { value: 5, goal: 8, sub: '', label: 'Peer Connect · this month', trend: '+2 vs last month' },
-      { value: 2, goal: 5, sub: '', label: 'Referrals · this month', trend: 'Steady', flat: true }
+      { value: 3, goal: 4, sub: '/4', label: 'Articles' },
+      { value: 8, goal: 10, sub: '', label: 'Consultations' },
+      { value: 5, goal: 8, sub: '', label: 'Peer Connect' },
+      { value: 2, goal: 5, sub: '', label: 'Referrals' }
     ];
     const heroStats = document.getElementById('db-hero-stats');
     if (heroStats) {
@@ -345,7 +342,6 @@
             <div class="db-stat-ring-num">${s.value}${s.sub ? `<small>${s.sub}</small>` : ''}</div>
           </div>
           <div class="db-stat-label">${s.label}</div>
-          <div class="db-stat-trend"${s.flat ? ' style="color:var(--ink-4)"' : ''}>${s.trend}</div>
         </div>`;
       }).join('');
     }

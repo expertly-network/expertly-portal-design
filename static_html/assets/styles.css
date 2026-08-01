@@ -214,13 +214,22 @@
       color: var(--ink);
     }
 
+    /* ── Meta row (date/read/author/location) + share, sharing one line + border ── */
+    .art-detail-metarow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 18px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
     .art-detail-meta {
       display: flex;
       align-items: center;
       gap: 20px;
-      margin-top: 18px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--line);
       flex-wrap: wrap;
     }
 
@@ -236,6 +245,32 @@
     }
 
     .art-detail-meta-item svg { flex-shrink: 0; color: var(--ink-4); }
+
+    /* ── Inline share row — icon-only, outlined tiles ── */
+    .art-share-inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .art-share-chip {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      border: 1px solid var(--line); background: var(--bg-card); color: var(--ink-3);
+      text-decoration: none; cursor: pointer; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .art-share-chip:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 8px 18px -12px rgba(0,0,0,0.35); }
+    .art-share-chip svg { flex-shrink: 0; display: block; }
+    .art-share-glyph {
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 21px; height: 21px; border-radius: 5px; background: #B92B27;
+      font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #fff;
+    }
+    .art-share-chip .icon-check { display: none; color: var(--ok); }
+    .art-share-chip.copied { border-color: var(--ok); }
+    .art-share-chip.copied .icon-link { display: none; }
+    .art-share-chip.copied .icon-check { display: flex; }
 
     /* ── AI Summary block ──────────────────────────── */
     .art-ai-summary {
@@ -533,40 +568,6 @@
 
     .art-sidebar-label svg { color: var(--ink-4); flex-shrink: 0; }
 
-    /* ── Share this article — dark box, matches the site's black+green CTA treatment ── */
-    .art-share-box {
-      background: var(--ink); border-color: var(--ink); padding: 18px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 20px 40px -26px rgba(0,0,0,0.4);
-    }
-    .art-share-box::before {
-      content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px;
-      border-radius: 50%; background: color-mix(in oklab, var(--accent) 20%, transparent); pointer-events: none;
-    }
-    .art-share-label {
-      font-family: 'Archivo', sans-serif; font-size: var(--fs-eyebrow); font-weight: 700;
-      letter-spacing: 0.1em; color: rgba(255,255,255,0.5);
-      display: flex; align-items: center; gap: 7px; margin-bottom: 14px;
-    }
-    .art-share-label svg { color: var(--accent); flex-shrink: 0; }
-    .art-share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .art-share-btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 10px 12px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85);
-      font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
-      text-decoration: none; white-space: nowrap; transition: background 0.15s, border-color 0.15s, color 0.15s;
-    }
-    .art-share-btn svg { flex-shrink: 0; }
-    .art-share-btn:hover { background: var(--ink); border-color: var(--ink); color: var(--bg-card); }
-    .art-share-logo {
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      width: 18px; height: 18px; border-radius: 5px;
-      font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 12px; color: #fff;
-    }
-    .art-share-logo.li { background: #0A66C2; border-radius: 4px; }
-    .art-share-logo.reddit { background: #FF4500; border-radius: 50%; }
-    .art-share-logo.quora { background: #B92B27; border-radius: 4px; }
-
     /* ── About the Author ──────────────────────────── */
     .art-author-body {
       padding: 14px 18px 18px;
@@ -825,6 +826,7 @@
       .art-detail-left { padding: 22px 18px 28px; }
       .art-ai-summary { padding: 16px 18px; }
       .art-detail-body { font-size: 15px; }
+      .art-detail-metarow { flex-direction: column; align-items: flex-start; }
     }
 
 
@@ -1035,8 +1037,16 @@
       transform: translateY(-5px); border-color: var(--accent);
       box-shadow: 0 16px 48px -12px color-mix(in oklab, var(--accent) 18%, rgba(0,0,0,0.08));
     }
-    .anv-card-img { width: 100%; height: 190px; overflow: hidden; flex-shrink: 0; }
+    .anv-card-img { position: relative; width: 100%; height: 190px; overflow: hidden; flex-shrink: 0; }
     .anv-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform 0.4s ease; }
+    .anv-top-badge {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 5px 10px; border-radius: 99px; color: #fff;
+      background: rgba(11,11,12,0.7); backdrop-filter: blur(6px) saturate(140%); -webkit-backdrop-filter: blur(6px) saturate(140%);
+    }
+    .anv-top-badge svg { flex-shrink: 0; color: #FFB020; }
     .anv-card:hover .anv-card-img img { transform: scale(1.04); }
     .anv-card-body { flex: 1; padding: 12px 14px 14px; display: flex; flex-direction: column; }
     .anv-card-top-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
@@ -2021,11 +2031,12 @@
 
     /* ── Two-column layout ────────────────────────────────────────────── */
     .db-layout { display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: start; padding: 40px 0 100px; }
+    .db-layout > * { min-width: 0; }
     @media (max-width: 1000px) { .db-layout { grid-template-columns: 1fr 260px; gap: 36px; } }
     @media (max-width: 760px) { .db-layout { grid-template-columns: 1fr; } }
 
     /* ── Section header ───────────────────────────────────────────────── */
-    .db-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .db-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
     .db-section-head:not(:first-child) { margin-top: 36px; }
     .db-section-title { font-size: 19.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
     .db-section-link { font-size: 14.5px; color: var(--accent); font-weight: 500; text-decoration: none; transition: opacity 0.15s; }
@@ -2067,7 +2078,7 @@
       font-size: 13.5px; font-weight: 600; color: var(--accent); text-decoration: none;
     }
     .db-consult-viewall:hover { text-decoration: underline; }
-    .db-section-head-right { display: flex; align-items: center; gap: 14px; }
+    .db-section-head-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 
     /* ── Peer Connect match card ──────────────────────────────────────── */
     .db-match-card {

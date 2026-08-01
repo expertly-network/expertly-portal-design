@@ -1589,23 +1589,7 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   100% { opacity: 1; transform: scaleX(1) translateX(0); filter: blur(0); }
 }
 
-/* ── Spotlight cycle: JS adds these classes after entrance animations finish ──
-   animation: none !important kills the slide-in fill so inline transitions take over */
-.hcal-ev--done {
-  animation: none !important;
-  transition: opacity 0.55s ease, box-shadow 0.55s ease, transform 0.3s ease;
-  opacity: 0.85;
-  box-shadow: none;
-}
-.hcal-ev--done.hcal-ev--spotlit {
-  opacity: 1;
-  box-shadow: 0 2px 24px color-mix(in oklab, var(--ev-color, var(--accent)) 55%, transparent);
-  transform: translateY(-2px);
-  border-left-width: 4px;
-}
-
-.hcal-ev--live:hover,
-.hcal-ev--done:hover {
+.hcal-ev--live:hover {
   opacity: 1 !important;
   border-color: var(--ev-color, var(--accent)) !important;
   box-shadow: 0 3px 18px color-mix(in oklab, var(--ev-color, var(--accent)) 30%, transparent) !important;
@@ -1616,6 +1600,29 @@ a.m-pill:hover { transform: translateY(-2px); border-color: var(--ink); box-shad
   opacity: 0.7 !important;
   z-index: 10;
 }
+
+/* ── Month nav arrows ── */
+.hcal-nav-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid var(--line-2); background: var(--bg-card); color: var(--ink-3);
+  cursor: pointer; transition: border-color 0.15s, color 0.15s;
+}
+.hcal-nav-btn:hover { border-color: var(--ink); color: var(--ink); }
+.hcal-nav-btn:active { transform: scale(0.94); }
+
+/* ── Plain grey event-name tooltip — fixed-position, instant, no native hover delay ── */
+.hcal-tip {
+  position: fixed; z-index: 1000; max-width: 260px;
+  background: #E9E9EC; border: 1px solid rgba(0,0,0,0.06); color: var(--ink-2);
+  font-size: 12.5px; font-weight: 500; line-height: 1.4;
+  border-radius: 8px; padding: 7px 11px;
+  box-shadow: 0 4px 16px -6px rgba(0,0,0,0.25);
+  opacity: 0; transform: translateY(4px); pointer-events: none;
+  transition: opacity 0.06s linear, transform 0.06s linear;
+}
+.hcal-tip--below { transform: translateY(-4px); }
+.hcal-tip--visible { opacity: 1; transform: translateY(0); }
 
 /* Blinking live dot */
 .hcal-live {

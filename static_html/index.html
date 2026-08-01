@@ -650,7 +650,13 @@
 
           <div class="home-calendar">
             <div class="hcal-head">
+              <button type="button" class="hcal-nav-btn" id="hcal-prev" aria-label="Previous month">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+              </button>
               <span class="hcal-month-label" id="hcal-month-label"></span>
+              <button type="button" class="hcal-nav-btn" id="hcal-next" aria-label="Next month">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
             </div>
 
             <div class="hcal-layout">
@@ -690,179 +696,6 @@
           </div>
         </div>
 
-        <script>
-            (function () {
-              'use strict';
-
-              /* ── Event data ── */
-              var EVENTS = [
-                { title: 'Transfer Pricing Webinar', country: 'SG', s: [2026, 6, 7], e: [2026, 6, 7] },
-                { title: 'M&A Due Diligence Intensive', country: 'UK', s: [2026, 6, 10], e: [2026, 6, 11] },
-                { title: 'UAE Corporate Tax Briefing', country: 'AE', s: [2026, 6, 14], e: [2026, 6, 14] },
-                { title: 'TP Minds Intl: BEPS 2.0', country: 'US', s: [2026, 6, 17], e: [2026, 6, 19] },
-                { title: 'Global M&A Roundtable', country: 'UK', s: [2026, 6, 22], e: [2026, 6, 22] },
-                { title: 'Expertly Members Social', country: 'SG', s: [2026, 6, 24], e: [2026, 6, 24] },
-                { title: 'Compliance Leaders Forum', country: 'US', s: [2026, 6, 28], e: [2026, 6, 29] },
-                { title: 'Capital Markets Outlook H2', country: 'HK', s: [2026, 6, 31], e: [2026, 6, 31] }
-              ];
-
-              /* ── Date helpers ── */
-              var today = new Date(); today.setHours(0, 0, 0, 0);
-              var yr = today.getFullYear();
-              var mo = today.getMonth();
-
-              var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
-
-              var labelEl = document.getElementById('hcal-month-label');
-              if (labelEl) labelEl.textContent = MONTH_NAMES[mo] + ' ' + yr;
-
-              var firstDOW = new Date(yr, mo, 1).getDay();
-              var startOffset = firstDOW === 0 ? 6 : firstDOW - 1;
-              var daysInMonth = new Date(yr, mo + 1, 0).getDate();
-              var totalWeeks = Math.ceil((startOffset + daysInMonth) / 7);
-
-              var events = EVENTS.map(function (ev) {
-                var sd = new Date(ev.s[0], ev.s[1], ev.s[2]);
-                var ed = new Date(ev.e[0], ev.e[1], ev.e[2]);
-                return { title: ev.title, country: ev.country || '', sd: sd, ed: ed, isPast: ed < today };
-              });
-
-              /* ── Build calendar grid ── */
-              var body = document.getElementById('hcal-body');
-              if (!body) return;
-              var liveDelay = 0.2;
-
-              for (var w = 0; w < totalWeeks; w++) {
-                var weekStart = w * 7 - startOffset + 1;
-                var weekEl = document.createElement('div');
-                weekEl.className = 'hcal-week';
-
-                var bgEl = document.createElement('div');
-                bgEl.className = 'hcal-bg';
-
-                for (var d = 0; d < 7; d++) {
-                  var dn = weekStart + d;
-                  var cel = document.createElement('div');
-                  if (dn < 1 || dn > daysInMonth) {
-                    cel.className = 'hcal-cell hcal-cell--empty';
-                  } else {
-                    var cDate = new Date(yr, mo, dn);
-                    var isToday = cDate.getTime() === today.getTime();
-                    var isPastDay = cDate < today;
-                    var cls = 'hcal-cell';
-                    if (isToday) cls += ' today';
-                    else if (isPastDay) cls += ' past';
-                    if (d >= 5) cls += ' weekend';
-                    cel.className = cls;
-                    var dnEl = document.createElement('span');
-                    dnEl.className = 'hcal-dn';
-                    dnEl.textContent = dn;
-                    cel.appendChild(dnEl);
-                  }
-                  bgEl.appendChild(cel);
-                }
-                weekEl.appendChild(bgEl);
-
-                var weekEvs = [];
-                events.forEach(function (ev) {
-                  if (ev.sd.getFullYear() !== yr || ev.sd.getMonth() !== mo) {
-                    if (ev.ed.getFullYear() !== yr || ev.ed.getMonth() !== mo) return;
-                  }
-                  var esd = ev.sd.getDate(), eed = ev.ed.getDate();
-                  var wEnd = weekStart + 6;
-                  if (esd > Math.min(daysInMonth, wEnd)) return;
-                  if (eed < Math.max(1, weekStart)) return;
-                  var ds = Math.max(esd, Math.max(1, weekStart));
-                  var de = Math.min(eed, Math.min(daysInMonth, wEnd));
-                  weekEvs.push({ ev: ev, col: ds - weekStart + 1, span: de - ds + 1 });
-                });
-
-                if (weekEvs.length) {
-                  var layerEl = document.createElement('div');
-                  layerEl.className = 'hcal-ev-layer';
-                  weekEvs.forEach(function (item) {
-                    var ev = item.ev;
-                    var aEl = document.createElement('a');
-                    aEl.href = 'events.html';
-                    aEl.className = 'hcal-ev ' + (ev.isPast ? 'hcal-ev--past' : 'hcal-ev--live');
-                    var delay = ev.isPast ? '0.1' : (liveDelay += 0.18, (liveDelay - 0.18).toFixed(2));
-                    aEl.style.cssText = 'grid-column:' + item.col + '/span ' + item.span +
-                      (ev.isPast ? ';--ev-color:#C0C0C5' : '') +
-                      ';--ev-delay:' + delay + 's';
-                    var html = '';
-                    if (ev.country) html += '<span class="hcal-ev-country">' + ev.country + '</span>';
-                    html += '<span class="hcal-ev-title">' + ev.title + '</span>';
-                    aEl.innerHTML = html;
-                    layerEl.appendChild(aEl);
-                  });
-                  weekEl.appendChild(layerEl);
-                }
-                body.appendChild(weekEl);
-              }
-
-              /* ── Mobile: upcoming list ── */
-              var mobileEl = document.getElementById('hcal-mobile');
-              if (mobileEl) {
-                var upcomingMob = events.filter(function (ev) { return !ev.isPast; });
-                var mon3m = MONTH_NAMES[mo].slice(0, 3).toUpperCase();
-                mobileEl.innerHTML = upcomingMob.map(function (ev) {
-                  var sDay = ev.sd.getDate(), eDay = ev.ed.getDate();
-                  var dateHtml = sDay === eDay
-                    ? '<div class="event-date-day">' + sDay + '</div>'
-                    : '<div class="event-date-range">' + sDay + '–' + eDay + '</div>';
-                  return '<a href="events.html" class="event-card">' +
-                    '<div class="event-date"><div class="event-date-month">' + mon3m + '</div>' + dateHtml + '</div>' +
-                    '<div class="event-body">' +
-                    '<h3>' + ev.title + '</h3>' +
-                    '<div class="event-foot"><span class="event-register">Find out more →</span></div>' +
-                    '</div></a>';
-                }).join('');
-              }
-
-              /* ── Entrance animations + spotlight cycle ── */
-              var cal = document.querySelector('.home-calendar');
-
-              function startSpotlight() {
-                var evEls = Array.from(document.querySelectorAll('.hcal-ev--live'));
-                if (evEls.length < 2) return;
-                evEls.forEach(function (el) { el.classList.add('hcal-ev--done'); });
-                evEls.forEach(function (el) { el.classList.add('hcal-ev--spotlit'); });
-
-                var idx = 0;
-                var bulkPhase = true;
-                function cycle() {
-                  if (bulkPhase) {
-                    bulkPhase = false;
-                    evEls.forEach(function (el) { el.classList.remove('hcal-ev--spotlit'); });
-                    evEls[idx].classList.add('hcal-ev--spotlit');
-                    idx = (idx + 1) % evEls.length;
-                  } else if (idx === 0) {
-                    bulkPhase = true;
-                    evEls.forEach(function (el) { el.classList.add('hcal-ev--spotlit'); });
-                  } else {
-                    evEls.forEach(function (el) { el.classList.remove('hcal-ev--spotlit'); });
-                    evEls[idx].classList.add('hcal-ev--spotlit');
-                    idx = (idx + 1) % evEls.length;
-                  }
-                }
-                setInterval(cycle, 2200);
-              }
-
-              function activate() {
-                if (!cal) return;
-                cal.classList.add('hcal-animated');
-                var waitMs = Math.round((liveDelay + 0.55 + 0.25) * 1000);
-                setTimeout(startSpotlight, waitMs);
-              }
-
-              if (!window.IntersectionObserver) { setTimeout(activate, 100); return; }
-              var t = setTimeout(activate, 400);
-              new IntersectionObserver(function (e) {
-                if (e[0].isIntersecting) { clearTimeout(t); activate(); }
-              }, { threshold: 0.05 }).observe(cal);
-            })();
-        </script>
       </section>
 
       <!-- ====================== TESTIMONIALS ====================== -->
@@ -1225,6 +1058,226 @@
   <script src="assets/members.js?v=11"></script>
   <script src="assets/shared.js?v=11"></script>
   <script src="assets/home.js?v=11"></script>
+
+  <!-- Homepage mini-calendar: sources events live from window.EXPERTLY_EVENTS so it always
+       reflects the current month (and any month reachable via prev/next) with no stale data. -->
+  <script>
+    (function () {
+      'use strict';
+
+      var MONTH_CODE = { JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11 };
+      var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+      var COUNTRY_CODE = {
+        'United States': 'US', 'United Kingdom': 'UK', 'South Korea': 'KR', 'India': 'IN',
+        'Netherlands': 'NL', 'Singapore': 'SG', 'United Arab Emirates': 'AE', 'Switzerland': 'CH',
+        'Hong Kong': 'HK', 'Belgium': 'BE', 'Germany': 'DE', 'Spain': 'ES', 'France': 'FR',
+        'Cayman Islands': 'KY', 'Egypt': 'EG', 'Canada': 'CA'
+      };
+      var DATA_YEAR = 2026; // seed event data carries no year field, matching events.html's own convention
+
+      function countryCode(name) { return COUNTRY_CODE[name] || (name || '').slice(0, 2).toUpperCase(); }
+      function parseEventDate(str) {
+        var parts = str.split(' ');
+        return new Date(DATA_YEAR, MONTH_CODE[parts[0]], parseInt(parts[1], 10));
+      }
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      var baseYear = today.getFullYear(), baseMonth = today.getMonth();
+      var monthOffset = 0;
+
+      var allEvents = (window.EXPERTLY_EVENTS || []).map(function (e) {
+        var sd = parseEventDate(e.start);
+        var ed = e.end ? parseEventDate(e.end) : sd;
+        return {
+          title: e.title, desc: e.desc, category: e.category,
+          city: e.city, country: e.country, cc: countryCode(e.country),
+          sd: sd, ed: ed
+        };
+      });
+
+      var labelEl = document.getElementById('hcal-month-label');
+      var body = document.getElementById('hcal-body');
+      var mobileEl = document.getElementById('hcal-mobile');
+      var prevBtn = document.getElementById('hcal-prev');
+      var nextBtn = document.getElementById('hcal-next');
+      var cal = document.querySelector('.home-calendar');
+      if (!body) return;
+
+      /* ── Plain grey tooltip, shown instantly (no native browser hover delay).
+         Fixed-position + shared single element so it's never clipped by the
+         calendar's own overflow:hidden rows, and always lands over the cursor
+         regardless of where in the pill (including the very edges) it fired from. ── */
+      var tip = document.createElement('div');
+      tip.className = 'hcal-tip';
+      tip.setAttribute('role', 'tooltip');
+      document.body.appendChild(tip);
+
+      function positionTip(el) {
+        var r = el.getBoundingClientRect();
+        var tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = Math.max(8, Math.min(r.left, window.innerWidth - tw - 8));
+        var top = r.top - th - 8;
+        var below = top < 8;
+        if (below) top = r.bottom + 8;
+        tip.style.left = left + 'px';
+        tip.style.top = top + 'px';
+        tip.classList.toggle('hcal-tip--below', below);
+      }
+      function showTip(el, title) {
+        tip.textContent = title;
+        tip.classList.add('hcal-tip--visible');
+        positionTip(el);
+      }
+      function hideTip() { tip.classList.remove('hcal-tip--visible'); }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest || !e.target.closest('.hcal-ev')) hideTip();
+      });
+      window.addEventListener('scroll', hideTip, { passive: true });
+
+      function renderMonth() {
+        var view = new Date(baseYear, baseMonth + monthOffset, 1);
+        var yr = view.getFullYear(), mo = view.getMonth();
+
+        if (labelEl) labelEl.textContent = MONTH_NAMES[mo] + ' ' + yr;
+
+        var firstDOW = new Date(yr, mo, 1).getDay();
+        var startOffset = firstDOW === 0 ? 6 : firstDOW - 1;
+        var daysInMonth = new Date(yr, mo + 1, 0).getDate();
+        var totalWeeks = Math.ceil((startOffset + daysInMonth) / 7);
+
+        var events = allEvents.map(function (ev) {
+          return {
+            title: ev.title, desc: ev.desc, category: ev.category, city: ev.city,
+            country: ev.country, cc: ev.cc, sd: ev.sd, ed: ev.ed, isPast: ev.ed < today
+          };
+        });
+
+        body.innerHTML = '';
+        var liveDelay = 0.2;
+
+        for (var w = 0; w < totalWeeks; w++) {
+          var weekStart = w * 7 - startOffset + 1;
+          var weekEl = document.createElement('div');
+          weekEl.className = 'hcal-week';
+
+          var bgEl = document.createElement('div');
+          bgEl.className = 'hcal-bg';
+
+          for (var d = 0; d < 7; d++) {
+            var dn = weekStart + d;
+            var cel = document.createElement('div');
+            if (dn < 1 || dn > daysInMonth) {
+              cel.className = 'hcal-cell hcal-cell--empty';
+            } else {
+              var cDate = new Date(yr, mo, dn);
+              var isToday = cDate.getTime() === today.getTime();
+              var isPastDay = cDate < today;
+              var cls = 'hcal-cell';
+              if (isToday) cls += ' today';
+              else if (isPastDay) cls += ' past';
+              if (d >= 5) cls += ' weekend';
+              cel.className = cls;
+              var dnEl = document.createElement('span');
+              dnEl.className = 'hcal-dn';
+              dnEl.textContent = dn;
+              cel.appendChild(dnEl);
+            }
+            bgEl.appendChild(cel);
+          }
+          weekEl.appendChild(bgEl);
+
+          var weekEvs = [];
+          events.forEach(function (ev) {
+            if (ev.sd.getFullYear() !== yr || ev.sd.getMonth() !== mo) {
+              if (ev.ed.getFullYear() !== yr || ev.ed.getMonth() !== mo) return;
+            }
+            var esd = ev.sd.getDate(), eed = ev.ed.getDate();
+            var wEnd = weekStart + 6;
+            if (esd > Math.min(daysInMonth, wEnd)) return;
+            if (eed < Math.max(1, weekStart)) return;
+            var ds = Math.max(esd, Math.max(1, weekStart));
+            var de = Math.min(eed, Math.min(daysInMonth, wEnd));
+            weekEvs.push({ ev: ev, col: ds - weekStart + 1, span: de - ds + 1 });
+          });
+
+          if (weekEvs.length) {
+            var layerEl = document.createElement('div');
+            layerEl.className = 'hcal-ev-layer';
+            weekEvs.forEach(function (item) {
+              var ev = item.ev;
+              var aEl = document.createElement('a');
+              aEl.href = 'events.html';
+              aEl.className = 'hcal-ev ' + (ev.isPast ? 'hcal-ev--past' : 'hcal-ev--live');
+              var delay = ev.isPast ? '0.1' : (liveDelay += 0.18, (liveDelay - 0.18).toFixed(2));
+              aEl.style.cssText = 'grid-column:' + item.col + '/span ' + item.span +
+                (ev.isPast ? ';--ev-color:#C0C0C5' : '') +
+                ';--ev-delay:' + delay + 's';
+
+              var html = '';
+              if (ev.cc) html += '<span class="hcal-ev-country">' + ev.cc + '</span>';
+              html += '<span class="hcal-ev-title">' + ev.title + '</span>';
+              aEl.innerHTML = html;
+
+              aEl.addEventListener('mouseenter', function () { showTip(aEl, ev.title); });
+              aEl.addEventListener('mouseleave', hideTip);
+              aEl.addEventListener('focus', function () { showTip(aEl, ev.title); });
+              aEl.addEventListener('blur', hideTip);
+              aEl.addEventListener('click', function (evt) {
+                if (!tip.classList.contains('hcal-tip--visible')) {
+                  evt.preventDefault();
+                  showTip(aEl, ev.title);
+                }
+              });
+
+              layerEl.appendChild(aEl);
+            });
+            weekEl.appendChild(layerEl);
+          }
+          body.appendChild(weekEl);
+        }
+
+        if (mobileEl) {
+          var mon3m = MONTH_NAMES[mo].slice(0, 3).toUpperCase();
+          var monthEvs = events.filter(function (ev) {
+            return (ev.sd.getFullYear() === yr && ev.sd.getMonth() === mo) ||
+              (ev.ed.getFullYear() === yr && ev.ed.getMonth() === mo);
+          });
+          mobileEl.innerHTML = monthEvs.map(function (ev) {
+            var sDay = ev.sd.getDate(), eDay = ev.ed.getDate();
+            var dateHtml = sDay === eDay
+              ? '<div class="event-date-day">' + sDay + '</div>'
+              : '<div class="event-date-range">' + sDay + '–' + eDay + '</div>';
+            return '<a href="events.html" class="event-card">' +
+              '<div class="event-date"><div class="event-date-month">' + mon3m + '</div>' + dateHtml + '</div>' +
+              '<div class="event-body">' +
+              '<h3>' + ev.title + '</h3>' +
+              '<div class="event-foot"><span class="event-register">Find out more →</span></div>' +
+              '</div></a>';
+          }).join('');
+        }
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function () { monthOffset -= 1; renderMonth(); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { monthOffset += 1; renderMonth(); });
+
+      renderMonth();
+
+      /* ── Entrance animation: play once the calendar first scrolls into view.
+         Freshly-rendered event bars (e.g. after a prev/next click) animate in
+         immediately once this class is present, no extra wiring needed. ── */
+      function activate() { if (cal) cal.classList.add('hcal-animated'); }
+      if (!window.IntersectionObserver) {
+        setTimeout(activate, 100);
+      } else {
+        var t = setTimeout(activate, 400);
+        new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) { clearTimeout(t); activate(); }
+        }, { threshold: 0.05 }).observe(cal);
+      }
+    })();
+  </script>
+
   <script>
     (function () {
       const phrases = [

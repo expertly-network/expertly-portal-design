@@ -559,7 +559,7 @@ function initLatestArticles() {
   const featuredAuthor = authorOf(featured.author) || { name: 'Expertly Counsel', title: 'Specialist' };
   
   let html = `
-    <a href="articles.html#${featured.id}" class="article-featured">
+    <a href="article.html?id=${featured.id}" class="article-featured">
       <div class="article-img">
         <span class="chip chip-ink" style="position: absolute; top: 20px; left: 20px;">${featured.category}</span>
         <img class="article-photo" src="${featured.image}" alt="${featured.title}" loading="lazy" />
@@ -580,7 +580,7 @@ function initLatestArticles() {
       ${rest.map((a, i) => {
         const author = authorOf(a.author) || { name: 'Expertly Counsel' };
         return `
-          <a href="articles.html#${a.id}" class="article-row">
+          <a href="article.html?id=${a.id}" class="article-row">
             <div class="article-row-num mono">0${i + 2}</div>
             <div class="article-row-body">
               <div class="article-row-meta">
