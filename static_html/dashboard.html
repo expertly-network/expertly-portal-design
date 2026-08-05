@@ -235,6 +235,31 @@
             </div>
           </div>
 
+          <!-- Share your experience: deal closed / general feedback -->
+          <div class="db-rail-card db-exp-card" id="db-exp-card">
+            <div class="db-exp-head" id="db-exp-toggle">
+              <div class="db-exp-head-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </div>
+              <div>
+                <div class="db-rail-title" style="margin-bottom:2px;">Closed a deal on Expertly?</div>
+                <p class="db-exp-sub">Tell us about it - or share any feedback.</p>
+              </div>
+              <span class="db-exp-chevron" id="db-exp-chevron">▾</span>
+            </div>
+
+            <form class="db-exp-form" id="db-exp-form" hidden>
+              <div class="db-exp-type" id="db-exp-type">
+                <button type="button" class="db-exp-type-btn active" data-type="deal_closed">Deal closed</button>
+                <button type="button" class="db-exp-type-btn" data-type="feedback">Feedback</button>
+              </div>
+              <input type="hidden" id="db-exp-type-value" value="deal_closed">
+              <textarea id="db-exp-message" rows="3" placeholder="What happened?" required></textarea>
+              <button type="submit" class="btn btn-primary" id="db-exp-submit" style="width:100%;">Submit</button>
+              <p class="db-exp-success" id="db-exp-success" hidden>Thanks - the team will follow up if needed.</p>
+            </form>
+          </div>
+
         </aside>
       </div>
 
@@ -255,6 +280,7 @@
 </div>
 
 <script src="assets/members.js"></script>
+<script src="assets/admin-data.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 <script src="assets/hero-mesh.js"></script>
@@ -444,6 +470,58 @@
       strip.innerHTML = members.map(chip).join('') + members.map(chip).join('');
     }
   });
+
+  // ── Share your experience: deal closed / general feedback ──
+  (function () {
+    const toggle = document.getElementById('db-exp-toggle');
+    const form = document.getElementById('db-exp-form');
+    const chevron = document.getElementById('db-exp-chevron');
+    const typeWrap = document.getElementById('db-exp-type');
+    const typeValue = document.getElementById('db-exp-type-value');
+    if (!toggle || !form) return;
+
+    toggle.addEventListener('click', () => {
+      const open = !form.hidden;
+      form.hidden = open;
+      chevron.textContent = open ? '▾' : '▴';
+    });
+
+    typeWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.db-exp-type-btn');
+      if (!btn) return;
+      typeWrap.querySelectorAll('.db-exp-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      typeValue.value = btn.getAttribute('data-type');
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const messageEl = document.getElementById('db-exp-message');
+      const members = window.EXPERTLY_MEMBERS || [];
+      const me = members.find(m => m.id === 'amara-osei') || members[0] || {};
+
+      if (window.ExpertlyAdmin) {
+        window.ExpertlyAdmin.pushExperienceFeedback({
+          type: typeValue.value,
+          name: me.name || 'Member',
+          email: me.ownerEmail || '',
+          message: messageEl.value.trim()
+        });
+      }
+
+      const submitBtn = document.getElementById('db-exp-submit');
+      const successEl = document.getElementById('db-exp-success');
+      messageEl.value = '';
+      submitBtn.hidden = true;
+      successEl.hidden = false;
+      setTimeout(() => {
+        submitBtn.hidden = false;
+        successEl.hidden = true;
+        form.hidden = true;
+        chevron.textContent = '▾';
+      }, 2600);
+    });
+  })();
 </script>
 </body>
 </html>

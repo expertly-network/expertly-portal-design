@@ -117,6 +117,21 @@
 
             <h1 class="art-detail-title" id="art-title">Loading…</h1>
 
+            <div class="art-engagement-row" id="art-engagement-row">
+              <button class="art-engage-btn art-like-btn" id="art-like-btn" type="button" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                <span id="art-like-count">0</span>
+              </button>
+              <span class="art-engage-stat" id="art-view-stat">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span id="art-view-count">0</span> views
+              </span>
+              <a class="art-engage-stat art-engage-link" href="#art-comments">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                <span id="art-comment-count">0</span> comments
+              </a>
+            </div>
+
             <div class="art-detail-metarow">
               <div class="art-detail-meta" id="art-meta"></div>
               <div class="art-share-inline" id="art-share-inline">
@@ -161,6 +176,23 @@
             <p class="art-detail-disclaimer">
               The views expressed in this article are those of the author and do not constitute legal, tax, or financial advice. This content is published for informational purposes only. Readers should seek independent professional advice before acting on any information contained herein.
             </p>
+
+            <!-- Discussion / comments -->
+            <div class="art-comments" id="art-comments">
+              <div class="art-comments-head">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                <span>Discussion (<span id="art-comments-count-head">0</span>)</span>
+              </div>
+
+              <form class="art-comment-form" id="art-comment-form">
+                <input type="text" class="art-comment-name" id="art-comment-name" placeholder="Your name" required>
+                <textarea class="art-comment-text" id="art-comment-text" rows="3" placeholder="Add to the discussion…" required></textarea>
+                <button type="submit" class="btn btn-primary">Post comment</button>
+              </form>
+
+              <div class="art-comments-list" id="art-comments-list"></div>
+              <p class="art-comments-empty" id="art-comments-empty" style="display:none;">No comments yet - be the first to weigh in.</p>
+            </div>
 
           </article>
         </div><!-- /.art-card -->
@@ -224,6 +256,7 @@
 
 <script src="assets/members.js"></script>
 <script src="assets/admin-data.js"></script>
+<script src="assets/article-engagement.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 <script>
@@ -243,6 +276,8 @@
     if (!form) return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var emailInput = document.getElementById('art-newsletter-email');
+      if (window.ExpertlyAdmin && emailInput) window.ExpertlyAdmin.pushSubscriber(emailInput.value);
       card.classList.add('subscribed');
     });
   })();
@@ -391,6 +426,75 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('art-body').innerHTML =
     adminBody || customBodies[article.id] || genericBody(article);
 
+  /* ── Engagement: views, likes, comments ── */
+  if (window.ExpertlyEngagement) {
+    const eng = window.ExpertlyEngagement;
+    eng.recordView(article.id);
+
+    const likeBtn = document.getElementById('art-like-btn');
+    const likeCountEl = document.getElementById('art-like-count');
+    const viewCountEl = document.getElementById('art-view-count');
+    const commentCountEl = document.getElementById('art-comment-count');
+    const commentCountHeadEl = document.getElementById('art-comments-count-head');
+    const commentsListEl = document.getElementById('art-comments-list');
+    const commentsEmptyEl = document.getElementById('art-comments-empty');
+    const commentForm = document.getElementById('art-comment-form');
+    const commentNameInput = document.getElementById('art-comment-name');
+    const commentTextInput = document.getElementById('art-comment-text');
+
+    function fmtCommentDate(iso) {
+      const d = new Date(iso);
+      return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function escHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function refreshCounts() {
+      viewCountEl.textContent = eng.getViews(article.id);
+      likeCountEl.textContent = eng.getLikes(article.id);
+      likeBtn.classList.toggle('liked', eng.isLiked(article.id));
+      likeBtn.setAttribute('aria-pressed', eng.isLiked(article.id) ? 'true' : 'false');
+    }
+
+    function renderComments() {
+      const comments = eng.getComments(article.id);
+      commentCountEl.textContent = comments.length;
+      commentCountHeadEl.textContent = comments.length;
+      commentsEmptyEl.style.display = comments.length ? 'none' : 'block';
+      commentsListEl.innerHTML = comments.slice().reverse().map(c => `
+        <div class="art-comment">
+          <div class="art-comment-avatar">${escHtml((c.name || '?').charAt(0).toUpperCase())}</div>
+          <div class="art-comment-body">
+            <div class="art-comment-meta"><b>${escHtml(c.name)}</b><span>${fmtCommentDate(c.at)}</span></div>
+            <p>${escHtml(c.text)}</p>
+          </div>
+        </div>`).join('');
+    }
+
+    refreshCounts();
+    renderComments();
+
+    likeBtn.addEventListener('click', () => { eng.toggleLike(article.id); refreshCounts(); });
+
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem('expertly_session')); } catch (e) {}
+    if (session) {
+      const sessionName = [session.firstName, session.lastName].filter(Boolean).join(' ') || (session.email || '').split('@')[0];
+      if (sessionName) commentNameInput.value = sessionName;
+    }
+
+    commentForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = commentNameInput.value.trim();
+      const text = commentTextInput.value.trim();
+      if (!name || !text) return;
+      eng.addComment(article.id, { name, text });
+      commentTextInput.value = '';
+      renderComments();
+    });
+  }
+
   /* ── About the Author ── */
   const photoHtml = author.img
     ? `<img class="art-author-photo" src="${author.img}" alt="${author.name}" loading="lazy" />`
@@ -468,11 +572,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const thumb = a.image
       ? `<img class="art-related-thumb" src="${a.image}" alt="${a.title}" loading="lazy" />`
       : `<div class="art-related-thumb-placeholder"></div>`;
+    const catColor = window.categoryColorFor ? window.categoryColorFor(a.category) : null;
+    const catChipStyle = catColor ? `background:${catColor.bg};color:${catColor.fg};` : '';
     return `
       <a class="art-related-item" href="article.html?id=${a.id}">
         ${thumb}
         <div class="art-related-body">
-          <div class="art-related-cat">${a.category}</div>
+          <div class="art-related-cat" style="${catChipStyle}">${a.category}</div>
           <div class="art-related-title">${a.title}</div>
           <div class="art-related-meta">${a.date} · ${a.readTime}</div>
         </div>

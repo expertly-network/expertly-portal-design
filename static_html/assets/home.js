@@ -400,6 +400,7 @@ function initNewsletter() {
     e.preventDefault();
     const input = form.querySelector('input');
     if (input && input.value) {
+      if (window.ExpertlyAdmin) window.ExpertlyAdmin.pushSubscriber(input.value);
       btn.textContent = '✓ Subscribed';
       btn.disabled = true;
       input.disabled = true;

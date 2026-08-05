@@ -43,6 +43,24 @@ function hslToHex(h, s, l) {
   return `#${rHex}${gHex}${bHex}`;
 }
 
+/* ==========================================================================
+   Practice-area category chip coloring — a stable hue per category name
+   (hashed, not hand-mapped) so any practice area, including custom ones
+   added later, gets a consistent, distinguishable color automatically.
+   ========================================================================== */
+function categoryColorFor(category) {
+  const str = String(category || '').trim().toLowerCase();
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  const hue = hash % 360;
+  return {
+    bg: `hsl(${hue} 72% 94%)`,
+    fg: `hsl(${hue} 55% 32%)`,
+    dot: `hsl(${hue} 62% 48%)`
+  };
+}
+window.categoryColorFor = categoryColorFor;
+
 function applyCustomColor(hex) {
   if (!hex || !/^#[0-9A-F]{6}$/i.test(hex)) return;
   const hsl = hexToHsl(hex);
@@ -191,6 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Initialize Animated Counters
   initCounters();
+
+  // 8. Initialize Back to Top button
+  initBackToTop();
 });
 
 /* ==========================================================================
@@ -238,11 +259,13 @@ function renderNav() {
 
   let actionsHtml;
   if (session && session.email) {
-    const initial = session.email.charAt(0).toUpperCase();
+    const fullName = [session.firstName, session.lastName].filter(Boolean).join(' ');
+    const initial = session.firstName ? session.firstName.charAt(0).toUpperCase() : session.email.charAt(0).toUpperCase();
     const avatar = `
-      <div class="nav-avatar" id="nav-avatar-btn" title="${session.email}">
+      <div class="nav-avatar" id="nav-avatar-btn" title="${fullName || session.email}">
         ${initial}
         <div class="nav-avatar-menu" id="nav-avatar-menu">
+          ${fullName ? `<span class="nav-avatar-name">${fullName}</span>` : ''}
           <span class="nav-avatar-email">${session.email}</span>
           <button id="nav-logout-btn">Log out</button>
         </div>
@@ -391,9 +414,11 @@ function injectDynamicElements() {
   // Inject Theme Color Customizer CSS styles dynamically
   const styleEl = document.createElement('style');
   styleEl.textContent = `
-    /* Theme Customizer FAB */
+    /* Theme Customizer FAB — the live site won't ship this color picker, so it's
+       parked next to the back-to-top button (which does ship) rather than in the
+       primary bottom-right corner slot. */
     .theme-cust-fab {
-      position: fixed; bottom: 20px; right: 20px;
+      position: fixed; bottom: 20px; right: 80px;
       width: 48px; height: 48px; border-radius: 50%;
       background: var(--ink); color: var(--bg);
       display: flex; align-items: center; justify-content: center;
@@ -419,7 +444,7 @@ function injectDynamicElements() {
 
     /* Popover Panel */
     .theme-cust-panel {
-      position: fixed; bottom: 80px; right: 20px;
+      position: fixed; bottom: 80px; right: 80px;
       background: var(--bg-card); color: var(--ink);
       border: 1px solid var(--line-2);
       border-radius: 16px;
@@ -498,12 +523,13 @@ function injectDynamicElements() {
       background: var(--ink); color: var(--bg); border-color: var(--ink);
     }
 
-    /* Tweaks Panel and FAB offset */
+    /* Tweaks Panel and FAB offset — clears both the back-to-top button (right:20)
+       and the theme customizer FAB (right:80) */
     #tweaks-container .tweaks-fab {
-      right: 80px !important;
+      right: 140px !important;
     }
     #tweaks-container .tweaks-panel {
-      right: 80px !important;
+      right: 140px !important;
     }
   `;
   document.head.appendChild(styleEl);
@@ -1001,6 +1027,29 @@ function initFooterAwareFloatingUI() {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   onScroll();
+}
+
+/* ==========================================================================
+   4b. BACK TO TOP
+   ========================================================================== */
+function initBackToTop() {
+  const btn = document.createElement('button');
+  btn.id = 'back-to-top-btn';
+  btn.className = 'back-to-top-btn';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>';
+  document.body.appendChild(btn);
+
+  const footer = document.querySelector('.footer--minimal');
+  const onScroll = () => {
+    const nearFooter = !!footer && footer.getBoundingClientRect().top < window.innerHeight - 16;
+    btn.classList.toggle('show', window.scrollY > 600 && !nearFooter);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
 /* ==========================================================================

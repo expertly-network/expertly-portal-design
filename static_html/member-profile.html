@@ -568,40 +568,79 @@
         </button>
       </div>
 
+      <!-- Request-type tabs (only shown where a call option is enabled for this member) -->
+      <div class="mp-modal-tabs" id="mp-modal-tabs" style="display:none;">
+        <button type="button" class="mp-modal-tab active" id="mp-modal-tab-email" onclick="switchModalTab('email')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          Send a Message
+        </button>
+        <button type="button" class="mp-modal-tab" id="mp-modal-tab-call" onclick="switchModalTab('call')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Schedule a Call
+        </button>
+      </div>
+
       <!-- Form body -->
       <div class="mp-modal-body" id="mp-modal-form-body">
         <div class="mp-modal-error" id="mp-modal-error"></div>
 
-        <div class="mp-form-field">
-          <label class="mp-form-label" for="mp-form-name">Your Name</label>
-          <input type="text" class="mp-form-input" id="mp-form-name" maxlength="120"
-            placeholder="e.g. Amelia Ross" />
-        </div>
+        <!-- EMAIL / MESSAGE PANEL -->
+        <div class="mp-modal-panel active" id="mp-modal-email-panel">
 
-        <div class="mp-form-field-row">
           <div class="mp-form-field">
-            <label class="mp-form-label" for="mp-form-email">Email Address</label>
-            <input type="email" class="mp-form-input" id="mp-form-email" maxlength="200"
-              placeholder="you@firm.com" />
+            <label class="mp-form-label" for="mp-form-name">Your Name</label>
+            <input type="text" class="mp-form-input" id="mp-form-name" maxlength="120"
+              placeholder="e.g. Amelia Ross" />
           </div>
+
+          <div class="mp-form-field-row">
+            <div class="mp-form-field">
+              <label class="mp-form-label" for="mp-form-email">Email Address</label>
+              <input type="email" class="mp-form-input" id="mp-form-email" maxlength="200"
+                placeholder="you@firm.com" />
+            </div>
+            <div class="mp-form-field">
+              <label class="mp-form-label" for="mp-form-phone">Mobile Number</label>
+              <input type="tel" class="mp-form-input" id="mp-form-phone" maxlength="30"
+                placeholder="+1 212 555 0148" />
+            </div>
+          </div>
+
           <div class="mp-form-field">
-            <label class="mp-form-label" for="mp-form-phone">Mobile Number</label>
-            <input type="tel" class="mp-form-input" id="mp-form-phone" maxlength="30"
-              placeholder="+1 212 555 0148" />
+            <label class="mp-form-label" for="mp-form-message">Description of Work Required</label>
+            <textarea class="mp-form-textarea" id="mp-form-message" rows="5" maxlength="2000"
+              placeholder="Describe what you need help with, in as much detail as possible…"></textarea>
+            <div class="mp-char-counter"><span id="mp-char-count">0</span> / 2000</div>
+          </div>
+
+          <div class="mp-modal-row">
+            <button class="mp-modal-submit" id="mp-modal-submit-btn" disabled onclick="submitConsultation()">Send
+              Request</button>
+            <button class="mp-modal-cancel" onclick="closeModal()">Cancel</button>
           </div>
         </div>
 
-        <div class="mp-form-field">
-          <label class="mp-form-label" for="mp-form-message">Description of Work Required</label>
-          <textarea class="mp-form-textarea" id="mp-form-message" rows="5" maxlength="2000"
-            placeholder="Describe what you need help with, in as much detail as possible…"></textarea>
-          <div class="mp-char-counter"><span id="mp-char-count">0</span> / 2000</div>
-        </div>
+        <!-- SCHEDULE A CALL PANEL (optional; pilot member only) -->
+        <div class="mp-modal-panel" id="mp-modal-call-panel">
 
-        <div class="mp-modal-row">
-          <button class="mp-modal-submit" id="mp-modal-submit-btn" disabled onclick="submitConsultation()">Send
-            Request</button>
-          <button class="mp-modal-cancel" onclick="closeModal()">Cancel</button>
+          <div class="mp-sched-privacy-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>No email or phone number is exchanged. Calls are routed entirely through Expertly - optional, and only if it suits you.</span>
+          </div>
+
+          <div class="mp-sched-tz-box" id="mp-sched-tz-box"><!-- filled by JS --></div>
+
+          <div class="mp-form-field" style="margin-bottom:10px;">
+            <label class="mp-form-label" style="margin-bottom:8px;">Suggest workable slots for the next 7 days</label>
+            <div class="mp-sched-day-list" id="mp-sched-day-list"><!-- filled by JS --></div>
+            <div class="mp-sched-hint">Select as many as work for you - <span id="mp-sched-peer-name">they</span>'ll confirm one, then the meeting is locked, a VC invite goes out, and Expertly AI joins to transcribe. The summary lands in your dashboard afterward.</div>
+          </div>
+
+          <div class="mp-modal-row">
+            <button class="mp-modal-submit" id="mp-sched-submit-btn" disabled onclick="submitScheduleCall()">Send
+              Slots</button>
+            <button class="mp-modal-cancel" onclick="closeModal()">Cancel</button>
+          </div>
         </div>
       </div>
 
@@ -613,7 +652,7 @@
               stroke-linejoin="round" />
           </svg>
         </div>
-        <div class="mp-success-title">Request Sent</div>
+        <div class="mp-success-title" id="mp-modal-success-title">Request Sent</div>
         <p class="mp-success-body" id="mp-modal-success-body">
           Your consultation request has been sent. They will respond to you directly.
         </p>
@@ -1907,6 +1946,8 @@
       document.getElementById('mp-modal-form-body').style.display = '';
       document.getElementById('mp-modal-success').classList.remove('show');
       document.getElementById('mp-modal-error').classList.remove('show');
+      document.getElementById('mp-modal-success-title').textContent = 'Request Sent';
+      document.getElementById('mp-modal-success-body').textContent = 'Your consultation request has been sent. They will respond to you directly.';
       document.getElementById('mp-form-name').value = '';
       document.getElementById('mp-form-phone').value = '';
       document.getElementById('mp-form-message').value = '';
@@ -1918,6 +1959,131 @@
 
       document.getElementById('mp-modal-submit-btn').disabled = true;
       document.getElementById('mp-modal-submit-btn').textContent = 'Send Request';
+
+      setupScheduleTab();
+      switchModalTab('email');
+    }
+
+    // ── Schedule a Call (pilot: Sophie Anderson only) ──
+    // Frontend preview only - no backend wiring. Real timezone detection,
+    // slot negotiation, VC invites, and transcription are backend work.
+    const SCHEDULE_PILOT_MEMBER_ID = 'sophie-anderson';
+    const REQUESTER_TZ = { label: 'India', abbr: 'IST', offset: 5.5 };
+    const COUNTRY_TZ_OFFSETS = { IN: 5.5, SG: 8, AE: 4, GB: 1, GH: 0, NG: 1, ES: 2, JP: 9, EG: 2, DE: 2, IT: 2, FR: 2, LB: 3, US: -4 };
+    let _selectedSlots = [];
+
+    function getMemberTz(member) {
+      const offset = COUNTRY_TZ_OFFSETS.hasOwnProperty(member.country) ? COUNTRY_TZ_OFFSETS[member.country] : 0;
+      const label = (member.location || '').split(',').pop().trim() || member.country;
+      return { label, offset };
+    }
+
+    function formatClock(utcHour) {
+      let h = ((utcHour % 24) + 24) % 24;
+      const hh = Math.floor(h);
+      const mm = Math.round((h - hh) * 60);
+      const period = hh < 12 ? 'AM' : 'PM';
+      let h12 = hh % 12; if (!h12) h12 = 12;
+      return `${h12}:${mm.toString().padStart(2, '0')} ${period}`;
+    }
+
+    function setupScheduleTab() {
+      const tabs = document.getElementById('mp-modal-tabs');
+      const isPilot = currentMember && currentMember.id === SCHEDULE_PILOT_MEMBER_ID;
+      tabs.style.display = isPilot ? 'flex' : 'none';
+      _selectedSlots = [];
+      const schedBtn = document.getElementById('mp-sched-submit-btn');
+      schedBtn.disabled = true;
+      schedBtn.textContent = 'Send Slots';
+      if (!isPilot) return;
+
+      const memberTz = getMemberTz(currentMember);
+      const firstName = currentMember.name.split(' ')[0];
+      document.getElementById('mp-sched-peer-name').textContent = firstName;
+
+      document.getElementById('mp-sched-tz-box').innerHTML = `
+        <div class="mp-sched-tz-row"><span>You <span class="mp-sched-tz-who">(${REQUESTER_TZ.label})</span></span><span>${REQUESTER_TZ.abbr}, UTC+${REQUESTER_TZ.offset}</span></div>
+        <div class="mp-sched-tz-row"><span>${firstName} <span class="mp-sched-tz-who">(${memberTz.label})</span></span><span>UTC${memberTz.offset >= 0 ? '+' : ''}${memberTz.offset}</span></div>
+        <div class="mp-sched-tz-note">Your working hours don't line up much - suggested slots below fall in the small window that overlaps both of your daytimes.</div>`;
+
+      renderScheduleDays(memberTz);
+    }
+
+    function renderScheduleDays(memberTz) {
+      // Workable window per side: 7:00-23:00 local. Intersect in UTC to find the overlap.
+      const reqStartUTC = 7 - REQUESTER_TZ.offset, reqEndUTC = 23 - REQUESTER_TZ.offset;
+      const memStartUTC = 7 - memberTz.offset, memEndUTC = 23 - memberTz.offset;
+      const startUTC = Math.max(reqStartUTC, memStartUTC);
+      const endUTC = Math.min(reqEndUTC, memEndUTC);
+
+      const list = document.getElementById('mp-sched-day-list');
+      if (endUTC - startUTC < 0.5) {
+        list.innerHTML = `<div class="mp-sched-hint">No comfortable daytime overlap was found automatically - you can still send a message instead, or propose a time in your note.</div>`;
+        return;
+      }
+
+      const times = [];
+      const span = endUTC - startUTC;
+      const count = span >= 4 ? 3 : span >= 2 ? 2 : 1;
+      for (let i = 0; i < count; i++) {
+        times.push(startUTC + (span * (i + 0.5)) / count);
+      }
+
+      const today = new Date();
+      let html = '';
+      for (let d = 1; d <= 7; d++) {
+        const day = new Date(today);
+        day.setDate(today.getDate() + d);
+        const dayLabel = day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const chips = times.map(t => {
+          const you = formatClock(t + REQUESTER_TZ.offset);
+          const them = formatClock(t + memberTz.offset);
+          const key = d + '_' + t.toFixed(2);
+          return `<button type="button" class="mp-sched-chip" data-key="${key}" onclick="toggleSlot(this,'${key}','${dayLabel}','${you}')">
+            <span class="chip-you">${you}</span><span class="chip-them">their time: ${them}</span>
+          </button>`;
+        }).join('');
+        html += `<div class="mp-sched-day-row"><div class="mp-sched-day-label">${dayLabel}</div><div class="mp-sched-chip-row">${chips}</div></div>`;
+      }
+      list.innerHTML = html;
+    }
+
+    function toggleSlot(btn, key, dayLabel, timeLabel) {
+      btn.classList.toggle('selected');
+      if (btn.classList.contains('selected')) {
+        _selectedSlots.push({ key, dayLabel, timeLabel });
+      } else {
+        _selectedSlots = _selectedSlots.filter(s => s.key !== key);
+      }
+      document.getElementById('mp-sched-submit-btn').disabled = _selectedSlots.length === 0;
+    }
+
+    function switchModalTab(which) {
+      const emailTab = document.getElementById('mp-modal-tab-email');
+      const callTab = document.getElementById('mp-modal-tab-call');
+      const emailPanel = document.getElementById('mp-modal-email-panel');
+      const callPanel = document.getElementById('mp-modal-call-panel');
+      emailTab.classList.toggle('active', which === 'email');
+      callTab.classList.toggle('active', which === 'call');
+      emailPanel.classList.toggle('active', which === 'email');
+      callPanel.classList.toggle('active', which === 'call');
+      document.getElementById('mp-modal-error').classList.remove('show');
+    }
+
+    function submitScheduleCall() {
+      if (!currentMember || !_selectedSlots.length) return;
+      const btn = document.getElementById('mp-sched-submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      setTimeout(() => {
+        document.getElementById('mp-modal-form-body').style.display = 'none';
+        document.getElementById('mp-modal-tabs').style.display = 'none';
+        document.getElementById('mp-modal-success-title').textContent = 'Slots Sent';
+        document.getElementById('mp-modal-success-body').textContent =
+          `Your suggested times have been sent to ${currentMember.name.split(' ')[0]} through Expertly - no contact details were shared. Once they confirm one, it's locked on both calendars, a VC invite goes out automatically, and Expertly AI joins to transcribe. The summary will show up in your dashboard afterward.`;
+        document.getElementById('mp-modal-success').classList.add('show');
+      }, 1200);
     }
 
     function closeModal() {

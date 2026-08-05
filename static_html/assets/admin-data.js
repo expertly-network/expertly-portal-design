@@ -26,7 +26,12 @@
     LEARNINGS: 'expertly_learnings',
     CONSULTATIONS: 'expertly_my_consultations',
     PROFILE_EDITS: 'expertly_profile_edits',
-    PROFILE_OVERRIDES: 'expertly_profile_overrides'
+    PROFILE_OVERRIDES: 'expertly_profile_overrides',
+    RENEWAL_POLICY: 'expertly_renewal_policy',
+    MEMBERSHIP_DATES: 'expertly_membership_dates',
+    EXPERIENCE_FEEDBACK: 'expertly_experience_feedback',
+    USERS: 'expertly_users',
+    SUBSCRIBERS: 'expertly_subscribers'
   };
 
   function slugify(s) {
@@ -42,6 +47,17 @@
 
   function writeArray(key, arr) {
     localStorage.setItem(key, JSON.stringify(arr));
+  }
+
+  function readObj(key, fallback) {
+    try {
+      var v = JSON.parse(localStorage.getItem(key));
+      return v && typeof v === 'object' ? v : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  function writeObj(key, obj) {
+    localStorage.setItem(key, JSON.stringify(obj));
   }
 
   function makeId(prefix) {
@@ -154,10 +170,18 @@
     return readArray(KEYS.APPLICATIONS);
   }
 
-  function setApplicationStatus(id, status) {
+  function setApplicationStatus(id, status, remark) {
     var list = readArray(KEYS.APPLICATIONS);
     var match = null;
-    list.forEach(function (a) { if (a.id === id) { a.status = status; match = a; } });
+    list.forEach(function (a) {
+      if (a.id === id) {
+        a.status = status;
+        a.remark = remark || '';
+        a.remarkAt = new Date().toISOString();
+        a.remarkHistory = (a.remarkHistory || []).concat([{ status: status, remark: remark || '', at: a.remarkAt }]);
+        match = a;
+      }
+    });
     writeArray(KEYS.APPLICATIONS, list);
     if (match && status === 'approved' && !match.promotedMemberId) {
       var memberId = promoteApplicationToMember(match);
@@ -385,6 +409,60 @@
     var hidden = getHiddenMemberIds();
     var staticMembers = (global.EXPERTLY_MEMBERS || []).filter(function (m) { return hidden.indexOf(m.id) === -1; });
     return getAdminMembers().concat(staticMembers);
+  }
+
+  /* ── Renewal policy ──────────────────────────────────────────
+     A single sitewide policy (period + reminder window) applied against
+     each member's membership date. Promoted members get their membership
+     date set automatically (application approval date); it can also be
+     set/edited manually per member for pre-existing/static members. ── */
+  var DEFAULT_RENEWAL_POLICY = { periodMonths: 12, reminderDays: 30 };
+
+  function getRenewalPolicy() {
+    return Object.assign({}, DEFAULT_RENEWAL_POLICY, readObj(KEYS.RENEWAL_POLICY, {}));
+  }
+
+  function setRenewalPolicy(policy) {
+    var clean = {
+      periodMonths: Math.max(1, parseInt(policy.periodMonths, 10) || DEFAULT_RENEWAL_POLICY.periodMonths),
+      reminderDays: Math.max(0, parseInt(policy.reminderDays, 10) || DEFAULT_RENEWAL_POLICY.reminderDays)
+    };
+    writeObj(KEYS.RENEWAL_POLICY, clean);
+    return clean;
+  }
+
+  function getMembershipDates() {
+    return readObj(KEYS.MEMBERSHIP_DATES, {});
+  }
+
+  function getMembershipDate(memberId) {
+    return getMembershipDates()[memberId] || null;
+  }
+
+  function setMembershipDate(memberId, isoDate) {
+    var map = getMembershipDates();
+    if (isoDate) map[memberId] = isoDate; else delete map[memberId];
+    writeObj(KEYS.MEMBERSHIP_DATES, map);
+    return map;
+  }
+
+  /* Effective membership date: manual override first, then the date the
+     member record was created (e.g. application approval), else null. */
+  function getEffectiveMembershipDate(member) {
+    return getMembershipDate(member.id) || member.createdAt || null;
+  }
+
+  function getRenewalInfo(member) {
+    var policy = getRenewalPolicy();
+    var startIso = getEffectiveMembershipDate(member);
+    if (!startIso) return { state: 'unknown', dueDate: null, daysLeft: null };
+    var start = new Date(startIso);
+    if (isNaN(start)) return { state: 'unknown', dueDate: null, daysLeft: null };
+    var due = new Date(start);
+    due.setMonth(due.getMonth() + policy.periodMonths);
+    var daysLeft = Math.ceil((due - new Date()) / 86400000);
+    var state = daysLeft < 0 ? 'overdue' : daysLeft <= policy.reminderDays ? 'due-soon' : 'active';
+    return { state: state, dueDate: due.toISOString(), daysLeft: daysLeft };
   }
 
   function initialsOf(name) {
@@ -628,6 +706,62 @@
     return list;
   }
 
+  /* ── Homepage "share your experience" dropbox (general feedback or a
+     deal-closed success story) - visitor-submitted, reviewable by admins. ── */
+  function pushExperienceFeedback(record) {
+    var list = readArray(KEYS.EXPERIENCE_FEEDBACK);
+    list.unshift(Object.assign({
+      id: makeId('fb'),
+      submittedAt: new Date().toISOString()
+    }, record));
+    writeArray(KEYS.EXPERIENCE_FEEDBACK, list);
+    return list;
+  }
+
+  function getExperienceFeedback() {
+    return readArray(KEYS.EXPERIENCE_FEEDBACK);
+  }
+
+  /* ── User directory: client/user account signups (login.html "User" tab)
+     and newsletter subscribers - separate from the Members (verified
+     professionals) list, so the admin dashboard can see everyone who has
+     touched the platform, not just applicants. ── */
+  function pushUser(record) {
+    var list = readArray(KEYS.USERS);
+    var email = (record.email || '').trim().toLowerCase();
+    var existing = email && list.find(function (u) { return (u.email || '').toLowerCase() === email; });
+    if (existing) {
+      Object.assign(existing, record, { lastSeenAt: new Date().toISOString() });
+    } else {
+      list.unshift(Object.assign({
+        id: makeId('usr'),
+        joinedAt: new Date().toISOString(),
+        lastSeenAt: new Date().toISOString()
+      }, record));
+    }
+    writeArray(KEYS.USERS, list);
+    return list;
+  }
+
+  function getUsers() {
+    return readArray(KEYS.USERS);
+  }
+
+  function pushSubscriber(email) {
+    email = (email || '').trim().toLowerCase();
+    if (!email) return getSubscribers();
+    var list = readArray(KEYS.SUBSCRIBERS);
+    if (!list.some(function (s) { return s.email === email; })) {
+      list.unshift({ id: makeId('sub'), email: email, subscribedAt: new Date().toISOString() });
+      writeArray(KEYS.SUBSCRIBERS, list);
+    }
+    return list;
+  }
+
+  function getSubscribers() {
+    return readArray(KEYS.SUBSCRIBERS);
+  }
+
   /* ── Admin session (separate from the public expertly_session key) ── */
   function getAdminSession() {
     try { return JSON.parse(localStorage.getItem(KEYS.ADMIN_SESSION)); } catch (e) { return null; }
@@ -698,6 +832,13 @@
     setMemberStatus: setMemberStatus,
     promoteApplicationToMember: promoteApplicationToMember,
 
+    getRenewalPolicy: getRenewalPolicy,
+    setRenewalPolicy: setRenewalPolicy,
+    getMembershipDate: getMembershipDate,
+    setMembershipDate: setMembershipDate,
+    getEffectiveMembershipDate: getEffectiveMembershipDate,
+    getRenewalInfo: getRenewalInfo,
+
     submitProfileEdit: submitProfileEdit,
     getProfileEdits: getProfileEdits,
     getMemberProfileEdits: getMemberProfileEdits,
@@ -724,6 +865,14 @@
     getConsultations: getConsultations,
     pushConsultationRequest: pushConsultationRequest,
     setConsultationStatus: setConsultationStatus,
-    deleteConsultationRequest: deleteConsultationRequest
+    deleteConsultationRequest: deleteConsultationRequest,
+
+    pushExperienceFeedback: pushExperienceFeedback,
+    getExperienceFeedback: getExperienceFeedback,
+
+    pushUser: pushUser,
+    getUsers: getUsers,
+    pushSubscriber: pushSubscriber,
+    getSubscribers: getSubscribers
   };
 })(window);

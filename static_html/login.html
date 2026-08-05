@@ -114,9 +114,23 @@
         <div class="auth-divider" id="auth-divider"><span>or</span></div>
 
         <form class="auth-form" id="auth-form-submit" onsubmit="event.preventDefault();">
+          <div class="auth-field-row" id="auth-signup-fields">
+            <div class="auth-field">
+              <label>First name</label>
+              <input type="text" id="auth-first-name" placeholder="Jane" required/>
+            </div>
+            <div class="auth-field">
+              <label>Last name</label>
+              <input type="text" id="auth-last-name" placeholder="Smith" required/>
+            </div>
+          </div>
+          <div class="auth-field" id="auth-city-field">
+            <label>City</label>
+            <input type="text" id="auth-city" placeholder="e.g. London" required/>
+          </div>
           <div class="auth-field">
             <label>Work email</label>
-            <input type="email" placeholder="you@firm.com" required/>
+            <input type="email" id="auth-email" placeholder="you@firm.com" required/>
           </div>
           <div class="auth-field">
             <label>Password <a href="#" class="auth-forgot" id="auth-forgot-link">Forgot?</a></label>
@@ -216,6 +230,7 @@
 </div>
 
 <script src="assets/members.js?v=11"></script>
+<script src="assets/admin-data.js?v=11"></script>
 <script src="assets/shared.js?v=11"></script>
 <script src="assets/sidebar-theme.js"></script>
 <script src="assets/auth-pages.js?v=11"></script>

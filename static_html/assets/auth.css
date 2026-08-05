@@ -178,6 +178,16 @@
   gap: 16px;
 }
 
+.auth-field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.auth-field-row .auth-field {
+  flex: 1;
+  min-width: 0;
+}
+
 .auth-field label {
   display: flex;
   justify-content: space-between;

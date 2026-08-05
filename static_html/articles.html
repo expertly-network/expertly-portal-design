@@ -276,6 +276,10 @@
                 <label class="anv-field-label" for="anv-up-title">Title <span class="anv-required">*</span></label>
                 <input class="anv-input" id="anv-up-title" type="text" required placeholder="e.g. Navigating Stamp Duty on Cross-Border Mergers">
                 <div class="anv-field-error" id="anv-up-title-error">Title is required.</div>
+                <div class="anv-topic-bar" id="anv-topic-bar">
+                  <span class="anv-topic-bar-label">Stuck? Try a topic:</span>
+                  <div class="anv-topic-bar-chips" id="anv-topic-bar-chips"></div>
+                </div>
               </div>
               <div class="anv-field-row">
                 <div>
@@ -627,6 +631,7 @@
 
   <script src="assets/members.js"></script>
   <script src="assets/admin-data.js"></script>
+  <script src="assets/article-engagement.js"></script>
   <script src="assets/shared.js"></script>
 
   <!-- ── Sidebar hover-reveal ── -->
@@ -796,6 +801,8 @@
           const topBadge = a.mostViewed
             ? `<span class="anv-top-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>Most Viewed</span>`
             : '';
+          const catColor = window.categoryColorFor ? window.categoryColorFor(a.category) : null;
+          const catChipStyle = catColor ? `background:${catColor.bg};color:${catColor.fg};` : '';
           return `
         <a class="anv-card" href="article.html?id=${a.id}"
            style="animation:anvIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
@@ -805,7 +812,10 @@
           </div>
           <div class="anv-card-body">
             <div class="anv-card-top-row">
-              <span class="anv-cat-label">${a.category}${country ? `, ${country}` : ''}</span>
+              <div class="anv-card-cat-group">
+                <span class="anv-cat-chip" style="${catChipStyle}">${a.category}</span>
+                ${country ? `<span class="anv-card-country">${country}</span>` : ''}
+              </div>
               <span class="anv-card-meta">${a.date} · ${a.readTime}</span>
             </div>
             <h3 class="anv-card-title">${a.title}</h3>
@@ -902,6 +912,9 @@
           const isPending = a.status !== 'published';
           const wrapTag = isPending ? 'div' : 'a';
           const hrefAttr = isPending ? '' : `href="${a.href}"`;
+          const insights = (!isPending && window.ExpertlyEngagement) ? window.ExpertlyEngagement.getCounts(a.id) : null;
+          const catColor = window.categoryColorFor ? window.categoryColorFor(a.category) : null;
+          const catChipStyle = catColor ? `background:${catColor.bg};color:${catColor.fg};` : '';
           return `
         <${wrapTag} class="anv-card" ${hrefAttr}
            style="animation:anvIn 0.45s cubic-bezier(0.22,1,0.36,1) ${delay}ms both;">
@@ -911,10 +924,16 @@
           </div>
           <div class="anv-card-body">
             <div class="anv-card-top-row">
-              <span class="anv-cat-label">${a.category}</span>
+              <span class="anv-cat-chip" style="${catChipStyle}">${a.category}</span>
               <span class="anv-card-meta">${a.date}${a.readTime ? ` · ${a.readTime}` : ''}</span>
             </div>
             <h3 class="anv-card-title">${a.title}</h3>
+            ${insights ? `
+            <div class="anv-card-insights">
+              <span>${insights.views} view${insights.views === 1 ? '' : 's'}</span>
+              <span>${insights.likes} like${insights.likes === 1 ? '' : 's'}</span>
+              <span>${insights.comments} comment${insights.comments === 1 ? '' : 's'}</span>
+            </div>` : ''}
           </div>
         </${wrapTag}>`;
         }).join('');
@@ -1157,6 +1176,52 @@
       const ALL_COUNTRIES = [
         'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo, Democratic Republic of the','Congo, Republic of the','Costa Rica','Croatia','Cuba','Cyprus','Czechia','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Ivory Coast','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe'
       ];
+
+      /* ── Topic suggestion bar: a few ready-made title ideas so members
+         don't stare at a blank Title field. Picked fresh each visit. ── */
+      (function initTopicSuggestionBar() {
+        const chipsEl = document.getElementById('anv-topic-bar-chips');
+        const titleInput = document.getElementById('anv-up-title');
+        if (!chipsEl || !titleInput) return;
+
+        const TEMPLATES = [
+          'What Clients Get Wrong About {area}',
+          '5 Common Pitfalls in {area}',
+          'A Practical Guide to {area} in 2026',
+          '{area}: What Changed This Year',
+          'How to Advise Clients on {area}',
+          'The {area} Checklist Every Client Should See'
+        ];
+
+        function pickSuggestions(count) {
+          const areas = PRACTICE_AREAS.slice();
+          const picks = [];
+          for (let i = 0; i < count && areas.length; i++) {
+            const areaIdx = Math.floor(Math.random() * areas.length);
+            const area = areas.splice(areaIdx, 1)[0];
+            const template = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+            picks.push(template.replace('{area}', area));
+          }
+          return picks;
+        }
+
+        function render() {
+          chipsEl.innerHTML = pickSuggestions(6).map(function (t) {
+            return '<button type="button" class="anv-topic-chip">' + t.replace(/</g, '&lt;') + '</button>';
+          }).join('') + '<button type="button" class="anv-topic-chip anv-topic-chip-refresh" title="Show other ideas">↻ More ideas</button>';
+        }
+
+        chipsEl.addEventListener('click', function (e) {
+          const btn = e.target.closest('.anv-topic-chip');
+          if (!btn) return;
+          if (btn.classList.contains('anv-topic-chip-refresh')) { render(); return; }
+          titleInput.value = btn.textContent;
+          titleInput.dispatchEvent(new Event('input'));
+          titleInput.focus();
+        });
+
+        render();
+      })();
 
       function initMultiSelect(idPrefix, options, { allowCustom = false, placeholder = 'Select…', fallback = '' } = {}) {
         const wrap = document.getElementById(`${idPrefix}-wrap`);

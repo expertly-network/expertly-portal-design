@@ -138,9 +138,26 @@ function initLoginTabs() {
   if (authForm) {
     authForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const emailInput = authForm.querySelector('input[type="email"]');
+      const emailInput = document.getElementById('auth-email') || authForm.querySelector('input[type="email"]');
       const email = emailInput ? emailInput.value.trim() : 'user@expertly.com';
-      localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
+      const firstName = (document.getElementById('auth-first-name') || {}).value || '';
+      const lastName = (document.getElementById('auth-last-name') || {}).value || '';
+      const city = (document.getElementById('auth-city') || {}).value || '';
+      localStorage.setItem('expertly_session', JSON.stringify({
+        email,
+        role: currentAuthMode,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        city: city.trim()
+      }));
+      if (window.ExpertlyAdmin && currentAuthMode !== 'member') {
+        window.ExpertlyAdmin.pushUser({
+          name: [firstName.trim(), lastName.trim()].filter(Boolean).join(' '),
+          email,
+          city: city.trim(),
+          source: 'Email sign-in'
+        });
+      }
       window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
     });
   }
@@ -151,6 +168,9 @@ function initLoginTabs() {
       e.preventDefault();
       const email = currentAuthMode === 'member' ? 'member@linkedin.com' : 'user@linkedin.com';
       localStorage.setItem('expertly_session', JSON.stringify({ email, role: currentAuthMode }));
+      if (window.ExpertlyAdmin && currentAuthMode !== 'member') {
+        window.ExpertlyAdmin.pushUser({ name: '', email, city: '', source: 'LinkedIn' });
+      }
       window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
     });
   }

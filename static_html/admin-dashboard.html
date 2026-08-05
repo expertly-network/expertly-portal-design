@@ -56,6 +56,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <span class="d1-nav-lbl">Members</span>
           </a>
+          <a href="#" data-tab="user-directory" data-perm="manageMembers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span class="d1-nav-lbl">User Directory</span>
+          </a>
           <a href="#" data-tab="profile-edits" data-perm="manageMembers">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             <span class="d1-nav-lbl">Profile Edits</span>
@@ -390,17 +394,83 @@
             <span class="adm-section-count" id="adm-members-count-label">0 total</span>
           </div>
           <p class="adm-panel-note">Everyone listed on the public <b>Members</b> directory - approving a membership application here automatically adds them. Deactivating removes them from the public directory immediately, on this device.</p>
+
+          <div class="adm-renewal-policy">
+            <div class="adm-renewal-policy-field">
+              <label for="adm-renewal-period">Membership valid for</label>
+              <div class="adm-renewal-policy-input"><input type="number" min="1" id="adm-renewal-period"><span>months</span></div>
+            </div>
+            <div class="adm-renewal-policy-field">
+              <label for="adm-renewal-reminder">Flag "due soon" starting</label>
+              <div class="adm-renewal-policy-input"><input type="number" min="0" id="adm-renewal-reminder"><span>days before</span></div>
+            </div>
+            <button type="button" class="adm-btn adm-btn-approve" id="adm-renewal-policy-save">Save policy</button>
+            <span class="adm-renewal-policy-note">Renewal due date = membership date + this period. Applies to every member below.</span>
+          </div>
+
           <div class="adm-table-toolbar" style="margin-bottom:12px;">
             <input class="anv-input" id="adm-members-search" type="text" placeholder="Search by name, firm, or practice area…" style="max-width:360px;">
           </div>
           <div class="adm-table-wrap">
             <table class="adm-table" id="adm-members-table">
               <thead>
-                <tr><th>Member</th><th>Firm</th><th>Location</th><th>Practice area</th><th>Rate</th><th>Status</th><th></th></tr>
+                <tr><th>Member</th><th>Firm</th><th>Location</th><th>Practice area</th><th>Rate</th><th>Status</th><th>Renewal</th><th></th></tr>
               </thead>
               <tbody id="adm-members-tbody"></tbody>
             </table>
             <div class="adm-empty" id="adm-members-empty" style="display:none;">No members match this search.</div>
+          </div>
+        </section>
+
+        <!-- ══════════════ USER DIRECTORY ══════════════ -->
+        <section class="adm-panel" data-panel="user-directory" hidden>
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">User directory</h2>
+            <span class="adm-section-count" id="adm-ud-count-label">0 total</span>
+          </div>
+          <p class="adm-panel-note">Everyone who has touched the platform - client/user accounts, newsletter subscribers, and verified member renewal standing - in one place. Members themselves are managed on the <b>Members</b> tab.</p>
+
+          <div class="adm-section-head" style="margin-top:8px;">
+            <h2 class="adm-section-title" style="font-size:16px;">Registered users</h2>
+            <span class="adm-section-count" id="adm-ud-users-count">0</span>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-ud-users-table">
+              <thead>
+                <tr><th>Name</th><th>Email</th><th>City</th><th>Source</th><th>Joined</th></tr>
+              </thead>
+              <tbody id="adm-ud-users-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-ud-users-empty" style="display:none;">No registered users yet - they'll show up here once someone signs in via the "User" tab on the login page.</div>
+          </div>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title" style="font-size:16px;">Newsletter subscribers</h2>
+            <span class="adm-section-count" id="adm-ud-subs-count">0</span>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-ud-subs-table">
+              <thead>
+                <tr><th>Email</th><th>Subscribed</th></tr>
+              </thead>
+              <tbody id="adm-ud-subs-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-ud-subs-empty" style="display:none;">No newsletter subscribers yet.</div>
+          </div>
+
+          <div class="adm-section-head" style="margin-top:36px;">
+            <h2 class="adm-section-title" style="font-size:16px;">Member renewals</h2>
+            <span class="adm-section-count" id="adm-ud-renewals-count">0</span>
+          </div>
+          <p class="adm-panel-note">Same renewal policy as the Members tab - shown here for a quick who's-due-soon view.</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="adm-ud-renewals-table">
+              <thead>
+                <tr><th>Member</th><th>Renewal</th></tr>
+              </thead>
+              <tbody id="adm-ud-renewals-tbody"></tbody>
+            </table>
+            <div class="adm-empty" id="adm-ud-renewals-empty" style="display:none;">No members yet.</div>
           </div>
         </section>
 
@@ -641,6 +711,24 @@
     </div>
   </div>
 
+  <!-- ── Application remark modal (reject / resubmission) ── -->
+  <div class="adm-modal-backdrop" id="adm-remark-modal" hidden>
+    <div class="adm-modal adm-modal-sm">
+      <div class="adm-modal-head">
+        <h3 id="adm-remark-modal-title">Add remark</h3>
+        <button type="button" class="adm-modal-close" id="adm-remark-modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="adm-modal-body">
+        <p class="adm-remark-hint" id="adm-remark-hint">Let the applicant know why. This is saved with the decision.</p>
+        <textarea id="adm-remark-textarea" class="adm-remark-textarea" rows="4" placeholder="e.g. Bar Council enrollment number could not be verified. Please resubmit with a valid document."></textarea>
+        <div class="adm-remark-actions">
+          <button type="button" class="adm-btn adm-btn-ghost" id="adm-remark-cancel">Cancel</button>
+          <button type="button" class="adm-btn adm-btn-approve" id="adm-remark-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/members.js"></script>
   <script src="assets/admin-data.js"></script>
   <script src="assets/hero-mesh.js"></script>
@@ -703,8 +791,8 @@
         return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
       }
       function statusPill(status) {
-        var cls = status === 'pending' ? 'pending' : (status === 'published' || status === 'approved') ? 'approved' : 'rejected';
-        var label = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending';
+        var cls = status === 'pending' ? 'pending' : (status === 'published' || status === 'approved') ? 'approved' : status === 'resubmission' ? 'resubmission' : 'rejected';
+        var label = status === 'resubmission' ? 'Resubmission' : (status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending');
         return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>';
       }
       function rolePill(role) {
@@ -718,7 +806,7 @@
         var empty = document.getElementById('adm-apps-empty');
         document.getElementById('adm-apps-count-label').textContent = apps.length + ' total';
 
-        var pending = apps.filter(function (a) { return a.status === 'pending'; }).length;
+        var pending = apps.filter(function (a) { return a.status === 'pending' || a.status === 'resubmission'; }).length;
         var approved = apps.filter(function (a) { return a.status === 'approved'; }).length;
         document.getElementById('adm-count-applications').textContent = pending;
         document.getElementById('stat-pending-apps').textContent = pending;
@@ -729,11 +817,14 @@
 
         var canManage = can('manageApplications');
         tbody.innerHTML = apps.map(function (a) {
-          var actions = !canManage ? '' : ((a.status === 'pending'
+          var needsDecision = a.status === 'pending' || a.status === 'resubmission';
+          var actions = !canManage ? '' : ((needsDecision
             ? '<button class="adm-btn adm-btn-approve" data-action="approve-app" data-id="' + esc(a.id) + '">Approve</button>' +
-              '<button class="adm-btn adm-btn-reject" data-action="reject-app" data-id="' + esc(a.id) + '">Reject</button>'
+              '<button class="adm-btn adm-btn-reject" data-action="reject-app" data-id="' + esc(a.id) + '">Reject</button>' +
+              '<button class="adm-btn adm-btn-ghost" data-action="resubmit-app" data-id="' + esc(a.id) + '">Ask resubmission</button>'
             : '<button class="adm-btn adm-btn-ghost" data-action="reset-app" data-id="' + esc(a.id) + '">Reset</button>') +
             '<button class="adm-btn adm-btn-ghost" data-action="view-app" data-id="' + esc(a.id) + '">View</button>');
+          var statusCell = statusPill(a.status) + (a.remark ? '<span class="adm-td-sub adm-remark-note" title="' + esc(a.remark) + '">' + esc(a.remark) + '</span>' : '');
           return '<tr>' +
             '<td><b>' + esc(a.name) + '</b><span class="adm-td-sub">' + esc(a.email) + '</span></td>' +
             '<td>' + esc(a.practiceArea) + '</td>' +
@@ -741,7 +832,7 @@
             '<td>' + (a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '-') + '</td>' +
             '<td class="adm-td-source">' + esc(a.source) + '</td>' +
             '<td>' + fmtDate(a.submittedAt) + '</td>' +
-            '<td>' + statusPill(a.status) + '</td>' +
+            '<td>' + statusCell + '</td>' +
             '<td class="adm-td-actions">' + actions + '</td>' +
             '</tr>';
         }).join('');
@@ -800,6 +891,7 @@
           (work ? '<div class="adm-detail-section"><h5>Work history</h5>' + work + '</div>' : '') +
           (edu ? '<div class="adm-detail-section"><h5>Education</h5>' + edu + '</div>' : '') +
           (consents.length ? '<div class="adm-detail-section"><h5>Consents given</h5><p class="adm-detail-bio">' + consents.map(esc).join(' · ') + '</p></div>' : '') +
+          (a.remark ? '<div class="adm-detail-section"><h5>Admin remark</h5><p class="adm-detail-bio">' + esc(a.remark) + '</p></div>' : '') +
           '<div class="adm-detail-section"><h5>Submission</h5>' +
             row('Source', esc(a.source)) + row('Submitted', fmtDate(a.submittedAt)) + row('Application ID', esc(a.id)) +
           '</div>';
@@ -809,6 +901,40 @@
 
       document.getElementById('adm-app-modal-close').addEventListener('click', function () { appModal.hidden = true; });
       appModal.addEventListener('click', function (e) { if (e.target === appModal) appModal.hidden = true; });
+
+      // ── Remark modal (reject / resubmission) ──────────────────
+      var remarkModal = document.getElementById('adm-remark-modal');
+      var remarkTextarea = document.getElementById('adm-remark-textarea');
+      var remarkTitle = document.getElementById('adm-remark-modal-title');
+      var remarkHint = document.getElementById('adm-remark-hint');
+      var remarkPending = null; // { id, status }
+
+      function openRemarkModal(id, status) {
+        remarkPending = { id: id, status: status };
+        remarkTitle.textContent = status === 'rejected' ? 'Reject application' : 'Ask for resubmission';
+        remarkHint.textContent = status === 'rejected'
+          ? "Tell the applicant why this application is being rejected."
+          : "Tell the applicant what needs fixing before they resubmit.";
+        remarkTextarea.value = '';
+        remarkModal.hidden = false;
+        remarkTextarea.focus();
+      }
+      function closeRemarkModal() { remarkModal.hidden = true; remarkPending = null; }
+
+      document.getElementById('adm-remark-cancel').addEventListener('click', closeRemarkModal);
+      document.getElementById('adm-remark-modal-close').addEventListener('click', closeRemarkModal);
+      remarkModal.addEventListener('click', function (e) { if (e.target === remarkModal) closeRemarkModal(); });
+
+      document.getElementById('adm-remark-confirm').addEventListener('click', function () {
+        if (!remarkPending) return;
+        var remark = remarkTextarea.value.trim();
+        if (!remark) { remarkTextarea.focus(); return; }
+        window.ExpertlyAdmin.setApplicationStatus(remarkPending.id, remarkPending.status, remark);
+        closeRemarkModal();
+        renderApplications();
+        renderMembers();
+        renderFeed();
+      });
 
       document.getElementById('adm-apps-tbody').addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-action]');
@@ -821,7 +947,9 @@
           return;
         }
         if (!can('manageApplications')) return;
-        var status = action === 'approve-app' ? 'approved' : action === 'reject-app' ? 'rejected' : 'pending';
+        if (action === 'reject-app') { openRemarkModal(id, 'rejected'); return; }
+        if (action === 'resubmit-app') { openRemarkModal(id, 'resubmission'); return; }
+        var status = action === 'approve-app' ? 'approved' : 'pending';
         window.ExpertlyAdmin.setApplicationStatus(id, status);
         renderApplications();
         renderMembers();
@@ -1142,6 +1270,7 @@
             actions += deactivated
               ? '<button class="adm-btn adm-btn-approve" data-action="reactivate-member" data-id="' + esc(m.id) + '">Reactivate</button>'
               : '<button class="adm-btn adm-btn-reject" data-action="deactivate-member" data-id="' + esc(m.id) + '">Deactivate</button>';
+            actions += '<button class="adm-btn adm-btn-ghost" data-action="set-membership-date" data-id="' + esc(m.id) + '">Set date</button>';
           }
           if (canDelete) actions += '<button class="adm-btn adm-btn-ghost" data-action="view-member" data-id="' + esc(m.id) + '">View profile</button>';
           return '<tr>' +
@@ -1151,9 +1280,37 @@
             '<td>' + esc(m.practice || '-') + '</td>' +
             '<td>' + esc(m.rate || '-') + '</td>' +
             '<td>' + statusPill(deactivated ? 'rejected' : 'approved') + '</td>' +
+            '<td>' + renewalCell(m) + '</td>' +
             '<td class="adm-td-actions">' + actions + '</td>' +
             '</tr>';
         }).join('');
+      }
+
+      function renewalCell(m) {
+        var info = window.ExpertlyAdmin.getRenewalInfo(m);
+        if (info.state === 'unknown') return '<span class="adm-td-sub">No date set</span>';
+        var cls = info.state === 'overdue' ? 'rejected' : info.state === 'due-soon' ? 'pending' : 'approved';
+        var label = info.state === 'overdue' ? 'Overdue' : info.state === 'due-soon' ? 'Due soon' : 'Active';
+        return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>' +
+          '<span class="adm-td-sub">' + fmtDate(info.dueDate) + '</span>';
+      }
+
+      // ── Renewal policy controls ────────────────────────────────
+      var renewalPeriodEl = document.getElementById('adm-renewal-period');
+      var renewalReminderEl = document.getElementById('adm-renewal-reminder');
+      function loadRenewalPolicyForm() {
+        var policy = window.ExpertlyAdmin.getRenewalPolicy();
+        renewalPeriodEl.value = policy.periodMonths;
+        renewalReminderEl.value = policy.reminderDays;
+      }
+      var renewalPolicySaveBtn = document.getElementById('adm-renewal-policy-save');
+      if (renewalPolicySaveBtn) {
+        loadRenewalPolicyForm();
+        renewalPolicySaveBtn.addEventListener('click', function () {
+          window.ExpertlyAdmin.setRenewalPolicy({ periodMonths: renewalPeriodEl.value, reminderDays: renewalReminderEl.value });
+          loadRenewalPolicyForm();
+          renderMembers();
+        });
       }
 
       var membersSearchEl = document.getElementById('adm-members-search');
@@ -1170,9 +1327,71 @@
         var action = btn.getAttribute('data-action');
         if (action === 'view-member') { window.open('member-profile.html?id=' + encodeURIComponent(id), '_blank'); return; }
         if (!can('manageMembers')) return;
+        if (action === 'set-membership-date') {
+          var member = window.ExpertlyAdmin.getAllMembersForAdmin().find(function (m) { return m.id === id; });
+          var current = member ? (window.ExpertlyAdmin.getEffectiveMembershipDate(member) || '').slice(0, 10) : '';
+          var input = window.prompt('Membership date (YYYY-MM-DD):', current);
+          if (input === null) return;
+          input = input.trim();
+          if (input && isNaN(new Date(input))) { window.alert('Enter a valid date like 2026-01-31.'); return; }
+          window.ExpertlyAdmin.setMembershipDate(id, input ? new Date(input).toISOString() : null);
+          renderMembers();
+          return;
+        }
         window.ExpertlyAdmin.setMemberStatus(id, action === 'deactivate-member' ? 'deactivated' : 'active');
         renderMembers();
       });
+
+      // ── Render: User directory (users + subscribers + member renewals) ──
+      function renderUserDirectory() {
+        var users = window.ExpertlyAdmin.getUsers();
+        var subs = window.ExpertlyAdmin.getSubscribers();
+        var members = window.ExpertlyAdmin.getAllMembersForAdmin().filter(function (m) { return m.status !== 'deactivated'; });
+
+        document.getElementById('adm-ud-count-label').textContent = (users.length + subs.length + members.length) + ' total';
+        document.getElementById('adm-ud-users-count').textContent = users.length;
+        document.getElementById('adm-ud-subs-count').textContent = subs.length;
+        document.getElementById('adm-ud-renewals-count').textContent = members.length;
+
+        var usersTbody = document.getElementById('adm-ud-users-tbody');
+        var usersEmpty = document.getElementById('adm-ud-users-empty');
+        if (!users.length) { usersTbody.innerHTML = ''; usersEmpty.style.display = 'block'; }
+        else {
+          usersEmpty.style.display = 'none';
+          usersTbody.innerHTML = users.map(function (u) {
+            return '<tr>' +
+              '<td>' + esc(u.name || '-') + '</td>' +
+              '<td>' + esc(u.email || '-') + '</td>' +
+              '<td>' + esc(u.city || '-') + '</td>' +
+              '<td class="adm-td-source">' + esc(u.source || '-') + '</td>' +
+              '<td>' + fmtDate(u.joinedAt) + '</td>' +
+              '</tr>';
+          }).join('');
+        }
+
+        var subsTbody = document.getElementById('adm-ud-subs-tbody');
+        var subsEmpty = document.getElementById('adm-ud-subs-empty');
+        if (!subs.length) { subsTbody.innerHTML = ''; subsEmpty.style.display = 'block'; }
+        else {
+          subsEmpty.style.display = 'none';
+          subsTbody.innerHTML = subs.map(function (s) {
+            return '<tr><td>' + esc(s.email) + '</td><td>' + fmtDate(s.subscribedAt) + '</td></tr>';
+          }).join('');
+        }
+
+        var renewalsTbody = document.getElementById('adm-ud-renewals-tbody');
+        var renewalsEmpty = document.getElementById('adm-ud-renewals-empty');
+        if (!members.length) { renewalsTbody.innerHTML = ''; renewalsEmpty.style.display = 'block'; }
+        else {
+          renewalsEmpty.style.display = 'none';
+          renewalsTbody.innerHTML = members.map(function (m) {
+            return '<tr>' +
+              '<td><b>' + esc(m.name) + '</b></td>' +
+              '<td>' + renewalCell(m) + '</td>' +
+              '</tr>';
+          }).join('');
+        }
+      }
 
       // ── Render: Profile edit requests ────────────────────────────
       var PEDIT_SECTION_LABELS = {
@@ -1542,6 +1761,7 @@
       renderEvents();
       renderEventSuggestions();
       renderMembers();
+      renderUserDirectory();
       renderProfileEdits();
       renderConsultations();
       renderPerksAdmin();
@@ -1550,6 +1770,27 @@
       renderAdminUsers();
       renderFeed();
       updateWaWordCount();
+
+      // ── Back to top ──────────────────────────────────────────
+      (function () {
+        var btn = document.createElement('button');
+        btn.className = 'back-to-top-btn';
+        btn.setAttribute('aria-label', 'Back to top');
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>';
+        document.body.appendChild(btn);
+        var mainEl = document.getElementById('main-content');
+        var scroller = mainEl && mainEl.scrollHeight > mainEl.clientHeight ? mainEl : window;
+        function onScroll() {
+          var y = scroller === window ? window.scrollY : mainEl.scrollTop;
+          btn.classList.toggle('show', y > 600);
+        }
+        scroller.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        btn.addEventListener('click', function () {
+          if (scroller === window) window.scrollTo({ top: 0, behavior: 'smooth' });
+          else mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
     })();
   </script>
 </body>
