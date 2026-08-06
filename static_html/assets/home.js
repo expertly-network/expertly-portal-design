@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Newsletter Signup Handler
   initNewsletter();
+  initNewsletterJurisdiction();
 
   // 6. Dynamic Marquees, Articles, and Events
   initFeaturedMembers();
@@ -400,12 +401,190 @@ function initNewsletter() {
     e.preventDefault();
     const input = form.querySelector('input');
     if (input && input.value) {
-      if (window.ExpertlyAdmin) window.ExpertlyAdmin.pushSubscriber(input.value);
+      if (window.ExpertlyAdmin) {
+        const jurisdiction = window.__nlJurisdiction ? window.__nlJurisdiction() : null;
+        window.ExpertlyAdmin.pushSubscriber(input.value, jurisdiction);
+      }
       btn.textContent = '✓ Subscribed';
       btn.disabled = true;
       input.disabled = true;
       input.style.opacity = '0.7';
     }
+  });
+}
+
+/* ==========================================================================
+   5b. NEWSLETTER JURISDICTION PICKERS (Region + Country, multi-select)
+   ========================================================================== */
+function initNewsletterJurisdiction() {
+  const row = document.getElementById('nl-juris-row');
+  if (!row) return;
+
+  const REGIONS = [
+    { id: 'asia_pacific', name: 'Asia Pacific' },
+    { id: 'europe', name: 'Europe' },
+    { id: 'latin_america', name: 'Latin America' },
+    { id: 'middle_east', name: 'Middle East' },
+    { id: 'north_america', name: 'North America' },
+    { id: 'south_asia', name: 'South Asia' },
+    { id: 'africa', name: 'Africa' }
+  ];
+  const COUNTRIES_BY_REGION = {
+    asia_pacific: ['Australia', 'New Zealand', 'Singapore', 'Japan', 'South Korea', 'China', 'Malaysia', 'Thailand', 'Vietnam', 'Indonesia', 'Philippines'],
+    europe: ['United Kingdom', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands', 'Switzerland', 'Belgium', 'Sweden', 'Poland', 'Austria', 'Ireland'],
+    latin_america: ['Brazil', 'Mexico', 'Argentina', 'Colombia', 'Chile', 'Peru', 'Costa Rica', 'Uruguay'],
+    middle_east: ['United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Israel', 'Egypt', 'Turkey', 'Kuwait', 'Oman', 'Bahrain'],
+    north_america: ['United States', 'Canada'],
+    south_asia: ['India', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Nepal'],
+    africa: ['Nigeria', 'South Africa', 'Kenya', 'Ghana', 'Egypt', 'Morocco', 'Ethiopia', 'Uganda']
+  };
+  const REGION_NAME_BY_ID = REGIONS.reduce((m, r) => { m[r.id] = r.name; return m; }, {});
+
+  const card = row.closest('.newsletter-card');
+  const selectedRegions = new Set();
+  const selectedCountries = new Set();
+
+  function setCardOverflow() {
+    const anyOpen = regionPopover.classList.contains('open') || countryPopover.classList.contains('open');
+    if (card) card.classList.toggle('nl-popover-open', anyOpen);
+  }
+
+  function closeAll() {
+    regionPopover.classList.remove('open'); regionTrigger.classList.remove('open');
+    countryPopover.classList.remove('open'); countryTrigger.classList.remove('open');
+    setCardOverflow();
+  }
+
+  // ---- Region picker ----
+  const regionWrap = document.getElementById('nl-region-wrap');
+  const regionTrigger = document.getElementById('nl-region-trigger');
+  const regionPopover = document.getElementById('nl-region-popover');
+  const regionLabel = document.getElementById('nl-region-label');
+  const regionList = document.getElementById('nl-region-list');
+  const regionClear = document.getElementById('nl-region-clear');
+  const regionDone = document.getElementById('nl-region-done');
+
+  function renderRegionLabel() {
+    if (selectedRegions.size === 0) regionLabel.textContent = 'All regions';
+    else if (selectedRegions.size === 1) regionLabel.textContent = REGION_NAME_BY_ID[[...selectedRegions][0]];
+    else regionLabel.textContent = selectedRegions.size + ' regions';
+    regionTrigger.classList.toggle('has-value', selectedRegions.size > 0);
+  }
+
+  function buildRegionList() {
+    regionList.innerHTML = REGIONS.map(r => {
+      const sel = selectedRegions.has(r.id);
+      return '<div class="nl-ms-option' + (sel ? ' selected' : '') + '" data-region="' + r.id + '">'
+        + '<span>' + r.name + '</span><span class="nl-ms-check">✓</span></div>';
+    }).join('');
+    regionList.querySelectorAll('.nl-ms-option').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.region;
+        if (selectedRegions.has(id)) selectedRegions.delete(id); else selectedRegions.add(id);
+        buildRegionList();
+        renderRegionLabel();
+        // Countries outside the now-selected regions no longer apply.
+        pruneCountriesToAllowedRegions();
+        renderCountryLabel();
+        if (countryPopover.classList.contains('open')) buildCountryList(countrySearch.value);
+      });
+    });
+  }
+
+  function getAllowedCountrySet() {
+    if (selectedRegions.size === 0) return null; // no region filter -> every country allowed
+    const allowed = new Set();
+    selectedRegions.forEach(id => (COUNTRIES_BY_REGION[id] || []).forEach(c => allowed.add(c)));
+    return allowed;
+  }
+
+  function pruneCountriesToAllowedRegions() {
+    const allowed = getAllowedCountrySet();
+    if (!allowed) return;
+    [...selectedCountries].forEach(c => { if (!allowed.has(c)) selectedCountries.delete(c); });
+  }
+
+  regionTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const willOpen = !regionPopover.classList.contains('open');
+    countryPopover.classList.remove('open'); countryTrigger.classList.remove('open');
+    regionPopover.classList.toggle('open', willOpen);
+    regionTrigger.classList.toggle('open', willOpen);
+    if (willOpen) buildRegionList();
+    setCardOverflow();
+  });
+  regionClear.addEventListener('click', (e) => {
+    e.stopPropagation();
+    selectedRegions.clear();
+    buildRegionList();
+    renderRegionLabel();
+    if (countryPopover.classList.contains('open')) buildCountryList(countrySearch.value);
+  });
+  regionDone.addEventListener('click', (e) => { e.stopPropagation(); closeAll(); });
+  regionWrap.addEventListener('click', (e) => e.stopPropagation());
+
+  // ---- Country picker ----
+  const countryWrap = document.getElementById('nl-country-wrap');
+  const countryTrigger = document.getElementById('nl-country-trigger');
+  const countryPopover = document.getElementById('nl-country-popover');
+  const countryLabel = document.getElementById('nl-country-label');
+  const countryList = document.getElementById('nl-country-list');
+  const countrySearch = document.getElementById('nl-country-search');
+  const countryClear = document.getElementById('nl-country-clear');
+  const countryDone = document.getElementById('nl-country-done');
+
+  function renderCountryLabel() {
+    if (selectedCountries.size === 0) countryLabel.textContent = 'All countries';
+    else if (selectedCountries.size === 1) countryLabel.textContent = [...selectedCountries][0];
+    else countryLabel.textContent = selectedCountries.size + ' countries';
+    countryTrigger.classList.toggle('has-value', selectedCountries.size > 0);
+  }
+
+  function buildCountryList(query) {
+    const q = (query || '').trim().toLowerCase();
+    let html = '';
+    const regionsToShow = selectedRegions.size ? REGIONS.filter(r => selectedRegions.has(r.id)) : REGIONS;
+    regionsToShow.forEach(r => {
+      const countries = (COUNTRIES_BY_REGION[r.id] || []).filter(c => c.toLowerCase().includes(q));
+      if (!countries.length) return;
+      html += '<div class="nl-ms-group-label">' + r.name + '</div>';
+      countries.forEach(c => {
+        const sel = selectedCountries.has(c);
+        html += '<div class="nl-ms-option' + (sel ? ' selected' : '') + '" data-country="' + c + '">'
+          + '<span>' + c + '</span><span class="nl-ms-check">✓</span></div>';
+      });
+    });
+    countryList.innerHTML = html || '<div class="nl-ms-no-results">No countries found</div>';
+    countryList.querySelectorAll('.nl-ms-option').forEach(el => {
+      el.addEventListener('click', () => {
+        const c = el.dataset.country;
+        if (selectedCountries.has(c)) selectedCountries.delete(c); else selectedCountries.add(c);
+        buildCountryList(countrySearch.value);
+        renderCountryLabel();
+      });
+    });
+  }
+
+  countryTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const willOpen = !countryPopover.classList.contains('open');
+    regionPopover.classList.remove('open'); regionTrigger.classList.remove('open');
+    countryPopover.classList.toggle('open', willOpen);
+    countryTrigger.classList.toggle('open', willOpen);
+    if (willOpen) { buildCountryList(''); countrySearch.value = ''; setTimeout(() => countrySearch.focus(), 50); }
+    setCardOverflow();
+  });
+  countrySearch.addEventListener('input', () => buildCountryList(countrySearch.value));
+  countryClear.addEventListener('click', (e) => { e.stopPropagation(); selectedCountries.clear(); buildCountryList(countrySearch.value); renderCountryLabel(); });
+  countryDone.addEventListener('click', (e) => { e.stopPropagation(); closeAll(); });
+  countryWrap.addEventListener('click', (e) => e.stopPropagation());
+
+  document.addEventListener('click', closeAll);
+
+  // Exposed so the subscribe handler can attach the selection to the subscriber record.
+  window.__nlJurisdiction = () => ({
+    regions: [...selectedRegions].map(id => REGION_NAME_BY_ID[id]),
+    countries: [...selectedCountries]
   });
 }
 

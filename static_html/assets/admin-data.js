@@ -747,12 +747,14 @@
     return readArray(KEYS.USERS);
   }
 
-  function pushSubscriber(email) {
+  function pushSubscriber(email, jurisdiction) {
     email = (email || '').trim().toLowerCase();
     if (!email) return getSubscribers();
     var list = readArray(KEYS.SUBSCRIBERS);
+    var regions = (jurisdiction && jurisdiction.regions) || [];
+    var countries = (jurisdiction && jurisdiction.countries) || [];
     if (!list.some(function (s) { return s.email === email; })) {
-      list.unshift({ id: makeId('sub'), email: email, subscribedAt: new Date().toISOString() });
+      list.unshift({ id: makeId('sub'), email: email, regions: regions, countries: countries, subscribedAt: new Date().toISOString() });
       writeArray(KEYS.SUBSCRIBERS, list);
     }
     return list;
