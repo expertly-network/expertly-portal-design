@@ -29,7 +29,7 @@
 
       <div class="d1-nav-center">
         <nav class="d1-nav" id="adm-nav">
-          <div class="d1-nav-label">Manage</div>
+          <div class="d1-nav-label">Overview</div>
           <a href="#" data-tab="overview" data-perm="viewDashboard" class="active">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             <span class="d1-nav-lbl">Overview</span>
@@ -39,6 +39,8 @@
             <span class="d1-nav-lbl">Applications</span>
             <span class="adm-nav-count" id="adm-count-applications">0</span>
           </a>
+
+          <div class="d1-nav-label">Content</div>
           <a href="#" data-tab="articles" data-perm="manageArticles">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             <span class="d1-nav-lbl">Articles</span>
@@ -52,6 +54,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <span class="d1-nav-lbl">Events</span>
           </a>
+
+          <div class="d1-nav-label">People</div>
           <a href="#" data-tab="members" data-perm="manageMembers">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <span class="d1-nav-lbl">Members</span>
@@ -70,6 +74,8 @@
             <span class="d1-nav-lbl">Consultations</span>
             <span class="adm-nav-count" id="adm-count-consultations">0</span>
           </a>
+
+          <div class="d1-nav-label">Resources</div>
           <a href="#" data-tab="perks" data-perm="manageResources">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
             <span class="d1-nav-lbl">Perks</span>
@@ -82,6 +88,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>
             <span class="d1-nav-lbl">Learnings</span>
           </a>
+
           <div class="d1-nav-divider" data-perm="manageAdmins"></div>
           <a href="#" data-tab="admins" data-perm="manageAdmins">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
@@ -144,7 +151,25 @@
               <span class="adm-stat-num" id="stat-pending-consultations">0</span>
               <span class="adm-stat-label">Consultations awaiting response</span>
             </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-refunds-outstanding">0</span>
+              <span class="adm-stat-label">Refunds outstanding</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-expiring-week">0</span>
+              <span class="adm-stat-label">Memberships due this week</span>
+            </div>
+            <div class="adm-stat-card">
+              <span class="adm-stat-num" id="stat-expiring-month">0</span>
+              <span class="adm-stat-label">Memberships due this month</span>
+            </div>
           </div>
+
+          <div class="adm-section-head">
+            <h2 class="adm-section-title">Conversion funnel</h2>
+          </div>
+          <p class="adm-panel-note">Viewed/Visited isn't tracked yet - it needs page-analytics (GA/Plausible) wired in. Applied, Payment Initiated, and Converted below are real counts from submitted applications and their payment status.</p>
+          <div class="adm-funnel" id="adm-funnel"></div>
 
           <div class="adm-section-head">
             <h2 class="adm-section-title">Recent activity</h2>
@@ -161,6 +186,23 @@
             <span class="adm-section-count" id="adm-apps-count-label">0 total</span>
           </div>
           <p class="adm-panel-note">Fed by the public <b>Apply</b> and <b>Onboarding</b> forms. Approving here marks the applicant as a member on this device - it doesn't create a real account since this is a front-end prototype with no server.</p>
+          <div class="adm-table-toolbar" style="margin-bottom:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input class="anv-input" id="adm-apps-search" type="text" placeholder="Search by name, email, or practice area…" style="max-width:320px;">
+            <select class="adm-select" id="adm-apps-filter-status">
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="resubmission">Resubmission</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <select class="adm-select" id="adm-apps-filter-payment">
+              <option value="">All payment states</option>
+              <option value="unpaid">Unpaid</option>
+              <option value="collected">Collected</option>
+              <option value="refunded">Refunded</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
           <div class="adm-table-wrap">
             <table class="adm-table" id="adm-apps-table">
               <thead>
@@ -171,7 +213,10 @@
                   <th>Rate</th>
                   <th>Source</th>
                   <th>Submitted</th>
+                  <th>Verification</th>
                   <th>Status</th>
+                  <th>Payment</th>
+                  <th>Reviewer</th>
                   <th></th>
                 </tr>
               </thead>
@@ -242,8 +287,8 @@
               </div>
               <div class="anv-field-row">
                 <div>
-                  <label class="anv-field-label" for="adm-wa-cat">Practice area <span class="anv-required">*</span></label>
-                  <select class="anv-select" id="adm-wa-cat">
+                  <label class="anv-field-label" for="adm-wa-cat">Practice area(s) <span class="anv-required">*</span></label>
+                  <select class="anv-select" id="adm-wa-cat" multiple size="5">
                     <option>Direct Tax</option>
                     <option>Indirect Tax</option>
                     <option>Corporate Law</option>
@@ -254,6 +299,8 @@
                     <option>Banking &amp; Finance</option>
                     <option>Dispute Resolution</option>
                   </select>
+                  <div class="anv-field-hint">Hold Ctrl/Cmd to select more than one.</div>
+                  <div class="anv-field-error" id="adm-wa-cat-error">Select at least one practice area.</div>
                 </div>
                 <div>
                   <label class="anv-field-label" for="adm-wa-country">Country &amp; state <span class="anv-optional">(optional)</span></label>
@@ -341,6 +388,9 @@
                   <option>Legal</option>
                   <option>Audit</option>
                   <option>AI &amp; Tech</option>
+                  <option>Fintech</option>
+                  <option>Law</option>
+                  <option>Startup</option>
                   <option>General</option>
                 </select>
               </div>
@@ -414,7 +464,7 @@
           <div class="adm-table-wrap">
             <table class="adm-table" id="adm-members-table">
               <thead>
-                <tr><th>Member</th><th>Firm</th><th>Location</th><th>Practice area</th><th>Rate</th><th>Status</th><th>Renewal</th><th></th></tr>
+                <tr><th>Member</th><th>Firm</th><th>Location</th><th>Profile</th><th>Renewal</th><th>Payment</th><th></th></tr>
               </thead>
               <tbody id="adm-members-tbody"></tbody>
             </table>
@@ -795,11 +845,48 @@
         var label = status === 'resubmission' ? 'Resubmission' : (status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending');
         return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>';
       }
+      var PAYMENT_STATUS_LABELS = { unpaid: 'Unpaid', collected: 'Collected', refunded: 'Refunded', failed: 'Failed' };
+      var PAYMENT_STATUS_PILL_CLASS = { unpaid: 'pending', collected: 'approved', refunded: 'resubmission', failed: 'rejected' };
+      function paymentPill(paymentStatus) {
+        var status = paymentStatus || 'unpaid';
+        var cls = PAYMENT_STATUS_PILL_CLASS[status] || 'pending';
+        var label = PAYMENT_STATUS_LABELS[status] || 'Unpaid';
+        return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>';
+      }
+      function paymentStatusControl(a, canManage) {
+        if (!canManage) return paymentPill(a.paymentStatus);
+        var status = a.paymentStatus || 'unpaid';
+        var options = window.ExpertlyAdmin.PAYMENT_STATUSES.map(function (s) {
+          return '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + (PAYMENT_STATUS_LABELS[s] || s) + '</option>';
+        }).join('');
+        return '<select class="adm-select adm-payment-status-select" data-id="' + esc(a.id) + '">' + options + '</select>';
+      }
+      function reviewerControl(a, canManage) {
+        var admins = window.ExpertlyAdmin.getAdminUsers();
+        if (!canManage) {
+          var current = admins.find(function (u) { return u.id === a.reviewerId; });
+          return current ? esc(current.name) : '<span class="adm-td-sub">Unassigned</span>';
+        }
+        var options = '<option value="">Unassigned</option>' + admins.map(function (u) {
+          return '<option value="' + esc(u.id) + '"' + (u.id === a.reviewerId ? ' selected' : '') + '>' + esc(u.name) + '</option>';
+        }).join('');
+        return '<select class="adm-select adm-reviewer-select" data-id="' + esc(a.id) + '">' + options + '</select>';
+      }
+      function verificationSummary(a) {
+        var stages = a.verificationStages || [];
+        var verified = stages.filter(function (s) { return s.status === 'verified'; }).length;
+        var rejected = stages.some(function (s) { return s.status === 'rejected'; });
+        var cls = rejected ? 'rejected' : verified === stages.length && stages.length ? 'approved' : 'pending';
+        return '<span class="adm-pill adm-pill-' + cls + '">' + verified + '/' + stages.length + ' verified</span>';
+      }
       function rolePill(role) {
         return '<span class="adm-pill adm-pill-role-' + esc(role) + '">' + esc(window.ExpertlyAdmin.getRoleLabel(role)) + '</span>';
       }
 
       // ── Render: Applications ───────────────────────────────────
+      var appsSearchQuery = '';
+      var appsStatusFilter = '';
+      var appsPaymentFilter = '';
       function renderApplications() {
         var apps = window.ExpertlyAdmin.getApplications();
         var tbody = document.getElementById('adm-apps-tbody');
@@ -811,12 +898,28 @@
         document.getElementById('adm-count-applications').textContent = pending;
         document.getElementById('stat-pending-apps').textContent = pending;
         document.getElementById('stat-approved-apps').textContent = approved;
+        renderFunnel();
 
-        if (!apps.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+        var q = appsSearchQuery.toLowerCase();
+        var list = apps.filter(function (a) {
+          if (appsStatusFilter && a.status !== appsStatusFilter) return false;
+          if (appsPaymentFilter && (a.paymentStatus || 'unpaid') !== appsPaymentFilter) return false;
+          if (q && [a.name, a.email, a.practiceArea].filter(Boolean).join(' ').toLowerCase().indexOf(q) === -1) return false;
+          return true;
+        });
+
+        if (!list.length) {
+          tbody.innerHTML = '';
+          empty.style.display = 'block';
+          empty.innerHTML = apps.length
+            ? 'No applications match this search/filter.'
+            : 'No applications yet. Submit one via <a href="apply.html">apply.html</a> or <a href="onboarding_form.html">onboarding_form.html</a> to see it appear here.';
+          return;
+        }
         empty.style.display = 'none';
 
         var canManage = can('manageApplications');
-        tbody.innerHTML = apps.map(function (a) {
+        tbody.innerHTML = list.map(function (a) {
           var needsDecision = a.status === 'pending' || a.status === 'resubmission';
           var actions = !canManage ? '' : ((needsDecision
             ? '<button class="adm-btn adm-btn-approve" data-action="approve-app" data-id="' + esc(a.id) + '">Approve</button>' +
@@ -832,7 +935,10 @@
             '<td>' + (a.rateRange ? '$' + esc(a.rateRange) + '/hr' : '-') + '</td>' +
             '<td class="adm-td-source">' + esc(a.source) + '</td>' +
             '<td>' + fmtDate(a.submittedAt) + '</td>' +
+            '<td>' + verificationSummary(a) + '</td>' +
             '<td>' + statusCell + '</td>' +
+            '<td>' + paymentStatusControl(a, canManage) + '</td>' +
+            '<td>' + reviewerControl(a, canManage) + '</td>' +
             '<td class="adm-td-actions">' + actions + '</td>' +
             '</tr>';
         }).join('');
@@ -850,7 +956,9 @@
         return '<div class="adm-detail-row"><span class="adm-detail-label">' + esc(label) + '</span><span class="adm-detail-value">' + value + '</span></div>';
       }
 
+      var appModalCurrentId = null;
       function openApplicationModal(a) {
+        appModalCurrentId = a.id;
         var photo = a.photoHtml
           ? '<div class="adm-detail-photo">' + a.photoHtml + '</div>'
           : '<div class="adm-detail-photo adm-detail-photo-empty">' + esc((a.name || '?').charAt(0).toUpperCase()) + '</div>';
@@ -874,10 +982,31 @@
         var consents = ['consentTerms', 'consentPrivacy', 'consentVerify'].filter(function (k) { return a[k]; })
           .map(function (k) { return fmtLabel(k.replace('consent', '')); });
 
+        var canManage = can('manageApplications');
+        var history = (a.remarkHistory || []).filter(function (h) { return h.remark; }).slice().reverse();
+        var remarkHistoryHtml = !history.length
+          ? '<p class="adm-detail-bio">No remarks yet.</p>'
+          : history.map(function (h) {
+              return '<div class="adm-detail-card"><b>' + (h.general ? 'Note' : statusPill(h.status)) + '</b>' +
+                '<span>' + esc(h.remark) + '</span><span>' + fmtDate(h.at) + '</span></div>';
+            }).join('');
+        var stageRows = (a.verificationStages || []).map(function (s) {
+          var pillCls = s.status === 'verified' ? 'approved' : s.status === 'rejected' ? 'rejected' : 'pending';
+          var pillLabel = s.status === 'verified' ? 'Verified' : s.status === 'rejected' ? 'Flagged' : 'Pending';
+          var btns = !canManage ? '' :
+            '<button class="adm-btn adm-btn-approve" data-stage-action="verify-stage" data-stage-key="' + esc(s.key) + '">Verify</button>' +
+            '<button class="adm-btn adm-btn-reject" data-stage-action="flag-stage" data-stage-key="' + esc(s.key) + '">Flag</button>' +
+            '<button class="adm-btn adm-btn-ghost" data-stage-action="reset-stage" data-stage-key="' + esc(s.key) + '">Reset</button>';
+          return '<div class="adm-stage-row"><span class="adm-stage-label">' + esc(s.label) + '</span>' +
+            '<span class="adm-pill adm-pill-' + pillCls + '">' + pillLabel + '</span>' +
+            '<span class="adm-stage-actions">' + btns + '</span></div>';
+        }).join('');
+
         appModalBody.innerHTML =
           '<div class="adm-detail-head">' + photo +
-            '<div><h4>' + esc(a.name) + '</h4><span>' + esc(a.email) + '</span>' + statusPill(a.status) + '</div>' +
+            '<div><h4>' + esc(a.name) + '</h4><span>' + esc(a.email) + '</span>' + statusPill(a.status) + ' ' + paymentPill(a.paymentStatus) + '</div>' +
           '</div>' +
+          '<div class="adm-detail-section"><h5>Verification stages</h5><div class="adm-stage-list">' + stageRows + '</div></div>' +
           '<div class="adm-detail-section"><h5>Contact</h5>' +
             row('Email', esc(a.email)) + row('Phone', esc(a.phone)) + row('LinkedIn', a.linkedin ? '<a href="' + esc(a.linkedin) + '" target="_blank" rel="noopener">' + esc(a.linkedin) + '</a>' : '') +
             row('Location', esc(a.location)) + row('Region', esc(a.region)) +
@@ -891,9 +1020,12 @@
           (work ? '<div class="adm-detail-section"><h5>Work history</h5>' + work + '</div>' : '') +
           (edu ? '<div class="adm-detail-section"><h5>Education</h5>' + edu + '</div>' : '') +
           (consents.length ? '<div class="adm-detail-section"><h5>Consents given</h5><p class="adm-detail-bio">' + consents.map(esc).join(' · ') + '</p></div>' : '') +
-          (a.remark ? '<div class="adm-detail-section"><h5>Admin remark</h5><p class="adm-detail-bio">' + esc(a.remark) + '</p></div>' : '') +
+          '<div class="adm-detail-section"><h5>Remarks</h5>' + remarkHistoryHtml +
+            (can('manageApplications') ? '<button class="adm-btn adm-btn-ghost" id="adm-modal-add-remark" style="margin-top:8px;">Add remark</button>' : '') +
+          '</div>' +
           '<div class="adm-detail-section"><h5>Submission</h5>' +
             row('Source', esc(a.source)) + row('Submitted', fmtDate(a.submittedAt)) + row('Application ID', esc(a.id)) +
+            row('Reviewer', reviewerControl(a, canManage)) +
           '</div>';
 
         appModal.hidden = false;
@@ -901,6 +1033,29 @@
 
       document.getElementById('adm-app-modal-close').addEventListener('click', function () { appModal.hidden = true; });
       appModal.addEventListener('click', function (e) { if (e.target === appModal) appModal.hidden = true; });
+
+      appModalBody.addEventListener('click', function (e) {
+        if (e.target.closest('#adm-modal-add-remark') && appModalCurrentId) {
+          openRemarkModal(appModalCurrentId, 'note');
+          return;
+        }
+        var btn = e.target.closest('button[data-stage-action]');
+        if (!btn || !appModalCurrentId || !can('manageApplications')) return;
+        var stageKey = btn.getAttribute('data-stage-key');
+        var action = btn.getAttribute('data-stage-action');
+        var status = action === 'verify-stage' ? 'verified' : action === 'flag-stage' ? 'rejected' : 'pending';
+        window.ExpertlyAdmin.setVerificationStageStatus(appModalCurrentId, stageKey, status);
+        var refreshed = window.ExpertlyAdmin.getApplications().find(function (a) { return a.id === appModalCurrentId; });
+        if (refreshed) openApplicationModal(refreshed);
+        renderApplications();
+      });
+
+      appModalBody.addEventListener('change', function (e) {
+        var reviewerSelect = e.target.closest('.adm-reviewer-select');
+        if (!reviewerSelect || !appModalCurrentId || !can('manageApplications')) return;
+        window.ExpertlyAdmin.setApplicationReviewer(appModalCurrentId, reviewerSelect.value);
+        renderApplications();
+      });
 
       // ── Remark modal (reject / resubmission) ──────────────────
       var remarkModal = document.getElementById('adm-remark-modal');
@@ -911,9 +1066,11 @@
 
       function openRemarkModal(id, status) {
         remarkPending = { id: id, status: status };
-        remarkTitle.textContent = status === 'rejected' ? 'Reject application' : 'Ask for resubmission';
+        remarkTitle.textContent = status === 'rejected' ? 'Reject application' : status === 'note' ? 'Add internal remark' : 'Ask for resubmission';
         remarkHint.textContent = status === 'rejected'
           ? "Tell the applicant why this application is being rejected."
+          : status === 'note'
+          ? "Internal note only - doesn't change the applicant's status or notify them."
           : "Tell the applicant what needs fixing before they resubmit.";
         remarkTextarea.value = '';
         remarkModal.hidden = false;
@@ -929,12 +1086,42 @@
         if (!remarkPending) return;
         var remark = remarkTextarea.value.trim();
         if (!remark) { remarkTextarea.focus(); return; }
-        window.ExpertlyAdmin.setApplicationStatus(remarkPending.id, remarkPending.status, remark);
+        if (remarkPending.status === 'note') {
+          window.ExpertlyAdmin.addApplicationRemark(remarkPending.id, remark);
+        } else {
+          window.ExpertlyAdmin.setApplicationStatus(remarkPending.id, remarkPending.status, remark);
+        }
         closeRemarkModal();
         renderApplications();
         renderMembers();
         renderFeed();
+        if (appModalCurrentId) {
+          var current = window.ExpertlyAdmin.getApplications().find(function (a) { return a.id === appModalCurrentId; });
+          if (current) openApplicationModal(current);
+        }
       });
+
+      var appsSearchEl = document.getElementById('adm-apps-search');
+      if (appsSearchEl) {
+        appsSearchEl.addEventListener('input', function (e) {
+          appsSearchQuery = e.target.value.trim();
+          renderApplications();
+        });
+      }
+      var appsStatusFilterEl = document.getElementById('adm-apps-filter-status');
+      if (appsStatusFilterEl) {
+        appsStatusFilterEl.addEventListener('change', function (e) {
+          appsStatusFilter = e.target.value;
+          renderApplications();
+        });
+      }
+      var appsPaymentFilterEl = document.getElementById('adm-apps-filter-payment');
+      if (appsPaymentFilterEl) {
+        appsPaymentFilterEl.addEventListener('change', function (e) {
+          appsPaymentFilter = e.target.value;
+          renderApplications();
+        });
+      }
 
       document.getElementById('adm-apps-tbody').addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-action]');
@@ -949,11 +1136,27 @@
         if (!can('manageApplications')) return;
         if (action === 'reject-app') { openRemarkModal(id, 'rejected'); return; }
         if (action === 'resubmit-app') { openRemarkModal(id, 'resubmission'); return; }
+        if (action === 'remark-app') { openRemarkModal(id, 'note'); return; }
         var status = action === 'approve-app' ? 'approved' : 'pending';
         window.ExpertlyAdmin.setApplicationStatus(id, status);
         renderApplications();
         renderMembers();
         renderFeed();
+      });
+
+      document.getElementById('adm-apps-tbody').addEventListener('change', function (e) {
+        var paymentSelect = e.target.closest('.adm-payment-status-select');
+        if (paymentSelect && can('manageApplications')) {
+          window.ExpertlyAdmin.setApplicationPaymentStatus(paymentSelect.getAttribute('data-id'), paymentSelect.value);
+          renderApplications();
+          renderFunnel();
+          return;
+        }
+        var reviewerSelect = e.target.closest('.adm-reviewer-select');
+        if (reviewerSelect && can('manageApplications')) {
+          window.ExpertlyAdmin.setApplicationReviewer(reviewerSelect.getAttribute('data-id'), reviewerSelect.value);
+          renderApplications();
+        }
       });
 
       // ── Render: Article submissions (review queue) ─────────────
@@ -1088,11 +1291,18 @@
         bodyErr.classList.toggle('show', !contentValid);
         if (!contentValid) valid = false;
 
+        var catSelect = document.getElementById('adm-wa-cat');
+        var cats = Array.prototype.filter.call(catSelect.options, function (o) { return o.selected; }).map(function (o) { return o.value; });
+        var catErr = document.getElementById('adm-wa-cat-error');
+        catSelect.classList.toggle('anv-invalid', !cats.length);
+        catErr.classList.toggle('show', !cats.length);
+        if (!cats.length) valid = false;
+
         if (!valid) return;
 
-        var cat = document.getElementById('adm-wa-cat').value;
+        var cat = cats.join(', ');
         var country = document.getElementById('adm-wa-country').value.trim();
-        var image = document.getElementById('adm-wa-image').value.trim() || CATEGORY_IMAGES[cat] || CATEGORY_IMAGES['Direct Tax'];
+        var image = document.getElementById('adm-wa-image').value.trim() || CATEGORY_IMAGES[cats[0]] || CATEGORY_IMAGES['Direct Tax'];
         var wordsForRead = Math.max(1, Math.round(words / 200));
 
         window.ExpertlyAdmin.addAdminArticle({
@@ -1106,6 +1316,7 @@
         });
 
         waTitle.value = ''; waBody.value = ''; document.getElementById('adm-wa-country').value = ''; document.getElementById('adm-wa-image').value = '';
+        Array.prototype.forEach.call(catSelect.options, function (o) { o.selected = false; });
         updateWaWordCount();
         document.getElementById('adm-wa-success').style.display = 'block';
         setTimeout(function () { document.getElementById('adm-wa-success').style.display = 'none'; }, 3200);
@@ -1119,8 +1330,17 @@
         if (!dateStr) return '';
         var d = new Date(dateStr + 'T00:00:00');
         if (isNaN(d)) return '';
-        var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return months[d.getMonth()] + ' ' + d.getDate();
+      }
+
+      // Older admin-added and static seed events store their date as all-caps
+      // codes (e.g. "APR 20") - normalize to title case for display only,
+      // without touching the underlying stored/seed data.
+      function eventDateLabel(str) {
+        return String(str || '').replace(/\b[A-Za-z]+\b/g, function (w) {
+          return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+        });
       }
 
       function renderEvents() {
@@ -1140,7 +1360,7 @@
           evTbody.innerHTML = adminEvents.map(function (e) {
             return '<tr>' +
               '<td><b>' + esc(e.title) + '</b></td>' +
-              '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
+              '<td>' + esc(eventDateLabel(e.start)) + (e.end ? ' – ' + esc(eventDateLabel(e.end)) : '') + '</td>' +
               '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
               '<td>' + esc(e.category) + '</td>' +
               '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-event" data-id="' + esc(e.id) + '">Remove</button>' : '') + '</td>' +
@@ -1153,7 +1373,7 @@
         staticTbody.innerHTML = staticEvents.map(function (e) {
           return '<tr>' +
             '<td><b>' + esc(e.title) + '</b></td>' +
-            '<td>' + esc(e.start) + (e.end ? ' – ' + esc(e.end) : '') + '</td>' +
+            '<td>' + esc(eventDateLabel(e.start)) + (e.end ? ' – ' + esc(eventDateLabel(e.end)) : '') + '</td>' +
             '<td>' + esc(e.city) + (e.country ? ', ' + esc(e.country) : '') + '</td>' +
             '<td>' + esc(e.category) + '</td>' +
             '<td class="adm-td-actions">' + (canDelete ? '<button class="adm-btn adm-btn-reject" data-action="delete-static-event" data-id="' + esc(e.id) + '">Delete</button>' : '') + '</td>' +
@@ -1253,6 +1473,10 @@
         document.getElementById('stat-active-members').textContent = active.length;
         document.getElementById('adm-members-count-label').textContent = all.length + ' total';
 
+        var daysLeftList = active.map(function (m) { return window.ExpertlyAdmin.getRenewalInfo(m).daysLeft; }).filter(function (d) { return d !== null; });
+        document.getElementById('stat-expiring-week').textContent = daysLeftList.filter(function (d) { return d >= 0 && d <= 7; }).length;
+        document.getElementById('stat-expiring-month').textContent = daysLeftList.filter(function (d) { return d >= 0 && d <= 30; }).length;
+
         var q = membersSearchQuery.toLowerCase();
         var list = !q ? all : all.filter(function (m) {
           return [m.name, m.firm, m.practice, m.location].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
@@ -1277,13 +1501,18 @@
             '<td><b>' + esc(m.name) + '</b><span class="adm-td-sub">' + esc(m.title || '') + '</span></td>' +
             '<td>' + esc(m.firm || '-') + '</td>' +
             '<td>' + esc(m.location || '-') + '</td>' +
-            '<td>' + esc(m.practice || '-') + '</td>' +
-            '<td>' + esc(m.rate || '-') + '</td>' +
-            '<td>' + statusPill(deactivated ? 'rejected' : 'approved') + '</td>' +
+            '<td>' + profileCompletionCell(m) + '</td>' +
             '<td>' + renewalCell(m) + '</td>' +
+            '<td>' + renewalPaymentControl(m, canManage) + '</td>' +
             '<td class="adm-td-actions">' + actions + '</td>' +
             '</tr>';
         }).join('');
+      }
+
+      function profileCompletionCell(m) {
+        var pct = window.ExpertlyAdmin.getProfileCompletion(m);
+        var cls = pct >= 80 ? 'approved' : pct >= 40 ? 'pending' : 'rejected';
+        return '<span class="adm-pill adm-pill-' + cls + '">' + pct + '%</span>';
       }
 
       function renewalCell(m) {
@@ -1293,6 +1522,19 @@
         var label = info.state === 'overdue' ? 'Overdue' : info.state === 'due-soon' ? 'Due soon' : 'Active';
         return '<span class="adm-pill adm-pill-' + cls + '">' + label + '</span>' +
           '<span class="adm-td-sub">' + fmtDate(info.dueDate) + '</span>';
+      }
+
+      var RENEWAL_PAYMENT_LABELS = { paid: 'Paid', pending: 'Pending', overdue: 'Overdue' };
+      var RENEWAL_PAYMENT_PILL_CLASS = { paid: 'approved', pending: 'pending', overdue: 'rejected' };
+      function renewalPaymentControl(m, canManage) {
+        var status = window.ExpertlyAdmin.getRenewalPaymentStatus(m);
+        if (!canManage) {
+          return '<span class="adm-pill adm-pill-' + (RENEWAL_PAYMENT_PILL_CLASS[status] || 'pending') + '">' + (RENEWAL_PAYMENT_LABELS[status] || status) + '</span>';
+        }
+        var options = window.ExpertlyAdmin.RENEWAL_PAYMENT_STATUSES.map(function (s) {
+          return '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + (RENEWAL_PAYMENT_LABELS[s] || s) + '</option>';
+        }).join('');
+        return '<select class="adm-select adm-renewal-payment-select" data-id="' + esc(m.id) + '">' + options + '</select>';
       }
 
       // ── Renewal policy controls ────────────────────────────────
@@ -1339,6 +1581,13 @@
           return;
         }
         window.ExpertlyAdmin.setMemberStatus(id, action === 'deactivate-member' ? 'deactivated' : 'active');
+        renderMembers();
+      });
+
+      document.getElementById('adm-members-tbody').addEventListener('change', function (e) {
+        var select = e.target.closest('.adm-renewal-payment-select');
+        if (!select || !can('manageMembers')) return;
+        window.ExpertlyAdmin.setRenewalPaymentStatus(select.getAttribute('data-id'), select.value);
         renderMembers();
       });
 
@@ -1739,6 +1988,7 @@
             yearsExp: '14',
             practiceArea: 'Transfer Pricing', services: ['Transfer Pricing', 'Corporate Tax', 'M&A Tax'],
             rateRange: '450–650',
+            paymentStatus: 'collected',
             workHistory: [
               { title: 'Tax Partner', company: 'Krishnaswamy & Associates', city: 'Singapore', size: '11-50', url: 'https://krishnaswamylaw.example.com', startMonth: 'Jun', startYear: '2018', isCurrent: true, endMonth: '', endYear: '' },
               { title: 'Senior Tax Manager', company: 'Deloitte Singapore', city: 'Singapore', size: '1000+', url: '', startMonth: 'Jan', startYear: '2012', isCurrent: false, endMonth: 'May', endYear: '2018' }
@@ -1753,6 +2003,40 @@
 
       }
 
+      // ── Render: Conversion funnel ────────────────────────────────
+      // Viewed/Visited has no data source yet in this prototype (no page
+      // analytics wired in) - it's rendered as an "untracked" placeholder
+      // instead of a fake number. Payment Initiated now reads off the
+      // application's paymentStatus field.
+      function renderFunnel() {
+        var apps = window.ExpertlyAdmin.getApplications();
+        var applied = apps.length;
+        var paymentInitiated = apps.filter(function (a) { return a.paymentStatus && a.paymentStatus !== 'unpaid'; }).length;
+        var converted = apps.filter(function (a) { return a.status === 'approved'; }).length;
+        var stages = [
+          { label: 'Viewed/Visited', count: null },
+          { label: 'Applied', count: applied },
+          { label: 'Payment Initiated', count: paymentInitiated },
+          { label: 'Converted', count: converted }
+        ];
+        var max = Math.max(applied, converted, 1);
+        document.getElementById('adm-funnel').innerHTML = stages.map(function (s) {
+          var untracked = s.count === null;
+          var pct = untracked ? 100 : Math.round((s.count / max) * 100);
+          var meta = untracked ? 'Not tracked yet' : (s.count + (applied ? ' (' + Math.round((s.count / applied) * 100) + '%)' : ''));
+          return '<div class="adm-funnel-stage">' +
+            '<span class="adm-funnel-label">' + esc(s.label) + '</span>' +
+            '<span class="adm-funnel-track"><span class="adm-funnel-fill' + (untracked ? ' adm-funnel-untracked' : '') + '" style="width:' + pct + '%"></span></span>' +
+            '<span class="adm-funnel-meta">' + (untracked ? meta : '<b>' + meta.split(' ')[0] + '</b> ' + meta.split(' ').slice(1).join(' ')) + '</span>' +
+            '</div>';
+        }).join('');
+      }
+
+      // ── Render: Refunds ───────────────────────────────────────
+      function renderRefundStat() {
+        document.getElementById('stat-refunds-outstanding').textContent = window.ExpertlyAdmin.getOutstandingRefundsCount();
+      }
+
       // ── Init ──────────────────────────────────────────────────
       seedSampleApplications();
       renderApplications();
@@ -1764,6 +2048,7 @@
       renderUserDirectory();
       renderProfileEdits();
       renderConsultations();
+      renderRefundStat();
       renderPerksAdmin();
       renderTemplatesAdmin();
       renderLearningsAdmin();

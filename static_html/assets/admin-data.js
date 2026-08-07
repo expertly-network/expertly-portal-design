@@ -25,10 +25,12 @@
     TEMPLATES: 'expertly_templates',
     LEARNINGS: 'expertly_learnings',
     CONSULTATIONS: 'expertly_my_consultations',
+    REFUNDS: 'expertly_refunds',
     PROFILE_EDITS: 'expertly_profile_edits',
     PROFILE_OVERRIDES: 'expertly_profile_overrides',
     RENEWAL_POLICY: 'expertly_renewal_policy',
     MEMBERSHIP_DATES: 'expertly_membership_dates',
+    RENEWAL_PAYMENT_STATUS: 'expertly_renewal_payment_status',
     EXPERIENCE_FEEDBACK: 'expertly_experience_feedback',
     USERS: 'expertly_users',
     SUBSCRIBERS: 'expertly_subscribers'
@@ -155,19 +157,63 @@
   }
 
   /* ── Membership applications (apply.html + onboarding_form.html feed this) ── */
+  var VERIFICATION_STAGES = [
+    { key: 'credentials', label: 'Credentials' },
+    { key: 'testimonial', label: 'Testimonial review' },
+    { key: 'final', label: 'Final review' }
+  ];
+
+  function defaultVerificationStages() {
+    return VERIFICATION_STAGES.map(function (s) { return { key: s.key, label: s.label, status: 'pending' }; });
+  }
+
   function pushApplication(record) {
     var list = readArray(KEYS.APPLICATIONS);
     list.unshift(Object.assign({
       id: makeId('app'),
       status: 'pending',
-      submittedAt: new Date().toISOString()
+      paymentStatus: 'unpaid',
+      submittedAt: new Date().toISOString(),
+      verificationStages: defaultVerificationStages()
     }, record));
     writeArray(KEYS.APPLICATIONS, list);
     return list;
   }
 
   function getApplications() {
-    return readArray(KEYS.APPLICATIONS);
+    return readArray(KEYS.APPLICATIONS).map(function (a) {
+      if (!a.verificationStages || !a.verificationStages.length) a.verificationStages = defaultVerificationStages();
+      if (!a.paymentStatus) a.paymentStatus = 'unpaid';
+      return a;
+    });
+  }
+
+  var PAYMENT_STATUSES = ['unpaid', 'collected', 'refunded', 'failed'];
+
+  function setApplicationPaymentStatus(id, paymentStatus) {
+    if (PAYMENT_STATUSES.indexOf(paymentStatus) === -1) return readArray(KEYS.APPLICATIONS);
+    var list = readArray(KEYS.APPLICATIONS);
+    list.forEach(function (a) { if (a.id === id) a.paymentStatus = paymentStatus; });
+    writeArray(KEYS.APPLICATIONS, list);
+    return list;
+  }
+
+  function setApplicationReviewer(id, reviewerId) {
+    var list = readArray(KEYS.APPLICATIONS);
+    list.forEach(function (a) { if (a.id === id) a.reviewerId = reviewerId || ''; });
+    writeArray(KEYS.APPLICATIONS, list);
+    return list;
+  }
+
+  function setVerificationStageStatus(appId, stageKey, status) {
+    var list = readArray(KEYS.APPLICATIONS);
+    list.forEach(function (a) {
+      if (a.id !== appId) return;
+      if (!a.verificationStages || !a.verificationStages.length) a.verificationStages = defaultVerificationStages();
+      a.verificationStages.forEach(function (s) { if (s.key === stageKey) s.status = status; });
+    });
+    writeArray(KEYS.APPLICATIONS, list);
+    return list;
   }
 
   function setApplicationStatus(id, status, remark) {
@@ -188,6 +234,24 @@
       list.forEach(function (a) { if (a.id === id) a.promotedMemberId = memberId; });
       writeArray(KEYS.APPLICATIONS, list);
     }
+    return list;
+  }
+
+  /* General-purpose note that doesn't change the application's status - for
+     internal context (e.g. "called applicant to confirm rate range") that
+     isn't a rejection or resubmission reason. */
+  function addApplicationRemark(id, remark) {
+    remark = (remark || '').trim();
+    if (!remark) return readArray(KEYS.APPLICATIONS);
+    var list = readArray(KEYS.APPLICATIONS);
+    list.forEach(function (a) {
+      if (a.id !== id) return;
+      var at = new Date().toISOString();
+      a.remark = remark;
+      a.remarkAt = at;
+      a.remarkHistory = (a.remarkHistory || []).concat([{ status: a.status, remark: remark, at: at, general: true }]);
+    });
+    writeArray(KEYS.APPLICATIONS, list);
     return list;
   }
 
@@ -411,6 +475,16 @@
     return getAdminMembers().concat(staticMembers);
   }
 
+  /* Profile completion % for the Members admin table - counts how many of
+     the fields a member's public profile actually shows are filled in. */
+  var PROFILE_COMPLETION_FIELDS = ['title', 'firm', 'location', 'practice', 'tenure', 'rate', 'img'];
+
+  function getProfileCompletion(member) {
+    if (typeof member.profileComplete === 'number') return member.profileComplete;
+    var filled = PROFILE_COMPLETION_FIELDS.filter(function (f) { return member[f]; }).length;
+    return Math.round((filled / PROFILE_COMPLETION_FIELDS.length) * 100);
+  }
+
   /* ── Renewal policy ──────────────────────────────────────────
      A single sitewide policy (period + reminder window) applied against
      each member's membership date. Promoted members get their membership
@@ -450,6 +524,30 @@
      member record was created (e.g. application approval), else null. */
   function getEffectiveMembershipDate(member) {
     return getMembershipDate(member.id) || member.createdAt || null;
+  }
+
+  /* Renewal payment status - manually marked "paid" by an admin once the
+     upcoming renewal invoice is settled; otherwise derived from the renewal
+     due state (overdue / due-soon) so the column is never blank. */
+  var RENEWAL_PAYMENT_STATUSES = ['paid', 'pending', 'overdue'];
+
+  function getRenewalPaymentStatuses() {
+    return readObj(KEYS.RENEWAL_PAYMENT_STATUS, {});
+  }
+
+  function setRenewalPaymentStatus(memberId, status) {
+    var map = getRenewalPaymentStatuses();
+    if (status && RENEWAL_PAYMENT_STATUSES.indexOf(status) !== -1) map[memberId] = status; else delete map[memberId];
+    writeObj(KEYS.RENEWAL_PAYMENT_STATUS, map);
+    return map;
+  }
+
+  function getRenewalPaymentStatus(member) {
+    var manual = getRenewalPaymentStatuses()[member.id];
+    if (manual) return manual;
+    var info = getRenewalInfo(member);
+    if (info.state === 'unknown') return 'pending';
+    return info.state === 'overdue' ? 'overdue' : 'pending';
   }
 
   function getRenewalInfo(member) {
@@ -706,6 +804,24 @@
     return list;
   }
 
+  /* ── Refunds ──────────────────────────────────────────────────────
+     Tracks refund requests raised against a rejected/cancelled application
+     or a billing dispute, so the Overview stat card ("Refunds outstanding")
+     has real data to count instead of a hardcoded 0. Status: 'outstanding'
+     (not yet paid back) or 'processed' (refund completed). ── */
+  var DEFAULT_REFUNDS = [
+    { memberName: 'Priya Nair', reason: 'Application rejected after payment', amount: '₹4,999', requestedAt: 'Jul 28, 2026', status: 'outstanding' },
+    { memberName: 'Thomas Becker', reason: 'Duplicate payment on renewal', amount: '₹9,999', requestedAt: 'Jul 22, 2026', status: 'outstanding' },
+    { memberName: 'Ana Souza', reason: 'Cancelled before onboarding call', amount: '₹4,999', requestedAt: 'Jul 10, 2026', status: 'processed' }
+  ];
+
+  var refundsLayer = makeCrudLayer(KEYS.REFUNDS, 'refund', DEFAULT_REFUNDS);
+
+  function getRefunds() { return refundsLayer.getAll(); }
+  function getOutstandingRefundsCount() {
+    return getRefunds().filter(function (r) { return (r.status || 'outstanding') === 'outstanding'; }).length;
+  }
+
   /* ── Homepage "share your experience" dropbox (general feedback or a
      deal-closed success story) - visitor-submitted, reviewable by admins. ── */
   function pushExperienceFeedback(record) {
@@ -790,9 +906,15 @@
     countSuperAdmins: countSuperAdmins,
     authenticate: authenticate,
 
+    VERIFICATION_STAGES: VERIFICATION_STAGES,
     pushApplication: pushApplication,
     getApplications: getApplications,
     setApplicationStatus: setApplicationStatus,
+    setApplicationPaymentStatus: setApplicationPaymentStatus,
+    PAYMENT_STATUSES: PAYMENT_STATUSES,
+    setApplicationReviewer: setApplicationReviewer,
+    addApplicationRemark: addApplicationRemark,
+    setVerificationStageStatus: setVerificationStageStatus,
 
     getArticleSubmissions: getArticleSubmissions,
     setArticleStatus: setArticleStatus,
@@ -831,6 +953,7 @@
     restoreStaticMember: restoreStaticMember,
     getAllVisibleMembers: getAllVisibleMembers,
     getAllMembersForAdmin: getAllMembersForAdmin,
+    getProfileCompletion: getProfileCompletion,
     setMemberStatus: setMemberStatus,
     promoteApplicationToMember: promoteApplicationToMember,
 
@@ -839,6 +962,9 @@
     getMembershipDate: getMembershipDate,
     setMembershipDate: setMembershipDate,
     getEffectiveMembershipDate: getEffectiveMembershipDate,
+    getRenewalPaymentStatus: getRenewalPaymentStatus,
+    setRenewalPaymentStatus: setRenewalPaymentStatus,
+    RENEWAL_PAYMENT_STATUSES: RENEWAL_PAYMENT_STATUSES,
     getRenewalInfo: getRenewalInfo,
 
     submitProfileEdit: submitProfileEdit,
@@ -868,6 +994,12 @@
     pushConsultationRequest: pushConsultationRequest,
     setConsultationStatus: setConsultationStatus,
     deleteConsultationRequest: deleteConsultationRequest,
+
+    getRefunds: getRefunds,
+    addRefund: refundsLayer.add,
+    updateRefund: refundsLayer.update,
+    deleteRefund: refundsLayer.remove,
+    getOutstandingRefundsCount: getOutstandingRefundsCount,
 
     pushExperienceFeedback: pushExperienceFeedback,
     getExperienceFeedback: getExperienceFeedback,

@@ -9718,7 +9718,7 @@
 .adm-login-back:hover { color: var(--ink); }
 
 /* Dashboard shell */
-.adm-main { min-height: 100vh; overflow-x: clip; background: var(--bg); }
+.adm-main { min-height: 100vh; min-width: 0; overflow-x: clip; background: var(--bg); }
 .adm-hero {
   background: #0B0B0C; padding: 48px 0 40px; position: relative; overflow: hidden;
 }
@@ -9749,8 +9749,8 @@
 .adm-panel-note { font-size: 13.5px; color: var(--ink-3); line-height: 1.6; margin-bottom: 20px; max-width: 760px; }
 .adm-panel-note b { color: var(--ink-2); font-weight: 600; }
 
-.adm-table-wrap { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-.adm-table { width: 100%; border-collapse: collapse; }
+.adm-table-wrap { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; overflow-x: auto; overflow-y: hidden; }
+.adm-table { width: 100%; min-width: 920px; border-collapse: collapse; }
 .adm-table th {
   text-align: left; font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
   color: var(--ink-4); padding: 12px 18px; border-bottom: 1px solid var(--line); white-space: nowrap;
@@ -9766,6 +9766,15 @@
 .adm-table-toolbar { display: flex; gap: 12px; }
 .adm-td-message { max-width: 320px; color: var(--ink-3); }
 
+.adm-funnel { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+.adm-funnel-stage { display: flex; align-items: center; gap: 16px; }
+.adm-funnel-label { width: 160px; flex: none; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.adm-funnel-track { flex: 1; height: 10px; border-radius: 100px; background: var(--bg-2, rgba(127,127,127,0.14)); overflow: hidden; }
+.adm-funnel-fill { height: 100%; border-radius: 100px; background: var(--accent); transition: width .3s ease; }
+.adm-funnel-fill.adm-funnel-untracked { background: repeating-linear-gradient(45deg, var(--ink-4) 0 6px, transparent 6px 12px); opacity: .5; }
+.adm-funnel-meta { width: 150px; flex: none; text-align: right; font-size: 13px; color: var(--ink-3); }
+.adm-funnel-meta b { color: var(--ink); font-weight: 600; }
+
 .adm-pill {
   display: inline-flex; align-items: center; font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700;
   letter-spacing: 0.02em; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
@@ -9775,6 +9784,12 @@
 .adm-pill-rejected { color: #dc2626; background: color-mix(in oklab, #dc2626 12%, transparent); }
 .adm-pill-resubmission { color: #7c3aed; background: color-mix(in oklab, #7c3aed 12%, transparent); }
 .adm-remark-note { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.adm-select {
+  font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-2);
+  background: var(--bg-alt); border: 1px solid var(--line); border-radius: 100px;
+  padding: 4px 26px 4px 11px; cursor: pointer;
+}
 
 .adm-renewal-policy {
   display: flex; align-items: center; flex-wrap: wrap; gap: 18px;
@@ -9903,6 +9918,12 @@
 .adm-detail-card:last-child { margin-bottom: 0; }
 .adm-detail-card b { display: block; font-size: 13.5px; color: var(--ink); font-weight: 600; }
 .adm-detail-card span { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+
+.adm-stage-list { display: flex; flex-direction: column; gap: 8px; }
+.adm-stage-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.adm-stage-row:last-child { border-bottom: none; }
+.adm-stage-label { flex: 0 0 150px; font-size: 13.5px; color: var(--ink-2); font-weight: 500; }
+.adm-stage-actions { display: flex; gap: 6px; margin-left: auto; }
 .adm-detail-card a { display: block; font-size: 12px; color: var(--accent); margin-top: 4px; word-break: break-all; }
 
 

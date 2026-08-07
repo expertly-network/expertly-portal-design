@@ -51,6 +51,7 @@ body { background: var(--bg); }
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-y: auto;
   /* position:sticky creates its own stacking context, so descendants like
      .d1-notif-panel (which extends past the sidebar's right edge) would
      otherwise render behind .d1-main — a later grid sibling. Raising the
@@ -183,7 +184,8 @@ body { background: var(--bg); }
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  min-height: 0;
 }
 
 .d1-nav-label {
@@ -261,7 +263,7 @@ a[data-user-nav] { display: none; }
 .d1-theme-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
 
 /* Main base */
-.d1-main { padding: 28px 36px 80px; max-width: 1180px; }
+.d1-main { padding: 28px 36px 80px; max-width: 1180px; min-width: 0; overflow-x: clip; }
 
 /* The position:fixed parallax footer is incompatible with the d1-shell CSS Grid
    layout — stacking context interactions with the sticky sidebar make it
