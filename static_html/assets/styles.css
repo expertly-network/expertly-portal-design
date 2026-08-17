@@ -7211,7 +7211,7 @@
 
     .mc-stepper-section {
       padding: 48px 0;
-      background: var(--bg-alt);
+      background: var(--bg);
       border-top: 1px solid var(--line);
     }
 
@@ -7223,12 +7223,21 @@
       line-height: 1.1;
       margin-top: 4px;
       margin-bottom: 32px;
+      text-wrap: balance;
     }
 
     .mc-stepper-title em {
       font-style: normal;
       font-weight: 400;
       color: var(--accent);
+    }
+
+    .mc-stepper-box {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 40px 32px 32px;
+      box-shadow: 0 20px 40px -32px rgba(0, 0, 0, 0.12);
     }
 
     .mc-stepper {
@@ -7373,6 +7382,7 @@
       color: var(--ink-3);
       line-height: 1.5;
       margin-bottom: 8px;
+      text-wrap: pretty;
     }
 
     .mc-step-badge {
@@ -7451,15 +7461,6 @@
     }
 
     @media (max-width: 900px) {
-      .mc-stepper {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-      }
-
-      .mc-stepper-track {
-        display: none;
-      }
-
       .wjm-cta-card {
         grid-template-columns: 1fr;
         padding: 48px 36px;
@@ -7471,7 +7472,22 @@
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 720px) {
+      .mc-stepper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+
+      .mc-stepper-track {
+        display: none;
+      }
+
+      .mc-stepper-box {
+        padding: 32px 24px 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
       .mc-stepper {
         grid-template-columns: 1fr;
       }
@@ -9594,61 +9610,6 @@
       background: var(--ink);
     }
 
-    /* ── Dark nav while stellar hero is visible ── */
-    /* nav-inner transitions smoothly between dark (hero) and white (content) */
-    html[data-hero="orbit"] .nav-inner {
-      transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.45s ease;
-    }
-
-    html[data-hero="orbit"] .nav-logo,
-    html[data-hero="orbit"] .nav-links a,
-    html[data-hero="orbit"] .nav .btn-ghost {
-      transition: color 0.45s ease;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark {
-      background: var(--ink);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-inner {
-      background: var(--ink);
-      border-bottom-color: var(--ink);
-      box-shadow: none;
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-logo {
-      color: var(--bg-card);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .nav-links a:hover {
-      color: var(--bg-card);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--bg-card);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary {
-      background: transparent;
-      color: var(--accent-2);
-      border: 1px solid rgba(0, 165, 130, 0.5);
-    }
-
-    html[data-hero="orbit"] .nav.hs-nav-dark .btn-primary:hover {
-      background: rgba(0, 165, 130, 0.14);
-    }
-
 /* ============================= admin-login.html / admin-dashboard.html ============================= */
 
 /* Force the admin dashboard's sidebar to stay permanently expanded -- it
@@ -9964,16 +9925,15 @@
 .vet-section {
   position: relative;
   padding: 96px 0;
-  border-top: 1px solid var(--line);
   background:
     radial-gradient(720px 360px at 12% 0%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 70%),
-    var(--bg);
+    var(--bg-alt);
   overflow: hidden;
 }
 .vet-head { margin-bottom: 52px; }
 .vet-badge {
   display: inline-flex; align-items: center; gap: 8px; font-family: 'Archivo', sans-serif; font-size: 11px;
-  font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  font-weight: 600; letter-spacing: 0.02em; color: var(--accent);
   background: color-mix(in oklab, var(--accent) 10%, transparent); border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
   padding: 6px 13px 6px 10px; border-radius: 100px; margin-bottom: 20px;
 }
@@ -9983,11 +9943,16 @@
 }
 .vet-title {
   font-family: 'Geist', sans-serif; font-size: clamp(28px, 3.6vw, 42px); font-weight: 500;
-  color: var(--ink); line-height: 1.15; max-width: 720px; margin: 0 0 16px;
+  color: var(--ink); line-height: 1.15; max-width: 900px; margin: 0 0 16px;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .vet-title { white-space: normal; font-size: clamp(24px, 7vw, 32px); }
 }
 .vet-title em { font-style: normal; color: var(--accent); }
 .vet-intro {
-  font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 600px; margin: 0;
+  font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 760px; margin: 0;
+  text-wrap: pretty;
 }
 .vet-grid {
   position: relative; z-index: 1;
@@ -10020,6 +9985,7 @@
 }
 .vet-card-desc {
   font-size: 13.5px; line-height: 1.6; color: var(--ink-3); margin: 0;
+  text-wrap: pretty;
 }
 @media (max-width: 980px) {
   .vet-grid { grid-template-columns: repeat(2, 1fr); }
