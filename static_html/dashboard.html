@@ -14,9 +14,257 @@
   <link rel="stylesheet" href="assets/dashboard-shell.css">
   <link rel="stylesheet" href="assets/sidebar-light.css">
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/dashboard-variants.css">
+  <style>
+    /* Compact single-line consultation request rows — full column width. */
+    .mv-consult-compact-row {
+      display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+      border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; transition: background 0.15s;
+    }
+    .mv-consult-compact-row:last-child { border-bottom: none; }
+    .mv-consult-compact-row:hover { background: var(--bg-alt); }
+    .mv-consult-compact-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1px solid var(--line); }
+    .mv-consult-compact-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mv-consult-compact-avatar-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg-alt); color: var(--ink-4); }
+    .mv-consult-compact-avatar-placeholder svg { width: 14px; height: 14px; }
+    .mv-consult-compact-body { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 9px; }
+    .mv-consult-compact-name { font-size: 14px; font-weight: 600; color: var(--ink); flex-shrink: 0; }
+    .mv-consult-compact-topic { font-size: 13px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .mv-consult-compact-date { font-size: 12px; color: var(--ink-4); flex-shrink: 0; width: 78px; text-align: right; }
+    .mv-consult-compact-row .db-consult-status { padding: 3px 10px; font-size: 10px; flex-shrink: 0; width: 84px; text-align: center; }
+
+    /* Membership card — light accent tint. */
+    #mv10-membership {
+      background: color-mix(in oklab, var(--accent) 8%, var(--bg-card));
+      border-color: color-mix(in oklab, var(--accent) 22%, transparent);
+    }
+
+    /* Reminders panel — dark rail-card treatment. */
+    .mv-panel-dark {
+      background: var(--ink); border-color: var(--ink); position: relative; overflow: hidden;
+    }
+    .mv-panel-dark::before {
+      content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px;
+      border-radius: 50%; background: color-mix(in oklab, var(--accent) 18%, transparent); pointer-events: none;
+    }
+    .mv-panel-dark, .mv-panel-dark .mv-panel-title { position: relative; }
+    .mv-panel-dark .mv-panel-title { color: #fff; }
+    .mv-panel-dark .mv-reminder-body b { color: #fff; }
+    .mv-panel-dark .mv-reminder-body span { color: rgba(255,255,255,0.55); }
+    .mv-panel-dark .mv-reminder-icon { border-radius: 50%; background: var(--accent-2); color: #fff; }
+
+    /* Profile completeness ring. */
+    .mv-profile-avatar-ring {
+      position: relative; width: 88px; height: 88px; margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mv-profile-avatar-ring .mv-profile-avatar { margin: 0; }
+    .mv-profile-ring-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .mv-profile-ring-svg circle { fill: none; stroke-width: 2.5; }
+    .mv-profile-ring-svg .track { stroke: var(--line); }
+    .mv-profile-ring-svg .prog { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+    .mv-profile-complete-badge {
+      position: absolute; bottom: -3px; right: -3px;
+      font-family: 'Archivo', sans-serif; font-size: 9.5px; font-weight: 700; color: var(--accent);
+      background: var(--bg-card); border: 1px solid var(--line); border-radius: 100px;
+      padding: 1.5px 6px; line-height: 1.4;
+    }
+    #mv10-profile .mv-profile-edit { display: none; }
+    .mv-profile-exp-tag {
+      display: inline-flex; align-items: center; margin-top: 12px;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; color: var(--accent);
+      background: color-mix(in oklab, var(--accent) 10%, transparent); border-radius: 100px; padding: 4px 12px;
+    }
+
+    /* "Write an article" quick link. */
+    .mv-write-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      background: var(--bg-alt); border: 1px solid var(--line-2); border-radius: 100px;
+      padding: 7px 14px; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .mv-write-link:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .mv-write-link svg { width: 13px; height: 13px; }
+
+    /* Article cards — NO cover image. Leads with a category pill (+
+       country, when known) instead of an image, then title, a 2-line
+       excerpt (using the article's real excerpt field — there's room
+       for it now that no image is eating the space), author/read-time,
+       then the same views/date footer as before. */
+    .mv10-art-card {
+      display: flex; flex-direction: column; background: var(--bg-card);
+      border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 16px;
+      text-decoration: none; color: inherit; transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+    .mv10-art-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.2); }
+    .mv10-art-card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .mv10-art-card-cat {
+      font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); border-radius: 100px; padding: 4px 10px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+    .mv10-art-card-country { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-4); flex-shrink: 0; white-space: nowrap; }
+    .mv10-art-card-title {
+      font-size: 16.5px; font-weight: 600; color: var(--ink); line-height: 1.35; letter-spacing: -0.01em; margin-top: 14px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .mv10-art-card-excerpt {
+      font-size: 12.5px; color: var(--ink-3); line-height: 1.55; margin-top: 8px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .mv10-art-card-author { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 14px; }
+    .mv10-art-card-author-name { font-size: 12.5px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .mv10-art-card-readtime { font-size: 10.5px; color: var(--ink-4); flex-shrink: 0; }
+    .mv10-art-card-foot {
+      display: flex; align-items: center; justify-content: flex-end; gap: 14px;
+      margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+      font-size: 10.5px; color: var(--ink-4);
+    }
+    .mv10-art-card-foot span { display: flex; align-items: center; gap: 5px; }
+    .mv10-art-card-foot svg { width: 12px; height: 12px; opacity: 0.7; flex-shrink: 0; }
+
+    /* Your ROI — individual clickable stat cards with a real-data
+       caption per metric, in the same green tint as the membership card. */
+    .mv10-roi-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px 24px; }
+    .mv10-roi-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .mv10-roi-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+    .mv10-roi-sub { font-size: 12.5px; color: var(--ink-4); }
+    .mv10-roi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .mv10-roi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .mv10-roi-item {
+      display: block; min-width: 0; border-radius: 14px;
+      background: color-mix(in oklab, var(--accent) 8%, var(--bg-card));
+      border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+      padding: 16px 16px 17px; text-decoration: none; color: inherit;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .mv10-roi-item:hover {
+      background: color-mix(in oklab, var(--accent) 14%, var(--bg-card));
+      border-color: color-mix(in oklab, var(--accent) 34%, transparent);
+      transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.18);
+    }
+    .mv10-roi-icon {
+      width: 34px; height: 34px; border-radius: 10px; margin-bottom: 14px;
+      background: color-mix(in oklab, var(--accent) 14%, var(--bg-card)); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mv10-roi-icon svg { width: 16px; height: 16px; }
+    .mv10-roi-num { font-size: 25px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1; }
+    .mv10-roi-label { font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-top: 8px; }
+    .mv10-roi-meta { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; color: var(--accent); margin-top: 9px; }
+
+    /* Schedule — full green border around the date/time block. */
+    #mv10-sched .mv-sched-item { border-left: none; padding-left: 10px; }
+    #mv10-sched .mv-sched-time {
+      border: 1.5px solid var(--accent); border-radius: 10px; padding: 6px 2px;
+      text-align: center; background: color-mix(in oklab, var(--accent) 6%, transparent);
+    }
+    #mv10-sched .mv-sched-item.alt .mv-sched-time {
+      border-color: var(--accent-2); background: color-mix(in oklab, var(--accent-2) 8%, transparent);
+    }
+
+    /* Upcoming events — minimal rail list below Schedule. */
+    .mv10-event-mini-row {
+      display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+      border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; transition: opacity 0.15s;
+    }
+    .mv10-event-mini-row:last-child { border-bottom: none; }
+    .mv10-event-mini-row:hover { opacity: 0.7; }
+    .mv10-event-mini-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .mv10-event-mini-title { flex: 1; min-width: 0; font-size: 12.5px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mv10-event-mini-date { flex-shrink: 0; font-size: 11px; color: var(--ink-4); }
+
+    /* Top contributors — full-width horizontally-scrolling carousel,
+       stacked above New Members. Arrows float over the edge cards
+       (dimmed while disabled) instead of an inset that would misalign
+       the carousel with its own section heading. */
+    .mv-contrib-carousel { position: relative; padding: 0; }
+    .mv-contrib-scroll {
+      display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x proximity;
+      padding: 4px 0 10px; scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .mv-contrib-scroll::-webkit-scrollbar { display: none; }
+    .mv-contrib-card {
+      scroll-snap-align: start; flex: 0 0 214px; position: relative;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 14px 18px;
+      text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .mv-contrib-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.2); }
+    .mv-contrib-avatar {
+      width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin-bottom: 12px;
+      border: 2px solid color-mix(in oklab, var(--accent) 30%, transparent); flex-shrink: 0;
+    }
+    .mv-contrib-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mv-contrib-name { font-size: 14.5px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .mv-contrib-role { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .mv-contrib-firm { font-size: 11px; color: var(--ink-4); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .mv-contrib-loc { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: var(--ink-4); margin-top: 5px; }
+    .mv-contrib-tag {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; white-space: nowrap;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; color: var(--accent);
+      background: color-mix(in oklab, var(--accent) 10%, transparent); border-radius: 100px; padding: 4px 10px;
+    }
+    .mv-contrib-tag svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .mv-contrib-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-2); cursor: pointer;
+      box-shadow: 0 8px 20px -10px rgba(0,0,0,0.22); transition: border-color 0.15s, color 0.15s, opacity 0.15s;
+    }
+    .mv-contrib-arrow:hover { border-color: var(--accent); color: var(--accent); }
+    .mv-contrib-arrow.left { left: 0; }
+    .mv-contrib-arrow.right { right: 0; }
+    .mv-contrib-arrow:disabled { opacity: 0.3; cursor: default; }
+    @media (max-width: 640px) {
+      .mv-contrib-carousel { padding: 0; }
+      .mv-contrib-arrow { display: none; }
+    }
+
+    /* New members — minimalist "team page" profile cards: circular
+       photo, bold name, small caps position label, a "joined" pill
+       badge (same look as .mv-contrib-tag above), and 3 wireframe icon
+       buttons. All 4 sit in a single row, full width. */
+    .mv10-team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 4px 0; }
+    .mv10-team-grid > * { min-width: 0; }
+    @media (max-width: 420px) { .mv10-team-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 14px; } }
+    .mv10-team-card { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; }
+    .mv10-team-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; max-width: 100%; }
+    .mv10-team-avatar {
+      width: 56px; height: 56px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      background: var(--bg-alt); transition: opacity 0.15s;
+    }
+    .mv10-team-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mv10-team-link:hover .mv10-team-avatar { opacity: 0.85; }
+    .mv10-team-name {
+      margin-top: 12px; font-size: 12.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+    .mv10-team-role {
+      margin-top: 3px; font-family: 'Archivo', sans-serif; font-size: 9px; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-4);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+    .mv10-team-joined {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; max-width: 100%; white-space: nowrap;
+      font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 700; color: var(--accent);
+      background: color-mix(in oklab, var(--accent) 10%, transparent); border-radius: 100px; padding: 4px 10px;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .mv10-team-joined svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .mv10-team-icons { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
+    .mv10-team-icon {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line-2); background: transparent; color: var(--ink-4);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .mv10-team-icon svg { width: 11px; height: 11px; }
+    .mv10-team-icon:hover { background: var(--bg-alt); border-color: var(--accent); color: var(--accent); }
+  </style>
 </head>
 
-<body>
+<body class="session-member">
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="d1-shell" id="d1-shell">
@@ -72,11 +320,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
           <span class="d1-nav-lbl">Perks &amp; Products</span>
         </a>
-        <a href="#" onclick="return false" class="nav-soon" data-member-nav>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          <span class="d1-nav-lbl">Discussions</span>
-          <span class="soon">Soon</span>
-        </a>
       </nav>
     </div>
     <div class="d1-sidebar-foot">
@@ -98,12 +341,12 @@
       <canvas class="hero-mesh" data-motif="network" aria-hidden="true"></canvas>
       <div class="container-wide">
         <div class="db-hero-top">
-          <div class="db-hero-left">
+          <div class="db-hero-left" style="max-width:640px;">
             <span class="db-eyebrow">Member Portal</span>
-            <h1 class="db-heading">Welcome back, <em>Member.</em></h1>
-            <p class="db-sub">Everything included in your Expertly membership, in one place - publish, connect, and grow your practice.</p>
+            <h1 class="db-heading">Hello, <em>Amara.</em></h1>
+            <p class="db-sub">Here's your practice at a glance - membership, contributions, and what needs your attention.</p>
 
-            <div class="hero-search" style="margin-top:36px; max-width:680px;">
+            <div class="hero-search" style="margin-top:32px; max-width:640px;">
               <div class="hero-search-input">
                 <div class="hero-search-prefix">
                   <span class="ai-pulse small"></span>
@@ -125,153 +368,83 @@
     <div class="container-wide">
       <div class="db-layout">
 
-        <!-- ── Left: main feed ── -->
         <div>
-          <div class="db-hero-stats-card db-hero-stats-card-horiz">
-            <div class="db-hero-stats-head">
-              <div class="db-hero-stats-title">Your activity</div>
+          <div class="mv10-roi-card">
+            <div class="mv10-roi-head">
+              <div class="mv10-roi-title">Your ROI on Expertly</div>
+              <span class="mv10-roi-sub">This membership cycle</span>
             </div>
-            <div class="db-hero-stats-grid" id="db-hero-stats"></div>
+            <div class="mv10-roi-grid" id="mv10-roi"></div>
           </div>
 
-          <div class="db-section-head" style="margin-top:0;">
-            <h2 class="db-section-title">Your Peer Connect match</h2>
-            <a href="peer-connect.html" class="db-section-link">View full match →</a>
-          </div>
-          <a href="peer-connect.html" class="db-match-card">
-            <div class="db-match-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ananya Krishnamurthy"></div>
-            <div class="db-match-info">
-              <div class="db-match-name">Ananya Krishnamurthy</div>
-              <div class="db-match-role">Partner, Cross-Border Tax · Nishith Desai Associates · Bangalore, India</div>
-              <div class="db-match-tags">
-                <span class="db-match-tag verified">✓ Verified</span>
-                <span class="db-match-tag">M&amp;A Tax</span>
-                <span class="db-match-tag">APAC</span>
+          <div class="db-section-head">
+            <h2 class="db-section-title">Articles</h2>
+            <div class="db-section-head-right">
+              <div class="mv-tabs" id="mv10-art-tabs">
+                <button type="button" class="mv-tab active" data-filter="all">Latest</button>
+                <button type="button" class="mv-tab" data-filter="popular">Most Viewed</button>
+                <button type="button" class="mv-tab" data-filter="mine">My Articles</button>
               </div>
+              <a href="articles.html" class="mv-write-link"><span class="write-icon"></span>Write an article</a>
+              <a href="articles.html" class="db-section-link">See all →</a>
             </div>
-          </a>
+          </div>
+          <div class="mv-article-grid" id="mv10-articles"></div>
 
           <div class="db-section-head">
             <h2 class="db-section-title">Consultation requests</h2>
             <div class="db-section-head-right">
-              <span class="db-section-count" id="db-consult-count"></span>
+              <span class="db-section-count" id="mv10-consult-count"></span>
               <a href="consultation-requests.html" class="db-consult-viewall">View all →</a>
             </div>
           </div>
-          <div class="db-feed" id="db-consult-feed"></div>
+          <div class="db-feed" id="mv10-consult"></div>
 
           <div class="db-section-head">
-            <h2 class="db-section-title">Upcoming events</h2>
-            <a href="events.html" class="db-section-link">View all →</a>
+            <h2 class="db-section-title">Top contributors</h2>
+            <div class="db-section-head-right">
+              <a href="members.html" class="db-consult-viewall">View leaderboard →</a>
+            </div>
           </div>
-          <div class="db-feed" id="db-events-feed"></div>
+          <div class="mv-contrib-carousel">
+            <button type="button" class="mv-contrib-arrow left" id="mv10-contrib-left" aria-label="Scroll left" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="mv-contrib-scroll" id="mv10-contributors"></div>
+            <button type="button" class="mv-contrib-arrow right" id="mv10-contrib-right" aria-label="Scroll right">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
 
           <div class="db-section-head">
-            <h2 class="db-section-title">Latest articles</h2>
-            <a href="articles.html" class="db-section-link">View all →</a>
+            <h2 class="db-section-title">New members</h2>
+            <div class="db-section-head-right">
+              <a href="members.html" class="db-consult-viewall">Browse all →</a>
+            </div>
           </div>
-          <div class="db-feed" id="db-articles-feed"></div>
+          <div class="mv10-team-grid" id="mv10-new-members"></div>
         </div>
 
-        <!-- ── Right rail ── -->
         <aside class="db-rail">
+          <div class="mv-profile-card" id="mv10-profile"></div>
 
-          <div class="db-people-chip db-people-chip-rail" id="db-my-profile-card"></div>
+          <a href="membership.html" class="mv-membership-card" id="mv10-membership"></a>
 
-          <div class="db-rail-card">
-            <div class="db-rail-title">Quick links</div>
-            <div class="db-links">
-              <a href="articles.html" class="db-link-row">
-                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
-                Write an Article<span class="db-link-arr">→</span>
-              </a>
-              <a href="events.html" class="db-link-row">
-                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-                View events<span class="db-link-arr">→</span>
-              </a>
-              <a href="peer-connect.html" class="db-link-row">
-                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-                Peer Connect<span class="db-link-arr">→</span>
-              </a>
-              <a href="members.html" class="db-link-row">
-                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-                Browse members<span class="db-link-arr">→</span>
-              </a>
-              <a href="member-profile.html" class="db-link-row">
-                <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-                View your profile<span class="db-link-arr">→</span>
-              </a>
-              <div class="db-links-more" id="db-links-more">
-                <a href="learnings.html" class="db-link-row">
-                  <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg></div>
-                  Learnings<span class="db-link-arr">→</span>
-                </a>
-                <a href="templates.html" class="db-link-row">
-                  <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V4a1 1 0 011-1h12"/></svg></div>
-                  Templates<span class="db-link-arr">→</span>
-                </a>
-                <a href="perks.html" class="db-link-row">
-                  <div class="db-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.6a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg></div>
-                  Perks &amp; Products<span class="db-link-arr">→</span>
-                </a>
-              </div>
-              <button class="db-links-toggle" id="db-links-toggle" type="button">
-                <span id="db-links-toggle-label">View more</span><span class="db-link-arr" id="db-links-toggle-arr">↓</span>
-              </button>
-            </div>
+          <div class="mv-panel" id="mv10-sched">
+            <div class="mv-panel-title">Schedule <a href="my-consultations.html">See all →</a></div>
+            <div id="mv10-sched-list"></div>
           </div>
 
-          <div class="db-rail-card db-rail-card-dark">
-            <div class="db-benefit-eyebrow">For members</div>
-            <div class="db-benefit-headline">Zero commission, ever.</div>
-            <div class="db-benefit-body">Every client conversation you get through Expertly is yours to keep - we never take a cut of your fees.</div>
+          <div class="mv-panel">
+            <div class="mv-panel-title">Upcoming events <a href="events.html">Browse all →</a></div>
+            <div id="mv10-events-mini"></div>
           </div>
 
-          <div class="db-rail-card">
-            <div class="db-rail-title">More from your membership</div>
-            <div class="db-soon-item">
-              <div class="db-soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-              <div class="db-soon-body"><h4>Discussion Groups</h4><p>Topic-based, across time zones.</p><span class="db-soon-badge">Coming soon</span></div>
-            </div>
+          <div class="mv-panel mv-panel-dark">
+            <div class="mv-panel-title">Reminders</div>
+            <div id="mv10-reminders"></div>
           </div>
-
-          <!-- Share your experience: deal closed / general feedback -->
-          <div class="db-rail-card db-exp-card" id="db-exp-card">
-            <div class="db-exp-head" id="db-exp-toggle">
-              <div class="db-exp-head-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-              </div>
-              <div>
-                <div class="db-rail-title" style="margin-bottom:2px;">Closed a deal on Expertly?</div>
-                <p class="db-exp-sub">Tell us about it - or share any feedback.</p>
-              </div>
-              <span class="db-exp-chevron" id="db-exp-chevron">▾</span>
-            </div>
-
-            <form class="db-exp-form" id="db-exp-form" hidden>
-              <div class="db-exp-type" id="db-exp-type">
-                <button type="button" class="db-exp-type-btn active" data-type="deal_closed">Deal closed</button>
-                <button type="button" class="db-exp-type-btn" data-type="feedback">Feedback</button>
-              </div>
-              <input type="hidden" id="db-exp-type-value" value="deal_closed">
-              <textarea id="db-exp-message" rows="3" placeholder="What happened?" required></textarea>
-              <button type="submit" class="btn btn-primary" id="db-exp-submit" style="width:100%;">Submit</button>
-              <p class="db-exp-success" id="db-exp-success" hidden>Thanks - the team will follow up if needed.</p>
-            </form>
-          </div>
-
         </aside>
-      </div>
-
-      <!-- Members marquee -->
-      <div class="db-marquee-wrap">
-        <div class="db-marquee-head">
-          <h2 class="db-section-title">Members on Expertly</h2>
-          <a href="members.html" class="db-section-link">Browse all →</a>
-        </div>
-        <div class="db-marquee">
-          <div class="db-marquee-track" id="db-members-strip"></div>
-        </div>
       </div>
     </div>
 
@@ -280,22 +453,10 @@
 </div>
 
 <script src="assets/members.js"></script>
-<script src="assets/admin-data.js"></script>
+<script src="assets/dashboard-variants-data.js"></script>
 <script src="assets/shared.js"></script>
 <script src="assets/sidebar-theme.js"></script>
 <script src="assets/hero-mesh.js"></script>
-
-<script>
-  (function () {
-    const shell = document.getElementById('d1-shell');
-    const sidebar = document.querySelector('.d1-sidebar');
-
-    if (sidebar) {
-      sidebar.addEventListener('mouseenter', function () { shell.classList.add('revealed'); });
-      sidebar.addEventListener('mouseleave', function () { shell.classList.remove('revealed'); });
-    }
-  })();
-</script>
 
 <script>
   (function () {
@@ -325,202 +486,256 @@
 </script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const members = window.EXPERTLY_MEMBERS || [];
-    const events = window.EXPERTLY_EVENTS || [];
-    const articles = window.EXPERTLY_ARTICLES || [];
-    const getAuthor = id => members.find(m => m.id === id) || { name: 'Expertly Counsel' };
+  MV.wireSidebarReveal();
 
-    // Quick links - collapse the last 3 behind "View more"
-    const linksMore = document.getElementById('db-links-more');
-    const linksToggle = document.getElementById('db-links-toggle');
-    if (linksMore && linksToggle) {
-      const toggleLabel = document.getElementById('db-links-toggle-label');
-      linksToggle.addEventListener('click', () => {
-        const open = linksMore.classList.toggle('open');
-        linksToggle.classList.toggle('open', open);
-        toggleLabel.textContent = open ? 'View less' : 'View more';
-      });
-    }
+  document.getElementById('mv10-profile').innerHTML = MV.profileCardHTML();
 
-    // Activity stats (mock - the handful a member actually checks in on, not a
-    // full analytics dump).
-    const MEMBER_STATS = [
-      { value: 3, goal: 4, sub: '/4', label: 'Articles' },
-      { value: 8, goal: 10, sub: '', label: 'Consultations' },
-      { value: 5, goal: 8, sub: '', label: 'Peer Connect' },
-      { value: 2, goal: 5, sub: '', label: 'Referrals' }
-    ];
-    const heroStats = document.getElementById('db-hero-stats');
-    if (heroStats) {
-      const CIRC = 169.65; // 2 * PI * r(27)
-      heroStats.innerHTML = MEMBER_STATS.map(s => {
-        const pct = Math.max(0, Math.min(1, s.value / s.goal));
-        const offset = (CIRC * (1 - pct)).toFixed(1);
-        return `
-        <div class="db-stat-item">
-          <div class="db-stat-ring">
-            <svg viewBox="0 0 64 64">
-              <circle class="db-stat-ring-track" cx="32" cy="32" r="27"/>
-              <circle class="db-stat-ring-prog" cx="32" cy="32" r="27" stroke-dashoffset="${offset}"/>
-            </svg>
-            <div class="db-stat-ring-num">${s.value}${s.sub ? `<small>${s.sub}</small>` : ''}</div>
-          </div>
-          <div class="db-stat-label">${s.label}</div>
-        </div>`;
-      }).join('');
-    }
-
-    // Consultation requests (mock - what the member has received via their profile)
-    const CONSULTATIONS = [
-      { name: 'David Whitfield', type: 'member', avatar: 'https://randomuser.me/api/portraits/men/11.jpg', work: 'Looking for advice on structuring a cross-border M&A deal between a UK acquirer and an Indian target - need help on tax-efficient holding structure, withholding tax exposure, and post-deal integration.', email: 'david.whitfield@whitfieldcapital.com', phone: '+44 7700 900123', received: 'Jul 18, 2026', status: 'pending' },
-      { name: 'Larissa Kim', type: 'user', work: 'Reviewing a GST refund claim for exports of services - want a second opinion on the documentation before we file, and guidance on likely turnaround time with the department.', email: 'larissa.kim@gmail.com', phone: '+82 10 2345 6789', received: 'Jul 16, 2026', status: 'pending' },
-    ];
-    const STATUS_LABEL = { pending: 'Pending', completed: 'Completed' };
-    const consultFeed = document.getElementById('db-consult-feed');
-    const consultCount = document.getElementById('db-consult-count');
-    if (consultFeed) {
-      if (!CONSULTATIONS.length) {
-        consultFeed.innerHTML = '<div class="db-consult-empty">No consultation requests yet - they\'ll show up here once a client reaches out.</div>';
-      } else {
-        consultFeed.innerHTML = CONSULTATIONS.map(c => `
-          <div class="db-consult-row">
-            <div class="db-consult-avatar">${c.type === 'member'
-              ? `<img src="${c.avatar}" alt="${c.name}" loading="lazy">`
-              : `<div class="db-consult-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>`}</div>
-            <div class="db-consult-body">
-              <div class="db-consult-name">${c.name}${c.type === 'member' ? `<span class="db-consult-verified" title="Verified member"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>` : ''}</div>
-              <div class="db-consult-topic">${c.work}</div>
-              <div class="db-consult-meta">
-                <span class="db-consult-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Received <strong>${c.received}</strong></span>
-                <span class="db-consult-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>${c.email}</span>
-                <span class="db-consult-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>${c.phone}</span>
-              </div>
-            </div>
-            <span class="db-consult-status ${c.status}">${STATUS_LABEL[c.status]}</span>
-          </div>`).join('');
-        if (consultCount) consultCount.textContent = `${CONSULTATIONS.length} total`;
-      }
-    }
-
-    // Events preview
-    const eventsFeed = document.getElementById('db-events-feed');
-    if (eventsFeed) {
-      eventsFeed.innerHTML = events.slice(0, 3).map(e => {
-        const [mon, day] = e.start.split(' ');
-        return `
-        <a href="events.html" class="db-feed-row">
-          <div class="db-feed-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-          <div class="db-feed-body">
-            <div class="db-feed-title">${e.title}</div>
-            <div class="db-feed-meta">${mon} ${day} · ${e.city}, ${e.country}</div>
-          </div>
-          <span class="db-feed-tag accent">${e.format}</span>
-        </a>`;
-      }).join('');
-    }
-
-    // Articles preview
-    const articlesFeed = document.getElementById('db-articles-feed');
-    if (articlesFeed) {
-      articlesFeed.innerHTML = articles.slice(0, 4).map(a => `
-        <a href="article.html?id=${a.id}" class="db-feed-row">
-          <div class="db-feed-thumb"><img src="${a.image}" alt="" loading="lazy"></div>
-          <div class="db-feed-body">
-            <div class="db-feed-title">${a.title}</div>
-            <div class="db-feed-meta">${getAuthor(a.author).name} · ${a.readTime} read</div>
-          </div>
-          <span class="db-feed-tag${a.featured ? ' accent' : ''}">${a.category}</span>
-        </a>`).join('');
-    }
-
-    // Shared member card template (used by "My profile" and the marquee below)
-    const NEW_MEMBER_IDS = ['priya-venkatesh', 'james-okafor', 'isabella-rossi'];
-    const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-    const chip = m => `
-      <a href="member-profile.html?id=${m.id}" class="db-people-chip">
-        <div class="db-people-top">
-          <div class="db-people-avatar"><img src="${m.img || ''}" alt="${m.name}" onerror="this.style.display='none'"></div>
-          ${NEW_MEMBER_IDS.includes(m.id) ? '<span class="db-people-new">New</span>' : ''}
-        </div>
-        <div>
-          <div class="db-people-name-row">
-            <span class="db-people-name">${m.name}</span>
-            ${m.verified ? `<span class="db-people-verified-circle">${checkSvg}</span>` : ''}
-          </div>
-          <div class="db-people-role">${m.title}${m.firm ? ' · ' + m.firm : ''}</div>
-        </div>
-        <span class="db-people-practice">${m.practice}</span>
-        <div class="db-people-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${m.location}</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>${m.tenure} experience · ${m.rate}</span>
-        </div>
-      </a>`;
-
-    // "My profile" card in the right rail
-    const myProfileCard = document.getElementById('db-my-profile-card');
-    if (myProfileCard) {
-      const me = members.find(m => m.id === 'amara-osei') || members[0];
-      if (me) myProfileCard.outerHTML = chip(me).replace('class="db-people-chip"', 'class="db-people-chip db-people-chip-rail"');
-    }
-
-    // Members marquee (double for seamless loop)
-    const strip = document.getElementById('db-members-strip');
-    if (strip && members.length) {
-      strip.innerHTML = members.map(chip).join('') + members.map(chip).join('');
-    }
-  });
-
-  // ── Share your experience: deal closed / general feedback ──
+  // ── Profile completeness ring — only when it's not 100%. ──
   (function () {
-    const toggle = document.getElementById('db-exp-toggle');
-    const form = document.getElementById('db-exp-form');
-    const chevron = document.getElementById('db-exp-chevron');
-    const typeWrap = document.getElementById('db-exp-type');
-    const typeValue = document.getElementById('db-exp-type-value');
-    if (!toggle || !form) return;
+    const me = MV.getMe();
+    const pct = me.profileComplete;
+    if (pct == null || pct >= 100) return;
+    const avatar = document.querySelector('#mv10-profile .mv-profile-avatar');
+    if (!avatar) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'mv-profile-avatar-ring';
+    avatar.parentNode.insertBefore(wrap, avatar);
+    wrap.appendChild(avatar);
+    const r = 42, c = 2 * Math.PI * r;
+    const offset = (c * (1 - pct / 100)).toFixed(1);
+    wrap.insertAdjacentHTML('afterbegin', `
+      <svg class="mv-profile-ring-svg" viewBox="0 0 88 88">
+        <circle class="track" cx="44" cy="44" r="${r}"/>
+        <circle class="prog" cx="44" cy="44" r="${r}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${offset}"/>
+      </svg>`);
+    wrap.insertAdjacentHTML('beforeend', `<span class="mv-profile-complete-badge">${pct}%</span>`);
+  })();
 
-    toggle.addEventListener('click', () => {
-      const open = !form.hidden;
-      form.hidden = open;
-      chevron.textContent = open ? '▾' : '▴';
+  // ── Experience tag. ──
+  (function () {
+    const me = MV.getMe();
+    const root = document.getElementById('mv10-profile');
+    const years = parseInt(me.tenure, 10);
+    if (!root || !years) return;
+    const level = years >= 10 ? 'Seasoned' : 'Budding';
+    root.insertAdjacentHTML('beforeend', `<span class="mv-profile-exp-tag">${level} · ${years} yrs</span>`);
+  })();
+
+  document.getElementById('mv10-membership').innerHTML = MV.membershipCardHTML();
+
+  MV.renderSchedule('mv10-sched-list');
+  MV.renderReminders('mv10-reminders');
+
+  // ── Your ROI — individual clickable cards, each captioned with a
+  // real number pulled from the same mock data the rest of the page
+  // renders from (% of monthly goal from MV.CONTRIBUTIONS, or a real
+  // pending/completed split for consultations). ──
+  (function () {
+    const reach = MV.CONTRIBUTIONS.find(c => c.label === 'Reach');
+    const peer = MV.CONTRIBUTIONS.find(c => c.label === 'Peer Connects');
+    const articlesC = MV.CONTRIBUTIONS.find(c => c.label === 'Articles');
+    const pending = MV.CONSULTATIONS.filter(c => c.status === 'pending').length;
+    const completed = MV.CONSULTATIONS.length - pending;
+    const publishedCount = articlesC.num.split('/')[0];
+    const ROI = [
+      { icon: 'eye', num: reach.num, label: 'Reach achieved', meta: reach.pct + '% of monthly goal', href: 'articles.html' },
+      { icon: 'msg', num: String(MV.CONSULTATIONS.length), label: 'Consultations received', meta: pending + ' pending · ' + completed + ' completed', href: 'consultation-requests.html' },
+      { icon: 'users', num: peer.num, label: 'Network expanded', meta: peer.pct + '% of monthly goal', href: 'peer-connect.html' },
+      { icon: 'doc', num: publishedCount, label: 'Publications made', meta: articlesC.pct + '% of monthly goal', href: 'articles.html' }
+    ];
+    document.getElementById('mv10-roi').innerHTML = ROI.map(r => `
+      <a href="${r.href}" class="mv10-roi-item">
+        <div class="mv10-roi-icon">${MV.ICONS[r.icon]}</div>
+        <div class="mv10-roi-num">${r.num}</div>
+        <div class="mv10-roi-label">${r.label}</div>
+        <div class="mv10-roi-meta">${r.meta}</div>
+      </a>`).join('');
+  })();
+
+  document.querySelector('.write-icon').innerHTML = MV.ICONS.doc;
+
+  // ── Top contributors — the original scrolling carousel. ──
+  (function () {
+    const members = MV.getMembers();
+    const byId = id => members.find(m => m.id === id) || {};
+    function flagEmoji(cc) {
+      if (!cc || cc.length !== 2) return '';
+      return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 127397 + c.charCodeAt(0)));
+    }
+    const titleCase = s => s.replace(/\b\w/g, ch => ch.toUpperCase());
+
+    function cardHTML(id, tag, icon) {
+      const m = byId(id);
+      const country = m.location ? (m.location.includes(',') ? m.location.split(',').pop().trim() : m.location) : '';
+      return `
+        <a href="member-profile.html?id=${m.id}" class="mv-contrib-card">
+          <div class="mv-contrib-avatar"><img src="${m.img || ''}" alt="${m.name}" loading="lazy"></div>
+          <div class="mv-contrib-name">${m.name}</div>
+          <div class="mv-contrib-role">${m.title}</div>
+          <div class="mv-contrib-firm">${m.firm || ''}</div>
+          <div class="mv-contrib-loc">${flagEmoji(m.country)} ${country}</div>
+          <span class="mv-contrib-tag">${MV.ICONS[icon]}${titleCase(tag)}</span>
+        </a>`;
+    }
+
+    const CONTRIBUTORS = [
+      { id: 'elena-volkova', tag: '14 articles published', icon: 'doc' },
+      { id: 'priya-venkatesh', tag: '11 referrals given', icon: 'gift' },
+      { id: 'james-okafor', tag: '9 members referred', icon: 'users' },
+      { id: 'diego-martinez', tag: '8 articles published', icon: 'doc' },
+      { id: 'sophie-anderson', tag: '8 referrals given', icon: 'gift' },
+      { id: 'mukesh-kumar-m', tag: '7 articles published', icon: 'doc' },
+      { id: 'isabella-rossi', tag: '6 members referred', icon: 'users' },
+      { id: 'oliver-schmidt', tag: '5 members referred', icon: 'users' }
+    ];
+
+    document.getElementById('mv10-contributors').innerHTML =
+      CONTRIBUTORS.map(c => cardHTML(c.id, c.tag, c.icon)).join('');
+
+    const scrollEl = document.getElementById('mv10-contributors');
+    const leftBtn = document.getElementById('mv10-contrib-left');
+    const rightBtn = document.getElementById('mv10-contrib-right');
+    function updateArrows() {
+      leftBtn.disabled = scrollEl.scrollLeft <= 4;
+      rightBtn.disabled = scrollEl.scrollLeft >= scrollEl.scrollWidth - scrollEl.clientWidth - 4;
+    }
+    leftBtn.addEventListener('click', () => scrollEl.scrollBy({ left: -230, behavior: 'smooth' }));
+    rightBtn.addEventListener('click', () => scrollEl.scrollBy({ left: 230, behavior: 'smooth' }));
+    scrollEl.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+  })();
+
+  // ── New members — minimalist "team page" profile cards. ──
+  (function () {
+    const members = MV.getMembers();
+    const byId = id => members.find(m => m.id === id) || {};
+
+    function cardHTML(id, joined) {
+      const m = byId(id);
+      const profileHref = `member-profile.html?id=${m.id}`;
+      return `
+        <div class="mv10-team-card">
+          <a href="${profileHref}" class="mv10-team-link">
+            <div class="mv10-team-avatar"><img src="${m.img || ''}" alt="${m.name}" loading="lazy"></div>
+            <div class="mv10-team-name">${m.name}</div>
+            <div class="mv10-team-role">${m.title}</div>
+            <span class="mv10-team-joined">${MV.ICONS.cal}Joined ${joined}</span>
+          </a>
+          <div class="mv10-team-icons">
+            <a href="${profileHref}" class="mv10-team-icon" aria-label="View ${m.name}'s profile" title="View profile">${MV.ICONS.eye}</a>
+            <a href="${profileHref}" class="mv10-team-icon" aria-label="Message ${m.name}" title="Message">${MV.ICONS.msg}</a>
+            <a href="members.html" class="mv10-team-icon" aria-label="Browse members" title="Browse members">${MV.ICONS.users}</a>
+          </div>
+        </div>`;
+    }
+
+    const NEW_MEMBERS = [
+      { id: 'claire-dubois', joined: '2 days ago' },
+      { id: 'ahmed-khoury', joined: '5 days ago' },
+      { id: 'hiroshi-tanaka', joined: '1 week ago' },
+      { id: 'nadia-hassan', joined: '2 weeks ago' }
+    ];
+
+    document.getElementById('mv10-new-members').innerHTML = NEW_MEMBERS.map(c => cardHTML(c.id, c.joined)).join('');
+  })();
+
+  // ── Articles: All / Most Viewed / My Articles — text-only cards,
+  // no cover image. Category pill + real excerpt field fill the space
+  // an image would otherwise take. ──
+  (function () {
+    function hashViews(id) {
+      let h = 0;
+      for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+      return 300 + (h % 1300);
+    }
+    const members = MV.getMembers();
+    const authorOf = id => members.find(m => m.id === id) || {};
+    const authorName = id => authorOf(id).name || 'Expertly Counsel';
+    function flagEmoji(cc) {
+      if (!cc || cc.length !== 2) return '';
+      return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 127397 + c.charCodeAt(0)));
+    }
+    function countryOf(id) {
+      const m = authorOf(id);
+      if (!m.location) return null;
+      const name = m.location.includes(',') ? m.location.split(',').pop().trim() : m.location;
+      return { name, flag: flagEmoji(m.country) };
+    }
+    const titleCaseDate = d => d.replace(/^[A-Z]+/, m => m.charAt(0) + m.slice(1).toLowerCase());
+    const all = MV.getArticles().map(a => ({ ...a, views: hashViews(a.id) }));
+    const mine = all.slice(0, 3);
+
+    function cardHTML(a) {
+      const country = countryOf(a.author);
+      return `
+        <a href="article.html?id=${a.id}" class="mv10-art-card">
+          <div class="mv10-art-card-top">
+            <span class="mv10-art-card-cat">${a.category}</span>
+            ${country ? `<span class="mv10-art-card-country">${country.flag} ${country.name}</span>` : ''}
+          </div>
+          <div class="mv10-art-card-title">${a.title}</div>
+          <div class="mv10-art-card-excerpt">${a.excerpt || ''}</div>
+          <div class="mv10-art-card-author">
+            <span class="mv10-art-card-author-name">${authorName(a.author)}</span>
+            <span class="mv10-art-card-readtime">${a.readTime} read</span>
+          </div>
+          <div class="mv10-art-card-foot">
+            <span>${MV.ICONS.eye}${a.views.toLocaleString()} views</span>
+            <span>${MV.ICONS.clock}${titleCaseDate(a.date)}</span>
+          </div>
+        </a>`;
+    }
+
+    const grid = document.getElementById('mv10-articles');
+    function renderList(filter) {
+      let list = all;
+      if (filter === 'popular') list = all.slice().sort((a, b) => b.views - a.views);
+      if (filter === 'mine') list = mine;
+      grid.innerHTML = list.slice(0, 3).map(cardHTML).join('') || '<div class="db-consult-empty">No articles yet.</div>';
+    }
+    renderList('all');
+
+    document.querySelectorAll('#mv10-art-tabs .mv-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('#mv10-art-tabs .mv-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderList(tab.getAttribute('data-filter'));
+      });
     });
+  })();
 
-    typeWrap.addEventListener('click', (e) => {
-      const btn = e.target.closest('.db-exp-type-btn');
-      if (!btn) return;
-      typeWrap.querySelectorAll('.db-exp-type-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      typeValue.value = btn.getAttribute('data-type');
-    });
+  // ── Consultation requests — full column width. ──
+  (function () {
+    const root = document.getElementById('mv10-consult');
+    const items = MV.CONSULTATIONS;
+    root.innerHTML = items.map(c => `
+      <a href="consultation-requests.html" class="mv-consult-compact-row">
+        <div class="mv-consult-compact-avatar">${c.type === 'member'
+          ? `<img src="${c.avatar}" alt="${c.name}" loading="lazy">`
+          : `<div class="mv-consult-compact-avatar-placeholder">${MV.ICONS.users}</div>`}</div>
+        <div class="mv-consult-compact-body">
+          <span class="mv-consult-compact-name">${c.name}</span>
+          <span class="mv-consult-compact-topic">${c.work}</span>
+        </div>
+        <span class="mv-consult-compact-date">${c.received}</span>
+        <span class="db-consult-status ${c.status}">${c.status === 'pending' ? 'Pending' : 'Completed'}</span>
+      </a>`).join('') || '<div class="db-consult-empty">No consultation requests yet.</div>';
+    document.getElementById('mv10-consult-count').textContent = items.length + ' total';
+  })();
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const messageEl = document.getElementById('db-exp-message');
-      const members = window.EXPERTLY_MEMBERS || [];
-      const me = members.find(m => m.id === 'amara-osei') || members[0] || {};
-
-      if (window.ExpertlyAdmin) {
-        window.ExpertlyAdmin.pushExperienceFeedback({
-          type: typeValue.value,
-          name: me.name || 'Member',
-          email: me.ownerEmail || '',
-          message: messageEl.value.trim()
-        });
-      }
-
-      const submitBtn = document.getElementById('db-exp-submit');
-      const successEl = document.getElementById('db-exp-success');
-      messageEl.value = '';
-      submitBtn.hidden = true;
-      successEl.hidden = false;
-      setTimeout(() => {
-        submitBtn.hidden = false;
-        successEl.hidden = true;
-        form.hidden = true;
-        chevron.textContent = '▾';
-      }, 2600);
-    });
+  // ── Upcoming events — minimal rail list below Schedule. ──
+  (function () {
+    const root = document.getElementById('mv10-events-mini');
+    const all = window.EXPERTLY_EVENTS || [];
+    const ids = ['transfer-pricing-webinar-aug', 'ma-due-diligence-intensive', 'uae-corporate-tax-briefing'];
+    const items = ids.map(id => all.find(e => e.id === id)).filter(Boolean);
+    root.innerHTML = items.map(e => `
+      <a href="events.html#${e.id}" class="mv10-event-mini-row">
+        <span class="mv10-event-mini-dot"></span>
+        <span class="mv10-event-mini-title">${e.title}</span>
+        <span class="mv10-event-mini-date">${e.start}</span>
+      </a>`).join('') || '<div class="db-consult-empty">No upcoming events.</div>';
   })();
 </script>
 </body>
