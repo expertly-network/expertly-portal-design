@@ -137,7 +137,7 @@
 
     <!-- ── Tabs: Browse Articles / View my Articles, + Write an Article button ── -->
     <div class="container-wide" style="padding-top:36px;">
-      <div class="anv-tab-row">
+      <div class="anv-tab-row" id="anv-tab-row">
         <div class="anv-tab-list">
           <button class="anv-tab active" id="anv-tab-browse" data-tab="browse">Browse Articles</button>
           <button class="anv-tab" id="anv-tab-mine" data-tab="mine" style="display:none;">My Articles</button>
@@ -153,6 +153,16 @@
     <section class="anv-grid-wrap" id="anv-browse-panel">
       <div class="container-wide">
         <div class="anv-section-head">
+          <div class="anv-section-head-left">
+            <button class="anv-filter-btn" id="anv-mostviewed-toggle" type="button">
+              <svg class="anv-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+              Most Viewed
+            </button>
+            <button class="anv-filter-btn" id="anv-saved-toggle" type="button">
+              <svg class="anv-filter-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+              Saved Articles
+            </button>
+          </div>
           <div class="anv-section-head-right">
             <div style="position:relative;" id="anv-country-wrapper">
               <button class="anv-filter-btn" id="anv-country-trigger" type="button">
@@ -688,6 +698,8 @@
 
       let activeCat = 'All';
       let activeCountry = 'All';
+      let showMostViewed = false;
+      let showSavedOnly = false;
 
       const getAuthor = id => members.find(m => m.id === id)
         || { name: 'Expertly Counsel', initials: 'EC', img: '', title: 'Advisor', location: '' };
@@ -733,6 +745,22 @@
       resetBtn.addEventListener('click', () => {
         activeCat = 'All'; catLabel.textContent = 'All categories'; catTrigger.classList.remove('has-value'); buildCatList();
         activeCountry = 'All'; countryLabel.textContent = 'All countries'; countryTrigger.classList.remove('has-value'); buildCountryList();
+        showMostViewed = false; mostViewedToggle.classList.remove('has-value');
+        showSavedOnly = false; savedToggle.classList.remove('has-value');
+        renderGrid();
+      });
+
+      /* ── Most Viewed / Saved Articles toggles ── */
+      const mostViewedToggle = document.getElementById('anv-mostviewed-toggle');
+      const savedToggle = document.getElementById('anv-saved-toggle');
+      mostViewedToggle.addEventListener('click', () => {
+        showMostViewed = !showMostViewed;
+        mostViewedToggle.classList.toggle('has-value', showMostViewed);
+        renderGrid();
+      });
+      savedToggle.addEventListener('click', () => {
+        showSavedOnly = !showSavedOnly;
+        savedToggle.classList.toggle('has-value', showSavedOnly);
         renderGrid();
       });
 
@@ -784,13 +812,26 @@
       buildCountryList();
 
       /* ── V3 bento grid ── */
-      const renderGrid = () => {
+      const ANV_PAGE_SIZE = 30;
+      let anvVisibleCount = ANV_PAGE_SIZE;
+
+      const getFilteredPool = () => {
         let pool = activeCat === 'All' ? articles : articles.filter(a => a.category === activeCat);
         if (activeCountry !== 'All') { pool = pool.filter(a => getCountry(a) === activeCountry); }
+        if (showMostViewed) { pool = pool.filter(a => a.mostViewed); }
+        if (showSavedOnly) {
+          const savedIds = window.ExpertlyEngagement ? window.ExpertlyEngagement.getSavedIds() : [];
+          pool = pool.filter(a => savedIds.includes(a.id));
+        }
+        return pool;
+      };
+
+      const renderCards = () => {
+        const pool = getFilteredPool();
         countEl.textContent = `${pool.length} article${pool.length !== 1 ? 's' : ''}`;
         if (!pool.length) { gridEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
         emptyEl.style.display = 'none';
-        gridEl.innerHTML = pool.map((a, i) => {
+        gridEl.innerHTML = pool.slice(0, anvVisibleCount).map((a, i) => {
           const au = getAuthor(a.author);
           const country = au.location ? au.location.split(', ').slice(-1)[0] : '';
           const delay = Math.min(i * 45, 360);
@@ -831,6 +872,15 @@
         }).join('');
       };
 
+      const renderGrid = () => { anvVisibleCount = ANV_PAGE_SIZE; renderCards(); };
+
+      window.addEventListener('scroll', () => {
+        const pool = getFilteredPool();
+        if (anvVisibleCount >= pool.length) return;
+        const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 400;
+        if (nearBottom) { anvVisibleCount += ANV_PAGE_SIZE; renderCards(); }
+      });
+
       renderGrid();
     });
   </script>
@@ -844,6 +894,7 @@
       const articles = window.ExpertlyAdmin ? window.ExpertlyAdmin.getAllVisibleArticles() : (window.EXPERTLY_ARTICLES || []);
       const members  = window.EXPERTLY_MEMBERS  || [];
 
+      const tabRow      = document.getElementById('anv-tab-row');
       const tabBrowse   = document.getElementById('anv-tab-browse');
       const tabMine     = document.getElementById('anv-tab-mine');
       const writeBtn    = document.getElementById('anv-write-btn');
@@ -851,7 +902,12 @@
       const minePanel   = document.getElementById('anv-my-panel');
       const writePanel  = document.getElementById('anv-write-panel');
 
-      if (isMember) { tabMine.style.display = 'flex'; writeBtn.style.display = 'inline-flex'; }
+      if (isMember) {
+        tabMine.style.display = 'flex';
+        writeBtn.style.display = 'inline-flex';
+      } else {
+        tabRow.style.display = 'none';
+      }
 
       let lastTab = 'browse';
 

@@ -547,11 +547,40 @@ body:has(.footer--minimal) {
 }
 .footer-min-links-primary a:hover { color: var(--accent-2); }
 
+.footer-min-contact {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-min-contact > a {
+  color: rgba(255,255,255,0.58);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  transition: color 0.15s;
+}
+.footer-min-contact > a:hover { color: #fff; }
+
+.footer-min-social {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.footer-min-social a {
+  color: rgba(255,255,255,0.58);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  transition: color 0.15s;
+}
+.footer-min-social a:hover { color: var(--accent-2); }
+
 .footer-min-copy {
   font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
-  
+
   color: rgba(255,255,255,0.28);
 }
 

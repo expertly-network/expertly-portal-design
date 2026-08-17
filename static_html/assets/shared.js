@@ -236,12 +236,18 @@ function renderFooter() {
       </nav>
       <nav aria-label="Footer links">
         <ul class="footer-min-links">
-          <li><a href="https://www.linkedin.com/company/expertly-network" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="#">Terms &amp; Conditions</a></li>
           <li><a href="#">Membership Policy</a></li>
           <li><a href="#">Privacy Policy</a></li>
         </ul>
       </nav>
+      <div class="footer-min-contact">
+        <a href="mailto:info@expertly.network">info@expertly.network</a>
+        <div class="footer-min-social">
+          <a href="https://www.linkedin.com/company/expertly-network" target="_blank" rel="noopener" aria-label="Expertly on LinkedIn">LinkedIn</a>
+          <a href="https://www.instagram.com/expertly.network" target="_blank" rel="noopener" aria-label="Expertly on Instagram">Instagram</a>
+        </div>
+      </div>
       <p class="footer-min-copy">© ${new Date().getFullYear()} Expertly · All Rights Reserved</p>
     </div>
   `;
@@ -678,13 +684,21 @@ function initGlobalSearch() {
   const backdrop = document.getElementById('gsearch-backdrop');
   const suggestRow = document.getElementById('gsearch-suggest-row');
 
-  const suggestions = ['M&A tax · Chennai', 'Cross-border compliance', 'IP counsel · EU', 'Transfer pricing', 'Capital markets · Tokyo'];
-  const rotatingPhrases = [
-    'M&A tax advisor in Singapore under $500/hr',
-    'Transfer pricing expert with BEPS 2.0 experience',
-    'IP counsel for SaaS, EU + US coverage',
-    'Restructuring partner - Italy, distressed debt'
-  ];
+  // Articles / article-detail pages scope search results to articles only
+  const gsearchPageFile = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const articlesOnlyScope = gsearchPageFile === 'articles.html' || gsearchPageFile === 'article.html';
+
+  const suggestions = articlesOnlyScope
+    ? ['Transfer pricing insights for 2026', 'UAE corporate tax guidelines', 'M&A due diligence trends', 'IP rights & AI training data']
+    : ['M&A tax · Chennai', 'Cross-border compliance', 'IP counsel · EU', 'Transfer pricing', 'Capital markets · Tokyo'];
+  const rotatingPhrases = articlesOnlyScope
+    ? ['Transfer pricing insights for 2026', 'UAE corporate tax guidelines explained', 'M&A due diligence cross-border trends', 'IP rights in the era of AI training data']
+    : [
+      'M&A tax advisor in Singapore under $500/hr',
+      'Transfer pricing expert with BEPS 2.0 experience',
+      'IP counsel for SaaS, EU + US coverage',
+      'Restructuring partner - Italy, distressed debt'
+    ];
   let phraseIdx = 0;
 
   // Set up phrase rotation in placeholder when closed
@@ -814,13 +828,13 @@ function initGlobalSearch() {
       return words.every(w => text.toLowerCase().includes(w));
     };
 
-    let matchedMembers = (window.EXPERTLY_MEMBERS || []).filter(m =>
+    let matchedMembers = articlesOnlyScope ? [] : (window.EXPERTLY_MEMBERS || []).filter(m =>
       strictMatch(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`)
     );
     let matchedArticles = (window.EXPERTLY_ARTICLES || []).filter(a =>
       strictMatch(`${a.title} ${a.category} ${a.excerpt}`)
     );
-    let matchedEvents = (window.EXPERTLY_EVENTS || []).filter(e =>
+    let matchedEvents = articlesOnlyScope ? [] : (window.EXPERTLY_EVENTS || []).filter(e =>
       strictMatch(`${e.title} ${e.category} ${e.city} ${e.country} ${e.desc}`)
     );
 
@@ -840,7 +854,7 @@ function initGlobalSearch() {
           return score;
         };
 
-        matchedMembers = (window.EXPERTLY_MEMBERS || [])
+        matchedMembers = articlesOnlyScope ? [] : (window.EXPERTLY_MEMBERS || [])
           .map(m => ({ m, score: getMatchScore(`${m.name} ${m.practice} ${m.location} ${m.title} ${m.firm}`) }))
           .filter(x => x.score > 0)
           .sort((a, b) => b.score - a.score)
@@ -852,7 +866,7 @@ function initGlobalSearch() {
           .sort((a, b) => b.score - a.score)
           .map(x => x.a);
 
-        matchedEvents = (window.EXPERTLY_EVENTS || [])
+        matchedEvents = articlesOnlyScope ? [] : (window.EXPERTLY_EVENTS || [])
           .map(e => ({ e, score: getMatchScore(`${e.title} ${e.category} ${e.city} ${e.country} ${e.desc}`) }))
           .filter(x => x.score > 0)
           .sort((a, b) => b.score - a.score)
@@ -861,7 +875,7 @@ function initGlobalSearch() {
     }
 
     const members = matchedMembers.slice(0, 5);
-    const articles = matchedArticles.slice(0, 4);
+    const articles = matchedArticles.slice(0, articlesOnlyScope ? 10 : 4);
     const events = matchedEvents.slice(0, 3);
 
     const total = members.length + articles.length + events.length;

@@ -158,7 +158,7 @@ function initLoginTabs() {
           source: 'Email sign-in'
         });
       }
-      window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
+      window.location.href = returnTo;
     });
   }
 
@@ -171,7 +171,7 @@ function initLoginTabs() {
       if (window.ExpertlyAdmin && currentAuthMode !== 'member') {
         window.ExpertlyAdmin.pushUser({ name: '', email, city: '', source: 'LinkedIn' });
       }
-      window.location.href = currentAuthMode === 'member' ? 'dashboard.html' : returnTo;
+      window.location.href = returnTo;
     });
   }
 }

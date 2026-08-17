@@ -11,7 +11,8 @@
     VIEWS: 'expertly_article_views',
     LIKES: 'expertly_article_likes',
     LIKED_BY_ME: 'expertly_article_liked_by_me',
-    COMMENTS: 'expertly_article_comments'
+    COMMENTS: 'expertly_article_comments',
+    SAVED_BY_ME: 'expertly_article_saved_by_me'
   };
 
   function readObj(key, fallback) {
@@ -93,6 +94,23 @@
     };
   }
 
+  function isSaved(articleId) {
+    return !!readObj(KEYS.SAVED_BY_ME, {})[articleId];
+  }
+
+  function toggleSave(articleId) {
+    var savedMap = readObj(KEYS.SAVED_BY_ME, {});
+    var nowSaved = !savedMap[articleId];
+    savedMap[articleId] = nowSaved;
+    writeObj(KEYS.SAVED_BY_ME, savedMap);
+    return nowSaved;
+  }
+
+  function getSavedIds() {
+    var savedMap = readObj(KEYS.SAVED_BY_ME, {});
+    return Object.keys(savedMap).filter(function (id) { return savedMap[id]; });
+  }
+
   global.ExpertlyEngagement = {
     recordView: recordView,
     getViews: getViews,
@@ -101,6 +119,9 @@
     toggleLike: toggleLike,
     getComments: getComments,
     addComment: addComment,
-    getCounts: getCounts
+    getCounts: getCounts,
+    isSaved: isSaved,
+    toggleSave: toggleSave,
+    getSavedIds: getSavedIds
   };
 })(window);

@@ -183,7 +183,7 @@
        sidebar boxes are independent siblings on the page bg, not
        nested inside one shared white wrapper ─────────────────── */
     .art-detail-page {
-      max-width: 1360px;
+      max-width: 1520px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 312px;
@@ -1018,9 +1018,10 @@
 
     /* ── Section headers ──────────────────────────── */
     .anv-section-head {
-      display: flex; align-items: center;
+      display: flex; align-items: center; justify-content: space-between;
       gap: 10px; padding-bottom: 20px; flex-wrap: wrap;
     }
+    .anv-section-head-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .anv-section-head-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     /* ── Filter dropdowns ─────────────────────────── */
