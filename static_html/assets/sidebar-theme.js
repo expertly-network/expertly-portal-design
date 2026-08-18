@@ -6,7 +6,6 @@
   'use strict';
 
   var LOGOUT_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
-  var LOGIN_SVG  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
 
   /* ── Auth-aware sidebar footer ──────────────────────────────── */
 
@@ -37,14 +36,12 @@
     var actionEl = footEl.querySelector('.d1-logout-btn');
 
     if (session && session.email) {
-      if (avatarEl) avatarEl.textContent = session.email.charAt(0).toUpperCase();
-      if (infoEl) {
-        var b = infoEl.querySelector('b');
-        var s = infoEl.querySelector('span');
-        if (b) b.textContent = session.role === 'member' ? 'Member' : 'User';
-        if (s) s.textContent = session.email;
-      }
+      /* Signed in: just the logout button, no avatar/guest card. */
+      footEl.style.display = '';
+      if (avatarEl) avatarEl.style.display = 'none';
+      if (infoEl) infoEl.style.display = 'none';
       if (actionEl) {
+        actionEl.style.display = '';
         actionEl.removeAttribute('href');
         actionEl.innerHTML = LOGOUT_SVG;
         actionEl.title = 'Log out';
@@ -53,20 +50,8 @@
         wireLogout(actionEl);
       }
     } else {
-      if (avatarEl) avatarEl.textContent = '?';
-      if (infoEl) {
-        var b = infoEl.querySelector('b');
-        var s = infoEl.querySelector('span');
-        if (b) b.textContent = 'Guest';
-        if (s) s.textContent = 'Not signed in';
-      }
-      if (actionEl) {
-        actionEl.href = 'login.html';
-        actionEl.title = 'Sign in';
-        actionEl.setAttribute('aria-label', 'Sign in');
-        actionEl.innerHTML = LOGIN_SVG;
-        actionEl.style.cursor = '';
-      }
+      /* Not signed in: no footer at all. */
+      footEl.style.display = 'none';
     }
   }
 
@@ -117,12 +102,12 @@
     }
   }
 
-  /* Logo click: members go straight to their dashboard, everyone else
-     (guests, non-member applicants) goes to the marketing homepage. */
+  /* Logo click always goes to the marketing homepage, for everyone
+     (guests, applicants, and signed-in members alike). */
   function initLogoLink(session) {
     var logo = document.querySelector('.d1-logo');
     if (!logo) return;
-    logo.setAttribute('href', (session && session.role === 'member') ? 'dashboard.html' : 'index.html');
+    logo.setAttribute('href', 'index.html');
   }
 
   document.addEventListener('DOMContentLoaded', function () {

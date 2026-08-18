@@ -1514,13 +1514,13 @@
       var navEl = document.querySelector('.nav');
       var heroSection = document.querySelector('.hero-stellar');
       var shellEl = document.getElementById('d1-shell');
-      if (navEl && heroSection) {
-        navEl.classList.add('hs-nav-dark'); /* dark immediately on load */
+      if (navEl) navEl.classList.add('hs-nav-dark'); /* dark immediately on load */
+      if (heroSection && (navEl || shellEl)) {
         new IntersectionObserver(function (entries) {
           var inHero = entries[0].isIntersecting;
-          navEl.classList.toggle('hs-nav-dark', inHero);
+          if (navEl) navEl.classList.toggle('hs-nav-dark', inHero);
           if (shellEl) shellEl.classList.toggle('in-hero', inHero);
-        }, { threshold: 0 }).observe(heroSection);
+        }, { threshold: 0, rootMargin: '0px 0px -15% 0px' }).observe(heroSection);
       }
 
       /* Firm ticker */

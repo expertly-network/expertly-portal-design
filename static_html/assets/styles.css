@@ -2462,6 +2462,7 @@
 
     .env-section-head { margin-top: 32px; }
 
+    .ev-page-main { overflow-x: visible; }
     .ev-page { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: start; padding: 0 0 120px; }
 
     .env-filter-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 0 18px; border-bottom: 1px solid var(--line); }
@@ -2576,7 +2577,7 @@
     .env-empty { padding: 64px 0; text-align: center; }
     .env-empty h3 { font-size: 22px; font-weight: 500; letter-spacing: -.02em; margin: 10px 0 20px; }
 
-    .ev-sidebar { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 16px; padding-top: 32px; }
+    .ev-sidebar { position: sticky; top: 24px; bottom: 24px; align-self: end; display: flex; flex-direction: column; gap: 16px; padding-top: 32px; padding-bottom: 24px; }
     .ev-sidebar-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
     .ev-sidebar-eyebrow { font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: 0.14em; color: var(--ink-4); font-weight: 600; margin-bottom: 14px; }
     .ev-sidebar-headline { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; color: var(--ink); margin-bottom: 12px; }
@@ -2665,10 +2666,10 @@
        sidebar shows no mark until you hover it open. Once the hero has
        scrolled out of view the rail behaves like every other page again. */
     .d1-shell.in-hero .d1-logo-mark {
-      opacity: 0; transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity: 0; transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .d1-shell.in-hero .d1-logo .dot {
-      opacity: 0; transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity: 0; transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .d1-shell.in-hero.revealed .d1-logo-mark {
       opacity: 1; transition: opacity 0.22s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
@@ -8964,7 +8965,11 @@
       overflow: hidden;
       background: var(--ink);
       color: var(--bg-card);
-      min-height: 100dvh;
+      /* svh (not dvh) so the hero's height is fixed at scroll start instead
+         of live-resizing as the mobile browser chrome collapses mid-scroll —
+         that resize was what shifted the hero/next-section boundary under
+         the user's finger and read as a jump/overlap while scrolling. */
+      min-height: 100svh;
     }
 
     /* Atmosphere */
@@ -9044,24 +9049,32 @@
     }
 
     /* Wordmark shown in the hero itself while the collapsed sidebar rail
-       stays clear (see .d1-shell.in-hero rules above) — same reveal easing
-       as the sidebar so the two feel like one continuous motion. */
+       stays clear (see .d1-shell.in-hero rules above). Fixed to the
+       viewport (not absolute within .hero-stellar, which is offset by the
+       56px rail column) so its top/left land on the exact same spot the
+       sidebar's own wordmark uses once revealed — the handoff between the
+       two is a straight opacity crossfade with zero position jump. */
     .hero-stellar .hs-logo {
-      position: absolute;
+      position: fixed;
       top: 28px;
-      left: 32px;
-      z-index: 2;
+      left: 24px;
+      z-index: 75;
       display: inline-flex;
       align-items: flex-end;
       line-height: 1;
       gap: 0;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 600;
       letter-spacing: -0.02em;
       color: var(--bg-card);
       text-decoration: none;
       opacity: 0;
       animation: hs-fadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+      transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .d1-shell:not(.in-hero) .hero-stellar .hs-logo {
+      opacity: 0 !important;
+      pointer-events: none;
     }
 
     .hero-stellar .hs-logo .dot {
