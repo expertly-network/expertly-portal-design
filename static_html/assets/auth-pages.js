@@ -50,14 +50,14 @@ function initPricingToggle() {
       annualBtn.classList.add('active');
       monthlyBtn.classList.remove('active');
 
-      if (priceBudding) priceBudding.textContent = '499';
+      if (priceBudding) priceBudding.textContent = '699';
       if (priceSeasoned) priceSeasoned.textContent = '699';
       if (unitBudding) unitBudding.textContent = '/year';
       if (unitSeasoned) unitSeasoned.textContent = '/year';
       if (noteBudding) noteBudding.textContent = 'Billed annually · Best value';
       if (noteSeasoned) noteSeasoned.textContent = 'Billed annually · Best value';
 
-      if (compBudding) compBudding.textContent = '5–12 Yrs · $499/year';
+      if (compBudding) compBudding.textContent = '5–12 Yrs · $699/year';
       if (compSeasoned) compSeasoned.textContent = '12+ Yrs · $699/year';
     }
   };
